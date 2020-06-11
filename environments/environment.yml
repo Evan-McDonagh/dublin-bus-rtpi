@@ -1,0 +1,5 @@
+name: dublin-bus-rtpi
+channels:
+  - defaults
+prefix: /home/student/anaconda3/envs/dublin-bus-rtpi
+
