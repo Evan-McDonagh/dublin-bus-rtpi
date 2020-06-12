@@ -3,5 +3,8 @@ channels:
   - defaults
 dependencies:
   - numpy
+  - pip
+  - pip:
+    - django
 prefix: /home/student/anaconda3/envs/dublin-bus-rtpi
 
