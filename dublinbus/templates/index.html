@@ -72,5 +72,31 @@
     });
 
 </script>
+
+<script src="jquery-3.5.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+    $.ajax({
+        method: 'POST',
+        url: '/path/to/your/view/',
+        data: {'yourJavaScriptArrayKey': yourJavaScriptArray},
+        success: function (data) {
+             //this gets called when server returns an OK response
+             alert("it worked!");
+        },
+        error: function (data) {
+             alert("it didnt work");
+        }
+    });
+});
+</script>
+
+<script>
+    var stopdata = '{{stopdata|safe}}';
+    stopdata = JSON.parse(stopdata);
+</script>
+
+
 </body>
 </html>
