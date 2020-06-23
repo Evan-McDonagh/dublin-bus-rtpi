@@ -36,18 +36,20 @@ function initialize() {
         var stopKey;
         for (i=0;i<stopKeys.length;i++) {
             stopKey = stopKeys[i]
-            marker = new google.maps.Marker({
-                                    position: new google.maps.LatLng(
-                                        stopdata[stopKey]['latitude'], 
-                                        stopdata[stopKey]['longitude']),
-                                    map: map
-                                });
-            markers.push(marker);
-            marker.addListener('click', (function (marker, stopKey) {
-                return function () {
-                    getStopInfo(marker, stopKey)
+            if (stopdata[stopKey]['routes'] != "") {
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(
+                        stopdata[stopKey]['latitude'], 
+                        stopdata[stopKey]['longitude']),
+                    map: map
+                });
+                markers.push(marker);
+                marker.addListener('click', (function (marker, stopKey) {
+                    return function () {
+                        getStopInfo(marker, stopKey)
                                     }
                 })(marker, stopKey));
+            }
         }
 
         marker.setMap(map);
