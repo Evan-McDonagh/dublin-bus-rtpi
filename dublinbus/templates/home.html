@@ -1,0 +1,247 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>DublinBus-Team2</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="{% static "vendors/mdi/css/materialdesignicons.min.css" %}">
+  <link rel="stylesheet" href="{% static "vendors/base/vendor.bundle.base.css" %}">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <link rel="stylesheet" href={% static "vendors/datatables.net-bs4/dataTables.bootstrap4.css" %} >
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="{% static "images/favicon.png" %}" />
+  <script src="{% static "js/echarts.min.js" %}"></script>
+  <script src="{% static "js/echarts.all.js" %}"></script>
+  <script src="{% static "js/jquery-3.4.0.min.js" %}"></script>
+  <script src="{% static "js/station_map.js" %}"></script>
+</head>
+<body>
+  <div class="container-scroller">
+    <nav class="navbar  p-0 fixed-top d-flex flex-row" style="background: #ffffff">
+      <div class="navbar-brand-wrapper d-flex justify-content-center">
+        <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+          <a class="navbar-brand brand-logo" href="http://www.dublinbikes.ie" target="_blank"><img src="{% static "images/dbus.png" %}" alt="logo"/></a>
+          <a class="navbar-brand brand-logo-mini" href="javascript:location.reload();"><img src="{% static "images/logo-mini.svg" %}"  alt="logo"/></a>
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-sort-variant"></span>
+          </button>
+        </div>
+      </div>
+      <div class="tab-content py-0 px-0" style="margin: auto">
+        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab" style="background: #ffffff; height: 60px;">
+          <div class="d-flex flex-wrap justify-content-xl-between">
+            <div class="d-none d-xl-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item" >
+{#              <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>#}
+                <i class="mdi mdi-timetable icon-lg mr-3 text-primary"></i>
+              <div class="d-flex flex-column justify-content-around">
+                <small class="mb-1 text-muted">Current Time</small>
+{#                <h5 class="mb-0 d-inline-block" id="last_update">26 Jul 2018 16 pm</h5>#}
+                <h5 class="mb-0 d-inline-block" id="datetime"></h5>
+              </div>
+            </div>
+            <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+              <i class="mdi mdi-eye mr-3 icon-lg text-success"></i>
+              <div class="d-flex flex-column justify-content-around" style="align-items: center">
+                <small class="mb-1 text-muted">Arrival Time</small>
+                <h5 class="mr-2 mb-0" id="arrival_time">xx/xx/xxxx xx:xx:xx</h5>
+              </div>
+            </div>
+            <div class="d-flex border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+                <i class="mdi mdi-calendar-heart icon-lg mr-3 text-primary"></i>
+              <div class="d-flex flex-column justify-content-around" style="align-items: center">
+                <small class="mb-1 text-muted">Remaining Time</small>
+                <h5 class="mr-2 mb-0" id="remaining_time">xx minutes</h5>
+              </div>
+            </div>
+            <div class="d-flex py-3 border-md-right flex-grow-1 align-items-center justify-content-center p-3 item">
+              <i class="mdi mdi-weather-sunny mr-3 icon-lg text-danger">
+              </i>
+              <div class="d-flex flex-column justify-content-around" style="align-items: center">
+                <small class="mb-1 text-muted">Weather Status</small>
+                <h5 class="mr-2 mb-0" id="weather"></h5>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+    </nav>
+    <!-- partial -->
+      <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:location.reload();">
+              <i class="mdi mdi-home menu-icon"></i>
+              <span class="menu-title">Home Page</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link">
+              <span class="menu-title">
+                  <form method="post">
+                      {% csrf_token %}
+                      From:
+                      <input class="menu-title" id="origin" type="text" name="origin" required>
+                  </form>
+              </span>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link">
+              <span class="menu-title">
+                  <form>
+                      {% csrf_token %}
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To:
+                      <input class="menu-title" id="destination" name="destination" value="" required>
+                  </form>
+              </span>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link">
+              <span class="menu-title" style="margin: auto">
+                  <button class="menu-title" id="infoupload" name="search" onclick="search();calcRoute()">Search</button>
+              </span>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link">
+                <span class="menu-title">
+                    <h6>Depart at <br><br>
+                            <select id="selecttime" onclick="loadtime()" onchange="getgraphdata();showprediction();adaptgraph()">
+                            </select>
+                    </h6>
+                </span>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link">
+              <i class="mdi  menu-icon"></i>
+              <a class="menu-title" href="https://www2.hse.ie/conditions/coronavirus/coronavirus.html" target="_blank">
+                <img src="{% static "images/covid19.jpg" %}" style='width:100%; height:100%'>
+              </a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link">
+              <i class="mdi  menu-icon"></i>
+              <a class="menu-title" href="https://www.dublinbus.ie/News-Centre" target="_blank">
+                <img src="{% static "images/dublinbus.jpg" %}" style="width: 100%; height: 100%">
+              </a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <div class="nav-link">
+              <i class="mdi  menu-icon"></i>
+              <a class="menu-title" href="https://www.irishtimes.com/" target="_blank">
+                <img src="{% static "images/irishtime.png" %}" style="width: 100%; height: 100%">
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+          <div class="row">
+            <div class="col-md-12 stretch-card">
+              <div class="card">
+                <div class="card-body" id="map" style="height: 500px; align-content: center">
+                    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8&libraries=places&sensor=false&callback=initMap"></script>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" id="row">
+            <div class="col-md-5 grid-margin stretch-card" style="padding: 0 0 0;">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="mb-4" id="h51">Route Choose</h4>
+                  <div id="figure1" style="width: 350px; height: 400px;"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-7 grid-margin stretch-card" style="padding: 0 0 0">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="mb-4" id="h52">Some other information</h5>
+<!--                  <div id="total-sales-chart-legend"></div>-->
+<!--                    <canvas id="total-sales-chart"></canvas>-->
+                  <div id="figure2" style="width: 550px; height: 400px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <!-- content-wrapper ends -->
+      </div>
+      <!-- main-panel ends -->
+      </div>
+        <footer class="footer"style="padding: 12px 12px;">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block" style="margin: auto;">Copyright &copy; 2020.Team2.COMP47360. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"></span>
+          </div>
+        </footer>
+    <!-- page-body-wrapper ends -->
+    </div>
+
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="{% static "vendors/base/vendor.bundle.base.js" %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <script src="{% static "vendors/chart.js/Chart.min.js" %}"></script>
+  <script src="{% static "vendors/datatables.net/jquery.dataTables.js" %}"></script>
+  <script src="{% static "vendors/datatables.net-bs4/dataTables.bootstrap4.js" %}"></script>
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static "js/off-canvas.js" %}"></script>
+  <script src="{% static "js/hoverable-collapse.js" %}"></script>
+  <script src="{% static "js/template.js" %}"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="{% static "js/dashboard.js" %}"></script>
+  <script src="{% static "js/data-table.js" %}"></script>
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/dataTables.bootstrap4.js" %}"></script>
+  <!-- End custom js for this page-->
+<script type="text/javascript"t>
+      window.onload = function (){
+          showtime();
+          loadtime();
+          setInterval('showtime()',1000);//trigger 'showtime' function after every 1000ms;
+      }//when the page is loaded, set the time automate.
+      function loadtime() {
+          var stime = new Date();
+          var seltime = document.getElementById("selecttime");
+          seltime.innerText = null;
+          for (let i = 0; i < 60; i++) {
+              var time = new Date(stime.getTime() + 1000 * 60 * (1 + i));
+              var minute = "";
+              if(time.getMinutes() < 10){minute = "0" + parseInt(time.getMinutes())}
+              else{minute = parseInt(time.getMinutes())}
+              var showtime = (time.getFullYear() + '/' + parseInt(time.getMonth() + 1) + '/' + time.getDate() + " " + time.getHours() + ':' + minute + ':00');
+              seltime.options.add(new Option(showtime, showtime));
+          }
+      }
+      function showselecttime() {
+          var dt = new Date();
+          document.getElementById("selecttime").innerHTML = dt.toLocaleString('england',{ hour12: false });
+      }
+      function showtime(){
+          var dt = new Date();
+          document.getElementById("datetime").innerHTML = dt.toLocaleString('england',{ hour12: false });
+      }
+  </script>
+</body>
+
+</html>
