@@ -32,6 +32,7 @@ function initialize() {
 
         // Add stop markers with onclick
         var marker;
+        var markers = [];
         var stopKey;
         for (i=0;i<stopKeys.length;i++) {
             stopKey = stopKeys[i]
@@ -41,6 +42,7 @@ function initialize() {
                                         stopdata[stopKey]['longitude']),
                                     map: map
                                 });
+            markers.push(marker);
             marker.addListener('click', (function (marker, stopKey) {
                 return function () {
                     getStopInfo(marker, stopKey)
@@ -49,6 +51,8 @@ function initialize() {
         }
 
         marker.setMap(map);
+        // create marker clusters using array of markers
+        var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
     };
     google.maps.event.addDomListener(window, 'load', initialize);
 
