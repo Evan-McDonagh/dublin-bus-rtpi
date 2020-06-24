@@ -3,9 +3,13 @@
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
   </component>
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (dublinbus_env)" project-jdk-type="Python SDK" />
 =======
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (dublinbus) (2)" project-jdk-type="Python SDK" />
 >>>>>>> Stashed changes
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7 (dublinbus)" project-jdk-type="Python SDK" />
+>>>>>>> dev
 </project>

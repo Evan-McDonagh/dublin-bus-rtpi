@@ -157,5 +157,9 @@ function calcRoute() {
       directionsRenderer.setDirections(result);
     }
   });
+<<<<<<< HEAD
    directionsRenderer.setPanel(document.getElementById('h51'));
+=======
+   directionsRenderer.setPanel(document.getElementById('figure1'));
+>>>>>>> dev
 }

@@ -22,6 +22,10 @@
   <script src="{% static "js/echarts.all.js" %}"></script>
   <script src="{% static "js/jquery-3.4.0.min.js" %}"></script>
   <script src="{% static "js/station_map.js" %}"></script>
+<<<<<<< HEAD
+=======
+  <script src="{% static "js/initialize.js" %}"></script>
+>>>>>>> dev
 </head>
 <body>
   <div class="container-scroller">
@@ -172,10 +176,17 @@
             <div class="col-md-7 grid-margin stretch-card" style="padding: 0 0 0">
               <div class="card">
                 <div class="card-body">
+<<<<<<< HEAD
                   <h5 class="mb-4" id="h52">Some other information</h5>
 <!--                  <div id="total-sales-chart-legend"></div>-->
 <!--                    <canvas id="total-sales-chart"></canvas>-->
                   <div id="figure2" style="width: 550px; height: 400px;"></div>
+=======
+                  <h5 class="mb-4" id="h52">Show All Stops</h5>
+<!--                  <div id="total-sales-chart-legend"></div>-->
+<!--                    <canvas id="total-sales-chart"></canvas>-->
+                  <div id="googleMap" style="width: 550px; height: 400px;"></div>
+>>>>>>> dev
                 </div>
               </div>
             </div>
@@ -219,6 +230,10 @@
           showtime();
           loadtime();
           setInterval('showtime()',1000);//trigger 'showtime' function after every 1000ms;
+<<<<<<< HEAD
+=======
+          initialize();
+>>>>>>> dev
       }//when the page is loaded, set the time automate.
       function loadtime() {
           var stime = new Date();
@@ -242,6 +257,15 @@
           document.getElementById("datetime").innerHTML = dt.toLocaleString('england',{ hour12: false });
       }
   </script>
+<<<<<<< HEAD
+=======
+    <script>
+        var stopdata = '{{stopdata|safe}}';
+        stopdata = JSON.parse(stopdata);
+    </script>
+
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+>>>>>>> dev
 </body>
 
 </html>
