@@ -1,7 +1,22 @@
 import json
 
+<<<<<<< Updated upstream
 from django.contrib.sites import requests
 from django.shortcuts import render,HttpResponse
+=======
+#  Google Map Apikey
+gmap_api = 'AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8'
+
+#  OpenWeather Forecast Apikey
+weather_fore_api = '9570260da25526e20bf66bdf7e1c25e5'
+
+# OpenWeather Preent Apikey
+weather_pre_api = 'c9d5929c3180f174f633828540c0fbc5'
+import requests
+from django.http import HttpResponse
+from django.shortcuts import render
+from pyleapcard import *
+>>>>>>> Stashed changes
 
 #  Google Map Apikey
 gmap_api = 'AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8'
@@ -37,7 +52,11 @@ def load_bus_data():
     return context
 def home(request):
     # get LAT, LNG from front-end
+<<<<<<< Updated upstream
     return render(request, 'home.html')
+=======
+    return render(request, 'home.html', context)
+>>>>>>> Stashed changes
 
 def init(request):
     print(request.method)
