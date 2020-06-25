@@ -6,5 +6,6 @@ dependencies:
   - pip
   - pip:
     - django
+    - pyleapcard
 prefix: /home/student/anaconda3/envs/dublin-bus-rtpi
 
