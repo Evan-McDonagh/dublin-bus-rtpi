@@ -4,6 +4,6 @@ from app01 import views
 
 urlpatterns = [
     url('index/', views.index),
-    # url('', views.index),
+    url('', views.index),
     url('leapcard/',views.leapcard),
 ]
