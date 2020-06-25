@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title%}
+    {{stop}}
+{% endblock%}
+
+{% block content%} 
+<div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">submit</button>
+    </form>
+    
+    {% for i in results %}
+        route:{{ i.route }}
+        arrivaltime:{{ i.arrivaldatetime }}
+        duetime:{{ i.duetime }}
+    <br>
+    {% endfor %}
+</div>
+{%endblock%}

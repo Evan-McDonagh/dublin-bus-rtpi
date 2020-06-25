@@ -58,3 +58,27 @@ def leapcard(request):
 
     form = leapForm()
     return render(request,'leapcard.html', {'form' : form})
+
+def stop(request):
+    if request.method == 'POST':
+        form = routeForm(request.POST)
+        if form.is_valid():
+            stop_id = form.cleaned_data['stop_id']
+
+
+            url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
+            obj = requests.get(url)
+            obj_json = obj.json()
+            # print(obj_json)
+
+            context = {}
+            results = obj_json['results']
+            context['results'] = results
+            context['form'] = form
+            context['length'] = len(results)
+
+            return render(request,"stop.html", context=context)
+
+    form = routeForm()
+
+    return render(request,'stop.html',{'form': form})

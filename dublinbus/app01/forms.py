@@ -6,4 +6,4 @@ class leapForm(forms.Form):
     # remember_me = forms.MultipleChoiceField(widget=widgets.CheckboxInput)
 
 class routeForm(forms.Form):
-    route_id = forms.CharField()
+    stop_id = forms.CharField()
