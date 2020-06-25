@@ -3,6 +3,7 @@ import json
 import os
 
 def clean_route_data():
+    """Generates routedata.json file storing bus stop ids, routes served, and operator of bus stop, as taken from all-ireland GTFS file"""
     filename = os.path.join(os.path.dirname(__file__),'data/routes_23_12_2019.txt')
 
     stopid = np.loadtxt(filename,delimiter='\t',usecols=[0],dtype=str)
@@ -42,6 +43,11 @@ def clean_route_data():
         json.dump(routes,outfile)
 
 def add_stop_locations():
+    """
+        Gets stop locations from dublin bus and go ahead rows of all-ireland gtfs data
+        saves to json object in stopdata.json
+    """
+
     filename = os.path.join(os.path.dirname(__file__),'data/stops_2019_12_23.txt')
 
     with open('dublinbus/local-bus-data/route-data.json') as infile: 
@@ -63,6 +69,10 @@ def add_stop_locations():
         json.dump(stopdata,outfile)
 
 def add_stop_numbers():
+    """"
+        Fetches stop numebrs and addresses from GTFS text files for Dublin Bus and Go Ahead
+        Saves these strings into bus stop objects in stopdata.json
+    """
     import codecs
 
     filename_dublinbus = os.path.join(os.path.dirname(__file__), 'data/stops_dublinbus.txt')
@@ -72,6 +82,7 @@ def add_stop_numbers():
         stopdata = json.load(infile)
 
     def stopdata_from_file(filename,stopdata):
+        """Takes filename and stopdata dictionary, adds stop numbers and addresses to dictionary"""
         with codecs.open(filename, encoding='utf8') as file:
             lines_dublin = file.readlines()
             lines_dublin.pop(0)
@@ -87,7 +98,8 @@ def add_stop_numbers():
                     int(stop_number)
                     try: 
                         stopdata[atcoCode]['stopno'] = stop_number
-                        stopdata[atcoCode]['address'] = address
+                        # removing address due to possible unicode bug
+                        # stopdata[atcoCode]['address'] = address
                     except KeyError:
                         pass
                         # stopdata[atcoCode] = dict()

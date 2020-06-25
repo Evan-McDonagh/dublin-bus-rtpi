@@ -59,7 +59,7 @@ function initialize() {
     google.maps.event.addDomListener(window, 'load', initialize);
 
 function getStopInfo(marker, stopKey) {
-    let content = "<div id='infowindow'><h5>Stop ID: " + stopdata[stopKey]["id"] + "</h5>";
+    let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
     content += "Routes: " + stopdata[stopKey]['routes'];
     content += "</div>"
 
