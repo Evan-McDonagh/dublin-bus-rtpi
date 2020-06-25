@@ -76,9 +76,21 @@ def stop(request):
             context['results'] = results
             context['form'] = form
             context['length'] = len(results)
+            stop_data = load_bus_data()
+            context['stopdata'] = stop_data['stopdata']
+            # context = load_bus_data()
+            # print(context )
+
 
             return render(request,"stop.html", context=context)
-
+    
+    context = {}
+    stop_data = load_bus_data()
     form = routeForm()
+    context = {
+        'stopdata' : stop_data['stopdata'],
+        'form':form,
 
-    return render(request,'stop.html',{'form': form})
+    }
+
+    return render(request,'stop.html',context=context) 
