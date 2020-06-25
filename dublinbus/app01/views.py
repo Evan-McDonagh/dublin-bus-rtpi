@@ -1,50 +1,11 @@
-import json
-
-from django.contrib.sites import requests
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
+from app01 import models
+from .forms import leapForm,routeForm
 from pyleapcard import *
-
-from .forms import leapForm
-
-
+from pprint import pprint
+import json
+import requests
 # Create your views here.
-def home(request):
-    context = load_bus_data()
-    # get LAT, LNG from front-end
-    return render(request, 'home.html',context)
-def init(request):
-    print(request.method)
-    inifo = {}
-    if request.method == 'POST':
-        print(request.body)
-        lat = request.POST.get('lat')
-        lng = request.POST.get('lng')
-        print(lat, lng)
-
-
-        # get present weather
-        weather_r = requests.get(
-            "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}".format(lat, lng, weather_pre_api))
-        weather_result = json.loads(weather_r.text)
-        print(weather_result)
-        h_temp = weather_result["main"].get("feels_like")  # get tempetature
-        temp = str(round(h_temp - 273.15)) + '˚C'
-        descp = str(weather_result["weather"][0].get('main'))    # get weather description
-
-        weather = descp + ', ' + temp
-        inifo['weather'] = weather
-        print(weather)
-        # # get the address of the post coordinate
-        address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
-        address_result = json.loads(address_request.text)
-        print(address_result)
-        address = address_result['results'][0].get('formatted_address')
-        print(address)
-        inifo['address'] = address
-        print(inifo)
-    return HttpResponse(json.dumps(inifo))
-
 def index(request):
     context = load_bus_data()
     return render(request,'index.html', context)
