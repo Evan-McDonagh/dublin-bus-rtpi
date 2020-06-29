@@ -7,5 +7,7 @@ dependencies:
   - pip:
     - django
     - pyleapcard
+  - pandas
+  - scikit-learn
 prefix: /home/student/anaconda3/envs/dublin-bus-rtpi
 
