@@ -5,10 +5,16 @@ from pyleapcard import *
 from pprint import pprint
 import json
 import requests
-# Create your views here.
-def index(request):
+
+
+def base(request):
+    return render(request,'base.html')
+
+
+def search(request):
     context = load_bus_data()
-    return render(request,'index.html', context)
+    context['title'] = 'search'
+    return render(request, 'search.html', context)
 
 def load_bus_data():
     #load bus stop and route data
@@ -57,7 +63,8 @@ def leapcard(request):
 
 
     form = leapForm()
-    return render(request,'leapcard.html', {'form' : form})
+    return render(request,'leapcard.html', {'form': form, 'title': 'Leapcard'})
+
 
 def stop(request):
     if request.method == 'POST':
@@ -90,7 +97,6 @@ def stop(request):
     context = {
         'stopdata' : stop_data['stopdata'],
         'form':form,
-
     }
-
+    context['title'] = 'stop'
     return render(request,'stop.html',context=context) 

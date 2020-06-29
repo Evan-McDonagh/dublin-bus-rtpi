@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title%}
+    /{{title}}
+{% endblock%}
+
+{% block content%}
+    {#datetimepicker#}
+    <div class="col-md-13">
+        <div class='input-group date' id='datetimepicker1'>
+            <input type='text' class="form-control"/>
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+        
+        <div class='input-group date' id='datetimepicker3'>
+            <input type='text' class="form-control" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var todayDate = new Date().getDate();
+        $('#datetimepicker1').datetimepicker({
+    
+        });
+        $('#datetimepicker3').datetimepicker({
+    
+        });
+    
+    </script>
+
+    <script src="jquery-3.5.1.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $.ajax({
+            method: 'POST',
+            url: '/path/to/your/view/',
+            data: {'yourJavaScriptArrayKey': yourJavaScriptArray},
+            success: function (data) {
+                //this gets called when server returns an OK response
+                alert("it worked!");
+            },
+            error: function (data) {
+                alert("it didnt work");
+            }
+        });
+    });
+    </script>
+
+    <script>
+        var stopdata = '{{stopdata|safe}}';
+        stopdata = JSON.parse(stopdata);
+    </script>
+
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+{%endblock%}
