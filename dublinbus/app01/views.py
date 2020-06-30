@@ -8,7 +8,8 @@ import requests
 
 
 def base(request):
-    return render(request,'base.html')
+    context = load_bus_data()
+    return render(request,'base.html', context=context)
 
 
 def search(request):
