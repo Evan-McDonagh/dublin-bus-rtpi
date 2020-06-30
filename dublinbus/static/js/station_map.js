@@ -17,7 +17,7 @@ function getCookie(name) { //csrf verification
 var csrftoken = getCookie('csrftoken');
 
 var origin_pos = {} //represent the origin position, i.e. the value of input box with id "origin"
-var destination_pos = {} //represent the destination position, i.e. the value of input box with id "origin"
+// var destination_pos = {} //represent the destination position, i.e. the value of input box with id "origin"
 var origin_value = "";
 
 var infowindow = new google.maps.InfoWindow();
@@ -37,7 +37,7 @@ function initMap(){
         origin_pos = pos;
         map =new google.maps.Map(document.getElementById('googleMap'), {
                   center: {lat: pos.lat, lng: pos.lng},
-                  zoom: 7
+                  zoom: 10
                 });
         var loc_marker = new google.maps.Marker({
                               map: map,
@@ -119,4 +119,93 @@ function getStopInfo(marker, stopKey) {
     // add content of get request to info window
     infowindow.setContent(content);
     infowindow.open(map, marker);
+}
+
+function search() {
+    //trigger relevant functions to generate directions
+    //query the place according to the input boxes.
+
+    if (document.getElementById('origin').value ==""){var s_origin = origin_value;}
+    else{var s_origin = document.getElementById('origin').value}
+    var s_dest = document.getElementById('destination').value;
+    alert('searchstart' + s_origin);
+    alert(origin_pos.lat);
+    // alert('searchend' + s_dest)
+
+    var map2 = new google.maps.Map(document.getElementById('googleMap'), {
+        center: origin_pos,
+        zoom: 13
+    });
+    var service = new google.maps.places.PlacesService(map2);
+    var s_origin_request = {
+        query: s_origin,
+        fields: ['name', 'geometry'],
+    };
+    service.findPlaceFromQuery(s_origin_request, function (results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            // alert(results[0].geometry.location);
+            map2.setCenter(results[0].geometry.location);
+            var infowindow_ori = new google.maps.InfoWindow({
+                content: s_origin,
+            });
+            var marker_ori = new google.maps.Marker({
+                map: map2,
+                position: results[0].geometry.location,
+                icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+
+            });
+            marker_ori.addListener("mouseover", function () {
+                infowindow_ori.open(map2, marker_ori);
+            });
+            origin_pos = results[0].geometry.location;
+            // origin_pos = {'lat': results[0].geometry.location.lat(), 'lng': results[0].geometry.location.lng()}
+        }
+    });
+    var s_dest_request = {
+        query: s_dest,
+        fields: ['name', 'geometry'],
+    };
+    service.findPlaceFromQuery(s_dest_request, function(results, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+              // alert(results[0].geometry.location);
+              map2.setCenter(results[0].geometry.location);
+              var infowindow_dest = new google.maps.InfoWindow({
+                content: s_dest,
+                });
+              var marker_dest = new google.maps.Marker({
+                              map: map2,
+                              position: results[0].geometry.location,
+                              icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+              });
+              marker_dest.addListener("mouseover", function () {
+                    infowindow_dest.open(map, marker_dest);
+                });
+              destination_pos = {'lat':results[0].geometry.location.lat(), 'lng':results[0].geometry.location.lng()}
+      }
+    });
+}
+
+function calcRoute() {
+    // alert("clacroute");
+  var start = document.getElementById('origin').value;
+  var end = document.getElementById('destination').value;
+  var directionsService = new google.maps.DirectionsService();
+  var directionsRenderer = new google.maps.DirectionsRenderer();
+  var request = {
+    origin: {query: document.getElementById('origin').value},
+    destination: {query: document.getElementById('destination').value},
+    travelMode: 'TRANSIT',
+    provideRouteAlternatives: true,
+  };
+    var map3 = new google.maps.Map(document.getElementById('googleMap'),{
+        center: origin_pos,
+        zoom:13,
+    });
+    directionsRenderer.setMap(map3);
+    directionsService.route(request, function(result, status) {
+    if (status == 'OK') {
+      directionsRenderer.setDirections(result);
+    }
+  });
+   directionsRenderer.setPanel(document.getElementById('h51'));
 }
