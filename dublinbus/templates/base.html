@@ -24,11 +24,12 @@
     <div id="googleMap" style="width:850px;height:600px; float: right"></div>
 
     {#the nav bar#}
+    <a href="/">Home Page</a>
     <ul>
-        <li><a href="/search">Search</a></li>
-        <li><a href="/stop">Stop</a></li>
+        <li title="click to search route"><a href="/search">Search</a></li>
+        <li title="click to show stops"><a href="/stop">Stop</a></li>
         <li><a href="">Twitter</a></li>
-        <li><a href="/leapcard">Leapcard</a></li>
+        <li title="click to log in leapcard"><a href="/leapcard">Leapcard</a></li>
     </ul>
     <div>
         <form action="" method="post">
@@ -37,6 +38,12 @@
             <button>go</button>
         </form>
     </div>
+    <script>
+        var stopdata = '{{stopdata|safe}}';
+        stopdata = JSON.parse(stopdata);
+    </script>
+
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     {% block content%} {%endblock%}
 
 
