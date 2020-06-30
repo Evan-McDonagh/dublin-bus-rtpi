@@ -7,4 +7,5 @@ urlpatterns = [
     url('^$', views.index),
     url('stop/', views.stop),
     url('leapcard/',views.leapcard),
+    url('real_info/',views.real_info),
 ]
