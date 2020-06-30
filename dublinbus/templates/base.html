@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>DublinbusTeam2{% block title%} {%endblock%}</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJW4jsPlNKgv6jFm3B5Edp5ywgdqLWdmc&sensor=false"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8&libraries=places&sensor=false"></script>
+{#    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJW4jsPlNKgv6jFm3B5Edp5ywgdqLWdmc&sensor=false"></script>#}
 
     <!--import css -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/mian.css' %}">
@@ -23,7 +24,7 @@
     <div id="googleMap" style="width:850px;height:600px; float: right"></div>
 
     {#the nav bar#}
-    <a href="/">Home Page</a>
+    <a href="/">Home Page</a>&nbsp;<span id="weather"></span>
     <ul>
         <li title="click to search route"><a href="/search">Search</a></li>
         <li title="click to show stops"><a href="/stop">Stop</a></li>
@@ -41,8 +42,10 @@
         var stopdata = '{{stopdata|safe}}';
         stopdata = JSON.parse(stopdata);
     </script>
-    <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
+{#    <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script>#}
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    <script type="text/javascript">google.maps.event.addDomListener(window, 'load', initMap);</script>
     {% block content%} {%endblock%}
 
 

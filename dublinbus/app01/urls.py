@@ -8,4 +8,5 @@ urlpatterns = [
     path('search', views.search),
     path('stop', views.stop),
     path('leapcard',views.leapcard),
+    path('init',views.init),
 ]
