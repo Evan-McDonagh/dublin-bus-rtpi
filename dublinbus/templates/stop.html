@@ -5,20 +5,51 @@
 {% endblock%}
 
 {% block content%} 
+
 <div>
-    <form method="post">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit">submit</button>
-    </form>
-    
-    {% for i in results %}
-        route:{{ i.route }}
-        arrivaltime:{{ i.arrivaldatetime }}
-        duetime:{{ i.duetime }}
-    <br>
-    {% endfor %}
+<form method="post" id = "formadd">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">submit</button>
+</form>
 </div>
+
+<!-- the area div that is used to hold the content after refrensh -->
+<div id = "area"></div>  
+
+<div>
+    <script src="http://cdn.static.runoob.com/libs/jquery/1.10.2/jquery.min.js"></script>  
+    <script>
+        $('#formadd').submit(function(){
+                info = {
+                csrfmiddlewaretoken: '{{ csrf_token }}', 
+                username :  $('#formadd').serialize()
+                };
+               
+                $.ajax({
+                    type:"POST",
+                    url: "http://127.0.0.1:8000/real_info/", 
+                    cache: false,
+                    dataType: "html",
+                    headers:{'Content-Type':"application/json"} ,
+                    data:info,
+                    success: function(result, statues, xml){
+                        console.log(result); 
+                        $("#area").html(result); 
+                                     
+                    },
+                    error: function(){
+                        alert("false");
+                    }
+                });
+                return false;
+            });
+
+    </script>
+</div>
+
+
+
 <script src="jquery-3.5.1.min.js"></script>
 
     <script type="text/javascript">
