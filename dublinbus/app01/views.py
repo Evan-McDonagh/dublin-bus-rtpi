@@ -90,4 +90,7 @@ def real_info(request):
         obj_json = obj.json()
 
         return JsonResponse(obj_json,safe=False)
-    
+
+
+def twitter(request):
+    return render(request,'twitter.html')
