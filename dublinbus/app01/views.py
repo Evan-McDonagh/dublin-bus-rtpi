@@ -121,17 +121,17 @@ def init(request):
         print(lat, lng)
 
 
-        # get present weather
-        weather_r = requests.get(
-            "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}".format(lat, lng, weather_pre_api))
-        weather_result = json.loads(weather_r.text)
-        print(weather_result)
-        h_temp = weather_result["main"].get("feels_like")  # get tempetature
-        temp = str(round(h_temp - 273.15)) + '˚C'
-        descp = str(weather_result["weather"][0].get('main'))    # get weather description
-
-        weather = descp + ', ' + temp
-        inifo['weather'] = weather
+        # # get present weather
+        # weather_r = requests.get(
+        #     "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}".format(lat, lng, weather_pre_api))
+        # weather_result = json.loads(weather_r.text)
+        # print(weather_result)
+        # h_temp = weather_result["main"].get("feels_like")  # get tempetature
+        # temp = str(round(h_temp - 273.15)) + '˚C'
+        # descp = str(weather_result["weather"][0].get('main'))    # get weather description
+        #
+        # weather = descp + ', ' + temp
+        # inifo['weather'] = weather
         print(weather)
         # # get the address of the post coordinate
         address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
@@ -141,4 +141,31 @@ def init(request):
         print(address)
         inifo['address'] = address
         print(inifo)
+    else:
+        inifo['address'] = 'location unknown'
     return HttpResponse(json.dumps(inifo))
+
+def weather(request):
+    print('weather')
+    weather_info = {}
+    if request.method == 'POST':
+        print(request.body)
+        lat = request.POST.get('lat')
+        lng = request.POST.get('lng')
+        print(lat, lng)
+
+        # get present weather
+        weather_r = requests.get(
+            "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}".format(lat, lng, weather_pre_api))
+        weather_result = json.loads(weather_r.text)
+        print(weather_result)
+        h_temp = weather_result["main"].get("feels_like")  # get tempetature
+        temp = str(round(h_temp - 273.15)) + '˚C'
+        descp = str(weather_result["weather"][0].get('main'))  # get weather description
+
+        weather = descp + ', ' + temp
+        weather_info['weather'] = weather
+        print(weather_info)
+    else:
+        weather_info['weather'] = 'location unknown'
+    return HttpResponse(json.dumps(weather_info))
