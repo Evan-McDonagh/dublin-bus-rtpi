@@ -13831,23 +13831,6 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">USER</span> <span class="o">=</span> <span class="s2">&quot;student&quot;</span>
-<span class="n">PASSWORD</span> <span class="o">=</span> <span class="s2">&quot;Ucddublinbusgroup2&quot;</span>
-<span class="n">URI</span> <span class="o">=</span> <span class="s2">&quot;ipa-015.ucd.ie&quot;</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="s2">&quot;22&quot;</span>
-<span class="n">DB</span> <span class="o">=</span> <span class="s2">&quot;dublinbus&quot;</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
@@ -14305,66 +14288,6 @@ Successfully built sshtunnel
 Installing collected packages: pynacl, bcrypt, paramiko, sshtunnel
 Successfully installed bcrypt-3.1.7 paramiko-2.7.1 pynacl-1.4.0 sshtunnel-0.1.5
 Note: you may need to restart the kernel to use updated packages.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="k">with</span> <span class="n">SSHTunnelForwarder</span><span class="p">(</span>
-            <span class="p">(</span><span class="s1">&#39;137.43.49.31&#39;</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
-            <span class="n">ssh_password</span><span class="o">=</span><span class="s1">&#39;Ucd-cs-2019!&#39;</span><span class="p">,</span>
-            <span class="n">ssh_username</span><span class="o">=</span><span class="s1">&#39;student&#39;</span><span class="p">,</span>
-            <span class="n">remote_bind_address</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">3306</span><span class="p">)</span>
-    <span class="p">)</span><span class="k">as</span> <span class="n">tunnel</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">connection</span> <span class="o">=</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-                <span class="n">host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
-                <span class="n">user</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span>
-                <span class="n">passwd</span><span class="o">=</span><span class="s1">&#39;Ucddublinbusgroup2&#39;</span><span class="p">,</span>
-                <span class="n">db</span><span class="o">=</span><span class="s2">&quot;dublinbus&quot;</span><span class="p">,</span>
-                <span class="n">port</span><span class="o">=</span><span class="n">tunnel</span><span class="o">.</span><span class="n">local_bind_port</span><span class="p">,</span>
-                <span class="n">charset</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
-                <span class="n">cursorclass</span><span class="o">=</span><span class="n">pymysql</span><span class="o">.</span><span class="n">cursors</span><span class="o">.</span><span class="n">DictCursor</span>
-            <span class="p">)</span>
-            <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-            <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM dublinbus.stops limit 5;&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">())</span>
-            <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pymysql failed!&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">()</span>
-<span class="c1"># server.start()</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ssh connection failed!&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[{&#39;stop_id&#39;: &#39;8220DB000002&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 2&#39;, &#39;stop_lat&#39;: &#39;53.3522443611407&#39;, &#39;stop_lon&#39;: &#39;-6.26372321891882&#39;}, {&#39;stop_id&#39;: &#39;8220DB000003&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 3&#39;, &#39;stop_lat&#39;: &#39;53.3523085514349&#39;, &#39;stop_lon&#39;: &#39;-6.26381074216821&#39;}, {&#39;stop_id&#39;: &#39;8220DB000004&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 4&#39;, &#39;stop_lat&#39;: &#39;53.3525745131874&#39;, &#39;stop_lon&#39;: &#39;-6.26417548603793&#39;}, {&#39;stop_id&#39;: &#39;8220DB000006&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 6&#39;, &#39;stop_lat&#39;: &#39;53.352749335707&#39;, &#39;stop_lon&#39;: &#39;-6.26445380396429&#39;}, {&#39;stop_id&#39;: &#39;8220DB000007&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 7&#39;, &#39;stop_lat&#39;: &#39;53.3528409105808&#39;, &#39;stop_lon&#39;: &#39;-6.26457026121744&#39;}]
 </pre>
 </div>
 </div>

@@ -70,16 +70,6 @@ with open(filename) as file:  # the a opens it in append mode
 print(i)
 
 
-# In[6]:
-
-
-USER = "student"
-PASSWORD = "Ucddublinbusgroup2"
-URI = "ipa-015.ucd.ie"
-PORT = "22"
-DB = "dublinbus"
-
-
 # In[18]:
 
 
@@ -116,42 +106,6 @@ mydb = connect_to_db()
 
 
 pip install sshtunnel
-
-
-# In[8]:
-
-
-
-try:
-    with SSHTunnelForwarder(
-            ('137.43.49.31', 22),
-            ssh_password='Ucd-cs-2019!',
-            ssh_username='student',
-            remote_bind_address=('127.0.0.1', 3306)
-    )as tunnel:
-        try:
-            connection = pymysql.connect(
-                host='127.0.0.1',
-                user='root',
-                passwd='Ucddublinbusgroup2',
-                db="dublinbus",
-                port=tunnel.local_bind_port,
-                charset='utf8',
-                cursorclass=pymysql.cursors.DictCursor
-            )
-            cursor = connection.cursor()
-            cursor.execute("SELECT * FROM dublinbus.stops limit 5;")
-            print(cursor.fetchall())
-            connection.close()
-        except Exception as e:
-            print("pymysql failed!")
-            print(e)
-            print()
-# server.start()
-except Exception as e:
-    print("ssh connection failed!")
-    print(e)
-    print()
 
 
 # In[5]:
