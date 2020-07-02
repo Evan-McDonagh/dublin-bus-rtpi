@@ -27,7 +27,6 @@ function initMap(){
     //get the users location when webpage is loaded
     //show the stop clusters
 
-    alert('initmap')
     var pos = {lat:53.350140, lng:-6.266155};
     var map =new google.maps.Map(document.getElementById('googleMap'), {
                   // center: {lat: pos.lat, lng: pos.lng},
@@ -45,7 +44,7 @@ function initMap(){
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-        alert(pos.lat)
+        // alert(pos.lat)
         origin_pos = pos;
         map.setCenter(pos);
         // loc_infoWindow.setPosition(pos);
@@ -84,33 +83,13 @@ function initMap(){
             marker.setMap(map);
             markers.push(marker);
             marker.addListener('click', (function (marker, stopKey) {
-                return function () {getStopInfo(marker, stopKey);}
+                return function () {getStopInfo(marker, stopKey, map);}
             })(marker, stopKey));
         }
     }
     // create marker clusters using array of markers
     var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 
-    //get address and weather information from backend and display them
-
-    // $.ajax({
-    //     headers: {'X-CSRFToken': csrftoken},
-    //     url: '/init',
-    //     type: 'POST',
-    //     data: pos,
-    //     dataType: 'json',
-    //     // async:false,
-    //     success: function (data) {
-    //         // document.getElementById(elementid).value = data.address;
-    //         alert(pos.lat);
-    //         loc_infoWindow.setPosition({'lat':pos.lat, 'lng':pos.lng});
-    //         loc_infoWindow.setContent("you r here:"+data.address);
-    //         origin_value = data.address;
-    //         loc_infoWindow.open(map, loc_marker);
-    //         document.getElementById("weather").innerHTML = data.weather;
-    //     },
-    //     error: function () {return "error";alert("error");},
-    // });
 }
 
 function sendlocation(pos, loc_infoWindow, map){
@@ -123,7 +102,7 @@ function sendlocation(pos, loc_infoWindow, map){
         // async:false,
         success: function (data) {
             // document.getElementById(elementid).value = data.address;
-            alert(pos.lat);
+            // alert(pos.lat);
             var loc_marker = new google.maps.Marker({
                           map: map,
                           position: {'lat':pos.lat, 'lng':pos.lng},
@@ -138,7 +117,7 @@ function sendlocation(pos, loc_infoWindow, map){
 }
 
 function realtimeweather(pos) {
-    alert('realtimeweather')
+    // alert('realtimeweather')
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
         url: '/weather',
@@ -146,7 +125,7 @@ function realtimeweather(pos) {
         data:pos,
         dataType: 'json',
         success: function (data) {
-            alert(data.weather)
+            // alert(data.weather)
             document.getElementById("weather").innerHTML = data.weather;
         }
     })
@@ -161,9 +140,9 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.open(map);
 }
 
-function getStopInfo(marker, stopKey) {
+function getStopInfo(marker, stopKey, map) {
     //supporting functions of initMap()
-
+    var infowindow = new google.maps.InfoWindow;
     let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
     content += "Routes: " + stopdata[stopKey]['routes'];
     content += "</div>"
@@ -180,9 +159,6 @@ function search() {
     if (document.getElementById('origin').value ==""){var s_origin = origin_value;}
     else{var s_origin = document.getElementById('origin').value}
     var s_dest = document.getElementById('destination').value;
-    alert('searchstart' + s_origin);
-    alert(origin_pos.lat);
-    // alert('searchend' + s_dest)
 
     var map2 = new google.maps.Map(document.getElementById('googleMap'), {
         center: origin_pos,
@@ -195,7 +171,6 @@ function search() {
     };
     service.findPlaceFromQuery(s_origin_request, function (results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-            // alert(results[0].geometry.location);
             map2.setCenter(results[0].geometry.location);
             var infowindow_ori = new google.maps.InfoWindow({
                 content: s_origin,
@@ -219,7 +194,6 @@ function search() {
     };
     service.findPlaceFromQuery(s_dest_request, function(results, status) {
           if (status === google.maps.places.PlacesServiceStatus.OK) {
-              // alert(results[0].geometry.location);
               map2.setCenter(results[0].geometry.location);
               var infowindow_dest = new google.maps.InfoWindow({
                 content: s_dest,
@@ -238,9 +212,8 @@ function search() {
 }
 
 function calcRoute() {
-    // alert("clacroute");
-  var start = document.getElementById('origin').value;
-  var end = document.getElementById('destination').value;
+  // var start = document.getElementById('origin').value;
+  // var end = document.getElementById('destination').value;
   var directionsService = new google.maps.DirectionsService();
   var directionsRenderer = new google.maps.DirectionsRenderer();
   var request = {
