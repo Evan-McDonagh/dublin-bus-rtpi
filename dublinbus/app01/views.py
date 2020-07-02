@@ -1,3 +1,6 @@
+import re
+
+from django.http import JsonResponse
 from django.shortcuts import render,HttpResponse
 from app01 import models
 from .forms import leapForm,routeForm
@@ -169,3 +172,22 @@ def weather(request):
     else:
         weather_info['weather'] = 'location unknown'
     return HttpResponse(json.dumps(weather_info))
+
+
+def real_info(request):
+    if request.method == 'POST':
+        form = routeForm(request.POST)
+        # print(request.body)
+        a = str(request.body)
+        b = re.search("stop[^']*", a).group()
+        c = b.split("D")[-1]
+
+        # url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation?stopid=3562&format=json"
+        url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" + "?stopid=" + c + "&format=json"
+        obj = requests.get(url)
+        obj_json = obj.json()
+
+        return JsonResponse(obj_json, safe=False)
+
+# def twitter(request):
+#

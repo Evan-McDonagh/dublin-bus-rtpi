@@ -55,14 +55,14 @@ function initMap(){
         pos['status'] = "wrong";
         sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
         realtimeweather({'lat':pos.lat, 'lng':pos.lng});
-        handleLocationError(true, loc_infoWindow, map.getCenter());
+        handleLocationError(true, loc_infoWindow, map.getCenter(), map);
       });
     } else {
       // Browser doesn't support Geolocation
       pos['status'] = 'wrong';
       sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
       realtimeweather({'lat':pos.lat, 'lng':pos.lng});
-      handleLocationError(false, loc_infoWindow, map.getCenter());
+      handleLocationError(false, loc_infoWindow, map.getCenter(), map);
     }
 
     var stopKeys = Object.keys(stopdata);
@@ -131,7 +131,7 @@ function realtimeweather(pos) {
     })
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+function handleLocationError(browserHasGeolocation, infoWindow, pos, map) {
     //supporting functions of initMap()
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?

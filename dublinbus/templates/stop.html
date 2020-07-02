@@ -28,7 +28,7 @@
                
                 $.ajax({
                     type:"POST",
-                    url: "http://127.0.0.1:8000/real_info/", 
+                    url: "/real_info",
                     cache: false,
                     dataType: "html",
                     headers:{'Content-Type':"application/json"} ,
@@ -47,10 +47,6 @@
 
     </script>
 </div>
-
-
-
-<script src="jquery-3.5.1.min.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -75,5 +71,4 @@
     </script>
 
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
-    </script>
 {%endblock%}

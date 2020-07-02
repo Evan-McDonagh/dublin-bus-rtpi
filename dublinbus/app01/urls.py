@@ -10,4 +10,6 @@ urlpatterns = [
     path('leapcard',views.leapcard),
     path('init',views.init),
     path('weather',views.weather),
+    path('real_info',views.real_info),
+    path('twitter',views.twitter),
 ]
