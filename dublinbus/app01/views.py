@@ -189,5 +189,5 @@ def real_info(request):
 
         return JsonResponse(obj_json, safe=False)
 
-# def twitter(request):
-#
+def twitter(request):
+    return render(request,'twitter.html')
