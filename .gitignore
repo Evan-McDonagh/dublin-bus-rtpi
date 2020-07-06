@@ -2,3 +2,6 @@
 .vscode/
 config.py
 *.ipynb
+ml-notebooks/rt_leavetimes_2017_I_DB_1000.txt
+ml-notebooks/rt_trips_2017_I_DB_1000.txt
+ml-notebooks/sample10.csv

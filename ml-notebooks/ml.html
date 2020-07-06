@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>ml1</title>
+<title>ml</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13017,6 +13017,25 @@ ul.typeahead-list  > li > a.pull-right {
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
+<style type="text/css">
+    
+
+<script>
+    MathJax.Hub.Config({
+        "HTML-CSS": {
+            /*preferredFont: "TeX",*/
+            /*availableFonts: ["TeX", "STIX"],*/
+            styles: {
+                scale: 100,
+                ".MathJax_Display": {
+                    "font-size": "100%",
+                }
+            }
+        }
+    });
+</script>
+    
+    </style>
 
 
 <style type="text/css">
@@ -13079,80 +13098,30 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">mysql.connector</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 </pre></div>
 
     </div>
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Analysis-of-Random-Sample-of-1-million-leavetimes-merged-with-trips-data">Analysis of Random Sample of 1 million leavetimes merged with trips data<a class="anchor-link" href="#Analysis-of-Random-Sample-of-1-million-leavetimes-merged-with-trips-data">&#182;</a></h2>
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">environ</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../../data/leavetimes_trips_1e6.csv&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[2]:</div>
-
-
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>environ{&#39;XDG_SESSION_ID&#39;: &#39;481&#39;,
-        &#39;TERM&#39;: &#39;xterm-color&#39;,
-        &#39;SHELL&#39;: &#39;/bin/bash&#39;,
-        &#39;SSH_CLIENT&#39;: &#39;109.77.71.17 61260 22&#39;,
-        &#39;CONDA_SHLVL&#39;: &#39;2&#39;,
-        &#39;CONDA_PROMPT_MODIFIER&#39;: &#39;(dublin-bus-rtpi) &#39;,
-        &#39;OLDPWD&#39;: &#39;/home/student&#39;,
-        &#39;SSH_TTY&#39;: &#39;/dev/pts/0&#39;,
-        &#39;USER&#39;: &#39;student&#39;,
-        &#39;LS_COLORS&#39;: &#39;rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:&#39;,
-        &#39;CONDA_EXE&#39;: &#39;/home/student/anaconda3/bin/conda&#39;,
-        &#39;_CE_CONDA&#39;: &#39;&#39;,
-        &#39;CONDA_PREFIX_1&#39;: &#39;/home/student/anaconda3&#39;,
-        &#39;MAIL&#39;: &#39;/var/mail/student&#39;,
-        &#39;PATH&#39;: &#39;/home/student/bin:/home/student/.local/bin:/home/student/anaconda3/envs/dublin-bus-rtpi/bin:/home/student/anaconda3/bin:/home/student/anaconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin&#39;,
-        &#39;CONDA_PREFIX&#39;: &#39;/home/student/anaconda3/envs/dublin-bus-rtpi&#39;,
-        &#39;PWD&#39;: &#39;/home/student/dublin-bus-rtpi&#39;,
-        &#39;LANG&#39;: &#39;en_IE.UTF-8&#39;,
-        &#39;_CE_M&#39;: &#39;&#39;,
-        &#39;SHLVL&#39;: &#39;1&#39;,
-        &#39;HOME&#39;: &#39;/home/student&#39;,
-        &#39;LANGUAGE&#39;: &#39;en_IE:en&#39;,
-        &#39;CONDA_PYTHON_EXE&#39;: &#39;/home/student/anaconda3/bin/python&#39;,
-        &#39;LOGNAME&#39;: &#39;student&#39;,
-        &#39;XDG_DATA_DIRS&#39;: &#39;/usr/local/share:/usr/share:/var/lib/snapd/desktop&#39;,
-        &#39;SSH_CONNECTION&#39;: &#39;109.77.71.17 61260 137.43.49.31 22&#39;,
-        &#39;CONDA_DEFAULT_ENV&#39;: &#39;dublin-bus-rtpi&#39;,
-        &#39;LESSOPEN&#39;: &#39;| /usr/bin/lesspipe %s&#39;,
-        &#39;XDG_RUNTIME_DIR&#39;: &#39;/run/user/1001&#39;,
-        &#39;LESSCLOSE&#39;: &#39;/usr/bin/lesspipe %s %s&#39;,
-        &#39;_&#39;: &#39;/home/student/anaconda3/envs/dublin-bus-rtpi/bin/jupyter&#39;,
-        &#39;KERNEL_LAUNCH_TIMEOUT&#39;: &#39;40&#39;,
-        &#39;JPY_PARENT_PID&#39;: &#39;52937&#39;,
-        &#39;CLICOLOR&#39;: &#39;1&#39;,
-        &#39;PAGER&#39;: &#39;cat&#39;,
-        &#39;GIT_PAGER&#39;: &#39;cat&#39;,
-        &#39;MPLBACKEND&#39;: &#39;module://ipykernel.pylab.backend_inline&#39;}</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -13162,7 +13131,7 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">conda</span> <span class="nb">list</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -13175,454 +13144,7 @@ div#notebook {
 
 <div class="output_area">
 
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre># packages in environment at /home/student/anaconda3:
-#
-# Name                    Version                   Build  Channel
-_ipyw_jlab_nb_ext_conf    0.1.0                    py37_0  
-_libgcc_mutex             0.1                        main  
-alabaster                 0.7.12                   py37_0  
-anaconda                  2020.02                  py37_0  
-anaconda-client           1.7.2                    py37_0  
-anaconda-navigator        1.9.12                   py37_0  
-anaconda-project          0.8.4                      py_0  
-argh                      0.26.2                   py37_0  
-asn1crypto                1.3.0                    py37_0  
-astroid                   2.3.3                    py37_0  
-astropy                   4.0              py37h7b6447c_0  
-atomicwrites              1.3.0                    py37_1  
-attrs                     19.3.0                     py_0  
-autopep8                  1.4.4                      py_0  
-babel                     2.8.0                      py_0  
-backcall                  0.1.0                    py37_0  
-backports                 1.0                        py_2  
-backports.functools_lru_cache 1.6.1                      py_0  
-backports.shutil_get_terminal_size 1.0.0                    py37_2  
-backports.tempfile        1.0                        py_1  
-backports.weakref         1.0.post1                  py_1  
-bcrypt                    3.1.7                    pypi_0    pypi
-beautifulsoup4            4.8.2                    py37_0  
-bitarray                  1.2.1            py37h7b6447c_0  
-bkcharts                  0.2                      py37_0  
-blas                      1.0                         mkl  
-bleach                    3.1.0                    py37_0  
-blosc                     1.16.3               hd408876_0  
-bokeh                     1.4.0                    py37_0  
-boto                      2.49.0                   py37_0  
-bottleneck                1.3.2            py37heb32a55_0  
-bzip2                     1.0.8                h7b6447c_0  
-ca-certificates           2020.1.1                      0    anaconda
-cairo                     1.14.12              h8948797_3  
-certifi                   2019.11.28               py37_0    anaconda
-cffi                      1.14.0           py37h2e261b9_0  
-chardet                   3.0.4                 py37_1003  
-click                     7.0                      py37_0  
-cloudpickle               1.3.0                      py_0  
-clyent                    1.2.2                    py37_1  
-colorama                  0.4.3                      py_0  
-conda                     4.8.3                    py37_0    anaconda
-conda-build               3.18.11                  py37_0  
-conda-env                 2.6.0                         1  
-conda-package-handling    1.6.0            py37h7b6447c_0  
-conda-verify              3.4.2                      py_1  
-contextlib2               0.6.0.post1                py_0  
-cryptography              2.8              py37h1ba5d50_0  
-curl                      7.68.0               hbc83047_0  
-cycler                    0.10.0                   py37_0  
-cython                    0.29.15          py37he6710b0_0  
-cytoolz                   0.10.1           py37h7b6447c_0  
-dask                      2.11.0                     py_0  
-dask-core                 2.11.0                     py_0  
-dbus                      1.13.12              h746ee38_0  
-decorator                 4.4.1                      py_0  
-defusedxml                0.6.0                      py_0  
-diff-match-patch          20181111                   py_0  
-distributed               2.11.0                   py37_0  
-docutils                  0.16                     py37_0  
-entrypoints               0.3                      py37_0  
-et_xmlfile                1.0.1                    py37_0  
-expat                     2.2.6                he6710b0_0  
-fastcache                 1.1.0            py37h7b6447c_0  
-filelock                  3.0.12                     py_0  
-flake8                    3.7.9                    py37_0  
-flask                     1.1.1                      py_0  
-fontconfig                2.13.0               h9420a91_0  
-freetype                  2.9.1                h8a8886c_1  
-fribidi                   1.0.5                h7b6447c_0  
-fsspec                    0.6.2                      py_0  
-future                    0.18.2                   py37_0  
-get_terminal_size         1.0.0                haa9412d_0  
-gevent                    1.4.0            py37h7b6447c_0  
-glib                      2.63.1               h5a9c865_0  
-glob2                     0.7                        py_0  
-gmp                       6.1.2                h6c8ec71_1  
-gmpy2                     2.0.8            py37h10f8cd9_2  
-graphite2                 1.3.13               h23475e2_0  
-greenlet                  0.4.15           py37h7b6447c_0  
-gst-plugins-base          1.14.0               hbbd80ab_1  
-gstreamer                 1.14.0               hb453b48_1  
-h5py                      2.10.0           py37h7918eee_0  
-harfbuzz                  1.8.8                hffaf4a1_0  
-hdf5                      1.10.4               hb1b8bf9_0  
-heapdict                  1.0.1                      py_0  
-html5lib                  1.0.1                    py37_0  
-hypothesis                5.5.4                      py_0  
-icu                       58.2                 h9c2bf20_1  
-idna                      2.8                      py37_0  
-imageio                   2.6.1                    py37_0  
-imagesize                 1.2.0                      py_0  
-importlib_metadata        1.5.0                    py37_0  
-intel-openmp              2020.0                      166  
-intervaltree              3.0.2                      py_0  
-ipykernel                 5.1.4            py37h39e3cac_0  
-ipython                   7.12.0           py37h5ca1d4c_0  
-ipython_genutils          0.2.0                    py37_0  
-ipywidgets                7.5.1                      py_0  
-isort                     4.3.21                   py37_0  
-itsdangerous              1.1.0                    py37_0  
-jbig                      2.1                  hdba287a_0  
-jdcal                     1.4.1                      py_0  
-jedi                      0.14.1                   py37_0  
-jeepney                   0.4.2                      py_0  
-jinja2                    2.11.1                     py_0  
-joblib                    0.14.1                     py_0  
-jpeg                      9b                   h024ee3a_2  
-json5                     0.9.1                      py_0  
-jsonschema                3.2.0                    py37_0  
-jupyter                   1.0.0                    py37_7  
-jupyter_client            5.3.4                    py37_0  
-jupyter_console           6.1.0                      py_0  
-jupyter_core              4.6.1                    py37_0  
-jupyterlab                1.2.6              pyhf63ae98_0  
-jupyterlab_server         1.0.6                      py_0  
-keyring                   21.1.0                   py37_0  
-kiwisolver                1.1.0            py37he6710b0_0  
-krb5                      1.17.1               h173b8e3_0  
-lazy-object-proxy         1.4.3            py37h7b6447c_0  
-ld_impl_linux-64          2.33.1               h53a641e_7  
-libarchive                3.3.3                h5d8350f_5  
-libcurl                   7.68.0               h20c2e04_0  
-libedit                   3.1.20181209         hc058e9b_0  
-libffi                    3.2.1                hd88cf55_4  
-libgcc-ng                 9.1.0                hdf63c60_0  
-libgfortran-ng            7.3.0                hdf63c60_0  
-liblief                   0.9.0                h7725739_2  
-libpng                    1.6.37               hbc83047_0  
-libprotobuf               3.6.0                hdbcaa40_0    anaconda
-libsodium                 1.0.16               h1bed415_0  
-libspatialindex           1.9.3                he6710b0_0  
-libssh2                   1.8.2                h1ba5d50_0  
-libstdcxx-ng              9.1.0                hdf63c60_0  
-libtiff                   4.1.0                h2733197_0  
-libtool                   2.4.6                h7b6447c_5  
-libuuid                   1.0.3                h1bed415_2  
-libxcb                    1.13                 h1bed415_1  
-libxml2                   2.9.9                hea5a465_1  
-libxslt                   1.1.33               h7d1a2b0_0  
-llvmlite                  0.31.0           py37hd408876_0  
-locket                    0.2.0                    py37_1  
-lxml                      4.5.0            py37hefd8a0e_0  
-lz4-c                     1.8.1.2              h14c3975_0  
-lzo                       2.10                 h49e0be7_2  
-markupsafe                1.1.1            py37h7b6447c_0  
-matplotlib                3.1.3                    py37_0  
-matplotlib-base           3.1.3            py37hef1b27d_0  
-mccabe                    0.6.1                    py37_1  
-mistune                   0.8.4            py37h7b6447c_0  
-mkl                       2020.0                      166  
-mkl-service               2.3.0            py37he904b0f_0  
-mkl_fft                   1.0.15           py37ha843d7b_0  
-mkl_random                1.1.0            py37hd6b4f25_0  
-mock                      4.0.1                      py_0  
-more-itertools            8.2.0                      py_0  
-mpc                       1.1.0                h10f8cd9_1  
-mpfr                      4.0.1                hdf1c602_3  
-mpmath                    1.1.0                    py37_0  
-msgpack-python            0.6.1            py37hfd86e86_1  
-multipledispatch          0.6.0                    py37_0  
-mysql-connector-c         6.1.11               h597af5e_1    anaconda
-mysql-connector-python    8.0.18           py37h9c95fcb_1    anaconda
-navigator-updater         0.2.1                    py37_0  
-nbconvert                 5.6.1                    py37_0  
-nbformat                  5.0.4                      py_0  
-ncurses                   6.2                  he6710b0_0  
-networkx                  2.4                        py_0  
-nltk                      3.4.5                    py37_0  
-nose                      1.3.7                    py37_2  
-notebook                  6.0.3                    py37_0  
-numba                     0.48.0           py37h0573a6f_0  
-numexpr                   2.7.1            py37h423224d_0  
-numpy                     1.18.1           py37h4f9e942_0  
-numpy-base                1.18.1           py37hde5b4d6_1  
-numpydoc                  0.9.2                      py_0  
-olefile                   0.46                     py37_0  
-openpyxl                  3.0.3                      py_0  
-openssl                   1.1.1d               h7b6447c_4    anaconda
-packaging                 20.1                       py_0  
-pandas                    1.0.1            py37h0573a6f_0  
-pandoc                    2.2.3.2                       0  
-pandocfilters             1.4.2                    py37_1  
-pango                     1.42.4               h049681c_0  
-paramiko                  2.7.1                    pypi_0    pypi
-parso                     0.5.2                      py_0  
-partd                     1.1.0                      py_0  
-patchelf                  0.10                 he6710b0_0  
-path                      13.1.0                   py37_0  
-path.py                   12.4.0                        0  
-pathlib2                  2.3.5                    py37_0  
-pathtools                 0.1.2                      py_1  
-patsy                     0.5.1                    py37_0  
-pcre                      8.43                 he6710b0_0  
-pep8                      1.7.1                    py37_0  
-pexpect                   4.8.0                    py37_0  
-pickleshare               0.7.5                    py37_0  
-pillow                    7.0.0            py37hb39fc2d_0  
-pip                       20.0.2                   py37_1  
-pixman                    0.38.0               h7b6447c_0  
-pkginfo                   1.5.0.1                  py37_0  
-pluggy                    0.13.1                   py37_0  
-ply                       3.11                     py37_0  
-prometheus_client         0.7.1                      py_0  
-prompt_toolkit            3.0.3                      py_0  
-protobuf                  3.6.0            py37hf484d3e_0    anaconda
-psutil                    5.6.7            py37h7b6447c_0  
-ptyprocess                0.6.0                    py37_0  
-py                        1.8.1                      py_0  
-py-lief                   0.9.0            py37h7725739_2  
-pycodestyle               2.5.0                    py37_0  
-pycosat                   0.6.3            py37h7b6447c_0  
-pycparser                 2.19                     py37_0  
-pycrypto                  2.6.1            py37h14c3975_9  
-pycurl                    7.43.0.5         py37h1ba5d50_0  
-pydocstyle                4.0.1                      py_0  
-pyflakes                  2.1.1                    py37_0  
-pygments                  2.5.2                      py_0  
-pylint                    2.4.4                    py37_0  
-pymysql                   0.9.3                    pypi_0    pypi
-pynacl                    1.4.0                    pypi_0    pypi
-pyodbc                    4.0.30           py37he6710b0_0  
-pyopenssl                 19.1.0                   py37_0  
-pyparsing                 2.4.6                      py_0  
-pyqt                      5.9.2            py37h05f1152_2  
-pyrsistent                0.15.7           py37h7b6447c_0  
-pysocks                   1.7.1                    py37_0  
-pytables                  3.6.1            py37h71ec239_0  
-pytest                    5.3.5                    py37_0  
-pytest-arraydiff          0.3              py37h39e3cac_0  
-pytest-astropy            0.8.0                      py_0  
-pytest-astropy-header     0.1.2                      py_0  
-pytest-doctestplus        0.5.0                      py_0  
-pytest-openfiles          0.4.0                      py_0  
-pytest-remotedata         0.3.2                    py37_0  
-python                    3.7.6                h0371630_2  
-python-dateutil           2.8.1                      py_0  
-python-jsonrpc-server     0.3.4                      py_0  
-python-language-server    0.31.7                   py37_0  
-python-libarchive-c       2.8                     py37_13  
-pytz                      2019.3                     py_0  
-pywavelets                1.1.1            py37h7b6447c_0  
-pyxdg                     0.26                       py_0  
-pyyaml                    5.3              py37h7b6447c_0  
-pyzmq                     18.1.1           py37he6710b0_0  
-qdarkstyle                2.8                        py_0  
-qt                        5.9.7                h5867ecd_1  
-qtawesome                 0.6.1                      py_0  
-qtconsole                 4.6.0                      py_1  
-qtpy                      1.9.0                      py_0  
-readline                  7.0                  h7b6447c_5  
-requests                  2.22.0                   py37_1  
-ripgrep                   11.0.2               he32d670_0  
-rope                      0.16.0                     py_0  
-rtree                     0.9.3                    py37_0  
-ruamel_yaml               0.15.87          py37h7b6447c_0  
-scikit-image              0.16.2           py37h0573a6f_0  
-scikit-learn              0.22.1           py37hd81dba3_0  
-scipy                     1.4.1            py37h0b6359f_0  
-seaborn                   0.10.0                     py_0  
-secretstorage             3.1.2                    py37_0  
-send2trash                1.5.0                    py37_0  
-setuptools                45.2.0                   py37_0  
-simplegeneric             0.8.1                    py37_2  
-singledispatch            3.4.0.3                  py37_0  
-sip                       4.19.8           py37hf484d3e_0  
-six                       1.14.0                   py37_0  
-snappy                    1.1.7                hbae5bb6_3  
-snowballstemmer           2.0.0                      py_0  
-sortedcollections         1.1.2                    py37_0  
-sortedcontainers          2.1.0                    py37_0  
-soupsieve                 1.9.5                    py37_0  
-sphinx                    2.4.0                      py_0  
-sphinxcontrib             1.0                      py37_1  
-sphinxcontrib-applehelp   1.0.1                      py_0  
-sphinxcontrib-devhelp     1.0.1                      py_0  
-sphinxcontrib-htmlhelp    1.0.2                      py_0  
-sphinxcontrib-jsmath      1.0.1                      py_0  
-sphinxcontrib-qthelp      1.0.2                      py_0  
-sphinxcontrib-serializinghtml 1.1.3                      py_0  
-sphinxcontrib-websupport  1.2.0                      py_0  
-spyder                    4.0.1                    py37_0  
-spyder-kernels            1.8.1                    py37_0  
-sqlalchemy                1.3.13           py37h7b6447c_0  
-sqlite                    3.31.1               h7b6447c_0  
-sshtunnel                 0.1.5                    pypi_0    pypi
-statsmodels               0.11.0           py37h7b6447c_0  
-sympy                     1.5.1                    py37_0  
-tbb                       2020.0               hfd86e86_0  
-tblib                     1.6.0                      py_0  
-terminado                 0.8.3                    py37_0  
-testpath                  0.4.4                      py_0  
-tk                        8.6.8                hbc83047_0  
-toolz                     0.10.0                     py_0  
-tornado                   6.0.3            py37h7b6447c_3  
-tqdm                      4.42.1                     py_0  
-traitlets                 4.3.3                    py37_0  
-ujson                     1.35             py37h14c3975_0  
-unicodecsv                0.14.1                   py37_0  
-unixodbc                  2.3.7                h14c3975_0  
-urllib3                   1.25.8                   py37_0  
-watchdog                  0.10.2                   py37_0  
-wcwidth                   0.1.8                      py_0  
-webencodings              0.5.1                    py37_1  
-werkzeug                  1.0.0                      py_0  
-wheel                     0.34.2                   py37_0  
-widgetsnbextension        3.5.1                    py37_0  
-wrapt                     1.11.2           py37h7b6447c_0  
-wurlitzer                 2.0.0                    py37_0  
-xlrd                      1.2.0                    py37_0  
-xlsxwriter                1.2.7                      py_0  
-xlwt                      1.3.0                    py37_0  
-xmltodict                 0.12.0                     py_0  
-xz                        5.2.4                h14c3975_4  
-yaml                      0.1.7                had09818_2  
-yapf                      0.28.0                     py_0  
-zeromq                    4.3.1                he6710b0_3  
-zict                      1.0.0                      py_0  
-zipp                      2.2.0                      py_0  
-zlib                      1.2.11               h7b6447c_3  
-zstd                      1.3.7                h0b5b093_0  
-
-Note: you may need to restart the kernel to use updated packages.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">sqlalchemy</span> <span class="k">as</span> <span class="nn">sa</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
-<span class="kn">from</span> <span class="nn">sshtunnel</span> <span class="kn">import</span> <span class="n">SSHTunnelForwarder</span>
-<span class="kn">import</span> <span class="nn">pymysql</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;../../data/rt_leavetimes_DB_2018.txt&quot;</span>
-<span class="n">n</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1">#number of records in file (excludes header)</span>
-<span class="n">s</span> <span class="o">=</span> <span class="mi">10000</span> <span class="c1">#desired sample size</span>
-<span class="n">skip</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span><span class="n">n</span><span class="o">-</span><span class="n">s</span><span class="p">))</span> <span class="c1">#the 0-indexed header will not be included in the skip list</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">skip</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">KeyboardInterrupt</span>                         Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-2-6e3fbeb76f5d&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> filename <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;../../data/rt_leavetimes_DB_2018.txt&#34;</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>n <span class="ansi-blue-fg">=</span> sum<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span> <span class="ansi-green-fg">for</span> line <span class="ansi-green-fg">in</span> open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> <span class="ansi-cyan-fg">1</span> <span class="ansi-red-fg">#number of records in file (excludes header)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> s <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">10000</span> <span class="ansi-red-fg">#desired sample size</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> skip <span class="ansi-blue-fg">=</span> sorted<span class="ansi-blue-fg">(</span>random<span class="ansi-blue-fg">.</span>sample<span class="ansi-blue-fg">(</span>range<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span>n<span class="ansi-blue-fg">+</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>n<span class="ansi-blue-fg">-</span>s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#the 0-indexed header will not be included in the skip list</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> df <span class="ansi-blue-fg">=</span> pandas<span class="ansi-blue-fg">.</span>read_csv<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> skiprows<span class="ansi-blue-fg">=</span>skip<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">&lt;ipython-input-2-6e3fbeb76f5d&gt;</span> in <span class="ansi-cyan-fg">&lt;genexpr&gt;</span><span class="ansi-blue-fg">(.0)</span>
-<span class="ansi-green-intense-fg ansi-bold">      1</span> filename <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">&#34;../../data/rt_leavetimes_DB_2018.txt&#34;</span>
-<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>n <span class="ansi-blue-fg">=</span> sum<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span> <span class="ansi-green-fg">for</span> line <span class="ansi-green-fg">in</span> open<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">-</span> <span class="ansi-cyan-fg">1</span> <span class="ansi-red-fg">#number of records in file (excludes header)</span>
-<span class="ansi-green-intense-fg ansi-bold">      3</span> s <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">10000</span> <span class="ansi-red-fg">#desired sample size</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span> skip <span class="ansi-blue-fg">=</span> sorted<span class="ansi-blue-fg">(</span>random<span class="ansi-blue-fg">.</span>sample<span class="ansi-blue-fg">(</span>range<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">,</span>n<span class="ansi-blue-fg">+</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>n<span class="ansi-blue-fg">-</span>s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span> <span class="ansi-red-fg">#the 0-indexed header will not be included in the skip list</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span> df <span class="ansi-blue-fg">=</span> pandas<span class="ansi-blue-fg">.</span>read_csv<span class="ansi-blue-fg">(</span>filename<span class="ansi-blue-fg">,</span> skiprows<span class="ansi-blue-fg">=</span>skip<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/codecs.py</span> in <span class="ansi-cyan-fg">decode</span><span class="ansi-blue-fg">(self, input, final)</span>
-<span class="ansi-green-intense-fg ansi-bold">    317</span>         <span class="ansi-green-fg">raise</span> NotImplementedError
-<span class="ansi-green-intense-fg ansi-bold">    318</span> 
-<span class="ansi-green-fg">--&gt; 319</span><span class="ansi-red-fg">     </span><span class="ansi-green-fg">def</span> decode<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> input<span class="ansi-blue-fg">,</span> final<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">False</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    320</span>         <span class="ansi-red-fg"># decode input (taking the buffer into account)</span>
-<span class="ansi-green-intense-fg ansi-bold">    321</span>         data <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>buffer <span class="ansi-blue-fg">+</span> input
-
-<span class="ansi-red-fg">KeyboardInterrupt</span>: </pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;../../data/rt_leavetimes_DB_2018.txt&quot;</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">10000000</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt output_prompt">Out[23]:</div>
+    <div class="prompt output_prompt">Out[3]:</div>
 
 
 
@@ -13645,6 +13167,7 @@ Note: you may need to restart the kernel to use updated packages.
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>Unnamed: 0</th>
       <th>DATASOURCE</th>
       <th>DAYOFSERVICE</th>
       <th>TRIPID</th>
@@ -13654,121 +13177,418 @@ Note: you may need to restart the kernel to use updated packages.
       <th>PLANNEDTIME_DEP</th>
       <th>ACTUALTIME_ARR</th>
       <th>ACTUALTIME_DEP</th>
-      <th>VEHICLEID</th>
-      <th>PASSENGERS</th>
-      <th>PASSENGERSIN</th>
-      <th>PASSENGERSOUT</th>
-      <th>DISTANCE</th>
-      <th>SUPPRESSED</th>
-      <th>JUSTIFICATIONID</th>
-      <th>LASTUPDATE</th>
-      <th>NOTE</th>
+      <th>...</th>
+      <th>NOTE_x</th>
+      <th>LINEID</th>
+      <th>ROUTEID</th>
+      <th>DIRECTION</th>
+      <th>BASIN</th>
+      <th>TENDERLOT</th>
+      <th>SUPPRESSED_y</th>
+      <th>JUSTIFICATIONID_y</th>
+      <th>LASTUPDATE_y</th>
+      <th>NOTE_y</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
+      <td>0</td>
       <td>DB</td>
-      <td>01-JAN-18 00:00:00</td>
-      <td>5972116</td>
-      <td>12</td>
-      <td>119</td>
-      <td>48030</td>
-      <td>48030</td>
-      <td>48012</td>
-      <td>48012</td>
-      <td>2693211</td>
+      <td>25-AUG-18 00:00:00</td>
+      <td>7329034</td>
+      <td>32</td>
+      <td>609</td>
+      <td>46010</td>
+      <td>46010</td>
+      <td>45900</td>
+      <td>45900</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>29A</td>
+      <td>29A_15</td>
+      <td>2</td>
+      <td>BasDef</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>08-JAN-18 17:21:10</td>
-      <td>NaN</td>
+      <td>03-SEP-18 10:39:32</td>
+      <td>,2478282,</td>
     </tr>
     <tr>
       <th>1</th>
+      <td>1</td>
       <td>DB</td>
-      <td>01-JAN-18 00:00:00</td>
-      <td>5966674</td>
-      <td>12</td>
-      <td>119</td>
-      <td>54001</td>
-      <td>54001</td>
-      <td>54023</td>
-      <td>54023</td>
-      <td>2693267</td>
+      <td>31-MAY-18 00:00:00</td>
+      <td>6847697</td>
+      <td>13</td>
+      <td>847</td>
+      <td>33619</td>
+      <td>33619</td>
+      <td>33604</td>
+      <td>33616</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>145</td>
+      <td>145_102</td>
+      <td>1</td>
+      <td>BasDef</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>08-JAN-18 17:21:10</td>
-      <td>NaN</td>
+      <td>14-JUN-18 14:04:06</td>
+      <td>,3272689,</td>
     </tr>
     <tr>
       <th>2</th>
+      <td>2</td>
       <td>DB</td>
-      <td>01-JAN-18 00:00:00</td>
-      <td>5959105</td>
-      <td>12</td>
-      <td>119</td>
-      <td>60001</td>
-      <td>60001</td>
-      <td>59955</td>
-      <td>59955</td>
-      <td>2693263</td>
+      <td>26-MAY-18 00:00:00</td>
+      <td>6780534</td>
+      <td>14</td>
+      <td>4758</td>
+      <td>57703</td>
+      <td>57703</td>
+      <td>57898</td>
+      <td>57917</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>49</td>
+      <td>49_28</td>
+      <td>2</td>
+      <td>BasDef</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>08-JAN-18 17:21:10</td>
-      <td>NaN</td>
+      <td>14-JUN-18 13:12:56</td>
+      <td>,1726258,</td>
     </tr>
     <tr>
       <th>3</th>
+      <td>3</td>
       <td>DB</td>
-      <td>01-JAN-18 00:00:00</td>
-      <td>5966888</td>
-      <td>12</td>
-      <td>119</td>
-      <td>58801</td>
-      <td>58801</td>
-      <td>58771</td>
-      <td>58771</td>
-      <td>2693284</td>
+      <td>23-APR-18 00:00:00</td>
+      <td>6635422</td>
+      <td>7</td>
+      <td>7030</td>
+      <td>27325</td>
+      <td>27325</td>
+      <td>27474</td>
+      <td>27511</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>39A</td>
+      <td>39A_43</td>
+      <td>2</td>
+      <td>BasDef</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>08-JAN-18 17:21:10</td>
-      <td>NaN</td>
+      <td>13-JUN-18 08:27:05</td>
+      <td>,2424410,</td>
     </tr>
     <tr>
       <th>4</th>
+      <td>4</td>
       <td>DB</td>
-      <td>01-JAN-18 00:00:00</td>
-      <td>5965960</td>
-      <td>12</td>
-      <td>119</td>
-      <td>56401</td>
-      <td>56401</td>
-      <td>56309</td>
-      <td>56323</td>
-      <td>2693209</td>
+      <td>06-APR-18 00:00:00</td>
+      <td>6606411</td>
+      <td>33</td>
+      <td>1453</td>
+      <td>85482</td>
+      <td>85482</td>
+      <td>86219</td>
+      <td>86219</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>123</td>
+      <td>123_36</td>
+      <td>2</td>
+      <td>BasDef</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>18-APR-18 10:49:06</td>
+      <td>,3222191,</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 28 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Unnamed: 0&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># dtypes </span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DATASOURCE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DATASOURCE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DAYOFSERVICE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DAYOFSERVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;TRIPID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;TRIPID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;PROGRNUMBER&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;PROGRNUMBER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;STOPPOINTID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;STOPPOINTID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;VEHICLEID&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;VEHICLEID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;SUPPRESSED_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;SUPPRESSED_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;JUSTIFICATIONID_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;JUSTIFICATIONID_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DIRECTION&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DIRECTION&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;SUPPRESSED_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;SUPPRESSED_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;JUSTIFICATIONID_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;JUSTIFICATIONID_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;TENDERLOT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;TENDERLOT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;NOTE_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;NOTE_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;PASSENGERS&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;PASSENGERS&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;PASSENGERSIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;PASSENGERSIN&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;PASSENGERSOUT&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;PASSENGERSOUT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DISTANCE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DISTANCE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;NOTE_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;DISTANCE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;LASTUPDATE_x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;LASTUPDATE_x&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;LASTUPDATE_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;LASTUPDATE_y&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64&#39;</span><span class="p">)</span>
+<span class="n">df1</span><span class="p">[</span><span class="s1">&#39;BASIN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="s1">&#39;BASIN&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>DATASOURCE                 category
+DAYOFSERVICE         datetime64[ns]
+TRIPID                       object
+PROGRNUMBER                  object
+STOPPOINTID                  object
+PLANNEDTIME_ARR               int64
+PLANNEDTIME_DEP               int64
+ACTUALTIME_ARR                int64
+ACTUALTIME_DEP                int64
+VEHICLEID                    object
+PASSENGERS                 category
+PASSENGERSIN               category
+PASSENGERSOUT              category
+DISTANCE                   category
+SUPPRESSED_x               category
+JUSTIFICATIONID_x          category
+LASTUPDATE_x         datetime64[ns]
+NOTE_x                     category
+LINEID                       object
+ROUTEID                      object
+DIRECTION                  category
+BASIN                      category
+TENDERLOT                  category
+SUPPRESSED_y               category
+JUSTIFICATIONID_y          category
+LASTUPDATE_y         datetime64[ns]
+NOTE_y                     category
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">numerical_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s1">&#39;int64&#39;</span><span class="p">,</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+<span class="n">object_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[8]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>unique</th>
+      <th>top</th>
+      <th>freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>DATASOURCE</th>
+      <td>1000000</td>
+      <td>1</td>
+      <td>DB</td>
+      <td>1000000</td>
+    </tr>
+    <tr>
+      <th>PASSENGERS</th>
+      <td>0</td>
+      <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
+    </tr>
+    <tr>
+      <th>PASSENGERSIN</th>
+      <td>0</td>
+      <td>0</td>
       <td>NaN</td>
-      <td>08-JAN-18 17:21:10</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>PASSENGERSOUT</th>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>DISTANCE</th>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>SUPPRESSED_x</th>
+      <td>4986</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3753</td>
+    </tr>
+    <tr>
+      <th>JUSTIFICATIONID_x</th>
+      <td>4985</td>
+      <td>3403</td>
+      <td>4.84981e+17</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>NOTE_x</th>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>DIRECTION</th>
+      <td>1000000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>505863</td>
+    </tr>
+    <tr>
+      <th>BASIN</th>
+      <td>1000000</td>
+      <td>1</td>
+      <td>BasDef</td>
+      <td>1000000</td>
+    </tr>
+    <tr>
+      <th>TENDERLOT</th>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>SUPPRESSED_y</th>
+      <td>556</td>
+      <td>1</td>
+      <td>0</td>
+      <td>556</td>
+    </tr>
+    <tr>
+      <th>JUSTIFICATIONID_y</th>
+      <td>555</td>
+      <td>470</td>
+      <td>291650</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>NOTE_y</th>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
       <td>NaN</td>
     </tr>
   </tbody>
@@ -13784,13 +13604,10 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>  <span class="c1"># the a opens it in append mode</span>
-    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
-        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;PASSENGERS&#39;</span><span class="p">,</span><span class="s1">&#39;PASSENGERSIN&#39;</span><span class="p">,</span><span class="s1">&#39;PASSENGERSOUT&#39;</span><span class="p">,</span><span class="s1">&#39;DISTANCE&#39;</span><span class="p">,</span><span class="s1">&#39;NOTE_x&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -13800,41 +13617,10 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>116949114
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">engine</span> <span class="o">=</span> <span class="n">sa</span><span class="o">.</span><span class="n">create_engine</span><span class="p">(</span><span class="s1">&#39;mysql+mysqlconnector://</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">@</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">USER</span><span class="p">,</span><span class="n">PASSWORD</span><span class="p">,</span><span class="n">URI</span><span class="p">,</span><span class="n">PORT</span><span class="p">,</span><span class="n">DB</span><span class="p">),</span><span class="n">echo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
 
     </div>
@@ -13844,11 +13630,10 @@ Note: you may need to restart the kernel to use updated packages.
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">engine</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SHOW VARIABLES;&quot;</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 
     </div>
@@ -13861,281 +13646,104 @@ Note: you may need to restart the kernel to use updated packages.
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[11]:</div>
 
 
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">MySQLInterfaceError</span>                       Traceback (most recent call last)
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/connection_cext.py</span> in <span class="ansi-cyan-fg">_open_connection</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    199</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 200</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>_cmysql<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span>cnx_kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    201</span>         <span class="ansi-green-fg">except</span> MySQLInterfaceError <span class="ansi-green-fg">as</span> exc<span class="ansi-blue-fg">:</span>
 
-<span class="ansi-red-fg">MySQLInterfaceError</span>: Lost connection to MySQL server at &#39;reading initial communication packet&#39;, system error: 0
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-During handling of the above exception, another exception occurred:
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<span class="ansi-red-fg">OperationalError</span>                          Traceback (most recent call last)
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/base.py</span> in <span class="ansi-cyan-fg">_wrap_pool_connect</span><span class="ansi-blue-fg">(self, fn, connection)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2275</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 2276</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> fn<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2277</span>         <span class="ansi-green-fg">except</span> dialect<span class="ansi-blue-fg">.</span>dbapi<span class="ansi-blue-fg">.</span>Error <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    362</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_use_threadlocal<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 363</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> _ConnectionFairy<span class="ansi-blue-fg">.</span>_checkout<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    364</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">_checkout</span><span class="ansi-blue-fg">(cls, pool, threadconns, fairy)</span>
-<span class="ansi-green-intense-fg ansi-bold">    772</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> fairy<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 773</span><span class="ansi-red-fg">             </span>fairy <span class="ansi-blue-fg">=</span> _ConnectionRecord<span class="ansi-blue-fg">.</span>checkout<span class="ansi-blue-fg">(</span>pool<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    774</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">checkout</span><span class="ansi-blue-fg">(cls, pool)</span>
-<span class="ansi-green-intense-fg ansi-bold">    491</span>     <span class="ansi-green-fg">def</span> checkout<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> pool<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 492</span><span class="ansi-red-fg">         </span>rec <span class="ansi-blue-fg">=</span> pool<span class="ansi-blue-fg">.</span>_do_get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    493</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/impl.py</span> in <span class="ansi-cyan-fg">_do_get</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    138</span>                 <span class="ansi-green-fg">with</span> util<span class="ansi-blue-fg">.</span>safe_reraise<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 139</span><span class="ansi-red-fg">                     </span>self<span class="ansi-blue-fg">.</span>_dec_overflow<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    140</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/util/langhelpers.py</span> in <span class="ansi-cyan-fg">__exit__</span><span class="ansi-blue-fg">(self, type_, value, traceback)</span>
-<span class="ansi-green-intense-fg ansi-bold">     67</span>             <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>warn_only<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 68</span><span class="ansi-red-fg">                 </span>compat<span class="ansi-blue-fg">.</span>reraise<span class="ansi-blue-fg">(</span>exc_type<span class="ansi-blue-fg">,</span> exc_value<span class="ansi-blue-fg">,</span> exc_tb<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     69</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/util/compat.py</span> in <span class="ansi-cyan-fg">reraise</span><span class="ansi-blue-fg">(tp, value, tb, cause)</span>
-<span class="ansi-green-intense-fg ansi-bold">    152</span>             <span class="ansi-green-fg">raise</span> value<span class="ansi-blue-fg">.</span>with_traceback<span class="ansi-blue-fg">(</span>tb<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 153</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">raise</span> value
-<span class="ansi-green-intense-fg ansi-bold">    154</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/impl.py</span> in <span class="ansi-cyan-fg">_do_get</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    135</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 136</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_create_connection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    137</span>             <span class="ansi-green-fg">except</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">_create_connection</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    307</span> 
-<span class="ansi-green-fg">--&gt; 308</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> _ConnectionRecord<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    309</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, pool, connect)</span>
-<span class="ansi-green-intense-fg ansi-bold">    436</span>         <span class="ansi-green-fg">if</span> connect<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 437</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>__connect<span class="ansi-blue-fg">(</span>first_connect_check<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    438</span>         self<span class="ansi-blue-fg">.</span>finalize_callback <span class="ansi-blue-fg">=</span> deque<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">__connect</span><span class="ansi-blue-fg">(self, first_connect_check)</span>
-<span class="ansi-green-intense-fg ansi-bold">    651</span>             self<span class="ansi-blue-fg">.</span>starttime <span class="ansi-blue-fg">=</span> time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 652</span><span class="ansi-red-fg">             </span>connection <span class="ansi-blue-fg">=</span> pool<span class="ansi-blue-fg">.</span>_invoke_creator<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    653</span>             pool<span class="ansi-blue-fg">.</span>logger<span class="ansi-blue-fg">.</span>debug<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Created new connection %r&#34;</span><span class="ansi-blue-fg">,</span> connection<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/strategies.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(connection_record)</span>
-<span class="ansi-green-intense-fg ansi-bold">    113</span>                             <span class="ansi-green-fg">return</span> connection
-<span class="ansi-green-fg">--&gt; 114</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> dialect<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>cargs<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>cparams<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    115</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/default.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(self, *cargs, **cparams)</span>
-<span class="ansi-green-intense-fg ansi-bold">    488</span>     <span class="ansi-green-fg">def</span> connect<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>cargs<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>cparams<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 489</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>dbapi<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>cargs<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>cparams<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    490</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/__init__.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    175</span>     <span class="ansi-green-fg">if</span> HAVE_CEXT <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> use_pure<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 176</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> CMySQLConnection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    177</span>     <span class="ansi-green-fg">return</span> MySQLConnection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/connection_cext.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     79</span>         <span class="ansi-green-fg">if</span> kwargs<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     81</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/abstracts.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(self, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    780</span>         self<span class="ansi-blue-fg">.</span>disconnect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 781</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>_open_connection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    782</span>         <span class="ansi-red-fg"># Server does not allow to run any other statement different from ALTER</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/connection_cext.py</span> in <span class="ansi-cyan-fg">_open_connection</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    202</span>             raise errors.get_mysql_exception(msg=exc.msg, errno=exc.errno,
-<span class="ansi-green-fg">--&gt; 203</span><span class="ansi-red-fg">                                              sqlstate=exc.sqlstate)
-</span><span class="ansi-green-intense-fg ansi-bold">    204</span>         self<span class="ansi-blue-fg">.</span>_do_handshake<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">OperationalError</span>: 2013 (HY000): Lost connection to MySQL server at &#39;reading initial communication packet&#39;, system error: 0
-
-The above exception was the direct cause of the following exception:
-
-<span class="ansi-red-fg">OperationalError</span>                          Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-19-216604b22976&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span><span class="ansi-green-fg">for</span> res <span class="ansi-green-fg">in</span> engine<span class="ansi-blue-fg">.</span>execute<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;SHOW VARIABLES;&#34;</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">      2</span>     print<span class="ansi-blue-fg">(</span>res<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/base.py</span> in <span class="ansi-cyan-fg">execute</span><span class="ansi-blue-fg">(self, statement, *multiparams, **params)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2179</span>         &#34;&#34;&#34;
-<span class="ansi-green-intense-fg ansi-bold">   2180</span> 
-<span class="ansi-green-fg">-&gt; 2181</span><span class="ansi-red-fg">         </span>connection <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>_contextual_connect<span class="ansi-blue-fg">(</span>close_with_result<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2182</span>         <span class="ansi-green-fg">return</span> connection<span class="ansi-blue-fg">.</span>execute<span class="ansi-blue-fg">(</span>statement<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>multiparams<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>params<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2183</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/base.py</span> in <span class="ansi-cyan-fg">_contextual_connect</span><span class="ansi-blue-fg">(self, close_with_result, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2240</span>         return self._connection_cls(
-<span class="ansi-green-intense-fg ansi-bold">   2241</span>             self<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">-&gt; 2242</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>_wrap_pool_connect<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>pool<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">,</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   2243</span>             close_with_result<span class="ansi-blue-fg">=</span>close_with_result<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">   2244</span>             <span class="ansi-blue-fg">**</span>kwargs
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/base.py</span> in <span class="ansi-cyan-fg">_wrap_pool_connect</span><span class="ansi-blue-fg">(self, fn, connection)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2278</span>             <span class="ansi-green-fg">if</span> connection <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   2279</span>                 Connection._handle_dbapi_exception_noconnection(
-<span class="ansi-green-fg">-&gt; 2280</span><span class="ansi-red-fg">                     </span>e<span class="ansi-blue-fg">,</span> dialect<span class="ansi-blue-fg">,</span> self
-<span class="ansi-green-intense-fg ansi-bold">   2281</span>                 )
-<span class="ansi-green-intense-fg ansi-bold">   2282</span>             <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/base.py</span> in <span class="ansi-cyan-fg">_handle_dbapi_exception_noconnection</span><span class="ansi-blue-fg">(cls, e, dialect, engine)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1545</span>             util<span class="ansi-blue-fg">.</span>raise_from_cause<span class="ansi-blue-fg">(</span>newraise<span class="ansi-blue-fg">,</span> exc_info<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1546</span>         <span class="ansi-green-fg">elif</span> should_wrap<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 1547</span><span class="ansi-red-fg">             </span>util<span class="ansi-blue-fg">.</span>raise_from_cause<span class="ansi-blue-fg">(</span>sqlalchemy_exception<span class="ansi-blue-fg">,</span> exc_info<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   1548</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   1549</span>             util<span class="ansi-blue-fg">.</span>reraise<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>exc_info<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/util/compat.py</span> in <span class="ansi-cyan-fg">raise_from_cause</span><span class="ansi-blue-fg">(exception, exc_info)</span>
-<span class="ansi-green-intense-fg ansi-bold">    396</span>     exc_type<span class="ansi-blue-fg">,</span> exc_value<span class="ansi-blue-fg">,</span> exc_tb <span class="ansi-blue-fg">=</span> exc_info
-<span class="ansi-green-intense-fg ansi-bold">    397</span>     cause <span class="ansi-blue-fg">=</span> exc_value <span class="ansi-green-fg">if</span> exc_value <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> exception <span class="ansi-green-fg">else</span> <span class="ansi-green-fg">None</span>
-<span class="ansi-green-fg">--&gt; 398</span><span class="ansi-red-fg">     </span>reraise<span class="ansi-blue-fg">(</span>type<span class="ansi-blue-fg">(</span>exception<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> exception<span class="ansi-blue-fg">,</span> tb<span class="ansi-blue-fg">=</span>exc_tb<span class="ansi-blue-fg">,</span> cause<span class="ansi-blue-fg">=</span>cause<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    399</span> 
-<span class="ansi-green-intense-fg ansi-bold">    400</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/util/compat.py</span> in <span class="ansi-cyan-fg">reraise</span><span class="ansi-blue-fg">(tp, value, tb, cause)</span>
-<span class="ansi-green-intense-fg ansi-bold">    150</span>             value<span class="ansi-blue-fg">.</span>__cause__ <span class="ansi-blue-fg">=</span> cause
-<span class="ansi-green-intense-fg ansi-bold">    151</span>         <span class="ansi-green-fg">if</span> value<span class="ansi-blue-fg">.</span>__traceback__ <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> tb<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 152</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">raise</span> value<span class="ansi-blue-fg">.</span>with_traceback<span class="ansi-blue-fg">(</span>tb<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    153</span>         <span class="ansi-green-fg">raise</span> value
-<span class="ansi-green-intense-fg ansi-bold">    154</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/base.py</span> in <span class="ansi-cyan-fg">_wrap_pool_connect</span><span class="ansi-blue-fg">(self, fn, connection)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2274</span>         dialect <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>dialect
-<span class="ansi-green-intense-fg ansi-bold">   2275</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">-&gt; 2276</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> fn<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">   2277</span>         <span class="ansi-green-fg">except</span> dialect<span class="ansi-blue-fg">.</span>dbapi<span class="ansi-blue-fg">.</span>Error <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">   2278</span>             <span class="ansi-green-fg">if</span> connection <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    361</span>         &#34;&#34;&#34;
-<span class="ansi-green-intense-fg ansi-bold">    362</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>_use_threadlocal<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 363</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> _ConnectionFairy<span class="ansi-blue-fg">.</span>_checkout<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    364</span> 
-<span class="ansi-green-intense-fg ansi-bold">    365</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">_checkout</span><span class="ansi-blue-fg">(cls, pool, threadconns, fairy)</span>
-<span class="ansi-green-intense-fg ansi-bold">    771</span>     <span class="ansi-green-fg">def</span> _checkout<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> pool<span class="ansi-blue-fg">,</span> threadconns<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> fairy<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    772</span>         <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> fairy<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 773</span><span class="ansi-red-fg">             </span>fairy <span class="ansi-blue-fg">=</span> _ConnectionRecord<span class="ansi-blue-fg">.</span>checkout<span class="ansi-blue-fg">(</span>pool<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    774</span> 
-<span class="ansi-green-intense-fg ansi-bold">    775</span>             fairy<span class="ansi-blue-fg">.</span>_pool <span class="ansi-blue-fg">=</span> pool
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">checkout</span><span class="ansi-blue-fg">(cls, pool)</span>
-<span class="ansi-green-intense-fg ansi-bold">    490</span>     <span class="ansi-blue-fg">@</span>classmethod
-<span class="ansi-green-intense-fg ansi-bold">    491</span>     <span class="ansi-green-fg">def</span> checkout<span class="ansi-blue-fg">(</span>cls<span class="ansi-blue-fg">,</span> pool<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 492</span><span class="ansi-red-fg">         </span>rec <span class="ansi-blue-fg">=</span> pool<span class="ansi-blue-fg">.</span>_do_get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    493</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    494</span>             dbapi_connection <span class="ansi-blue-fg">=</span> rec<span class="ansi-blue-fg">.</span>get_connection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/impl.py</span> in <span class="ansi-cyan-fg">_do_get</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    137</span>             <span class="ansi-green-fg">except</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    138</span>                 <span class="ansi-green-fg">with</span> util<span class="ansi-blue-fg">.</span>safe_reraise<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 139</span><span class="ansi-red-fg">                     </span>self<span class="ansi-blue-fg">.</span>_dec_overflow<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    140</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    141</span>             <span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_do_get<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/util/langhelpers.py</span> in <span class="ansi-cyan-fg">__exit__</span><span class="ansi-blue-fg">(self, type_, value, traceback)</span>
-<span class="ansi-green-intense-fg ansi-bold">     66</span>             self<span class="ansi-blue-fg">.</span>_exc_info <span class="ansi-blue-fg">=</span> <span class="ansi-green-fg">None</span>  <span class="ansi-red-fg"># remove potential circular references</span>
-<span class="ansi-green-intense-fg ansi-bold">     67</span>             <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> self<span class="ansi-blue-fg">.</span>warn_only<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 68</span><span class="ansi-red-fg">                 </span>compat<span class="ansi-blue-fg">.</span>reraise<span class="ansi-blue-fg">(</span>exc_type<span class="ansi-blue-fg">,</span> exc_value<span class="ansi-blue-fg">,</span> exc_tb<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     69</span>         <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">     70</span>             <span class="ansi-green-fg">if</span> <span class="ansi-green-fg">not</span> compat<span class="ansi-blue-fg">.</span>py3k <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>_exc_info <span class="ansi-green-fg">and</span> self<span class="ansi-blue-fg">.</span>_exc_info<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/util/compat.py</span> in <span class="ansi-cyan-fg">reraise</span><span class="ansi-blue-fg">(tp, value, tb, cause)</span>
-<span class="ansi-green-intense-fg ansi-bold">    151</span>         <span class="ansi-green-fg">if</span> value<span class="ansi-blue-fg">.</span>__traceback__ <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> tb<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    152</span>             <span class="ansi-green-fg">raise</span> value<span class="ansi-blue-fg">.</span>with_traceback<span class="ansi-blue-fg">(</span>tb<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 153</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">raise</span> value
-<span class="ansi-green-intense-fg ansi-bold">    154</span> 
-<span class="ansi-green-intense-fg ansi-bold">    155</span>     <span class="ansi-green-fg">def</span> u<span class="ansi-blue-fg">(</span>s<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/impl.py</span> in <span class="ansi-cyan-fg">_do_get</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    134</span>         <span class="ansi-green-fg">if</span> self<span class="ansi-blue-fg">.</span>_inc_overflow<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    135</span>             <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 136</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_create_connection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    137</span>             <span class="ansi-green-fg">except</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    138</span>                 <span class="ansi-green-fg">with</span> util<span class="ansi-blue-fg">.</span>safe_reraise<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">_create_connection</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    306</span>         <span class="ansi-blue-fg">&#34;&#34;&#34;Called by subclasses to create a new ConnectionRecord.&#34;&#34;&#34;</span>
-<span class="ansi-green-intense-fg ansi-bold">    307</span> 
-<span class="ansi-green-fg">--&gt; 308</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> _ConnectionRecord<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    309</span> 
-<span class="ansi-green-intense-fg ansi-bold">    310</span>     <span class="ansi-green-fg">def</span> _invalidate<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> connection<span class="ansi-blue-fg">,</span> exception<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">None</span><span class="ansi-blue-fg">,</span> _checkin<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, pool, connect)</span>
-<span class="ansi-green-intense-fg ansi-bold">    435</span>         self<span class="ansi-blue-fg">.</span>__pool <span class="ansi-blue-fg">=</span> pool
-<span class="ansi-green-intense-fg ansi-bold">    436</span>         <span class="ansi-green-fg">if</span> connect<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 437</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>__connect<span class="ansi-blue-fg">(</span>first_connect_check<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    438</span>         self<span class="ansi-blue-fg">.</span>finalize_callback <span class="ansi-blue-fg">=</span> deque<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    439</span> 
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/pool/base.py</span> in <span class="ansi-cyan-fg">__connect</span><span class="ansi-blue-fg">(self, first_connect_check)</span>
-<span class="ansi-green-intense-fg ansi-bold">    650</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    651</span>             self<span class="ansi-blue-fg">.</span>starttime <span class="ansi-blue-fg">=</span> time<span class="ansi-blue-fg">.</span>time<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 652</span><span class="ansi-red-fg">             </span>connection <span class="ansi-blue-fg">=</span> pool<span class="ansi-blue-fg">.</span>_invoke_creator<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    653</span>             pool<span class="ansi-blue-fg">.</span>logger<span class="ansi-blue-fg">.</span>debug<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;Created new connection %r&#34;</span><span class="ansi-blue-fg">,</span> connection<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    654</span>             self<span class="ansi-blue-fg">.</span>connection <span class="ansi-blue-fg">=</span> connection
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/strategies.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(connection_record)</span>
-<span class="ansi-green-intense-fg ansi-bold">    112</span>                         <span class="ansi-green-fg">if</span> connection <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">not</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    113</span>                             <span class="ansi-green-fg">return</span> connection
-<span class="ansi-green-fg">--&gt; 114</span><span class="ansi-red-fg">                 </span><span class="ansi-green-fg">return</span> dialect<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>cargs<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>cparams<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    115</span> 
-<span class="ansi-green-intense-fg ansi-bold">    116</span>             creator <span class="ansi-blue-fg">=</span> pop_kwarg<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">&#34;creator&#34;</span><span class="ansi-blue-fg">,</span> connect<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/sqlalchemy/engine/default.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(self, *cargs, **cparams)</span>
-<span class="ansi-green-intense-fg ansi-bold">    487</span> 
-<span class="ansi-green-intense-fg ansi-bold">    488</span>     <span class="ansi-green-fg">def</span> connect<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">*</span>cargs<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>cparams<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 489</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>dbapi<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>cargs<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>cparams<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    490</span> 
-<span class="ansi-green-intense-fg ansi-bold">    491</span>     <span class="ansi-green-fg">def</span> create_connect_args<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> url<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/__init__.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    174</span> 
-<span class="ansi-green-intense-fg ansi-bold">    175</span>     <span class="ansi-green-fg">if</span> HAVE_CEXT <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> use_pure<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 176</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> CMySQLConnection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    177</span>     <span class="ansi-green-fg">return</span> MySQLConnection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    178</span> Connect <span class="ansi-blue-fg">=</span> connect  <span class="ansi-red-fg"># pylint: disable=C0103</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/connection_cext.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     78</span> 
-<span class="ansi-green-intense-fg ansi-bold">     79</span>         <span class="ansi-green-fg">if</span> kwargs<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     81</span> 
-<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">def</span> _add_default_conn_attrs<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/abstracts.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(self, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    779</span> 
-<span class="ansi-green-intense-fg ansi-bold">    780</span>         self<span class="ansi-blue-fg">.</span>disconnect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 781</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>_open_connection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    782</span>         <span class="ansi-red-fg"># Server does not allow to run any other statement different from ALTER</span>
-<span class="ansi-green-intense-fg ansi-bold">    783</span>         <span class="ansi-red-fg"># when user&#39;s password has been expired.</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/connection_cext.py</span> in <span class="ansi-cyan-fg">_open_connection</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    201</span>         <span class="ansi-green-fg">except</span> MySQLInterfaceError <span class="ansi-green-fg">as</span> exc<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    202</span>             raise errors.get_mysql_exception(msg=exc.msg, errno=exc.errno,
-<span class="ansi-green-fg">--&gt; 203</span><span class="ansi-red-fg">                                              sqlstate=exc.sqlstate)
-</span><span class="ansi-green-intense-fg ansi-bold">    204</span>         self<span class="ansi-blue-fg">.</span>_do_handshake<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    205</span> 
-
-<span class="ansi-red-fg">OperationalError</span>: (mysql.connector.errors.OperationalError) 2013 (HY000): Lost connection to MySQL server at &#39;reading initial communication packet&#39;, system error: 0
-(Background on this error at: http://sqlalche.me/e/e3q8)</pre>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>unique</th>
+      <th>top</th>
+      <th>freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>DATASOURCE</th>
+      <td>1000000</td>
+      <td>1</td>
+      <td>DB</td>
+      <td>1000000</td>
+    </tr>
+    <tr>
+      <th>SUPPRESSED_x</th>
+      <td>4986</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3753</td>
+    </tr>
+    <tr>
+      <th>JUSTIFICATIONID_x</th>
+      <td>4985</td>
+      <td>3403</td>
+      <td>4.84981e+17</td>
+      <td>26</td>
+    </tr>
+    <tr>
+      <th>DIRECTION</th>
+      <td>1000000</td>
+      <td>2</td>
+      <td>2</td>
+      <td>505863</td>
+    </tr>
+    <tr>
+      <th>BASIN</th>
+      <td>1000000</td>
+      <td>1</td>
+      <td>BasDef</td>
+      <td>1000000</td>
+    </tr>
+    <tr>
+      <th>TENDERLOT</th>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>SUPPRESSED_y</th>
+      <td>556</td>
+      <td>1</td>
+      <td>0</td>
+      <td>556</td>
+    </tr>
+    <tr>
+      <th>JUSTIFICATIONID_y</th>
+      <td>555</td>
+      <td>470</td>
+      <td>291650</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>NOTE_y</th>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
 </div>
+</div>
+
 </div>
 
 </div>
@@ -14144,248 +13752,10 @@ The above exception was the direct cause of the following exception:
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">connect_to_db</span><span class="p">():</span>
-    <span class="n">mydb</span> <span class="o">=</span> <span class="n">mysql</span><span class="o">.</span><span class="n">connector</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-        <span class="n">host</span> <span class="o">=</span> <span class="n">URI</span><span class="p">,</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="n">USER</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">PORT</span><span class="p">,</span>
-        <span class="n">passwd</span><span class="o">=</span>  <span class="n">PASSWORD</span><span class="p">,</span>
-        <span class="n">database</span> <span class="o">=</span> <span class="n">DB</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="k">return</span> <span class="n">mydb</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mydb</span> <span class="o">=</span> <span class="n">connect_to_db</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">MySQLInterfaceError</span>                       Traceback (most recent call last)
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/connection_cext.py</span> in <span class="ansi-cyan-fg">_open_connection</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    199</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 200</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>_cmysql<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span>cnx_kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    201</span>         <span class="ansi-green-fg">except</span> MySQLInterfaceError <span class="ansi-green-fg">as</span> exc<span class="ansi-blue-fg">:</span>
-
-<span class="ansi-red-fg">MySQLInterfaceError</span>: Can&#39;t connect to MySQL server on &#39;ipa-015.ucd.ie&#39; (111)
-
-During handling of the above exception, another exception occurred:
-
-<span class="ansi-red-fg">DatabaseError</span>                             Traceback (most recent call last)
-<span class="ansi-green-fg">&lt;ipython-input-26-25774491bef2&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
-<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>mydb <span class="ansi-blue-fg">=</span> connect_to_db<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">&lt;ipython-input-25-8ad6df6fc633&gt;</span> in <span class="ansi-cyan-fg">connect_to_db</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">      4</span>         user <span class="ansi-blue-fg">=</span> USER <span class="ansi-blue-fg">+</span> <span class="ansi-blue-fg">&#34;:&#34;</span> <span class="ansi-blue-fg">+</span> PORT<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">      5</span>         passwd<span class="ansi-blue-fg">=</span>  PASSWORD<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-fg">----&gt; 6</span><span class="ansi-red-fg">         </span>database <span class="ansi-blue-fg">=</span> DB<span class="ansi-blue-fg">,</span>
-<span class="ansi-green-intense-fg ansi-bold">      7</span>     )
-<span class="ansi-green-intense-fg ansi-bold">      8</span>     <span class="ansi-green-fg">return</span> mydb
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/__init__.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(*args, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    174</span> 
-<span class="ansi-green-intense-fg ansi-bold">    175</span>     <span class="ansi-green-fg">if</span> HAVE_CEXT <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> use_pure<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 176</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> CMySQLConnection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    177</span>     <span class="ansi-green-fg">return</span> MySQLConnection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>args<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    178</span> Connect <span class="ansi-blue-fg">=</span> connect  <span class="ansi-red-fg"># pylint: disable=C0103</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/connection_cext.py</span> in <span class="ansi-cyan-fg">__init__</span><span class="ansi-blue-fg">(self, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">     78</span> 
-<span class="ansi-green-intense-fg ansi-bold">     79</span>         <span class="ansi-green-fg">if</span> kwargs<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">---&gt; 80</span><span class="ansi-red-fg">             </span>self<span class="ansi-blue-fg">.</span>connect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     81</span> 
-<span class="ansi-green-intense-fg ansi-bold">     82</span>     <span class="ansi-green-fg">def</span> _add_default_conn_attrs<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/abstracts.py</span> in <span class="ansi-cyan-fg">connect</span><span class="ansi-blue-fg">(self, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    779</span> 
-<span class="ansi-green-intense-fg ansi-bold">    780</span>         self<span class="ansi-blue-fg">.</span>disconnect<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 781</span><span class="ansi-red-fg">         </span>self<span class="ansi-blue-fg">.</span>_open_connection<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    782</span>         <span class="ansi-red-fg"># Server does not allow to run any other statement different from ALTER</span>
-<span class="ansi-green-intense-fg ansi-bold">    783</span>         <span class="ansi-red-fg"># when user&#39;s password has been expired.</span>
-
-<span class="ansi-green-fg">~/anaconda3/lib/python3.7/site-packages/mysql/connector/connection_cext.py</span> in <span class="ansi-cyan-fg">_open_connection</span><span class="ansi-blue-fg">(self)</span>
-<span class="ansi-green-intense-fg ansi-bold">    201</span>         <span class="ansi-green-fg">except</span> MySQLInterfaceError <span class="ansi-green-fg">as</span> exc<span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    202</span>             raise errors.get_mysql_exception(msg=exc.msg, errno=exc.errno,
-<span class="ansi-green-fg">--&gt; 203</span><span class="ansi-red-fg">                                              sqlstate=exc.sqlstate)
-</span><span class="ansi-green-intense-fg ansi-bold">    204</span>         self<span class="ansi-blue-fg">.</span>_do_handshake<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    205</span> 
-
-<span class="ansi-red-fg">DatabaseError</span>: 2003 (HY000): Can&#39;t connect to MySQL server on &#39;ipa-015.ucd.ie&#39; (111)</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">sshtunnel</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Collecting sshtunnel
-  Using cached sshtunnel-0.1.5.tar.gz (49 kB)
-Collecting paramiko&gt;=1.15.2
-  Downloading paramiko-2.7.1-py2.py3-none-any.whl (206 kB)
-     |████████████████████████████████| 206 kB 5.4 MB/s eta 0:00:01
-Requirement already satisfied: cryptography&gt;=2.5 in /home/student/anaconda3/lib/python3.7/site-packages (from paramiko&gt;=1.15.2-&gt;sshtunnel) (2.8)
-Collecting pynacl&gt;=1.0.1
-  Downloading PyNaCl-1.4.0-cp35-abi3-manylinux1_x86_64.whl (961 kB)
-     |████████████████████████████████| 961 kB 18.6 MB/s eta 0:00:01
-Collecting bcrypt&gt;=3.1.3
-  Downloading bcrypt-3.1.7-cp34-abi3-manylinux1_x86_64.whl (56 kB)
-     |████████████████████████████████| 56 kB 261 kB/s  eta 0:00:01
-Requirement already satisfied: cffi!=1.11.3,&gt;=1.8 in /home/student/anaconda3/lib/python3.7/site-packages (from cryptography&gt;=2.5-&gt;paramiko&gt;=1.15.2-&gt;sshtunnel) (1.14.0)
-Requirement already satisfied: six&gt;=1.4.1 in /home/student/anaconda3/lib/python3.7/site-packages (from cryptography&gt;=2.5-&gt;paramiko&gt;=1.15.2-&gt;sshtunnel) (1.14.0)
-Requirement already satisfied: pycparser in /home/student/anaconda3/lib/python3.7/site-packages (from cffi!=1.11.3,&gt;=1.8-&gt;cryptography&gt;=2.5-&gt;paramiko&gt;=1.15.2-&gt;sshtunnel) (2.19)
-Building wheels for collected packages: sshtunnel
-  Building wheel for sshtunnel (setup.py) ... done
-  Created wheel for sshtunnel: filename=sshtunnel-0.1.5-py2.py3-none-any.whl size=23243 sha256=25eca24a2443476dd5c4bd164a616e018697ff54d86e47f353765dc37284f55b
-  Stored in directory: /home/student/.cache/pip/wheels/c5/41/d8/caea6d59f0764afbda3fa8921fe2517330667d90a448f997e1
-Successfully built sshtunnel
-Installing collected packages: pynacl, bcrypt, paramiko, sshtunnel
-Successfully installed bcrypt-3.1.7 paramiko-2.7.1 pynacl-1.4.0 sshtunnel-0.1.5
-Note: you may need to restart the kernel to use updated packages.
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">config</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="k">def</span> <span class="nf">query_database</span><span class="p">(</span><span class="n">sql_statement</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">SSHTunnelForwarder</span><span class="p">(</span>
-                <span class="p">(</span><span class="n">ssh_config</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span> <span class="n">ssh_config</span><span class="p">[</span><span class="s1">&#39;port&#39;</span><span class="p">]),</span>
-                <span class="n">ssh_password</span><span class="o">=</span><span class="n">ssh_config</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span>
-                <span class="n">ssh_username</span><span class="o">=</span><span class="n">ssh_config</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">],</span>
-                <span class="n">remote_bind_address</span><span class="o">=</span><span class="n">ssh_config</span><span class="p">[</span><span class="s1">&#39;remote_bind_address&#39;</span><span class="p">]</span>
-        <span class="p">)</span><span class="k">as</span> <span class="n">tunnel</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">connection</span> <span class="o">=</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
-                    <span class="n">host</span><span class="o">=</span><span class="n">database_config</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">],</span>
-                    <span class="n">user</span><span class="o">=</span><span class="n">database_config</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">],</span>
-                    <span class="n">passwd</span><span class="o">=</span><span class="n">database_config</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span>
-                    <span class="n">db</span><span class="o">=</span><span class="n">database_config</span><span class="p">[</span><span class="s1">&#39;database&#39;</span><span class="p">],</span>
-                    <span class="n">port</span><span class="o">=</span><span class="n">tunnel</span><span class="o">.</span><span class="n">local_bind_port</span><span class="p">,</span>
-                    <span class="n">charset</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
-                    <span class="n">cursorclass</span><span class="o">=</span><span class="n">pymysql</span><span class="o">.</span><span class="n">cursors</span><span class="o">.</span><span class="n">DictCursor</span>
-                <span class="p">)</span>
-                <span class="n">cursor</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
-                <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql_statement</span><span class="p">)</span>
-                <span class="n">connection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-                <span class="k">return</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;pymysql failed!&quot;</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                <span class="nb">print</span><span class="p">()</span>
-    <span class="c1"># server.start()</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ssh connection failed!&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">()</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">GET_STOPS</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM dublinbus.stops limit 5;&quot;</span>
-<span class="n">five_stops</span> <span class="o">=</span> <span class="n">query_database</span><span class="p">(</span><span class="n">GET_STOPS</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">five_stops</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>[{&#39;stop_id&#39;: &#39;8220DB000002&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 2&#39;, &#39;stop_lat&#39;: &#39;53.3522443611407&#39;, &#39;stop_lon&#39;: &#39;-6.26372321891882&#39;}, {&#39;stop_id&#39;: &#39;8220DB000003&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 3&#39;, &#39;stop_lat&#39;: &#39;53.3523085514349&#39;, &#39;stop_lon&#39;: &#39;-6.26381074216821&#39;}, {&#39;stop_id&#39;: &#39;8220DB000004&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 4&#39;, &#39;stop_lat&#39;: &#39;53.3525745131874&#39;, &#39;stop_lon&#39;: &#39;-6.26417548603793&#39;}, {&#39;stop_id&#39;: &#39;8220DB000006&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 6&#39;, &#39;stop_lat&#39;: &#39;53.352749335707&#39;, &#39;stop_lon&#39;: &#39;-6.26445380396429&#39;}, {&#39;stop_id&#39;: &#39;8220DB000007&#39;, &#39;stop_name&#39;: &#39;Parnell Square West, stop 7&#39;, &#39;stop_lat&#39;: &#39;53.3528409105808&#39;, &#39;stop_lon&#39;: &#39;-6.26457026121744&#39;}]
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">time</span>
-
-<span class="n">time1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="n">GET_JAN01</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM dublinbus.RT_LeaveTimes WHERE DAYOFSERVICE=&#39;01-JAN-18 00:00:00&#39;;&quot;</span>
-<span class="n">JAN01</span> <span class="o">=</span> <span class="n">query_database</span><span class="p">(</span><span class="n">GET_JAN01</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time1</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s1">&#39;DATASOURCE&#39;</span><span class="p">,</span><span class="s1">&#39;TENDERLOT&#39;</span><span class="p">,</span><span class="s1">&#39;NOTE_y&#39;</span><span class="p">,</span><span class="s1">&#39;BASIN&#39;</span><span class="p">,</span><span class="s1">&#39;SUPPRESSED_y&#39;</span><span class="p">,</span><span class="s1">&#39;JUSTIFICATIONID_y&#39;</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14398,7 +13768,20 @@ Note: you may need to restart the kernel to use updated packages.
 <div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">categorical_columns</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="p">[</span><span class="n">categorical_columns</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 
     </div>
@@ -14411,17 +13794,577 @@ Note: you may need to restart the kernel to use updated packages.
 
 <div class="output_area">
 
-    <div class="prompt"></div>
+    <div class="prompt output_prompt">Out[14]:</div>
 
 
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{&#39;DATASOURCE&#39;: &#39;DB&#39;, &#39;DAYOFSERVICE&#39;: &#39;01-JAN-18 00:00:00&#39;, &#39;TRIPID&#39;: &#39;5972116&#39;, &#39;PROGRNUMBER&#39;: 12, &#39;STOPPOINTID&#39;: &#39;119&#39;, &#39;PLANNEDTIME_ARR&#39;: 48030, &#39;PLANNEDTIME_DEP&#39;: 48030, &#39;ACTUALTIME_ARR&#39;: 48012, &#39;ACTUALTIME_DEP&#39;: 48012, &#39;VEHICLEID&#39;: &#39;2693211&#39;, &#39;PASSENGERS&#39;: 0, &#39;PASSENGERSIN&#39;: 0, &#39;PASSENGERSOUT&#39;: 0, &#39;DISTANCE&#39;: 0, &#39;SUPPRESSED&#39;: 0, &#39;JUSTIFICATIONID&#39;: 0, &#39;LASTUPDATE&#39;: &#39;08-JAN-18 17:21:10&#39;, &#39;NOTE&#39;: &#39;\r&#39;}
-{&#39;DATASOURCE&#39;: &#39;DB&#39;, &#39;DAYOFSERVICE&#39;: &#39;01-JAN-18 00:00:00&#39;, &#39;TRIPID&#39;: &#39;5966674&#39;, &#39;PROGRNUMBER&#39;: 12, &#39;STOPPOINTID&#39;: &#39;119&#39;, &#39;PLANNEDTIME_ARR&#39;: 54001, &#39;PLANNEDTIME_DEP&#39;: 54001, &#39;ACTUALTIME_ARR&#39;: 54023, &#39;ACTUALTIME_DEP&#39;: 54023, &#39;VEHICLEID&#39;: &#39;2693267&#39;, &#39;PASSENGERS&#39;: 0, &#39;PASSENGERSIN&#39;: 0, &#39;PASSENGERSOUT&#39;: 0, &#39;DISTANCE&#39;: 0, &#39;SUPPRESSED&#39;: 0, &#39;JUSTIFICATIONID&#39;: 0, &#39;LASTUPDATE&#39;: &#39;08-JAN-18 17:21:10&#39;, &#39;NOTE&#39;: &#39;\r&#39;}
-{&#39;DATASOURCE&#39;: &#39;DB&#39;, &#39;DAYOFSERVICE&#39;: &#39;01-JAN-18 00:00:00&#39;, &#39;TRIPID&#39;: &#39;5959105&#39;, &#39;PROGRNUMBER&#39;: 12, &#39;STOPPOINTID&#39;: &#39;119&#39;, &#39;PLANNEDTIME_ARR&#39;: 60001, &#39;PLANNEDTIME_DEP&#39;: 60001, &#39;ACTUALTIME_ARR&#39;: 59955, &#39;ACTUALTIME_DEP&#39;: 59955, &#39;VEHICLEID&#39;: &#39;2693263&#39;, &#39;PASSENGERS&#39;: 0, &#39;PASSENGERSIN&#39;: 0, &#39;PASSENGERSOUT&#39;: 0, &#39;DISTANCE&#39;: 0, &#39;SUPPRESSED&#39;: 0, &#39;JUSTIFICATIONID&#39;: 0, &#39;LASTUPDATE&#39;: &#39;08-JAN-18 17:21:10&#39;, &#39;NOTE&#39;: &#39;\r&#39;}
-{&#39;DATASOURCE&#39;: &#39;DB&#39;, &#39;DAYOFSERVICE&#39;: &#39;01-JAN-18 00:00:00&#39;, &#39;TRIPID&#39;: &#39;5966888&#39;, &#39;PROGRNUMBER&#39;: 12, &#39;STOPPOINTID&#39;: &#39;119&#39;, &#39;PLANNEDTIME_ARR&#39;: 58801, &#39;PLANNEDTIME_DEP&#39;: 58801, &#39;ACTUALTIME_ARR&#39;: 58771, &#39;ACTUALTIME_DEP&#39;: 58771, &#39;VEHICLEID&#39;: &#39;2693284&#39;, &#39;PASSENGERS&#39;: 0, &#39;PASSENGERSIN&#39;: 0, &#39;PASSENGERSOUT&#39;: 0, &#39;DISTANCE&#39;: 0, &#39;SUPPRESSED&#39;: 0, &#39;JUSTIFICATIONID&#39;: 0, &#39;LASTUPDATE&#39;: &#39;08-JAN-18 17:21:10&#39;, &#39;NOTE&#39;: &#39;\r&#39;}
-{&#39;DATASOURCE&#39;: &#39;DB&#39;, &#39;DAYOFSERVICE&#39;: &#39;01-JAN-18 00:00:00&#39;, &#39;TRIPID&#39;: &#39;5965960&#39;, &#39;PROGRNUMBER&#39;: 12, &#39;STOPPOINTID&#39;: &#39;119&#39;, &#39;PLANNEDTIME_ARR&#39;: 56401, &#39;PLANNEDTIME_DEP&#39;: 56401, &#39;ACTUALTIME_ARR&#39;: 56309, &#39;ACTUALTIME_DEP&#39;: 56323, &#39;VEHICLEID&#39;: &#39;2693209&#39;, &#39;PASSENGERS&#39;: 0, &#39;PASSENGERSIN&#39;: 0, &#39;PASSENGERSOUT&#39;: 0, &#39;DISTANCE&#39;: 0, &#39;SUPPRESSED&#39;: 0, &#39;JUSTIFICATIONID&#39;: 0, &#39;LASTUPDATE&#39;: &#39;08-JAN-18 17:21:10&#39;, &#39;NOTE&#39;: &#39;\r&#39;}
-</pre>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>unique</th>
+      <th>top</th>
+      <th>freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>SUPPRESSED_x</th>
+      <td>4986.0</td>
+      <td>2.0</td>
+      <td>0.000000e+00</td>
+      <td>3753.0</td>
+    </tr>
+    <tr>
+      <th>JUSTIFICATIONID_x</th>
+      <td>4985.0</td>
+      <td>3403.0</td>
+      <td>4.849814e+17</td>
+      <td>26.0</td>
+    </tr>
+    <tr>
+      <th>DIRECTION</th>
+      <td>1000000.0</td>
+      <td>2.0</td>
+      <td>2.000000e+00</td>
+      <td>505863.0</td>
+    </tr>
+  </tbody>
+</table>
 </div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[15]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DAYOFSERVICE</th>
+      <th>TRIPID</th>
+      <th>PROGRNUMBER</th>
+      <th>STOPPOINTID</th>
+      <th>PLANNEDTIME_ARR</th>
+      <th>PLANNEDTIME_DEP</th>
+      <th>ACTUALTIME_ARR</th>
+      <th>ACTUALTIME_DEP</th>
+      <th>VEHICLEID</th>
+      <th>SUPPRESSED_x</th>
+      <th>JUSTIFICATIONID_x</th>
+      <th>LASTUPDATE_x</th>
+      <th>LINEID</th>
+      <th>ROUTEID</th>
+      <th>DIRECTION</th>
+      <th>LASTUPDATE_y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2018-08-25</td>
+      <td>7329034</td>
+      <td>32</td>
+      <td>609</td>
+      <td>46010</td>
+      <td>46010</td>
+      <td>45900</td>
+      <td>45900</td>
+      <td>3265720</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2018-09-03 10:39:32</td>
+      <td>29A</td>
+      <td>29A_15</td>
+      <td>2</td>
+      <td>2018-09-03 10:39:32</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2018-05-31</td>
+      <td>6847697</td>
+      <td>13</td>
+      <td>847</td>
+      <td>33619</td>
+      <td>33619</td>
+      <td>33604</td>
+      <td>33616</td>
+      <td>1000562</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2018-06-14 14:04:06</td>
+      <td>145</td>
+      <td>145_102</td>
+      <td>1</td>
+      <td>2018-06-14 14:04:06</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2018-05-26</td>
+      <td>6780534</td>
+      <td>14</td>
+      <td>4758</td>
+      <td>57703</td>
+      <td>57703</td>
+      <td>57898</td>
+      <td>57917</td>
+      <td>1932369</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2018-06-14 13:12:56</td>
+      <td>49</td>
+      <td>49_28</td>
+      <td>2</td>
+      <td>2018-06-14 13:12:56</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2018-04-23</td>
+      <td>6635422</td>
+      <td>7</td>
+      <td>7030</td>
+      <td>27325</td>
+      <td>27325</td>
+      <td>27474</td>
+      <td>27511</td>
+      <td>1000599</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2018-06-13 08:27:05</td>
+      <td>39A</td>
+      <td>39A_43</td>
+      <td>2</td>
+      <td>2018-06-13 08:27:05</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2018-04-06</td>
+      <td>6606411</td>
+      <td>33</td>
+      <td>1453</td>
+      <td>85482</td>
+      <td>85482</td>
+      <td>86219</td>
+      <td>86219</td>
+      <td>2868392</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>2018-04-18 10:49:06</td>
+      <td>123</td>
+      <td>123_36</td>
+      <td>2</td>
+      <td>2018-04-18 10:49:06</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1_simple</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span>
+    <span class="s1">&#39;LASTUPDATE_y&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ROUTEID&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LASTUPDATE_x&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;JUSTIFICATIONID_x&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SUPPRESSED_x&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ACTUALTIME_DEP&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TRIPID&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;VEHICLEID&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PLANNEDTIME_DEP&#39;</span>
+<span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1_simple</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[17]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>DAYOFSERVICE</th>
+      <th>PROGRNUMBER</th>
+      <th>STOPPOINTID</th>
+      <th>PLANNEDTIME_ARR</th>
+      <th>ACTUALTIME_ARR</th>
+      <th>LINEID</th>
+      <th>DIRECTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2018-08-25</td>
+      <td>32</td>
+      <td>609</td>
+      <td>46010</td>
+      <td>45900</td>
+      <td>29A</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2018-05-31</td>
+      <td>13</td>
+      <td>847</td>
+      <td>33619</td>
+      <td>33604</td>
+      <td>145</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2018-05-26</td>
+      <td>14</td>
+      <td>4758</td>
+      <td>57703</td>
+      <td>57898</td>
+      <td>49</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2018-04-23</td>
+      <td>7</td>
+      <td>7030</td>
+      <td>27325</td>
+      <td>27474</td>
+      <td>39A</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2018-04-06</td>
+      <td>33</td>
+      <td>1453</td>
+      <td>85482</td>
+      <td>86219</td>
+      <td>123</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1_simple</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[18]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>DAYOFSERVICE       datetime64[ns]
+PROGRNUMBER                object
+STOPPOINTID                object
+PLANNEDTIME_ARR             int64
+ACTUALTIME_ARR              int64
+LINEID                     object
+DIRECTION                category
+dtype: object</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1_simple</span><span class="p">[</span><span class="s1">&#39;MONTH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1_simple</span><span class="p">[</span><span class="s1">&#39;DAYOFSERVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1_simple</span><span class="p">[</span><span class="s1">&#39;WEEKDAY&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df1_simple</span><span class="p">[</span><span class="s1">&#39;DAYOFSERVICE&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">weekday</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">df1_simple</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;DAYOFSERVICE&#39;</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1_simple</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[25]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PROGRNUMBER</th>
+      <th>STOPPOINTID</th>
+      <th>PLANNEDTIME_ARR</th>
+      <th>ACTUALTIME_ARR</th>
+      <th>LINEID</th>
+      <th>DIRECTION</th>
+      <th>MONTH</th>
+      <th>WEEKDAY</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>32</td>
+      <td>609</td>
+      <td>46010</td>
+      <td>45900</td>
+      <td>29A</td>
+      <td>2</td>
+      <td>8</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>13</td>
+      <td>847</td>
+      <td>33619</td>
+      <td>33604</td>
+      <td>145</td>
+      <td>1</td>
+      <td>5</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>14</td>
+      <td>4758</td>
+      <td>57703</td>
+      <td>57898</td>
+      <td>49</td>
+      <td>2</td>
+      <td>5</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>7</td>
+      <td>7030</td>
+      <td>27325</td>
+      <td>27474</td>
+      <td>39A</td>
+      <td>2</td>
+      <td>4</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>33</td>
+      <td>1453</td>
+      <td>85482</td>
+      <td>86219</td>
+      <td>123</td>
+      <td>2</td>
+      <td>4</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df1_simple</span><span class="o">.</span><span class="n">dtypes</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[26]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>PROGRNUMBER          object
+STOPPOINTID          object
+PLANNEDTIME_ARR       int64
+ACTUALTIME_ARR        int64
+LINEID               object
+DIRECTION          category
+MONTH              category
+WEEKDAY            category
+dtype: object</pre>
+</div>
+
 </div>
 
 </div>
