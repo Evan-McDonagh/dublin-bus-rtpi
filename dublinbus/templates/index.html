@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script></script>
     <!--import css -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/mian.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-datetimepicker.min.css' %}">
 
     <!--import js -->
@@ -20,25 +20,64 @@
 
 </head>
 <body>
+
+    {#the navbar#}
+    <header>
+        <nav>
+            <div id="weather"></div>
+            <ul class="nav-links">
+                <li><a id = "search">Search</a></li>
+                <li><a id = "stop">Stop</a></li>
+                <li><a id = "twitter">Twitter</a></li>
+                <li><a id = "leapcard">Leapcard</a></li>
+            </ul>
+            <div class="burger">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+
+        </nav>
+    </header>
+
+    {#navbar script#}
+    <script>
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+
+
+            burger.addEventListener('click', () => {
+
+                //Toggle nav
+                nav.classList.toggle('nav-active');
+
+                //Animation for links
+                navLinks.forEach((link, index) => {
+                    if(link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + .5}s`;
+                    }
+
+                });
+
+                //Animation for burger
+                burger.classList.toggle('toggle');
+            });
+        }
+
+        navSlide();
+    </script>
+
+
     {#the map div#}
-    <div id="googleMap" style="width:850px;height:600px; float: right"></div>
+    <div id="googleMap"></div>
     <script type="text/javascript">window.onload=function () {
         initMap();
-    };</script>
-
-
-    <div>
-        <span id="weather"></span> 
-    </div>
-    
-
-    {#the nav bar#}
-    <ul>
-        <li><a id = "search">Search</a></li>
-        <li><a id = "stop">Stop</a></li>
-        <li><a id= "twitter">Twitter</a></li>
-        <li><a id = "leapcard">Leapcard</a></li>
-    </ul>
+    };
+    </script>
 
 <div>
     <div id = "searchid">
@@ -53,8 +92,8 @@
                 <button id="go" type = "button" onclick = "search();calcRoute()">go</button>
             </form>
         </div>
-        
-        
+
+
         {#datetimepicker#}
         <div class="col-md-13">
             <div class='input-group date' id='datetimepicker1'>
@@ -63,7 +102,7 @@
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
-            
+
             <div class='input-group date' id='datetimepicker3'>
                 <input type='text' class="form-control" />
                 <span class="input-group-addon">
@@ -73,7 +112,7 @@
         </div>
         <div><h4 id="h51"></h4></div>
     </div>
-    
+
     <div id = "leapcardid">
         <div>
             <form method="post" id = "lpadd">
@@ -111,7 +150,7 @@
             $('#searchid').show();
 
         });
-            
+
         </script>
         <script type = "text/javascript">
             $('#leapcard').click(function(){
@@ -137,30 +176,30 @@
                 $('#twitterid').show();
             })
         </script>
-    
-    
-    
+
+
+
 <!-- the function that let the page refrensh only in some part     -->
         <!-- let the leapcard feature refresh -->
         <script type="text/javascript">
             $('#lpbtn').click(function(){
                 info = {
-                    csrfmiddlewaretoken: '{{ csrf_token }}', 
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
                     username :  $('#username').val(),
                     password : $('#password').val(),
                     };
                     console.log(info);
-    
+
                     $.ajax({
                         type:"POST",
-                        url: "http://127.0.0.1:8000/leapcard/", 
+                        url: "http://127.0.0.1:8000/leapcard/",
                         cache: false,
                         dataType: "html",
                         // headers:{'Content-Type':"application/json"} ,
                         data:info,
                         success: function(result, statues, xml){
                             console.log(result);
-                            $("#lparea").html(result);             
+                            $("#lparea").html(result);
                         },
                         error: function(){
                             alert("false");
@@ -173,14 +212,14 @@
         <script type="text/javascript">
             $('#stopbtn').click(function(){
                 info = {
-                    csrfmiddlewaretoken: '{{ csrf_token }}', 
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
                     stop_id :  $('#stop_id').val(),
                     };
                     // console.log(info);
-    
+
                     $.ajax({
                         type:"POST",
-                        url: "http://127.0.0.1:8000/stop/", 
+                        url: "http://127.0.0.1:8000/stop/",
                         cache: false,
                         dataType: "html",
                         // headers:{'Content-Type':"application/json"} ,
@@ -193,14 +232,14 @@
                             real_info += result["results"][i]["route"]+"        "+result["results"][i]["arrivaldatetime"] +"<br>";
                                 }
                                 // console.log(real_info);
-                            $("#stoparea").html(real_info);             
+                            $("#stoparea").html(real_info);
                         },
                         error: function(){
                             alert("false");
                         }
                     });
 
-            
+
                 var stop_id = $('#stop_id').val();
                 stopKeys = Object.keys(stopdata);
                 // console.log(stopKeys);
@@ -214,12 +253,12 @@
                     stopKey = stopKeys[i]
                     stop_idd = stopdata[stopKey]["stopno"];
                     // console.log(stop_idd);
-                    
+
                     if (stop_idd == stop_id){
                         var stationsInfo =  "Stop_number:<h5>"+stop_idd+"<h5>";
                             marker = new google.maps.Marker({
                                 position: new google.maps.LatLng(
-                                    stopdata[stopKey]['latitude'], 
+                                    stopdata[stopKey]['latitude'],
                                     stopdata[stopKey]['longitude']),
                                 map: map,
                             });
@@ -253,10 +292,10 @@
         <script type="text/javascript">
             var todayDate = new Date().getDate();
             $('#datetimepicker1').datetimepicker({
-        
+
             });
             $('#datetimepicker3').datetimepicker({
-        
+
             });
         </script>
 
@@ -264,8 +303,8 @@
             var stopdata = '{{stopdata|safe}}';
             stopdata = JSON.parse(stopdata);
         </script>
-      
-    
+
+
 </body>
 </html>
 
@@ -287,4 +326,5 @@
         }
     });
 }); -->
+
 
