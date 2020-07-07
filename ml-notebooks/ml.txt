@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[229]:
-
-
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
@@ -13,13 +7,6 @@ from sklearn import metrics
 from sklearn.model_selection import cross_validate
 from sklearn.model_selection import cross_val_score
 from sklearn.tree import export_graphviz
-
-import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
-
-
-# In[138]:
-
 
 #!/usr/bin/env python
 # coding: utf-8
@@ -42,10 +29,6 @@ df1 = pd.read_csv('../../data/leavetimes_trips_1e6.csv',sep=',')
 
 
 df1.head()
-
-
-# In[139]:
-
 
 
 # In[4]:
@@ -154,11 +137,12 @@ df1_simple = df1.drop([
     'JUSTIFICATIONID_x',
     'SUPPRESSED_x',
     'ACTUALTIME_DEP',
+    'TRIPID',
     'VEHICLEID',
-    'PLANNEDTIME_DEP'
+    'PLANNEDTIME_DEP',
+    'PROGRNUMBER'
 ],axis=1)
 
-# df1_simple.drop(['PROGNUMBER','TRIPID'],axis=1,inplace=True)
 
 # In[17]:
 
@@ -177,7 +161,7 @@ df1_simple.dtypes
 
 df1_simple['MONTH'] = df1_simple['DAYOFSERVICE'].dt.month.astype('category')
 df1_simple['WEEKDAY'] = df1_simple['DAYOFSERVICE'].dt.weekday.astype('category')
-# df1_simple.drop('DAYOFSERVICE',axis=1,inplace=True)
+df1_simple.drop('DAYOFSERVICE',axis=1,inplace=True)
 
 
 # In[25]:
@@ -195,109 +179,26 @@ df1_simple.dtypes
 # In[ ]:
 
 
-# In[140]:
-
-
 df1_simple.head()
-
-
-# In[141]:
-
-
-# df1_simple['ARR_DELTA'] = df1_simple['PLANNEDTIME_ARR'] - df1_simple['ACTUALTIME_ARR']
-# df1_simple.drop('ACTUALTIME_ARR',axis=1,inplace=True)
-
-
-# In[142]:
-
-
-df1_simple.head()
-
-
-# In[143]:
-
 
 categorical_columns = df1_simple.select_dtypes('category').columns
 df1_simple[categorical_columns].describe().T
 
+df1_simple_46A = df1_simple[df1_simple['LINEID'] == '46A']
 
-# ### 
+df1_simple_46A.shape[0]/130
 
-# ## 1 bus route
+df1_simple_46A[categorical_columns].describe().T
 
-# In[303]:
-
-
-route = '16'
-
-
-# In[304]:
-
-
-df1_simple_1route = df1_simple[df1_simple['LINEID'] == route]
-
-
-# In[305]:
-
-
-df1_simple_1route.shape[0]/130
-
-
-# In[306]:
-
-
-df1_simple_1route[categorical_columns].describe().T
-
-
-# In[307]:
-
-
-df1_simple_1route['lateness'] = df1_simple_1route['ACTUALTIME_ARR'] - df1_simple_1route['PLANNEDTIME_ARR']
-
-
-# In[308]:
-
-
-df1_simple_1route.head()
-
-
-# In[309]:
-
-
-hour = (df1_simple_1route['PLANNEDTIME_ARR']/(60*60)).astype('int64')
-df1_simple_1route['Hour'] = hour
-df1_simple_1route.groupby('Hour')['lateness'].mean().plot()
-plt.ylabel('Lateness (s)')
-plt.title('Average Lateness for 30,000 random %s arrivals'%route)
-plt.savefig('%s_lateness.png'%route,dpi=720)
-
-
-# In[301]:
-
-
-df1_simple_1route.drop('LINEID',axis=1,inplace=True)
-df_rev1 = pd.get_dummies(df1_simple_1route)
-
-
-# In[302]:
-
+df1_simple_46A.drop('LINEID',axis=1,inplace=True)
+df_rev1 = pd.get_dummies(df1_simple_46A)
 
 continuous_columns = df_rev1.select_dtypes(include=['int64']).columns.tolist()
 # remove the target "binary_outcome"
 continuous_columns
 
-
-# In[109]:
-
-
 categorical_columns = df_rev1.select_dtypes(include=['uint8']).columns.tolist()
 categorical_columns
-
-
-# ## Train-test Split
-
-# In[92]:
-
 
 # y is the target
 y = df_rev1["ACTUALTIME_ARR"]
@@ -310,10 +211,6 @@ print("original range is: ",df_rev1.shape[0])
 print("training range (70%):\t rows 0 to", round(X_train.shape[0]))
 print("test range (30%): \t rows", round(X_train.shape[0]), "to", round(X_train.shape[0]) + X_test.shape[0])
 
-
-# In[69]:
-
-
 # need to reset the index to allow contatenation with predicted values otherwise not joining on same index...
 X_train.reset_index(drop=True, inplace=True)
 y_train.reset_index(drop=True, inplace=True)
@@ -321,18 +218,8 @@ X_test.reset_index(drop=True, inplace=True)
 y_test.reset_index(drop=True, inplace=True)
 X_train.head(5)
 
-
-# ## Linear Regression with 1 bus route
-
-# In[70]:
-
-
 # Train aka fit, a model using all continuous and categorical features.
 multiple_linreg = LinearRegression().fit(X_train, y_train)
-
-
-# In[71]:
-
 
 # Print the weights learned for each feature.
 print("\nFeatures are: \n", X_train.columns)
@@ -342,10 +229,6 @@ print("\nFeatures and coeficients: \n")#, list(zip(X_train.columns, multiple_lin
 for i in list(zip(X_train.columns,multiple_linreg.coef_)):
     print("{:e}".format(i[1]), i[0])
 
-
-# In[72]:
-
-
 # calculate the prediction and threshold the value. If >= 0.5 its true
 multiple_linreg_predictions_train = multiple_linreg.predict(X_train)
 actual_vs_predicted_multiplelinreg = pd.concat([y_train, pd.DataFrame(multiple_linreg_predictions_train, columns=['Predicted'])], axis=1)
@@ -353,10 +236,6 @@ actual_vs_predicted_multiplelinreg = pd.concat([y_train, pd.DataFrame(multiple_l
 print("\nUnthresholded predictions with multiple linear regression: \n")
 print(actual_vs_predicted_multiplelinreg.head(10))
 print()
-
-
-# In[73]:
-
 
 #This function is used repeatedly to compute all metrics
 def printMetrics(testActualVal, predictions):
@@ -367,75 +246,12 @@ def printMetrics(testActualVal, predictions):
     print("RMSE: ", metrics.mean_squared_error(testActualVal, predictions)**0.5)
     print("R2: ", metrics.r2_score(testActualVal, predictions))
 
-
-# In[74]:
-
-
 printMetrics(y_train, multiple_linreg_predictions_train)
-
-
-# In[75]:
-
 
 # Predicted price on test set
 test_predictions = multiple_linreg.predict(X_test)
 print("Actual values of test:\n", y_test)
 print("Predictions on test:", test_predictions)
 printMetrics(y_test, test_predictions)
-
-
-# In[76]:
-
-
-#Timetabled Arrival Time
-printMetrics(y_test, X_test['PLANNEDTIME_ARR'])
-
-
-# In[ ]:
-
-
-
-
-
-# ## SVM with one route
-
-# from sklearn import svm
-# 
-# svr = svm.LinearSVR().fit(X_train,y_train)
-
-# # calculate the prediction and threshold the value. If >= 0.5 its true
-# svr_predictions_train = svr.predict(X_train)
-# actual_vs_predicted_svr = pd.concat([y_train, pd.DataFrame(svr_predictions_train, columns=['Predicted'])], axis=1)
-# 
-# print("\nUnthresholded predictions with svr: \n")
-# print(actual_vs_predicted_svr.head(10))
-# print()
-
-# printMetrics(y_train, svr_predictions_train)
-
-# ## All Trips on 46A
-
-# In[171]:
-
-
-df1_simple_1route.head()
-
-
-# In[170]:
-
-
-TRIPIDs = df1_simple_1route['TRIPID'].unique()
-# DAYS = df1_simple_1route['DAYOFSERVICE'].unique()
-count = 0
-for ID in TRIPIDs:
-    DAYS = df1_simple_1route[df1_simple_1route['TRIPID'] == ID]['DAYOFSERVICE']
-    for day in DAYS:
-        print(day)
-#         print(df1_simple[df1_simple['TRIPID'] == ID and df1_simple['DAYOFSERVICE'] == day].shape)
-
-
-# In[ ]:
-
-
 
 
