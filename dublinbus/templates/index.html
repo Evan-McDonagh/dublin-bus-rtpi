@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script></script>
     <!--import css -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/mian.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-datetimepicker.min.css' %}">
 
     <!--import js -->
@@ -20,25 +20,64 @@
 
 </head>
 <body>
+
+    {#the navbar#}
+    <header>
+        <nav>
+            <div id="weather"></div>
+            <ul class="nav-links">
+                <li><a id = "search">Search</a></li>
+                <li><a id = "stop">Stop</a></li>
+                <li><a id = "twitter">Twitter</a></li>
+                <li><a id = "leapcard">Leapcard</a></li>
+            </ul>
+            <div class="burger">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            
+        </nav>
+    </header>
+
+    {#navbar script#}
+    <script>
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+
+            
+            burger.addEventListener('click', () => {
+                
+                //Toggle nav
+                nav.classList.toggle('nav-active');
+
+                //Animation for links
+                navLinks.forEach((link, index) => {
+                    if(link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + .5}s`;
+                    }
+                    
+                });
+
+                //Animation for burger
+                burger.classList.toggle('toggle');
+            });
+        }
+
+        navSlide();
+    </script>
+
+
     {#the map div#}
-    <div id="googleMap" style="width:850px;height:600px; float: right"></div>
+    <div id="googleMap"></div>
     <script type="text/javascript">window.onload=function () {
         initMap();
-    };</script>
-
-
-    <div>
-        <span id="weather"></span> 
-    </div>
-    
-
-    {#the nav bar#}
-    <ul>
-        <li><a id = "search">Search</a></li>
-        <li><a id = "stop">Stop</a></li>
-        <li><a id= "twitter">Twitter</a></li>
-        <li><a id = "leapcard">Leapcard</a></li>
-    </ul>
+    };
+    </script>    
 
 <div>
     <div id = "searchid">
@@ -264,7 +303,7 @@
             var stopdata = '{{stopdata|safe}}';
             stopdata = JSON.parse(stopdata);
         </script>
-      
+
     
 </body>
 </html>
