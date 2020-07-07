@@ -4,12 +4,10 @@ from django.urls import path
 from app01 import views
 
 urlpatterns = [
-    path('', views.base),
-    path('search', views.search),
-    path('stop', views.stop),
-    path('leapcard',views.leapcard),
-    path('init',views.init),
-    path('weather',views.weather),
-    path('real_info',views.real_info),
-    path('twitter',views.twitter),
+    url('^$', views.index),
+    url('stop/', views.stop),
+    url('leapcard/',views.leapcard),
+    # url('real_info/',views.real_info),
+    url('init',views.init),
+    url('weather',views.weather),
 ]

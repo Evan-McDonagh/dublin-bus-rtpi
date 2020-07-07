@@ -8,6 +8,7 @@ from pyleapcard import *
 from pprint import pprint
 import json
 import requests
+import re
 
 #  Google Map Apikey
 gmap_api = 'AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8'
@@ -18,16 +19,11 @@ weather_fore_api = '9570260da25526e20bf66bdf7e1c25e5'
 # OpenWeather Preent Apikey
 weather_pre_api = 'c9d5929c3180f174f633828540c0fbc5'
 
-
-def base(request):
+# Create your views here.
+def index(request):
+    
     context = load_bus_data()
-    return render(request,'base.html', context=context)
-
-
-def search(request):
-    context = load_bus_data()
-    context['title'] = 'search'
-    return render(request, 'search.html', context)
+    return render(request,'index.html', context)
 
 def load_bus_data():
     #load bus stop and route data
@@ -44,75 +40,40 @@ def load_bus_data():
     context = {'stopdata':stopdump}
     return context
 
-# load_bus_data()
+
 def leapcard(request):
-
     if request.method == 'POST':
-        form = leapForm(request.POST)
-        # print(form)
-        if form.is_valid():
-            name = form.cleaned_data['username']
-            pwd = form.cleaned_data['password']
-            context = {}
-            # print(name,pwd)
-            try:
-                session = LeapSession()
-                session.try_login(name,pwd)
-                overview = session.get_card_overview()
-                # print(overview)
-                leap_content = vars(overview)
-                context['card_num'] = leap_content.get('card_num')
-                context['balance'] = leap_content.get('balance')
-                # context['leap_content'] = leap_content
+        print(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        print(username,password)
+        context = {}
+        
+        try:
+            session = LeapSession()
+            session.try_login(username,password)
+            overview = session.get_card_overview()
+            # print(overview)
+            leap_content = vars(overview)
+            context['card_num'] = leap_content.get('card_num')
+            context['balance'] = leap_content.get('balance')
 
-
-            except:
-                context['wrong'] = "The user or the password is wrong, please try again"
-                print("the wrong password")
-            finally:
-                context['form'] = form
-                return render(request,'leapcard.html', context = context)
-
-
-
-    form = leapForm()
-    return render(request,'leapcard.html', {'form': form, 'title': 'Leapcard'})
-
+        except:
+            context['wrong'] = "The user or the password is wrong, please try again"
+            print("the wrong password")
+            return JsonResponse(context,safe=False)
+        
+        return JsonResponse(context,safe=False)
 
 def stop(request):
     if request.method == 'POST':
-        form = routeForm(request.POST)
-        if form.is_valid():
-            stop_id = form.cleaned_data['stop_id']
+        stop_id = request.POST['stop_id']
+        url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
+        obj = requests.get(url)
+        obj_json = obj.json()
 
+        return JsonResponse(obj_json,safe=False)
 
-            url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
-            obj = requests.get(url)
-            obj_json = obj.json()
-            # print(obj_json)
-
-            context = {}
-            results = obj_json['results']
-            context['results'] = results
-            context['form'] = form
-            context['length'] = len(results)
-            stop_data = load_bus_data()
-            context['stopdata'] = stop_data['stopdata']
-            # context = load_bus_data()
-            # print(context )
-
-
-            return render(request,"stop.html", context=context)
-    
-    context = {}
-    stop_data = load_bus_data()
-    form = routeForm()
-    context = {
-        'stopdata' : stop_data['stopdata'],
-        'form':form,
-    }
-    context['title'] = 'stop'
-    return render(request,'stop.html',context=context) 
 
 def init(request):
     print(request.method)
@@ -147,6 +108,7 @@ def init(request):
     else:
         inifo['address'] = 'location unknown'
     return HttpResponse(json.dumps(inifo))
+    
 
 def weather(request):
     print('weather')
@@ -174,20 +136,3 @@ def weather(request):
     return HttpResponse(json.dumps(weather_info))
 
 
-def real_info(request):
-    if request.method == 'POST':
-        form = routeForm(request.POST)
-        # print(request.body)
-        a = str(request.body)
-        b = re.search("stop[^']*", a).group()
-        c = b.split("D")[-1]
-
-        # url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation?stopid=3562&format=json"
-        url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" + "?stopid=" + c + "&format=json"
-        obj = requests.get(url)
-        obj_json = obj.json()
-
-        return JsonResponse(obj_json, safe=False)
-
-def twitter(request):
-    return render(request,'twitter.html')
