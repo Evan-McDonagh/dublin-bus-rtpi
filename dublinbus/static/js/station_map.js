@@ -21,6 +21,7 @@ var origin_pos = {} //represent the origin position, i.e. the value of input box
 var origin_value = "";
 
 var infowindow = new google.maps.InfoWindow();
+var map;
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -28,7 +29,7 @@ function initMap(){
     //show the stop clusters
 
     var pos = {lat:53.350140, lng:-6.266155};
-    var map =new google.maps.Map(document.getElementById('googleMap'), {
+    map =new google.maps.Map(document.getElementById('googleMap'), {
                   // center: {lat: pos.lat, lng: pos.lng},
         center:{lat:53.350140, lng:-6.266155},
                   zoom: 10
@@ -91,6 +92,8 @@ function initMap(){
     var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 
 }
+google.maps.event.addDomListener(window, 'load', initMap);
+
 
 function sendlocation(pos, loc_infoWindow, map){
     $.ajax({
