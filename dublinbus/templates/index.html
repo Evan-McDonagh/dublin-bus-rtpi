@@ -40,6 +40,33 @@
         <li><a id = "leapcard">Leapcard</a></li>
     </ul>
 
+<!-- add autocomplete function for the input -->
+<script>
+    var origin = 'origin';
+    var destination = 'destination';
+
+    $(document).ready(function(){
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(origin)),{
+            types:['geocode'],
+        });
+
+        google.maps.event.addListener(autocomplete,'place_changed', function(){
+            var near_place = autocomplete.getlace();
+        });
+
+        var autocomplete_des;
+        autocomplete_des = new google.maps.places.Autocomplete((document.getElementById(destination)),{
+            types:['geocode'],
+        });
+
+        google.maps.event.addListener(autocomplete_des,'place_changed', function(){
+            var near_place_des = autocomplete.getlace();
+        });
+    })
+</script>
+
+
 <div>
     <div id = "searchid">
         <div>
