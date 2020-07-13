@@ -223,7 +223,8 @@ function calcRoute() {
     origin: {query: document.getElementById('origin').value},
     destination: {query: document.getElementById('destination').value},
     travelMode: 'TRANSIT',
-    provideRouteAlternatives: true,
+    transitOptions:{departureTime: new Date(document.getElementById("time1").value)},
+    provideRouteAlternatives: false,
   };
     var map3 = new google.maps.Map(document.getElementById('googleMap'),{
         center: origin_pos,
@@ -232,8 +233,86 @@ function calcRoute() {
     directionsRenderer.setMap(map3);
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
+        // alert(result['routes'].length);
+        // for (i in result['routes']){
+        //     legs = result['routes'][i]['legs']
+        //     for (j in legs){
+        //         alert(j + legs[j]['duration'].value + legs[j]['duration']['text'])
+        //         alert(j + ":" + legs[j]['steps'].length)
+        //         alert(j + ":" + legs[j]['steps'][1]['transit']['line'].name)
+        //     }
+        // }
+        var routes_dict = {}
+        var route_choices = {}
+        for (i in result['routes']){
+            legs = result['routes'][i]['legs'];
+            for (j in legs){
+                var walking_dur = 0;
+                var bus_dur = 0;
+                var bus_name = [];
+                var bus_name_str = '';
+                steps = legs[j]['steps']
+                // alert(result['routes'][i]['bounds'])
+                for (k in steps){
+                    if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
+                    else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
+                }
+                // alert(bus_name[0])
+                if (bus_name.length > 1){for (i in bus_name){bus_name_str += bus_name[i] + "->"}}
+                else{bus_name_str = bus_name[0]};
+                routes_dict[bus_name_str] = result['routes'][i];
+                // route_choices[bus_name_str] = {'bus':bus_name, 'bounds':result['routes'][i]['bounds']}
+                // alert(routes_dict[bus_name].copyrights);
+                alert(walking_dur + ';' + bus_dur +';' + bus_name_str);
+                document.getElementById('routes').innerHTML += "<button id="+bus_name_str + ">"+bus_name_str+"</button>" + "walk:" + walking_dur +"s, on bus:"+ bus_dur+"s<br>";
+                // loadstops(bus_name, result['routes'][i]['bounds'])
+                document.getElementById(bus_name_str).addEventListener('click', function(){loadstops(bus_name, result['routes'][i]['bounds'], map3);});
+
+            }
+        }
+        for (i in route_choices){
+            alert(i);
+        }
+        // document.getElementById(bus_name_str).addEventListener('click', function(){loadstops(bus_name, result['routes'][i]['bounds'], map3);});
+        function loadstops(bus_name, bounds, map){
+            post_data = {'bus':bus_name, 'bounds':bounds}
+            var markers =[]
+            $.ajax({
+                headers: {'X-CSRFToken': csrftoken},
+                url: '/printresult',
+                data: JSON.stringify(post_data),
+                type:'POST',
+                dataType:'json',
+                success: function (data) {
+                    // alert(data.stop_locations.length);
+                    for (i in data.stop_locations) {
+                        infowindow = new google.maps.InfoWindow({
+                            content:'show something',
+                        })
+                        marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(
+                                data.stop_locations[i].lat,
+                                data.stop_locations[i].lng),
+                            map: map
+                        });
+                        marker.addListener("onclick", function () {
+                            alert('markerclick')
+                            infowindow.open(map3, marker)
+                        })
+                        marker.setMap(map3);
+                    }
+                    markers.push(marker);
+                }, error: function () {
+                    alert('error');
+                },
+        });
+        }
+        // alert(routes_dict['39a'].copyrights);
+        // delete result['routes'];
+        // result['routes'] = [{'0':routes_dict['39a']}];
       directionsRenderer.setDirections(result);
     }
   });
+    // alert("jk",directionsRenderer.getDirections());
    directionsRenderer.setPanel(document.getElementById('h51'));
 }
