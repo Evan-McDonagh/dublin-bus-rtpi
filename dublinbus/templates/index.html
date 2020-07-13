@@ -3,6 +3,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Dublinbus</title>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8&libraries=places&sensor=false"></script>
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script></script>
@@ -10,35 +12,135 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/mian.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-datetimepicker.min.css' %}">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    
     <!--import js -->
-    <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/bootstrap.min.js.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
 
+    <!-- <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script> -->
+    <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+    <!-- <script type="text/javascript" src="{% static 'js/bootstrap.min.js.js' %}"></script> -->
+    <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+
+    
 </head>
 <body>
-    {#the map div#}
-    <div id="googleMap" style="width:850px;height:600px; float: right"></div>
+
+
     <script type="text/javascript">window.onload=function () {
         initMap();
     };</script>
 
-
-    <div>
-        <span id="weather"></span> 
-    </div>
     
 
-    {#the nav bar#}
-    <ul>
-        <li><a id = "search">Search</a></li>
-        <li><a id = "stop">Stop</a></li>
-        <li><a id= "twitter">Twitter</a></li>
-        <li><a id = "leapcard">Leapcard</a></li>
-    </ul>
+<div class = "wrapper">
+    <nav id = "sidebar">
+        
+        
+        <ul class="list-unstyled components">
+            <li class="active"><a id = "search">Search</a></li>
+            <li><a id = "stop">Stop</a></li>
+            <!-- <li><a id= "twitter">Twitter</a></li> -->
+            <li><a id = "leapcard">Leapcard</a></li>
+        </ul>
+    
+
+
+        <div >
+            <div id = "searchid">
+                <div>
+                    <form action="" method="post">
+
+                        <input id="origin" type="text" name="start_location" placeholder="From..."><br>
+                        <input id="destination" type="text" name="end_location" placeholder="To..."><br>
+                        <button id="go" type = "button" onclick = "search();calcRoute()">go</button>
+                    </form>
+                </div>
+                
+                <div><h4 id="h51"></h4></div>
+            </div>
+            
+            <div id = "leapcardid">
+                <div>
+                    <form method="post" id = "lpadd">
+                        {% csrf_token %}
+                        username:<input type='text' id = "username" name = "username"><br>
+                        password:<input type='password' id = "password" name = "password"><br>
+                        <button id = "lpbtn" type="button">submit</button>
+                    </form>
+                </div>
+                <div id ="lparea"></div>
+            </div>
+
+            <div id = "stopid">
+                <div>
+                    <form method="post" id = "stopadd">
+                        {% csrf_token %}
+                        stop_id:<input type='text' id = "stop_id" name = "stop_id"><br>
+                        <button id = "stopbtn" type="button">submit</button>
+                    </form>
+
+                </div>
+                <div id ="stoparea"></div>
+
+            </div>
+
+            <div id = "twitterid">
+                <a class="twitter-timeline" data-width="350" data-height="450" data-theme="light" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+        </div>
+   
+    </nav>
+
+    <div id = "content">
+    
+        
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+    
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span>Start</span>
+                    </button>
+
+                    <div id="weather" style="display: inline; float:right;"></div> 
+    
+                </div>
+            </nav>
+            
+            <div id="googleMap" style="width:100%;height:90%; float: right; z-index: -1;"></div>
+        
+            <div class="line"></div>
+            
+        
+            </div>
+    
+
+    
+</div>
+
+<!-- click the sidebar button, it will hide -->
+<script>
+$(document).ready(function () {
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+    });
+
+});
+</script>
+
+
 
 <!-- add autocomplete function for the input -->
 <script>
@@ -66,75 +168,13 @@
     })
 </script>
 
-
-<div>
-    <div id = "searchid">
-        <div>
-            <form action="" method="post">
-                <!-- <input type="text" name="start_location" placeholder="From...">
-                <input type="text" name="end_location" placeholder="To..."> -->
-                <!-- <button type="button">go</button> -->
-
-                <input id="origin" type="text" name="start_location" placeholder="From...">
-                <input id="destination" type="text" name="end_location" placeholder="To...">
-                <button id="go" type = "button" onclick = "search();calcRoute()">go</button>
-            </form>
-        </div>
-        
-        
-        {#datetimepicker#}
-        <div class="col-md-13">
-            <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control"/>
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-            
-            <div class='input-group date' id='datetimepicker3'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-        </div>
-        <div><h4 id="h51"></h4></div>
-    </div>
-    
-    <div id = "leapcardid">
-        <div>
-            <form method="post" id = "lpadd">
-                {% csrf_token %}
-                username:<input type='text' id = "username" name = "username">
-                password:<input type='password' id = "password" name = "password">
-                <button id = "lpbtn" type="button">submit</button>
-            </form>
-        </div>
-        <div id ="lparea"></div>
-    </div>
-
-    <div id = "stopid">
-        <div>
-            <form method="post" id = "stopadd">
-                {% csrf_token %}
-                stop_id:<input type='text' id = "stop_id" name = "stop_id">
-                <button id = "stopbtn" type="button">submit</button>
-            </form>
-        </div>
-        <div id ="stoparea"></div>
-
-    </div>
-
-    <div id = "twitterid">
-        <a class="twitter-timeline" data-width="500" data-height="600" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-    </div>
-</div>
-
 <!-- the onclick function that will hide some feature div -->
         <script type = "text/javascript">
         $(document).ready(function(){
             // alert('hi');
+            
             $('#searchid').siblings().hide();
+            $('#twitterid').show();
             $('#searchid').show();
 
         });
@@ -143,27 +183,30 @@
         <script type = "text/javascript">
             $('#leapcard').click(function(){
                 $('#leapcardid').siblings().hide();
+                $('#twitterid').show();
                 $('#leapcardid').show();
             })
         </script>
         <script type = "text/javascript">
             $('#stop').click(function(){
                 $('#stopid').siblings().hide();
+                $('#twitterid').show();
                 $('#stopid').show();
             })
         </script>
         <script type = "text/javascript">
             $('#search').click(function(){
                 $('#searchid').siblings().hide();
+                $('#twitterid').show();
                 $('#searchid').show();
             })
         </script>
-        <script type = "text/javascript">
+        <!-- <script type = "text/javascript">
             $('#twitter').click(function(){
                 $('#twitterid').siblings().hide();
                 $('#twitterid').show();
             })
-        </script>
+        </script> -->
     
     
     
@@ -277,7 +320,7 @@
             });
         </script>
 
-        <script type="text/javascript">
+        <!-- <script type="text/javascript">
             var todayDate = new Date().getDate();
             $('#datetimepicker1').datetimepicker({
         
@@ -285,7 +328,7 @@
             $('#datetimepicker3').datetimepicker({
         
             });
-        </script>
+        </script> -->
 
         <script>
             var stopdata = '{{stopdata|safe}}';
