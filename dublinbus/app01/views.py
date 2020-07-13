@@ -136,3 +136,39 @@ def weather(request):
     return HttpResponse(json.dumps(weather_info))
 
 
+def printresult(request):
+    print("printrequest")
+    if request.method == 'POST':
+        rebody = json.loads(request.body)
+        with open ('result.txt', 'w') as rt:
+            rt.write(str(rebody))
+        rt.close()
+        bounds = rebody.get('bounds')
+        print(type(bounds),bounds)
+        bus = rebody.get('bus')
+        print(bus)
+        with open("./local-bus-data/route-data.json") as rt:
+            allroutes = json.load(rt)
+            rt.close()
+        with open("./local-bus-data/stop-data.json") as st:
+            allstops = json.load(st)
+            st.close()
+        stop_locations = []
+
+        # route_stop_locations = {}
+        for i in bus:
+            bus_route = allroutes[i]
+            west = bounds['west']
+            east = bounds['east']
+            north = bounds['north']
+            south = bounds['south']
+            for stop in bus_route:
+                STOP = allstops[stop]
+                slat = STOP["latitude"]
+                slng = STOP["longitude"]
+                if (slat >= south and slat <= north) or (slat >= north and slat <= south):
+                    if (slng >= west and slng <= east) or (slng >= east and slng <= west):
+                        stop_locations.append({'lat':slat, 'lng':slng})
+            # route_stop_locations
+            print(stop_locations)
+    return HttpResponse(json.dumps({'stop_locations':stop_locations}))
