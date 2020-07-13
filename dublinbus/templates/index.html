@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <title>Dublinbus</title>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8&libraries=places&sensor=false"></script>
-    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script></script>
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     <!--import css -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/mian.css' %}">
     {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-datetimepicker.min.css' %}">
 
     <!--import js -->
-    <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script>
+{#    <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script>#}
     <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.min.js.js' %}"></script>
@@ -124,18 +124,18 @@
         {#datetimepicker#}
         <div class="col-md-13">
             <div class='input-group date' id='datetimepicker1'>
-                <input type='text' class="form-control"/>
+                <input type='text' class="form-control" id="time1"/>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
-
-            <div class='input-group date' id='datetimepicker3'>
-                <input type='text' class="form-control" />
-                <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
+{##}
+{#            <div class='input-group date' id='datetimepicker3'>#}
+{#                <input type='text' class="form-control" />#}
+{#                <span class="input-group-addon">#}
+{#                    <span class="glyphicon glyphicon-calendar"></span>#}
+{#                </span>#}
+{#            </div>#}
         </div>
         <div id="routes"></div>
         <div><h4 id="h51"></h4></div>
@@ -322,9 +322,9 @@
             $('#datetimepicker1').datetimepicker({
 
             });
-            $('#datetimepicker3').datetimepicker({
-
-            });
+            {#$('#datetimepicker3').datetimepicker({#}
+            {##}
+            {#);#}
         </script>
 
         <script>
