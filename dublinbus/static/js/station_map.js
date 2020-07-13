@@ -128,8 +128,11 @@ function realtimeweather(pos) {
         data:pos,
         dataType: 'json',
         success: function (data) {
-            // alert(data.weather)
-            document.getElementById("weather").innerHTML = data.weather;
+            // alert(data.weather);
+            var icon = data['iconUrl']
+            var weather_show ="<img src='" + icon  + "'>" +data['descp'] +" "+ data['temp'];
+            // console.log(weather_show);
+            document.getElementById("weather").innerHTML = weather_show;
         }
     })
 }
