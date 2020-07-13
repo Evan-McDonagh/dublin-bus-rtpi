@@ -223,7 +223,7 @@ function calcRoute() {
     origin: {query: document.getElementById('origin').value},
     destination: {query: document.getElementById('destination').value},
     travelMode: 'TRANSIT',
-    transitOptions:{departureTime: new Date(document.getElementById("time1").value)},
+    transitOptions:{departureTime: new Date(document.getElementById("datetimepicker1").value)},
     provideRouteAlternatives: false,
   };
     var map3 = new google.maps.Map(document.getElementById('googleMap'),{
