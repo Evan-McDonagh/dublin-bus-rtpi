@@ -23,11 +23,12 @@ a:focus {
 
 .navbar {
     padding: 15px 10px;
-    background: #fff;
+    background: rgb(219, 219, 178);
     border: none;
-    border-radius: 0;
+    border-radius: 5px;
     margin-bottom: 40px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    font-size: 1.2rem !important;
 }
 
 .navbar-btn {
@@ -56,9 +57,67 @@ a:focus {
 #sidebar {
     min-width: 350px;
     max-width: 350px;
-    background: #7386D5;
     color: #fff;
     transition: all 0.3s;
+    border-radius: 5px;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.side-top {
+    background: rgb(71, 71, 95);
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1.5rem;
+}
+
+.forms {
+    padding: 1rem 1.5rem 1rem 1.5rem;
+    align-items: center;
+}
+
+.forms input {
+    width: 100%;
+    margin-bottom: 3px;
+}
+
+.forms button {
+    width: 100%;
+    border-radius: 3px;
+    margin-top: 3px;
+    margin-bottom: 6px;
+    border: 2px solid #17a2b8;
+    background-color: #17a2b8;
+    color: #fff;
+    font-weight: bold;
+}
+
+input {
+    /* border: 2px solid #17a2b8; */
+    border: 2px solid #999;
+    border-radius: 3px;
+    padding-bottom: 1px;
+  }
+
+#stoparea {
+    font-size: 1.2rem;
+    text-align: center;
+    justify-content: space-around;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+
+.adp {
+    background: #fff;
+    border-radius: 3px;
+    padding: 3px;
+}
+
+.adp-list {
+    border-radius: 3px;
 }
 
 #sidebar.active {
@@ -67,7 +126,7 @@ a:focus {
 
 #sidebar .sidebar-header {
     padding: 20px;
-    background: #6d7fcc;
+    background: #17a2b8;
 }
 
 #sidebar ul.components {
@@ -84,17 +143,12 @@ a:focus {
     padding: 10px;
     font-size: 1.1em;
     display: block;
+    border-radius: 5px;
 }
 
 #sidebar ul li a:hover {
-    color: #7386D5;
+    color: #17a2b8;
     background: #fff;
-}
-
-#sidebar ul li.active>a,
-a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
 }
 
 a[data-toggle="collapse"] {
@@ -112,7 +166,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    background: #17a2b8;
 }
 
 ul.CTAs {
@@ -129,12 +183,12 @@ ul.CTAs a {
 
 a.download {
     background: #fff;
-    color: #7386D5;
+    color: #17a2b8;
 }
 
 a.article,
 a.article:hover {
-    background: #6d7fcc !important;
+    background: #17a2b8 !important;
     color: #fff !important;
 }
 

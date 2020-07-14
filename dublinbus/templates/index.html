@@ -45,8 +45,7 @@
 
 <div class = "wrapper">
     <nav id = "sidebar">
-        
-        
+        <div class="side-top">
         <ul class="list-unstyled components">
             <li class="active"><a id = "search">Search</a></li>
             <li><a id = "stop">Stop</a></li>
@@ -56,14 +55,14 @@
     
 
 
-        <div >
+        <div class="forms">
             <div id = "searchid">
                 <div>
                     <form action="" method="post">
 
                         <input id="origin" type="text" name="start_location" placeholder="From..."><br>
                         <input id="destination" type="text" name="end_location" placeholder="To..."><br>
-                        <button id="go" type = "button" onclick = "search();calcRoute()">go</button>
+                        <button id="go" type = "button" onclick = "search();calcRoute()">Go!</button>
                     </form>
                 </div>
                 
@@ -74,9 +73,9 @@
                 <div>
                     <form method="post" id = "lpadd">
                         {% csrf_token %}
-                        username:<input type='text' id = "username" name = "username"><br>
-                        password:<input type='password' id = "password" name = "password"><br>
-                        <button id = "lpbtn" type="button">submit</button>
+                        Username: <input type='text' id = "username" name = "username"><br>
+                        Password: <input type='password' id = "password" name = "password"><br>
+                        <button id = "lpbtn" type="button">Submit</button>
                     </form>
                 </div>
                 <div id ="lparea"></div>
@@ -86,8 +85,8 @@
                 <div>
                     <form method="post" id = "stopadd">
                         {% csrf_token %}
-                        stop_id:<input type='text' id = "stop_id" name = "stop_id"><br>
-                        <button id = "stopbtn" type="button">submit</button>
+                        Stop ID: <input type='text' id = "stop_id" name = "stop_id"><br>
+                        <button id = "stopbtn" type="button">Submit</button>
                     </form>
 
                 </div>
@@ -95,22 +94,24 @@
 
             </div>
 
-            <div id = "twitterid">
-                <a class="twitter-timeline" data-width="350" data-height="450" data-theme="light" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            </div>
         </div>
+        </div>
+        <div id = "twitterid">
+            <a class="twitter-timeline" data-width="350" data-height="450" data-theme="light" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+        
    
     </nav>
 
     <div id = "content">
     
         
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: rgb(71, 71, 95) !important; color: #fff;">
                 <div class="container-fluid">
     
                     <button type="button" id="sidebarCollapse" class="btn btn-info">
                         <i class="fas fa-align-left"></i>
-                        <span>Start</span>
+                        <span></span>
                     </button>
 
                     <div id="weather" style="display: inline; float:right;"></div> 
