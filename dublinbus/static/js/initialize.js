@@ -1,19 +1,3 @@
-// var myCenter=new google.maps.LatLng(53.350140, -6.266155);
-//     var map;
-//     var mapProp;
-// function initialize() {
-//     mapProp = {
-//         center: new google.maps.LatLng(53.350140, -6.266155),
-//         zoom: 13,
-//         mapTypeId: google.maps.MapTypeId.ROADMAP
-//     };
-//     map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
-// }
-// google.maps.event.addDomListener(window, 'load', initialize);
-
-
-    // map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-
 var infowindow;
 var map;
 
@@ -43,20 +27,19 @@ function initialize() {
                         stopdata[stopKey]['longitude']),
                     map: map
                 });
+                marker.setMap(map);
                 markers.push(marker);
                 marker.addListener('click', (function (marker, stopKey) {
-                    return function () {
-                        getStopInfo(marker, stopKey)
-                                    }
+                    return function () {getStopInfo(marker, stopKey);}
                 })(marker, stopKey));
             }
         }
-
-        marker.setMap(map);
+        // marker.setMap(map);
         // create marker clusters using array of markers
         var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
-    };
-    google.maps.event.addDomListener(window, 'load', initialize);
+};
+// google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListener(window, 'load', initMap);
 
 function getStopInfo(marker, stopKey) {
     let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
