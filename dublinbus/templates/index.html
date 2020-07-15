@@ -105,7 +105,7 @@
         </div>
         </div>
         <div id = "twitterid">
-            <a class="twitter-timeline" data-width="350" data-height="450" data-theme="light" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            <a class="twitter-timeline" data-width="350" data-height="450" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>        
         </div>
         
    
@@ -163,7 +163,7 @@ $(document).ready(function () {
         });
 
         google.maps.event.addListener(autocomplete,'place_changed', function(){
-            var near_place = autocomplete.getlace();
+            var near_place = autocomplete.getPlace();
         });
 
         var autocomplete_des;
@@ -172,7 +172,7 @@ $(document).ready(function () {
         });
 
         google.maps.event.addListener(autocomplete_des,'place_changed', function(){
-            var near_place_des = autocomplete.getlace();
+            var near_place_des = autocomplete.getPlace();
         });
     })
 </script>
