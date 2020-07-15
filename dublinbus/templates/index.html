@@ -20,7 +20,7 @@
     <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
-    <!-- <script type="text/javascript" src="{% static 'js/bootstrap.min.js.js' %}"></script> -->
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
@@ -144,18 +144,18 @@ $(document).ready(function () {
 
 
 <!-- add autocomplete function for the input -->
-<script>
+<script type="text/javascript">
     var origin = 'origin';
     var destination = 'destination';
-
+    var autocomplete;
     $(document).ready(function(){
-        var autocomplete;
+        
         autocomplete = new google.maps.places.Autocomplete((document.getElementById(origin)),{
             types:['geocode'],
         });
 
         google.maps.event.addListener(autocomplete,'place_changed', function(){
-            var near_place = autocomplete.getlace();
+            var near_place = autocomplete.getPlace();
         });
 
         var autocomplete_des;
@@ -164,7 +164,7 @@ $(document).ready(function () {
         });
 
         google.maps.event.addListener(autocomplete_des,'place_changed', function(){
-            var near_place_des = autocomplete.getlace();
+            var near_place_des = autocomplete.getPlace();
         });
     })
 </script>
