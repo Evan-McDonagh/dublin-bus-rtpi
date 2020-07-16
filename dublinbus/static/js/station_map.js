@@ -273,7 +273,7 @@ function calcRoute() {
                     });
                     marker.addListener('click', function(){infowindow.open(map,marker)})
                     // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
-                    marker.addListener('mouseout', function(){infowindow.close(map,marker)})
+                    // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
                 }
             })
         }
