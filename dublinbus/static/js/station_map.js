@@ -33,7 +33,7 @@ function initMap(){
     var markers = [];
     var stopKey;
     var lngT = 0.005;
-    var latT = 0.003;
+    var latT = 0.005;
     var stopKeys = Object.keys(stopdata);
 
     var pos = {lat:53.350140, lng:-6.266155};
