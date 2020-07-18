@@ -56,6 +56,7 @@ function initMap(){
         // alert(pos.lat)
         origin_pos = pos;
         map.setCenter(pos);
+        map.setZoom(14);
         // loc_infoWindow.setPosition(pos);
         pos['status'] = 'OK';
         sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
