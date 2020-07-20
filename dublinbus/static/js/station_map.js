@@ -130,7 +130,7 @@ function realtimeweather(pos) {
         success: function (data) {
             // alert("hi")
             var icon = data['iconUrl'];
-            console.log(icon);
+            // console.log(icon);
             var weather_show ="<img src='" + icon  + "'>" +data['descp'] +" "+ data['temp'];
 
             document.getElementById("weather").innerHTML = weather_show;

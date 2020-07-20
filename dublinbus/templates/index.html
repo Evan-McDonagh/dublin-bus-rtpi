@@ -37,6 +37,7 @@
     <div class="wrapper">
 
         <nav id="sidebar">
+            <div class = "side-top">
 
             <ul class="list-unstyled components">
                 <li class="active"><a id = "search">Search</a></li>
@@ -45,73 +46,75 @@
                 <li><a id = "leapcard">Leapcard</a></li>
             </ul>
 
-            <div>
+            <div class="forms">
                 <div id = "searchid">
                     <div>
                         <form action="" method="post">
                             
                             <input id="origin" type="text" name="start_location" placeholder="From...">
                             <input id="destination" type="text" name="end_location" placeholder="To...">
-                            <button id="go" type = "button" onclick = "search();calcRoute()">go</button>
+
+                            <div class="col-md-13">
+                                <div class='input-group date' id='datetimepicker1'>
+                                    <input type='text' class="form-control"/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <button id="go" type = "button" onclick = "search();calcRoute()">Go!</button>
                         </form>
                     </div>
-                    
-                    
-                    {#datetimepicker#}
-                    <div class="col-md-13">
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control"/>
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                        
-                    </div>
+
                     <div><h4 id="h51"></h4></div>
                 </div>
+
                 
                 <div id = "leapcardid">
                     <div>
                         <form method="post" id = "lpadd">
                             {% csrf_token %}
-                            username:<input type='text' id = "username" name = "username">
-                            password:<input type='password' id = "password" name = "password">
+                            Username: <input type='text' id = "username" name = "username">
+                            Password: <input type='password' id = "password" name = "password">
                             <button id = "lpbtn" type="button">submit</button>
                         </form>
                     </div>
                     <div id ="lparea"></div>
                 </div>
+
             
                 <div id = "stopid">
                     <div>
                         <form method="post" id = "stopadd">
                             {% csrf_token %}
-                            stop_id:<input type='text' id = "stop_id" name = "stop_id">
+                            Stop ID: <input type='text' id = "stop_id" name = "stop_id">
                             <button id = "stopbtn" type="button">submit</button>
                         </form>
                     </div>
                     <div id ="stoparea"></div>
-            
                 </div>
             
+                
+            </div>
+            </div>
                 <div id = "twitterid">
                     <a class="twitter-timeline" data-width="500" data-height="600" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                 </div>
-            </div>
         </nav>
 
         <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: rgb(71, 71, 95) !important; color: #fff;">
                 <div class="container-fluid">
 
                     <button type="button" id="sidebarCollapse" class="btn btn-info">
                         <i class="fas fa-align-left"></i>
-                        <span>Start</span>
+                        <span></span>
                     </button>
                     <div id="weather" style="display: inline; float:right;"></div>
                 </div>
             </nav>
-            <div id="googleMap" style="width:100%;height:100%;"></div>
+            <div id="googleMap" style="width:100%;height:90%;"></div>
             <div class="line"></div>
         </div>
 

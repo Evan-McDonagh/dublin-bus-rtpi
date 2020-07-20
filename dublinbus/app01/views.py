@@ -101,13 +101,11 @@ def init(request):
     
 
 def weather(request):
-    # print('weather')
     weather_info = {}
     if request.method == 'POST':
-        # print(request.body)
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
-        print(lat, lng)
+        # print(lat, lng)
 
         # get present weather
         weather_r = requests.get(
@@ -126,7 +124,7 @@ def weather(request):
         weather_info['temp'] = temp
         weather_info['iconUrl'] = iconUrl
 
-        print("weather info is",weather_info)
+        # print("weather info is",weather_info)
     else:
         weather_info['weather'] = 'location unknown'
     return HttpResponse(json.dumps(weather_info))
