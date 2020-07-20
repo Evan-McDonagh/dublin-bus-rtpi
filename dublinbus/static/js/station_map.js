@@ -67,6 +67,7 @@ function initMap(){
     }
 
     var stopKeys = Object.keys(stopdata);
+    var infowindow = new google.maps.InfoWindow;
 
     // Add stop markers with onclick
     var marker;
@@ -149,7 +150,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos, map) {
 
 function getStopInfo(marker, stopKey, map) {
     //supporting functions of initMap()
-    var infowindow = new google.maps.InfoWindow;
+    
     let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
     content += "Routes: " + stopdata[stopKey]['routes'];
     content += "</div>"
