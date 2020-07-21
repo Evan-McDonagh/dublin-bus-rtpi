@@ -17,6 +17,8 @@
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     
+    <!--add favicon-->
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
     
     <!--import js -->
     <!-- <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script> -->
@@ -94,6 +96,7 @@
                     </div>
                     <div id ="stoparea"></div>
                 </div>
+                <div id="nearme"></div>
             
                 
             </div>
@@ -169,6 +172,7 @@
             $('#searchid').siblings().hide();
             $('#twitterid').show();
             $('#searchid').show();
+            $('#nearme').show();
 
         });
             
@@ -192,6 +196,7 @@
                 $('#searchid').siblings().hide();
                 $('#twitterid').show();
                 $('#searchid').show();
+                $('#nearme').show();
             })
         </script>
         <!-- <script type = "text/javascript">
