@@ -22,6 +22,8 @@ var origin_value = "";
 
 var infowindow = new google.maps.InfoWindow();
 var map;
+var nearMeList = [];
+
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -34,7 +36,6 @@ function initMap(){
     var stopKey;
     var lngT = 0.005;
     var latT = 0.005;
-    var nearMeList = [];
     var stopKeys = Object.keys(stopdata);
 
     var pos = {lat:53.350140, lng:-6.266155};
@@ -67,10 +68,10 @@ function initMap(){
         for (i=0;i<stopKeys.length;i++){
             stopKey = stopKeys[i];
             if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
-                nearMeList.push(stopKey);
+               nearMeList.push(stopdata[stopKey]['routes']);
             }
         }
-
+        nearMe(nearMeList);
       }, function() {
         pos['status'] = "wrong";
         sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
@@ -102,7 +103,7 @@ function initMap(){
             })(marker, stopKey));
         }
     
-    }
+    }      
     // create marker clusters using array of markers
     var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
@@ -127,7 +128,7 @@ function sendlocation(pos, loc_infoWindow, map){
                           position: {'lat':pos.lat, 'lng':pos.lng},
           });
             loc_infoWindow.setPosition({'lat':pos.lat, 'lng':pos.lng});
-            loc_infoWindow.setContent("you r here:"+data.address);
+            loc_infoWindow.setContent("You are here: "+data.address);
             origin_value = data.address;
             loc_infoWindow.open(map, loc_marker);
         },
@@ -318,4 +319,25 @@ function calcRoute() {
     }
   });
    directionsRenderer.setPanel(document.getElementById('h51'));
+}
+
+function nearMe(ls){
+    // var size = Object.keys(ls).length;
+    var size = ls.length;
+    var routes = new Set();
+    if (size > 0){
+        var msg ="<p>There are " + (size/2) + " bus stops within 5 minutes walk of your location. </p><p>Serving routes: ";
+        for (var i=0; i < size; i++) {
+            var buses = ls[i];
+            for (var j=0; j < buses.length; j++){
+                routes.add(buses[j]);
+            }
+        }
+        routes = Array.from(routes);
+        for (var k=0; k < routes.length; k++){
+            msg += routes[k] + " ";
+        }
+        msg += "</p>"
+        document.getElementById("nearme").innerHTML = msg;
+    } 
 }
