@@ -71,31 +71,21 @@ def stop(request):
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
         obj_json = obj.json()
-        print(obj_json)
+
         return JsonResponse(obj_json,safe=False)
 
 
 def init(request):
-    print(request.method)
+    # print(request.method)
     inifo = {}
     if request.method == 'POST':
-        print(request.body)
+        # print(request.body)
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
         print(lat, lng)
 
 
         # # get present weather
-        # weather_r = requests.get(
-        #     "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}".format(lat, lng, weather_pre_api))
-        # weather_result = json.loads(weather_r.text)
-        # print(weather_result)
-        # h_temp = weather_result["main"].get("feels_like")  # get tempetature
-        # temp = str(round(h_temp - 273.15)) + '˚C'
-        # descp = str(weather_result["weather"][0].get('main'))    # get weather description
-        #
-        # weather = descp + ', ' + temp
-        # inifo['weather'] = weather
         # print(weather)
         # # get the address of the post coordinate
         address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
@@ -121,7 +111,7 @@ def weather(request):
         weather_r = requests.get(
             "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}".format(lat, lng, weather_pre_api))
         weather_result = json.loads(weather_r.text)
-        
+        # print(weather_result)
         h_temp = weather_result["main"].get("feels_like")  # get tempetature
         temp = str(round(h_temp - 273.15)) + '˚C'
         descp = str(weather_result["weather"][0].get('main'))  # get weather description
@@ -130,7 +120,6 @@ def weather(request):
         weather_icon = weather_result["weather"][0].get("icon")
         iconUrl = "http://openweathermap.org/img/wn/" + weather_icon + ".png"
 
-        
         weather_info['descp'] = descp
         weather_info['temp'] = temp
         weather_info['iconUrl'] = iconUrl
@@ -195,3 +184,5 @@ def rtmarkerinfo(request):
             allinfo += "Route:"+ key + "  arrive at:" + result.get('arrivaldatetime') + " Towards " + result.get('destination') +"<br>"
         print(rsp)
         return HttpResponse(json.dumps({"allinfo":allinfo}))
+
+
