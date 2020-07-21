@@ -327,7 +327,7 @@ function nearMe(ls){
     var size = ls.length;
     var routes = new Set();
     if (size > 0){
-        var msg ="<p>There are " + (size/2) + " bus stops within 5 minutes walk of your location. </p><p>Serving routes: ";
+        var msg ="<p>There are " + size + " bus stops within 5 minutes walk of your location. </p><p>Serving routes: ";
         for (var i=0; i < size; i++) {
             var buses = ls[i];
             for (var j=0; j < buses.length; j++){
