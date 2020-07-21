@@ -71,7 +71,7 @@ def stop(request):
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
         obj_json = obj.json()
-
+        print(obj_json)
         return JsonResponse(obj_json,safe=False)
 
 
@@ -131,16 +131,16 @@ def weather(request):
 
 
 def printresult(request):
-    print("printrequest")
+    # print("printrequest")
     if request.method == 'POST':
         rebody = json.loads(request.body)
         with open ('result.txt', 'w') as rt:
             rt.write(str(rebody))
         rt.close()
         bounds = rebody.get('bounds')
-        print(type(bounds),bounds)
+        # print(type(bounds),bounds)
         bus = rebody.get('bus')
-        print(bus)
+        # print(bus)
         with open("./local-bus-data/route-data.json") as rt:
             allroutes = json.load(rt)
             rt.close()
@@ -164,7 +164,7 @@ def printresult(request):
                     if (slng >= west and slng <= east) or (slng >= east and slng <= west):
                         stop_locations.append({"id": STOP["stopno"], 'lat':slat, 'lng':slng})
             # route_stop_locations
-            print(stop_locations)
+            # print(stop_locations)
     return HttpResponse(json.dumps({'stop_locations':stop_locations}))
 
 def rtmarkerinfo(request):
@@ -182,7 +182,5 @@ def rtmarkerinfo(request):
             key = result.get('route')
             rsp[obj_json.get('stopid')].append({key: {'arrivaltime':result.get('arrivaldatetime'), 'destination':result.get('destination')}})
             allinfo += "Route:"+ key + "  arrive at:" + result.get('arrivaldatetime') + " Towards " + result.get('destination') +"<br>"
-        print(rsp)
+        # print(rsp)
         return HttpResponse(json.dumps({"allinfo":allinfo}))
-
-

@@ -8,6 +8,7 @@ def clean_route_data():
 
     stopid = np.loadtxt(filename,delimiter='\t',usecols=[0],dtype=str)
     routeData = np.loadtxt(filename,delimiter='\t',usecols=[14],dtype=str)
+    direction = np.loadtxt(filename,delimiter='\t',usecols=[5],dtype=str)
     atcoCode = np.loadtxt(filename,delimiter='\t',usecols=[6],dtype=str)
     operator = np.loadtxt(filename,delimiter='\t',usecols=[2],dtype=str)
     name_en = np.loadtxt(filename,delimiter='\t',usecols=[8],dtype=str)
@@ -24,6 +25,7 @@ def clean_route_data():
             routelist[-1] = routelist[-1][:-1]
             data[atcoCode[i]]['routes'] = routelist
             data[atcoCode[i]]['operator'] = operator[i]
+            data[atcoCode[i]]['direction'] = direction[i]
             ## Dropped bust stop location names due to unicode-related errors 
             # data[atcoCode[i]]['name_en'] = name_en[i]
             # data[atcoCode[i]]['name_ga'] = name_ga[i]

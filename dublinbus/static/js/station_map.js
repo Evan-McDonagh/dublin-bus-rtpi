@@ -28,6 +28,15 @@ function initMap(){
     //get the users location when webpage is loaded
     //show the stop clusters
 
+    //Initializing vars 
+    var marker;
+    var markers = [];
+    var stopKey;
+    var lngT = 0.005;
+    var latT = 0.005;
+    var nearMeList = [];
+    var stopKeys = Object.keys(stopdata);
+
     var pos = {lat:53.350140, lng:-6.266155};
     map =new google.maps.Map(document.getElementById('googleMap'), {
                   // center: {lat: pos.lat, lng: pos.lng},
@@ -48,10 +57,20 @@ function initMap(){
         // alert(pos.lat)
         origin_pos = pos;
         map.setCenter(pos);
+        map.setZoom(15);
         // loc_infoWindow.setPosition(pos);
         pos['status'] = 'OK';
         sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
         realtimeweather({'lat':pos.lat, 'lng':pos.lng});
+
+        //Add only the stop makers near user if geolocation enabled:
+        for (i=0;i<stopKeys.length;i++){
+            stopKey = stopKeys[i];
+            if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
+                nearMeList.push(stopKey);
+            }
+        }
+
       }, function() {
         pos['status'] = "wrong";
         sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
@@ -66,13 +85,7 @@ function initMap(){
       handleLocationError(false, loc_infoWindow, map.getCenter(), map);
     }
 
-    var stopKeys = Object.keys(stopdata);
-    var infowindow = new google.maps.InfoWindow;
-
-    // Add stop markers with onclick
-    var marker;
-    var markers = [];
-    var stopKey;
+    // Add all stop markers
     for (i=0;i<stopKeys.length;i++) {
         stopKey = stopKeys[i];
         if (stopdata[stopKey]['routes'] != "") {
@@ -88,11 +101,13 @@ function initMap(){
                 return function () {getStopInfo(marker, stopKey, map);}
             })(marker, stopKey));
         }
+    
     }
     // create marker clusters using array of markers
     var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
-
 }
+
+    
 google.maps.event.addDomListener(window, 'load', initMap);
 
 
