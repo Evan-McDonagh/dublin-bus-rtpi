@@ -65,13 +65,13 @@ function initMap(){
         realtimeweather({'lat':pos.lat, 'lng':pos.lng});
 
         //Add only the stop makers near user if geolocation enabled:
-        for (i=0;i<stopKeys.length;i++){
-            stopKey = stopKeys[i];
-            if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
-               nearMeList.push(stopdata[stopKey]['routes']);
-            }
-        }
-        nearMe(nearMeList);
+        // for (i=0;i<stopKeys.length;i++){
+        //     stopKey = stopKeys[i];
+        //     if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
+        //        nearMeList.push(stopdata[stopKey]['routes']);
+        //     }
+        // }
+        // nearMe(nearMeList);
       }, function() {
         pos['status'] = "wrong";
         sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
@@ -106,6 +106,14 @@ function initMap(){
     }      
     // create marker clusters using array of markers
     var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    //Add only the stop makers near user if geolocation enabled:
+    for (i=0;i<stopKeys.length;i++){
+        stopKey = stopKeys[i];
+        if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
+           nearMeList.push(stopdata[stopKey]['routes']);
+        }
+    }
+    nearMe(nearMeList);
 }
 
     
@@ -323,6 +331,7 @@ function calcRoute() {
 
 function nearMe(ls){
     // var size = Object.keys(ls).length;
+    alert('nearmelist')
     var size = ls.length;
     var routes = new Set();
     if (size > 0){
