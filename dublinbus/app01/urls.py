@@ -10,4 +10,6 @@ urlpatterns = [
     # url('real_info/',views.real_info),
     url('init',views.init),
     url('weather',views.weather),
+    url('printresult',views.printresult),
+    url('rtmarkerinfo',views.rtmarkerinfo),
 ]
