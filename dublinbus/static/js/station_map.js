@@ -34,6 +34,7 @@ function initMap(){
     var stopKey;
     var lngT = 0.005;
     var latT = 0.005;
+    var nearMeList = [];
     var stopKeys = Object.keys(stopdata);
 
     var pos = {lat:53.350140, lng:-6.266155};
@@ -56,7 +57,7 @@ function initMap(){
         // alert(pos.lat)
         origin_pos = pos;
         map.setCenter(pos);
-        map.setZoom(14);
+        map.setZoom(15);
         // loc_infoWindow.setPosition(pos);
         pos['status'] = 'OK';
         sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
@@ -66,12 +67,7 @@ function initMap(){
         for (i=0;i<stopKeys.length;i++){
             stopKey = stopKeys[i];
             if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(
-                        stopdata[stopKey]['latitude'],
-                        stopdata[stopKey]['longitude']),
-                    map: map
-                });
+                nearMeList.push(stopKey);
             }
         }
 
@@ -80,27 +76,6 @@ function initMap(){
         sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
         realtimeweather({'lat':pos.lat, 'lng':pos.lng});
         handleLocationError(true, loc_infoWindow, map.getCenter(), map);
-
-        // Add all stop markers with onclick if geolocation is not enabled
-        for (i=0;i<stopKeys.length;i++) {
-            stopKey = stopKeys[i];
-            if (stopdata[stopKey]['routes'] != "") {
-                marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(
-                        stopdata[stopKey]['latitude'],
-                        stopdata[stopKey]['longitude']),
-                    map: map
-                });
-                marker.setMap(map);
-                markers.push(marker);
-                marker.addListener('click', (function (marker, stopKey) {
-                    return function () {getStopInfo(marker, stopKey, map);}
-                })(marker, stopKey));
-            }
-        
-        }
-        // create marker clusters using array of markers
-        var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
       });
     } else {
       // Browser doesn't support Geolocation
@@ -108,9 +83,10 @@ function initMap(){
       sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
       realtimeweather({'lat':pos.lat, 'lng':pos.lng});
       handleLocationError(false, loc_infoWindow, map.getCenter(), map);
+    }
 
-      // Add all stop markers if geolocation is not supported
-      for (i=0;i<stopKeys.length;i++) {
+    // Add all stop markers
+    for (i=0;i<stopKeys.length;i++) {
         stopKey = stopKeys[i];
         if (stopdata[stopKey]['routes'] != "") {
             marker = new google.maps.Marker({
@@ -129,8 +105,8 @@ function initMap(){
     }
     // create marker clusters using array of markers
     var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
-    }
 }
+
     
 google.maps.event.addDomListener(window, 'load', initMap);
 
