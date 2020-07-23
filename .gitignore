@@ -1,5 +1,8 @@
 **/__pycache__/
 .vscode/
 config.py
+ml-notebooks/rt_leavetimes_2017_I_DB_1000.txt
+ml-notebooks/rt_trips_2017_I_DB_1000.txt
+ml-notebooks/sample10.csv
 .ipynb_checkpoints
 .ipynb 
