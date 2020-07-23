@@ -65,7 +65,7 @@
                                 </div>
                             </div>
 
-                            <button id="go" type = "button" onclick = "search();calcRoute()">Go!</button>
+                            <button id="go" type = "button" onclick = "calcRoute()">Go!</button>
                         </form>
                     </div>
                     <div id="routes"></div>
@@ -91,7 +91,7 @@
                         <form method="post" id = "stopadd">
                             {% csrf_token %}
                             Stop ID: <input type='text' id = "stop_id" name = "stop_id">
-                            <button id = "stopbtn" type="button">submit</button>
+                            <button id = "stopbtn" type="button" onclick="stopsearch()">submit</button>
                         </form>
                     </div>
                     <div id ="stoparea"></div>
@@ -118,6 +118,7 @@
                 </div>
             </nav>
             <div id="googleMap" style="width:100%;height:90%;"></div>
+            <div id="stopMap" style="width:100%;height:90%;"></div>
             <div class="line"></div>
         </div>
 
@@ -237,91 +238,10 @@
             });
         </script>
 
-        <!-- let the stop feature refresh -->
-        <script type="text/javascript">
-            $('#stopbtn').click(function(){
-                info = {
-                    csrfmiddlewaretoken: '{{ csrf_token }}', 
-                    stop_id :  $('#stop_id').val(),
-                    };
-                    // console.log(info);
-    
-                    $.ajax({
-                        type:"POST",
-                        url: "http://127.0.0.1:8000/stop/", 
-                        cache: false,
-                        dataType: "html",
-                        // headers:{'Content-Type':"application/json"} ,
-                        data:info,
-                        success: function(result, statues, xml){
-                            result = JSON.parse(result);
-                            console.log(result['results']);
-                            var real_info = "Time Table" +"<br>";
-                            for (var i =0; i< result["results"].length; i++){
-                            real_info += result["results"][i]["route"]+"        "+result["results"][i]["arrivaldatetime"] +"<br>";
-                                }
-                                // console.log(real_info);
-                            $("#stoparea").html(real_info);             
-                        },
-                        error: function(){
-                            alert("false");
-                        }
-                    });
-
-            
-                var stop_id = $('#stop_id').val();
-                stopKeys = Object.keys(stopdata);
-                // console.log(stopKeys);
-                // console.log($('#stop_id').val());
-
-                var marker;
-                var markers = [];
-                var stopKey;
-                var stop_idd; //在for循环里相匹配的
-                for (i=0;i<stopKeys.length;i++){
-                    stopKey = stopKeys[i]
-                    stop_idd = stopdata[stopKey]["stopno"];
-                    // console.log(stop_idd);
-                    
-                    if (stop_idd == stop_id){
-                        var stationsInfo =  "Stop_number:<h5>"+stop_idd+"<h5>";
-                            marker = new google.maps.Marker({
-                                position: new google.maps.LatLng(
-                                    stopdata[stopKey]['latitude'], 
-                                    stopdata[stopKey]['longitude']),
-                                map: map,
-                            });
-
-                            marker.setVisible(false);
-                            map.setZoom(15);
-                            map.panTo(marker.position);
-                            marker.setMap(map);
-
-                            var infowindow  = new google.maps.InfoWindow({
-                                    content: ""
-                                });
-                            var pre = false;
-
-                            document.getElementById("stopbtn").addEventListener("click", function(){
-                                pre.close();
-                            });
-
-                            google.maps.event.addListener(marker,'click', (function(marker,stationsInfo,infowindow){
-                                pre = infowindow;
-                                pre.setContent(stationsInfo);
-                                pre.open(map, marker);
-
-                                }) (marker,stationsInfo,infowindow));
-                            }
-                        }
-                return false;
-            });
-        </script>
-
         <script type="text/javascript">
             var todayDate = new Date().getDate();
             $('#datetimepicker1').datetimepicker({
-
+        
             });
         </script>
 

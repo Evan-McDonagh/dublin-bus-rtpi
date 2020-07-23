@@ -72,7 +72,7 @@ def stop(request):
         obj = requests.get(url)
         obj_json = obj.json()
         print(obj_json)
-        return JsonResponse(obj_json,safe=False)
+        return JsonResponse(obj_json, safe=False)
 
 
 def init(request):
@@ -105,18 +105,16 @@ def weather(request):
     if request.method == 'POST':
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
-        # print(lat, lng)
 
         # get present weather
         weather_r = requests.get(
             "http://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&appid={}".format(lat, lng, weather_pre_api))
         weather_result = json.loads(weather_r.text)
-        # print(weather_result)
-        h_temp = weather_result["main"].get("feels_like")  # get tempetature
+        h_temp = weather_result["main"].get("feels_like")  # get temperature
         temp = str(round(h_temp - 273.15)) + '˚C'
         descp = str(weather_result["weather"][0].get('main'))  # get weather description
 
-        #get the relative icon
+        # get the relative icon
         weather_icon = weather_result["weather"][0].get("icon")
         iconUrl = "http://openweathermap.org/img/wn/" + weather_icon + ".png"
 
@@ -124,7 +122,6 @@ def weather(request):
         weather_info['temp'] = temp
         weather_info['iconUrl'] = iconUrl
 
-        # print("weather info is",weather_info)
     else:
         weather_info['weather'] = 'location unknown'
     return HttpResponse(json.dumps(weather_info))

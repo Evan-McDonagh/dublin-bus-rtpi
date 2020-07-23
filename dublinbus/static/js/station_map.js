@@ -1,3 +1,4 @@
+// a function to get cookie msg for the csrf verification, has nothing to do with logic stuff
 function getCookie(name) { //csrf verification
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -13,106 +14,77 @@ function getCookie(name) { //csrf verification
     }
     return cookieValue;
 }
+var csrftoken = getCookie('csrftoken'); //store the cookie msg in "csrftoken"
 
-var csrftoken = getCookie('csrftoken');
+var origin_pos = {} //represent the origin position, lat, lng
+var destination_pos = {}//represent the destination position, lat, lng
+// var origin_value = ""; //the text in the input box with id "origin"
 
-var origin_pos = {} //represent the origin position, i.e. the value of input box with id "origin"
-// var destination_pos = {} //represent the destination position, i.e. the value of input box with id "origin"
-var origin_value = "";
-
-var infowindow = new google.maps.InfoWindow();
 var map;
 var nearMeList = [];
-
+var allstopmarkers = [];
+var nearmemarkers = [];
+var alongroutemarkers = [];
+var ori_dest_markers = [];
+var directionsService = new google.maps.DirectionsService();
+var directionsRenderer = new google.maps.DirectionsRenderer();
 
 function initMap(){
     //Initialize the map when the page is loaded
     //get the users location when webpage is loaded
     //show the stop clusters
 
-    //Initializing vars 
-    var marker;
-    var markers = [];
-    var stopKey;
-    var lngT = 0.005;
-    var latT = 0.005;
-    var stopKeys = Object.keys(stopdata);
-
-    var pos = {lat:53.350140, lng:-6.266155};
+    var pos = {lat:53.350140, lng:-6.266155}; //used to initialize the map, if geolocation enabled, the pos will be changed
     map =new google.maps.Map(document.getElementById('googleMap'), {
-                  // center: {lat: pos.lat, lng: pos.lng},
-        center:{lat:53.350140, lng:-6.266155},
-                  zoom: 10
-                });
-    loc_infoWindow = new google.maps.InfoWindow;
+        center:pos,
+        zoom: 10
+    });
 
     //get user's location
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
-            // pos.lat = position.coords.latitude;
-            // pos.lng = position.coords.longitude;
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        // alert(pos.lat)
+            delete pos.lat;
+            delete pos.lng;
+            pos['lat'] = position.coords.latitude;
+            pos['lng'] = position.coords.longitude;
+            // "pos" is changed to be the real location of the user.
         origin_pos = pos;
         map.setCenter(pos);
         map.setZoom(15);
-        // loc_infoWindow.setPosition(pos);
         pos['status'] = 'OK';
-        sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
-        realtimeweather({'lat':pos.lat, 'lng':pos.lng});
-
-        //Add only the stop makers near user if geolocation enabled:
-        for (i=0;i<stopKeys.length;i++){
-            stopKey = stopKeys[i];
-            if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
-               nearMeList.push(stopdata[stopKey]['routes']);
-            }
-        }
-        nearMe(nearMeList);
+        sendlocation(pos, map);
+        realtimeweather(pos);
+        addallmarkers(map);
+        clearmarkers(allstopmarkers);
+        addnearmemarkers(map, pos);
       }, function() {
-        pos['status'] = "wrong";
-        sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
-        realtimeweather({'lat':pos.lat, 'lng':pos.lng});
-        handleLocationError(true, loc_infoWindow, map.getCenter(), map);
+        pos['status'] = "ERROR";
+        sendlocation(pos, map);
+        realtimeweather(pos);
+        handleLocationError(true, map.getCenter(), map);
+        addallmarkers(map);
+        clearmarkers(allstopmarkers);
+        addnearmemarkers(map, pos);
       });
     } else {
       // Browser doesn't support Geolocation
-      pos['status'] = 'wrong';
-      sendlocation({'lat':pos.lat, 'lng':pos.lng}, loc_infoWindow, map);
-      realtimeweather({'lat':pos.lat, 'lng':pos.lng});
-      handleLocationError(false, loc_infoWindow, map.getCenter(), map);
+      pos['status'] = 'ERROR';
+      sendlocation(pos, map);
+      realtimeweather(pos);
+      handleLocationError(false, map.getCenter(), map);
+      addallmarkers(map);
+      clearmarkers(allstopmarkers);
+      addnearmemarkers(map, pos);
     }
-
-    // Add all stop markers
-    for (i=0;i<stopKeys.length;i++) {
-        stopKey = stopKeys[i];
-        if (stopdata[stopKey]['routes'] != "") {
-            marker = new google.maps.Marker({
-                position: new google.maps.LatLng(
-                    stopdata[stopKey]['latitude'],
-                    stopdata[stopKey]['longitude']),
-                map: map
-            });
-            marker.setMap(map);
-            markers.push(marker);
-            marker.addListener('click', (function (marker, stopKey) {
-                return function () {getStopInfo(marker, stopKey, map);}
-            })(marker, stopKey));
-        }
-    
-    }      
     // create marker clusters using array of markers
-    var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    // var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+
 }
 
-    
-google.maps.event.addDomListener(window, 'load', initMap);
+// google.maps.event.addDomListener(window, 'load', initMap);
 
-
-function sendlocation(pos, loc_infoWindow, map){
+//send the users location "pos" to backend function to get the address info at this location and display it on map
+function sendlocation(pos, map){
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
         url: '/init',
@@ -121,23 +93,23 @@ function sendlocation(pos, loc_infoWindow, map){
         dataType: 'json',
         // async:false,
         success: function (data) {
-            // document.getElementById(elementid).value = data.address;
-            // alert(pos.lat);
+                // loc_infoWindow = new google.maps.InfoWindow; //display user's location msg
+            var loc_infoWindow = new google.maps.InfoWindow({
+                    // position:{'lat':pos.lat, 'lng':pos.lng}
+                });
             var loc_marker = new google.maps.Marker({
-                          map: map,
-                          position: {'lat':pos.lat, 'lng':pos.lng},
-          });
-            loc_infoWindow.setPosition({'lat':pos.lat, 'lng':pos.lng});
-            loc_infoWindow.setContent("You are here: "+data.address);
-            origin_value = data.address;
+                    map: map,
+                    position: {'lat':pos.lat, 'lng':pos.lng},
+                });
+            loc_infoWindow.setContent((pos.status == 'OK'? "Your position:":"(Unlocated)Map center:")+data.address)
             loc_infoWindow.open(map, loc_marker);
         },
         error: function () {return "error";alert("error");},
     });
 }
 
+//send location to backend and get weather msg from weather(request) function
 function realtimeweather(pos) {
-    // alert('realtimeweather')
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
         url: '/weather',
@@ -145,113 +117,101 @@ function realtimeweather(pos) {
         data:pos,
         dataType: 'json',
         success: function (data) {
-            // alert("hi")
-            var icon = data['iconUrl'];
-            // console.log(icon);
+            var icon = data['iconUrl']
             var weather_show ="<img src='" + icon  + "'>" +data['descp'] +" "+ data['temp'];
-
             document.getElementById("weather").innerHTML = weather_show;
         }
     })
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos, map) {
+//deal with the geolocation error
+function handleLocationError(browserHasGeolocation, pos, map) {
     //supporting functions of initMap()
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-                          'Error: The Geolocation service failed.' :
-                          'Error: Your browser doesn\'t support geolocation.');
-    infoWindow.open(map);
+    alert(browserHasGeolocation ?
+        'Error: The Geolocation service failed. location not accessible' :
+        'Error: Your browser doesn\'t support geolocation.')
+    // infoWindow = new google.maps.InfoWindow();
+    // infoWindow.setPosition(pos);
+    // infoWindow.setContent(browserHasGeolocation ?
+    //                       'Error: The Geolocation service failed.' :
+    //                       'Error: Your browser doesn\'t support geolocation.');
+    // infoWindow.open(map);
 }
 
-function getStopInfo(marker, stopKey, map) {
-    //supporting functions of initMap()
-    
-    let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
-    content += "Routes: " + stopdata[stopKey]['routes'];
-    content += "</div>"
-
-    // add content of get request to info window
-    infowindow.setContent(content);
-    infowindow.open(map, marker);
-}
-
-function search() {
-    //trigger relevant functions to generate directions
-    //query the place according to the input boxes.
-
-    if (document.getElementById('origin').value ==""){var s_origin = origin_value;}
-    else{var s_origin = document.getElementById('origin').value}
-    var s_dest = document.getElementById('destination').value;
-
-    var map2 = new google.maps.Map(document.getElementById('googleMap'), {
-        center: origin_pos,
-        zoom: 13
-    });
-    var service = new google.maps.places.PlacesService(map2);
-    var s_origin_request = {
-        query: s_origin,
-        fields: ['name', 'geometry'],
-    };
-    service.findPlaceFromQuery(s_origin_request, function (results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            map2.setCenter(results[0].geometry.location);
-            var infowindow_ori = new google.maps.InfoWindow({
-                content: s_origin,
-            });
-            var marker_ori = new google.maps.Marker({
-                map: map2,
-                position: results[0].geometry.location,
-                icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-
-            });
-            marker_ori.addListener("mouseover", function () {
-                infowindow_ori.open(map2, marker_ori);
-            });
-            origin_pos = results[0].geometry.location;
-            // origin_pos = {'lat': results[0].geometry.location.lat(), 'lng': results[0].geometry.location.lng()}
-        }
-    });
-    var s_dest_request = {
-        query: s_dest,
-        fields: ['name', 'geometry'],
-    };
-    service.findPlaceFromQuery(s_dest_request, function(results, status) {
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
-              map2.setCenter(results[0].geometry.location);
-              var infowindow_dest = new google.maps.InfoWindow({
-                content: s_dest,
-                });
-              var marker_dest = new google.maps.Marker({
-                              map: map2,
-                              position: results[0].geometry.location,
-                              icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-              });
-              marker_dest.addListener("mouseover", function () {
-                    infowindow_dest.open(map, marker_dest);
-                });
-              destination_pos = {'lat':results[0].geometry.location.lat(), 'lng':results[0].geometry.location.lng()}
-      }
-    });
-}
+//trigger relevant functions to generate directions
+// function search() {
+//     clearmarkers(allstopmarkers);
+//     clearmarkers(nearmemarkers);
+//     //query the place according to the input boxes.
+//     if ($("#origin").val() == "" || $("#destination").val() == "") {alert('The "from" or "to" box cannot be empty')}
+//     else {
+//         var s_origin = document.getElementById('origin').value
+//         var s_dest = document.getElementById('destination').value;
+//
+//         var service = new google.maps.places.PlacesService(map);
+//
+//         //search the location of origin input
+//         var s_origin_request = {
+//             query: s_origin,
+//             fields: ['name', 'geometry'],
+//         };
+//         service.findPlaceFromQuery(s_origin_request, function (results, status) {
+//             if (status === google.maps.places.PlacesServiceStatus.OK) {
+//                 map.setCenter(results[0].geometry.location);
+//                 var infowindow_ori = new google.maps.InfoWindow({
+//                     content: s_origin,
+//                 });
+//                 var marker_ori = new google.maps.Marker({
+//                     map: map,
+//                     position: results[0].geometry.location,
+//                     icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+//
+//                 });
+//                 marker_ori.addListener("mouseover", function () {infowindow_ori.open(map, marker_ori);});
+//                 marker_ori.addListener("mouseout", function () {infowindow_ori.close(map, marker_ori);});
+//                 origin_pos = results[0].geometry.location;
+//                 ori_dest_markers.push(marker_ori);
+//                 // origin_pos = {'lat': results[0].geometry.location.lat(), 'lng': results[0].geometry.location.lng()}
+//             }
+//         });
+//
+//         //search the location of destination input
+//         var s_dest_request = {
+//             query: s_dest,
+//             fields: ['name', 'geometry'],
+//         };
+//         service.findPlaceFromQuery(s_dest_request, function (results, status) {
+//             if (status === google.maps.places.PlacesServiceStatus.OK) {
+//                 // map.setCenter(results[0].geometry.location);
+//                 var infowindow_dest = new google.maps.InfoWindow({
+//                     content: s_dest,
+//                 });
+//                 var marker_dest = new google.maps.Marker({
+//                     map: map,
+//                     position: results[0].geometry.location,
+//                     icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+//                 });
+//                 marker_dest.addListener("mouseover", function () {infowindow_dest.open(map, marker_dest);});
+//                 marker_dest.addListener("mouseout", function () {infowindow_dest.close(map, marker_dest);});
+//                 destination_pos = {'lat': results[0].geometry.location.lat(), 'lng': results[0].geometry.location.lng()};
+//                 ori_dest_markers.push(marker_dest);
+//             }
+//         });
+//     }
+// }
 
 function calcRoute() {
-  // var start = document.getElementById('origin').value;
-  // var end = document.getElementById('destination').value;
-  var directionsService = new google.maps.DirectionsService();
-  var directionsRenderer = new google.maps.DirectionsRenderer();
-  var request = {
-    origin: {query: document.getElementById('origin').value},
-    destination: {query: document.getElementById('destination').value},
-    travelMode: 'TRANSIT',
-    transitOptions:{departureTime: new Date(document.getElementById("datetimepicker1").value)},
-    provideRouteAlternatives: false,
-  };
-    var map3 = new google.maps.Map(document.getElementById('googleMap'),{
-        center: origin_pos,
-        zoom:13,
-    });
-    directionsRenderer.setMap(map3);
+    directionsRenderer.setMap(null);
+    clearmarkers(alongroutemarkers);
+    clearmarkers(nearmemarkers);
+      var request = {
+        origin: {query: document.getElementById('origin').value},
+        destination: {query: document.getElementById('destination').value},
+        travelMode: 'TRANSIT',
+        transitOptions:{departureTime: new Date(document.getElementById("datetimepicker1").value)},
+        provideRouteAlternatives: false,
+      };
+    directionsRenderer.setMap(map);
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
         var routes_dict = {}
@@ -264,18 +224,15 @@ function calcRoute() {
                 var bus_name = [];
                 var bus_name_str = '';
                 steps = legs[j]['steps']
-                // alert(result['routes'][i]['bounds'])
                 for (k in steps){
                     if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
                     else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
                 }
-                // alert(bus_name[0])
                 if (bus_name.length > 1){for (i in bus_name){bus_name_str += bus_name[i] + "->"}}
                 else{bus_name_str = bus_name[0]};
                 routes_dict[bus_name_str] = result['routes'][i];
                 document.getElementById('routes').innerHTML = "<button id="+bus_name_str + ">"+bus_name_str+"</button>" + "walk:" + walking_dur +"s, on bus:"+ bus_dur+"s<br>";
-                // loadstops(bus_name, result['routes'][i]['bounds'])
-                document.getElementById(bus_name_str).addEventListener('click', function(){loadstops(bus_name, result['routes'][i]['bounds'], map3);});
+                document.getElementById(bus_name_str).addEventListener('click', function(){loadstops(bus_name, result['routes'][i]['bounds'], map);});
 
             }
         }
@@ -308,8 +265,9 @@ function calcRoute() {
                 dataType:'json',
                 success: function (data) {
                     for (var i=0; i < data.stop_locations.length; i++) {
-                        marker = new google.maps.Marker({map:map, position:new google.maps.LatLng(data.stop_locations[i].lat, data.stop_locations[i].lng)});
+                        var marker = new google.maps.Marker({map:map, position:new google.maps.LatLng(data.stop_locations[i].lat, data.stop_locations[i].lng)});
                         showinfowindow(marker, data.stop_locations[i].id, map);
+                        alongroutemarkers.push(marker)
                     }
                 }, error: function () {
                     alert('error');
@@ -322,6 +280,7 @@ function calcRoute() {
    directionsRenderer.setPanel(document.getElementById('h51'));
 }
 
+//Find the nearme stops and generate a msg to describe them.
 function nearMe(ls){
     // var size = Object.keys(ls).length;
     var size = ls.length;
@@ -342,3 +301,143 @@ function nearMe(ls){
         document.getElementById("nearme").innerHTML = msg;
     } 
 }
+
+//To make the markers in a list invisible.
+function clearmarkers(markerlist){
+    for (var i=0; i < markerlist.length; i++){
+        markerlist[i].setMap(null);
+    }
+}
+
+//To make the markers in a list visible.
+function showmarkers(markerlist, map) {
+    for (var i=0; i < markerlist.length; i++){
+        markerlist[i].setMap(map);
+    }
+}
+
+//triggered by clicking the markers to show stop info.
+function getStopInfo(marker, stopKey) {
+    infowindow = new google.maps.InfoWindow();
+    let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
+    content += "Routes: " + stopdata[stopKey]['routes'];
+    content += "</div>"
+
+    // add content of get request to info window
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+}
+
+//Add all stops markers on the map.
+function addallmarkers(map) {
+    var stopKeys = Object.keys(stopdata);
+    for (var i=0;i<stopKeys.length;i++) {
+        var stopKey = stopKeys[i];
+        if (stopdata[stopKey]['routes'] != "") {
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(
+                    stopdata[stopKey]['latitude'],
+                    stopdata[stopKey]['longitude']),
+            });
+            marker.addListener('click', (function (marker, stopKey) {
+                return function () {getStopInfo(marker, stopKey, map);}
+            })(marker, stopKey));
+            allstopmarkers.push(marker);
+        }
+    }
+    showmarkers(allstopmarkers, map);
+}
+
+//Add the markers of nearme stops and display them on map
+function addnearmemarkers(map, pos){
+    var stopKeys = Object.keys(stopdata);
+    var lngT = 0.005;
+    var latT = 0.005;
+    for (var i=0;i<stopKeys.length;i++){
+        var stopKey = stopKeys[i];
+        if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
+           nearMeList.push(stopdata[stopKey]['routes']);
+           var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(
+                    stopdata[stopKey]['latitude'],
+                    stopdata[stopKey]['longitude']),
+            });
+            marker.addListener('click', (function (marker, stopKey) {
+                return function () {getStopInfo(marker, stopKey, map);}
+            })(marker, stopKey));
+            nearmemarkers.push(marker);
+        }
+    }
+    nearMe(nearMeList);
+    showmarkers(nearmemarkers, map);
+}
+
+// The function to search a single stopid in the map and display the time info.
+function stopsearch() {
+    directionsRenderer.setMap(null);
+        $.ajax({
+            headers: {'X-CSRFToken': csrftoken},
+            type:"POST",
+            url: "http://127.0.0.1:8000/stop/",
+            cache: false,
+            dataType: "json",
+            data:{'stop_id':$('#stop_id').val()},
+            success: function(result, statues, xml){
+                var real_info = "Time Table" +"<br>";
+                for (var i =0; i< result["results"].length; i++){
+                    real_info += result["results"][i]["route"]+"        "+result["results"][i]["arrivaldatetime"] +"<br>";
+                }
+                $("#stoparea").html(real_info);
+            },
+            error: function(){
+                alert("false");
+            }
+        });
+    var stop_id = $('#stop_id').val();
+    stopKeys = Object.keys(stopdata);
+    clearmarkers(alongroutemarkers);
+    clearmarkers(nearmemarkers);
+    var marker;
+    var markers = [];
+    var stopKey;
+    var stop_idd; //在for循环里相匹配的
+    // var stopmap = new google.maps.map(document.getElementById('stopMap'));
+    for (i=0;i<stopKeys.length;i++){
+        stopKey = stopKeys[i]
+        stop_idd = stopdata[stopKey]["stopno"];
+        // console.log(stop_idd);
+
+        if (stop_idd == stop_id){
+            var stationsInfo =  "Stop_number:<h5>"+stop_idd+"<h5>";
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(
+                        stopdata[stopKey]['latitude'],
+                        stopdata[stopKey]['longitude']),
+                    map: map,
+                });
+
+                // marker.setVisible(false);
+                map.setZoom(15);
+                map.panTo(marker.position);
+                marker.setMap(map);
+
+                var infowindow  = new google.maps.InfoWindow({
+                        content: ""
+                    });
+                var pre = false;
+
+                document.getElementById("stopbtn").addEventListener("click", function(){
+                    pre.close();
+                });
+
+                google.maps.event.addListener(marker,'click', (function(marker,stationsInfo,infowindow){
+                    pre = infowindow;
+                    pre.setContent(stationsInfo);
+                    pre.open(map, marker);
+
+                    }) (marker,stationsInfo,infowindow));
+                }
+            }
+    return false;
+}
+initMap();
