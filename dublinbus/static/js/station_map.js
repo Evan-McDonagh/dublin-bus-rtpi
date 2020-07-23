@@ -28,6 +28,8 @@ var alongroutemarkers = [];
 var ori_dest_markers = [];
 var directionsService = new google.maps.DirectionsService();
 var directionsRenderer = new google.maps.DirectionsRenderer();
+var singlestopmarker = [];
+var directionresults = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -203,6 +205,7 @@ function handleLocationError(browserHasGeolocation, pos, map) {
 function calcRoute() {
     directionsRenderer.setMap(null);
     clearmarkers(alongroutemarkers);
+    alongroutemarkers = [];
     clearmarkers(nearmemarkers);
       var request = {
         origin: {query: document.getElementById('origin').value},
@@ -214,6 +217,7 @@ function calcRoute() {
     directionsRenderer.setMap(map);
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
+        directionresults = [result];
         var routes_dict = {}
         var route_choices = {}
         for (i in result['routes']){
@@ -228,11 +232,12 @@ function calcRoute() {
                     if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
                     else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
                 }
-                if (bus_name.length > 1){for (i in bus_name){bus_name_str += bus_name[i] + "->"}}
+                if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
                 else{bus_name_str = bus_name[0]};
                 routes_dict[bus_name_str] = result['routes'][i];
-                document.getElementById('routes').innerHTML = "<button id="+bus_name_str + ">"+bus_name_str+"</button>" + "walk:" + walking_dur +"s, on bus:"+ bus_dur+"s<br>";
-                document.getElementById(bus_name_str).addEventListener('click', function(){loadstops(bus_name, result['routes'][i]['bounds'], map);});
+                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
+                loadstops(bus_name, result['routes'][i]['bounds'], map);
+                document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
 
             }
         }
@@ -255,24 +260,33 @@ function calcRoute() {
                 }
             })
         }
-        function loadstops(bus_name, bounds, map){
-            post_data = {'bus':bus_name, 'bounds':bounds}
-            $.ajax({
-                headers: {'X-CSRFToken': csrftoken},
-                url: '/printresult',
-                data: JSON.stringify(post_data),
-                type:'POST',
-                dataType:'json',
-                success: function (data) {
-                    for (var i=0; i < data.stop_locations.length; i++) {
-                        var marker = new google.maps.Marker({map:map, position:new google.maps.LatLng(data.stop_locations[i].lat, data.stop_locations[i].lng)});
-                        showinfowindow(marker, data.stop_locations[i].id, map);
-                        alongroutemarkers.push(marker)
-                    }
-                }, error: function () {
-                    alert('error');
-                },
-        });
+        function loadstops(bus_name, bounds, map) {
+            if (alongroutemarkers.length !== 0) {
+                showmarkers(alongroutemarkers, map)
+            } else {
+                post_data = {'bus': bus_name, 'bounds': bounds}
+                $.ajax({
+                    headers: {'X-CSRFToken': csrftoken},
+                    url: '/printresult',
+                    data: JSON.stringify(post_data),
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (data) {
+                        // alongroutemarkers = [];
+                        for (var i = 0; i < data.stop_locations.length; i++) {
+                            var marker = new google.maps.Marker({
+                                // map: map,
+                                position: new google.maps.LatLng(data.stop_locations[i].lat, data.stop_locations[i].lng)
+                            });
+                            showinfowindow(marker, data.stop_locations[i].id, map);
+                            alongroutemarkers.push(marker);
+                            // showmarkers(alongroutemarkers, map);
+                        }
+                    }, error: function () {
+                        alert('error');
+                    },
+                });
+            }
         }
       directionsRenderer.setDirections(result);
     }
@@ -375,6 +389,9 @@ function addnearmemarkers(map, pos){
 // The function to search a single stopid in the map and display the time info.
 function stopsearch() {
     directionsRenderer.setMap(null);
+    clearmarkers(alongroutemarkers);
+    clearmarkers(nearmemarkers);
+    clearmarkers(singlestopmarker);
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
             type:"POST",
@@ -395,10 +412,7 @@ function stopsearch() {
         });
     var stop_id = $('#stop_id').val();
     stopKeys = Object.keys(stopdata);
-    clearmarkers(alongroutemarkers);
-    clearmarkers(nearmemarkers);
-    var marker;
-    var markers = [];
+
     var stopKey;
     var stop_idd; //在for循环里相匹配的
     // var stopmap = new google.maps.map(document.getElementById('stopMap'));
@@ -409,7 +423,7 @@ function stopsearch() {
 
         if (stop_idd == stop_id){
             var stationsInfo =  "Stop_number:<h5>"+stop_idd+"<h5>";
-                marker = new google.maps.Marker({
+                var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(
                         stopdata[stopKey]['latitude'],
                         stopdata[stopKey]['longitude']),
@@ -419,7 +433,10 @@ function stopsearch() {
                 // marker.setVisible(false);
                 map.setZoom(15);
                 map.panTo(marker.position);
-                marker.setMap(map);
+                // marker.setMap(map);
+                singlestopmarker = [marker];
+                // singlestopmarker.push(marker);
+                showmarkers(singlestopmarker, map);
 
                 var infowindow  = new google.maps.InfoWindow({
                         content: ""
@@ -440,4 +457,25 @@ function stopsearch() {
             }
     return false;
 }
+
+//triggered by clicking "Search" button to show current searching result if it is made invisible.
+function showsearchcontent(){
+    directionsRenderer.setDirections(directionresults[0]);
+    directionsRenderer.setMap(map);
+    directionsRenderer.setPanel(document.getElementById('h51'));
+}
+
+//triggered by clicking "Stop" button to show current searching result if it is made invisible.
+function showstopsearchcontent(){
+    showmarkers(singlestopmarker, map);
+}
+
+//change the markers to be visible from being invisible or reversely.
+function changemarkerstatus(markerlist, map){
+    for (var i=0; i<markerlist.length; i++){
+        if (markerlist[i].map){markerlist[i].setMap(null);}
+        else{markerlist[i].setMap(map)}
+    }
+}
+
 initMap();
