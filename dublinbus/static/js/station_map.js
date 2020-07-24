@@ -25,8 +25,8 @@ var nearMeList = [];
 var allstopmarkers = [];
 var nearmemarkers = [];
 var alongroutemarkers = [];
-var originmarker = [];
-var destinationmarker = [];
+var originmarkers = [];
+var destinationmarkers = [];
 var directionsService = new google.maps.DirectionsService();
 var directionsRenderer = new google.maps.DirectionsRenderer();
 var singlestopmarker = [];
@@ -480,9 +480,20 @@ function changemarkerstatus(markerlist, map){
 }
 
 //get the clicking point location on map
-function getclicklocation(){
+function getclicklocation(id){
+    if (id == "origin"){
+        $("#origin").val(null); //clear the input box
+        clearmarkers(originmarkers); //clear previous marker
+    }
+    else{
+        $("#destination").val(null);
+        clearmarkers(destinationmarkers);
+        destinationmarkers=[];
+    }
     google.maps.event.addListener(map, 'click', function (event) {
-        var Latitude = event.latLng.lat();
+        if (originmarkers.length > 1){clearmarkers(originmarkers);originmarkers=[]}// do not allow multiple origin markers appear
+        if (destinationmarkers.length >1){clearmarkers(destinationmarkers);destinationmarkers=[]}
+        var Latitude = event.latLng.lat();//get clicking location
         var Longitude = event.latLng.lng();
         $.ajax({
         headers: {'X-CSRFToken': csrftoken},
@@ -492,25 +503,61 @@ function getclicklocation(){
         dataType: 'json',
         // async:false,
         success: function (data) {
+            //get the address msg of clicking location
             var loc_infoWindow = new google.maps.InfoWindow({});
             var loc_marker = new google.maps.Marker({
-                    map: map,
+                    // map: map,
                     position: {'lat':Latitude, 'lng':Longitude},
                     draggable:true,
                     animation: google.maps.Animation.DROP,
                 });
             loc_infoWindow.setContent(
-                "<h5 id='address'>"+data.address+"</h5>>"+"<br>"+
+                "<h5 id='address'>"+data.address+"</h5>"+"<br>"+
                 "<button id='ori-sel'>"+"As Origin"+"</button>"+
                 "<button id='dest-sel'>"+"As Destination"+"</button>"
             )
             loc_infoWindow.open(map, loc_marker);
-            $("#ori-sel").live("click", function () {$("#origin").val(data.address);loc_marker.setMap(null);});
-            $("#dest-sel").live("click", function () {$("#destination").val(data.address);loc_marker.setMap(null);});
+            showmarkers([loc_marker], map);
+
+            //enable user to chose this address as origin or destination
+            $(document).on('click', "#ori-sel", function () {
+                clearmarkers(originmarkers);
+                loc_marker.setMap(null);
+                var ori_infowindow = new google.maps.InfoWindow();
+                ori_infowindow.setContent("<h5>"+"Origin:"+data.address+"</h5>");
+                var orimarker = new google.maps.Marker({
+                        position: {'lat':Latitude, 'lng':Longitude},
+                        draggable:true,
+                        animation: google.maps.Animation.DROP,
+                    });
+                ori_infowindow.open(map, orimarker);
+                originmarkers = [];
+                originmarkers.push(orimarker);
+                showmarkers(originmarkers, map);
+                $("#origin").val(data.address);
+                // $("#dest-sel").hide();
+            });
+            $(document).on("click", "#dest-sel", function () {
+                clearmarkers(destinationmarkers);
+                loc_marker.setMap(null);
+                var dest_infowindow = new google.maps.InfoWindow();
+                dest_infowindow.setContent("<h5>"+"Destination:"+data.address+"</h5>");
+                var destmarker = new google.maps.Marker({
+                        position: {'lat':Latitude, 'lng':Longitude},
+                        draggable:true,
+                        animation: google.maps.Animation.DROP,
+                    });
+                dest_infowindow.open(map, destmarker);
+                destinationmarkers = [];
+                destinationmarkers.push(destmarker);
+                showmarkers(destinationmarkers, map)
+                $("#destination").val(data.address);
+            });
         },
         error: function () {return "error";alert("error");},
     });
 
     })
 }
+
 initMap();
