@@ -25,7 +25,8 @@ var nearMeList = [];
 var allstopmarkers = [];
 var nearmemarkers = [];
 var alongroutemarkers = [];
-var ori_dest_markers = [];
+var originmarker = [];
+var destinationmarker = [];
 var directionsService = new google.maps.DirectionsService();
 var directionsRenderer = new google.maps.DirectionsRenderer();
 var singlestopmarker = [];
@@ -395,7 +396,7 @@ function stopsearch() {
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
             type:"POST",
-            url: "http://127.0.0.1:8000/stop/",
+            url: "/stop/",
             cache: false,
             dataType: "json",
             data:{'stop_id':$('#stop_id').val()},
@@ -478,4 +479,38 @@ function changemarkerstatus(markerlist, map){
     }
 }
 
+//get the clicking point location on map
+function getclicklocation(){
+    google.maps.event.addListener(map, 'click', function (event) {
+        var Latitude = event.latLng.lat();
+        var Longitude = event.latLng.lng();
+        $.ajax({
+        headers: {'X-CSRFToken': csrftoken},
+        url: '/init',
+        type: 'POST',
+        data: {'lat':Latitude, 'lng':Longitude},
+        dataType: 'json',
+        // async:false,
+        success: function (data) {
+            var loc_infoWindow = new google.maps.InfoWindow({});
+            var loc_marker = new google.maps.Marker({
+                    map: map,
+                    position: {'lat':Latitude, 'lng':Longitude},
+                    draggable:true,
+                    animation: google.maps.Animation.DROP,
+                });
+            loc_infoWindow.setContent(
+                "<h5 id='address'>"+data.address+"</h5>>"+"<br>"+
+                "<button id='ori-sel'>"+"As Origin"+"</button>"+
+                "<button id='dest-sel'>"+"As Destination"+"</button>"
+            )
+            loc_infoWindow.open(map, loc_marker);
+            $("#ori-sel").live("click", function () {$("#origin").val(data.address);loc_marker.setMap(null);});
+            $("#dest-sel").live("click", function () {$("#destination").val(data.address);loc_marker.setMap(null);});
+        },
+        error: function () {return "error";alert("error");},
+    });
+
+    })
+}
 initMap();

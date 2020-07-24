@@ -53,12 +53,12 @@
                     <div>
                         <form action="" method="post">
                             
-                            <input id="origin" type="text" name="start_location" placeholder="From...">
+                            <input id="origin" type="text" name="start_location" placeholder="From..." onclick="getclicklocation(this.id)">
                             <input id="destination" type="text" name="end_location" placeholder="To...">
 
                             <div class="col-md-13">
-                                <div class='input-group date' id='datetimepicker1'>
-                                    <input type='text' class="form-control"/>
+                                <div class='input-group date' >
+                                    <input type='text' id='datetimepicker1' class="form-control"/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -222,14 +222,12 @@
     
                     $.ajax({
                         type:"POST",
-                        url: "http://127.0.0.1:8000/leapcard/", 
+                        url: "/leapcard/",
                         cache: false,
                         dataType: "html",
-                        // headers:{'Content-Type':"application/json"} ,
                         data:info,
                         success: function(result, statues, xml){
-                            console.log(result);
-                            $("#lparea").html(result);             
+                            $("#lparea").html(result);
                         },
                         error: function(){
                             alert("false");
