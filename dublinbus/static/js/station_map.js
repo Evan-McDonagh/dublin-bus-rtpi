@@ -31,6 +31,7 @@ var directionsService = new google.maps.DirectionsService();
 var directionsRenderer = new google.maps.DirectionsRenderer();
 var singlestopmarker = [];
 var directionresults = [];
+var fareRoutes = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -231,8 +232,19 @@ function calcRoute() {
                 steps = legs[j]['steps']
                 for (k in steps){
                     if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
-                    else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
+                    else if (steps[k].travel_mode == 'TRANSIT'){
+                        bus_dur += steps[k]['duration'].value; 
+                        bus_name.push(steps[k]['transit']['line'].short_name);
+
+                        // Establish the number of stops on each necessary bus route for fare calculation 
+                        fareRoutes.push(steps[k]['transit']['num_stops']);
+                    }
                 }
+                // Call function to calculate cost of fare
+                if (fareRoutes.length > 0){
+                    calcFare(fareRoutes);
+                }
+
                 if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
                 else{bus_name_str = bus_name[0]};
                 routes_dict[bus_name_str] = result['routes'][i];
@@ -588,6 +600,35 @@ function getclicklocation(latLng){
     })
 }
 
+//To calculate the estimated fare of the journey 
+function calcFare(fareRoutes){
+    var leapFare = 0;
+    var cashFare = 0;
+    for (var i=0; i < fareRoutes.length; i++){
+        if (fareRoutes[i] > 1 && fareRoutes[i] < 4){
+            leapFare += 1.55;
+            cashFare += 2.15;
+        } else if (fareRoutes[i] > 3 && fareRoutes[i] < 14){
+            leapFare += 2.25;
+            cashFare += 3.00;
+        } else if (fareRoutes[i] > 13){
+            leapFare += 2.50;
+            cashFare += 3.30;
+        }
+            
+    }
+    if (leapFare > 7){
+        // Accounting for leap card capping 
+        leapFare = 7;
+    }
+
+    //Makes sure price is rounded to 2 decimal places
+    leapFare = leapFare.toFixed(2);
+    cashFare = cashFare.toFixed(2);
+
+    var fares = "<p>Estimated Adult Leap Fare: €" + leapFare + "</p><p>Estimated Adult Cash Fare: €" + cashFare + "</p>";
+    document.getElementById("fares").innerHTML = fares;
+}
 
 
     //     $.ajax({
