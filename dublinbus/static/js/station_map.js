@@ -480,7 +480,7 @@ function changemarkerstatus(markerlist, map){
 }
 
 //get the clicking point location on map
-function getclicklocation(id){
+function select_ori_dest(id){
     if (id == "origin"){
         $("#origin").val(null); //clear the input box
         clearmarkers(originmarkers); //clear previous marker
@@ -490,11 +490,22 @@ function getclicklocation(id){
         clearmarkers(destinationmarkers);
         destinationmarkers=[];
     }
-    google.maps.event.addListener(map, 'click', function (event) {
-        if (originmarkers.length > 1){clearmarkers(originmarkers);originmarkers=[]}// do not allow multiple origin markers appear
-        if (destinationmarkers.length >1){clearmarkers(destinationmarkers);destinationmarkers=[]}
+    google.maps.event.addListener(map, 'click', function(event) {
+        if (originmarkers.length > 1) {
+            clearmarkers(originmarkers);
+            originmarkers = []
+        }// do not allow multiple origin markers appear
+        if (destinationmarkers.length > 1) {
+            clearmarkers(destinationmarkers);
+            destinationmarkers = []
+        }
         var Latitude = event.latLng.lat();//get clicking location
         var Longitude = event.latLng.lng();
+        getclicklocation(Latitude, Longitude);
+    })
+}
+//supportinh function to get event location for function select_ori_dest(id)
+function getclicklocation(Latitude, Longitude){
         $.ajax({
         headers: {'X-CSRFToken': csrftoken},
         url: '/init',
@@ -524,13 +535,18 @@ function getclicklocation(id){
                 clearmarkers(originmarkers);
                 loc_marker.setMap(null);
                 var ori_infowindow = new google.maps.InfoWindow();
-                ori_infowindow.setContent("<h5>"+"Origin:"+data.address+"</h5>");
+                ori_infowindow.setContent("<h5 id='ori-address'>"+"Origin:"+data.address+"</h5>");
                 var orimarker = new google.maps.Marker({
                         position: {'lat':Latitude, 'lng':Longitude},
                         draggable:true,
                         animation: google.maps.Animation.DROP,
                     });
                 ori_infowindow.open(map, orimarker);
+                google.maps.event.addListener(orimarker, 'dragend', function (event) {
+                    orimarker.setPosition(event.latLng);
+                    var address =
+                    ori_infowindow.setContent("<h5 id='ori-address'>"+"Origin:"+data.address+"</h5>");
+                })
                 originmarkers = [];
                 originmarkers.push(orimarker);
                 showmarkers(originmarkers, map);
@@ -541,7 +557,7 @@ function getclicklocation(id){
                 clearmarkers(destinationmarkers);
                 loc_marker.setMap(null);
                 var dest_infowindow = new google.maps.InfoWindow();
-                dest_infowindow.setContent("<h5>"+"Destination:"+data.address+"</h5>");
+                dest_infowindow.setContent("<h5 id='dest-address'>"+"Destination:"+data.address+"</h5>");
                 var destmarker = new google.maps.Marker({
                         position: {'lat':Latitude, 'lng':Longitude},
                         draggable:true,
@@ -556,8 +572,5 @@ function getclicklocation(id){
         },
         error: function () {return "error";alert("error");},
     });
-
-    })
 }
-
 initMap();
