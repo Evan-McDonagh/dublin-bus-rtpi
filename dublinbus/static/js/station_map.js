@@ -248,7 +248,9 @@ function calcRoute() {
                 if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
                 else{bus_name_str = bus_name[0]};
                 routes_dict[bus_name_str] = result['routes'][i];
-                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
+                walk_time = Math.round((walking_dur/60).toFixed(1));
+                transit_time = Math.round((bus_dur/60).toFixed(1));
+                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p>Total walking time: " + walk_time + " minutes.</p><p>Total transit time: "+ transit_time +" minutes.</p>";
                 loadstops(bus_name, result['routes'][i]['bounds'], map);
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
 
