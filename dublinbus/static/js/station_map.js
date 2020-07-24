@@ -248,9 +248,9 @@ function calcRoute() {
                 if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
                 else{bus_name_str = bus_name[0]};
                 routes_dict[bus_name_str] = result['routes'][i];
-                walk_time = Math.round((walking_dur/60).toFixed(1));
-                transit_time = Math.round((bus_dur/60).toFixed(1));
-                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p>Total walking time: " + walk_time + " minutes.</p><p>Total transit time: "+ transit_time +" minutes.</p>";
+                walk_time = Math.round((walking_dur/60));
+                transit_time = Math.round((bus_dur/60));
+                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes.<br>Transit: "+ transit_time +" minutes.</p>";
                 loadstops(bus_name, result['routes'][i]['bounds'], map);
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
 
@@ -628,7 +628,7 @@ function calcFare(fareRoutes){
     leapFare = leapFare.toFixed(2);
     cashFare = cashFare.toFixed(2);
 
-    var fares = "<p>Estimated Adult Leap Fare: €" + leapFare + "</p><p>Estimated Adult Cash Fare: €" + cashFare + "</p>";
+    var fares = "<p><b>Estimated Adult Fares:</b><br>Leap: €" + leapFare + "<br>Cash: €" + cashFare + "</p>";
     document.getElementById("fares").innerHTML = fares;
 }
 
