@@ -108,7 +108,7 @@ function sendlocation(pos, map){
             loc_infoWindow.setContent((pos.status == 'OK'? "Your position:":"(Unlocated)Map center:")+data.address)
             loc_infoWindow.open(map, loc_marker);
         },
-        error: function () {return "error";alert("error");},
+        error: function () {alert("error"+" failed js function:sendlocation"+" involved views.py function:init(request)");},
     });
 }
 
@@ -301,7 +301,7 @@ function calcRoute() {
                             // showmarkers(alongroutemarkers, map);
                         }
                     }, error: function () {
-                        alert('error');
+                        alert('error'+" involved js function loadstops(bus_name, bounds, map) serving function calcRoute()"+" involved views.py function printresult(request)");
                     },
                 });
             }
@@ -425,7 +425,7 @@ function stopsearch() {
                 $("#stoparea").html(real_info);
             },
             error: function(){
-                alert("false");
+                alert("false"+" involved js function stopsearch() involved views.py function stop(request)");
             }
         });
     var stop_id = $('#stop_id').val();
@@ -702,4 +702,4 @@ function calcFare(fareRoutes){
     //     },
     //     error: function () {return "error";alert("error");},
     // });
-initMap();
+// initMap();
