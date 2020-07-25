@@ -131,9 +131,9 @@ def printresult(request):
     # print("printrequest")
     if request.method == 'POST':
         rebody = json.loads(request.body)
-        with open ('result.txt', 'w') as rt:
-            rt.write(str(rebody))
-        rt.close()
+        # with open ('result.txt', 'w') as rt:
+        #     rt.write(str(rebody))
+        # rt.close()
         bounds = rebody.get('bounds')
         # print(type(bounds),bounds)
         bus = rebody.get('bus')
