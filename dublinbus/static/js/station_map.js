@@ -583,78 +583,8 @@ function getclicklocation(latLng){
         }
     })
 }
-
-<<<<<<< Updated upstream
-
-
-    //     $.ajax({
-    //     headers: {'X-CSRFToken': csrftoken},
-    //     url: '/init',
-    //     type: 'POST',
-    //     data: {'lat':Latitude, 'lng':Longitude},
-    //     dataType: 'json',
-    //     // async:false,
-    //     success: function (data) {
-    //         //get the address msg of clicking location
-    //         var loc_infoWindow = new google.maps.InfoWindow({});
-    //         var loc_marker = new google.maps.Marker({
-    //                 // map: map,
-    //                 position: {'lat':Latitude, 'lng':Longitude},
-    //                 draggable:true,
-    //                 animation: google.maps.Animation.DROP,
-    //             });
-    //         loc_infoWindow.setContent(
-    //             "<h5 id='address'>"+data.address+"</h5>"+"<br>"+
-    //             "<button id='ori-sel'>"+"As Origin"+"</button>"+
-    //             "<button id='dest-sel'>"+"As Destination"+"</button>"
-    //         )
-    //         loc_infoWindow.open(map, loc_marker);
-    //         showmarkers([loc_marker], map);
-    //
-    //         //enable user to chose this address as origin or destination
-    //         $(document).on('click', "#ori-sel", function () {
-    //             clearmarkers(originmarkers);
-    //             loc_marker.setMap(null);
-    //             var ori_infowindow = new google.maps.InfoWindow();
-    //             ori_infowindow.setContent("<h5 id='ori-address'>"+"Origin:"+data.address+"</h5>");
-    //             var orimarker = new google.maps.Marker({
-    //                     position: {'lat':Latitude, 'lng':Longitude},
-    //                     draggable:true,
-    //                     animation: google.maps.Animation.DROP,
-    //                 });
-    //             ori_infowindow.open(map, orimarker);
-    //             google.maps.event.addListener(orimarker, 'dragend', function (event) {
-    //                 orimarker.setPosition(event.latLng);
-    //                 var address =
-    //                 ori_infowindow.setContent("<h5 id='ori-address'>"+"Origin:"+data.address+"</h5>");
-    //             })
-    //             originmarkers = [];
-    //             originmarkers.push(orimarker);
-    //             showmarkers(originmarkers, map);
-    //             $("#origin").val(data.address);
-    //             // $("#dest-sel").hide();
-    //         });
-    //         $(document).on("click", "#dest-sel", function () {
-    //             clearmarkers(destinationmarkers);
-    //             loc_marker.setMap(null);
-    //             var dest_infowindow = new google.maps.InfoWindow();
-    //             dest_infowindow.setContent("<h5 id='dest-address'>"+"Destination:"+data.address+"</h5>");
-    //             var destmarker = new google.maps.Marker({
-    //                     position: {'lat':Latitude, 'lng':Longitude},
-    //                     draggable:true,
-    //                     animation: google.maps.Animation.DROP,
-    //                 });
-    //             dest_infowindow.open(map, destmarker);
-    //             destinationmarkers = [];
-    //             destinationmarkers.push(destmarker);
-    //             showmarkers(destinationmarkers, map)
-    //             $("#destination").val(data.address);
-    //         });
-    //     },
-    //     error: function () {return "error";alert("error");},
-    // });
 // initMap();
-=======
+
 //To calculate the estimated fare of the journey 
 function calcFare(fareRoutes){
     var leapFare = 0;
@@ -684,4 +614,4 @@ function calcFare(fareRoutes){
     var fares = "<p><b>Estimated Adult Fares:</b><br>Leap: €" + leapFare + "<br>Cash: €" + cashFare + "</p>";
     document.getElementById("fares").innerHTML = fares;
 }
->>>>>>> Stashed changes
+
