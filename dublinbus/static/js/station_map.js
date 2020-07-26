@@ -490,8 +490,6 @@ function select_ori_dest(id){
         clearmarkers(destinationmarkers);
         // destinationmarkers=[];
     }
-    var ori_address = "";
-    var dest_address = "";
     google.maps.event.addListener(map, 'click', function(event) {
         if (originmarkers.length > 1) {
             clearmarkers(originmarkers);
@@ -502,8 +500,6 @@ function select_ori_dest(id){
             destinationmarkers = [];
         }
 
-        var Latitude = event.latLng.lat();//get clicking location
-        var Longitude = event.latLng.lng();
         getclicklocation(event.latLng);
     })
 }
@@ -584,10 +580,11 @@ function getclicklocation(latLng){
                 showmarkers(destinationmarkers, map)
                 $("#destination").val(address);
             });
-        }//if
+        }
     })
 }
 
+<<<<<<< Updated upstream
 
 
     //     $.ajax({
@@ -657,3 +654,34 @@ function getclicklocation(latLng){
     //     error: function () {return "error";alert("error");},
     // });
 // initMap();
+=======
+//To calculate the estimated fare of the journey 
+function calcFare(fareRoutes){
+    var leapFare = 0;
+    var cashFare = 0;
+    for (var i=0; i < fareRoutes.length; i++){
+        if (fareRoutes[i] > 1 && fareRoutes[i] < 4){
+            leapFare += 1.55;
+            cashFare += 2.15;
+        } else if (fareRoutes[i] > 3 && fareRoutes[i] < 14){
+            leapFare += 2.25;
+            cashFare += 3.00;
+        } else if (fareRoutes[i] > 13){
+            leapFare += 2.50;
+            cashFare += 3.30;
+        }
+            
+    }
+    if (leapFare > 7){
+        // Accounting for leap card capping 
+        leapFare = 7;
+    }
+
+    //Makes sure price is rounded to 2 decimal places
+    leapFare = leapFare.toFixed(2);
+    cashFare = cashFare.toFixed(2);
+
+    var fares = "<p><b>Estimated Adult Fares:</b><br>Leap: €" + leapFare + "<br>Cash: €" + cashFare + "</p>";
+    document.getElementById("fares").innerHTML = fares;
+}
+>>>>>>> Stashed changes
