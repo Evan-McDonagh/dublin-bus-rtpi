@@ -148,19 +148,6 @@
 
     </div>
 
-    
-<script type="text/javascript">
-    // $("#favorite").click(function () {
-    //     // alert('hiiiii')
-    //     $("#favoritearea").empty();
-        
-    //     $('#stoparea').empty();
-
-
-    //     $(".db").toggleClass("show");
-    //     // $("#favoritearea").empty();
-    // });
-</script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -261,20 +248,13 @@
                 $("#favoritearea").empty();
                 $('#favoriteid').show();
                 $(".db").toggleClass("show");
-                $('#twitterid').show();
-                
-                
-                
-                
+                $('#twitterid').show(); 
                  
             })
         </script>
-        <!-- <script type = "text/javascript">
-            $('#twitter').click(function(){
-                $('#twitterid').siblings().hide();
-                $('#twitterid').show();
-            })
-        </script> -->
+        
+
+    <!-- when user click the star, and stop they input will be added to the favorite -->   
     <script type="text/javascript" >
         $('.star').click(function(e){
             e.preventDefault;
@@ -283,6 +263,7 @@
                 alert('please input stop')
             }
             else{
+                // the first time user input the form 
                 stop.push(document.getElementById("stop_id").value);
                 try{
                     cookiemonster.get('stop');
@@ -294,7 +275,7 @@
                     return ;
                 }
 
-
+                // except the first time of the user input, to get the cookies
                 var input_stop =  document.getElementById("stop_id").value;
                 var previous_arr = cookiemonster.get('stop');
                 // console.log(input_stop);
@@ -324,6 +305,8 @@
         });
     </script>
 
+
+    <!-- showthe cookies of the stop on the favorite page  -->
     <script type="text/javascript" >
         $(function(){
             $("#mystop").click(function(e){
@@ -350,6 +333,7 @@
                     tableContent.appendChild(iconstar);
                     document.getElementById("favorite").appendChild(tableContent);
 
+                    // delete the favorite stop when they click the button
                     iconstar.addEventListener('click', function(){
                         alert("hi");
                         var stopList = cookiemonster.get('stop');
@@ -366,7 +350,7 @@
         });
     </script>
 
-
+<!-- add user favorite palce to the cookies when they click the star button -->
 <script type="text/javascript" >
     $('.place').click(function(e){
         e.preventDefault;
@@ -417,7 +401,7 @@
     });
 </script>
 
-
+<!-- show their favorite place on the page -->
 <script type="text/javascript" >
     $(function(){
         $("#myplace").click(function(e){
@@ -444,6 +428,7 @@
                 tableContent.appendChild(iconstar);
                 document.getElementById("favorite").appendChild(tableContent);
 
+                // delete the place when they click the button
                 iconstar.addEventListener('click', function(){
                     alert("hi");
                     var placeList = cookiemonster.get('place');
