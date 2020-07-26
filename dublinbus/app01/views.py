@@ -74,32 +74,25 @@ def stop(request):
         print(obj_json)
         return JsonResponse(obj_json, safe=False)
 
-
+# get user address info by user's location
 def init(request):
-    # print(request.method)
     inifo = {}
     if request.method == 'POST':
-        # print(request.body)
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
         print(lat, lng)
 
-
-        # # get present weather
-        # print(weather)
-        # # get the address of the post coordinate
+        # get the address of the post coordinate
         address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
         address_result = json.loads(address_request.text)
-        # print(address_result)
         address = address_result['results'][0].get('formatted_address')
-        # print(address)
         inifo['address'] = address
-        # print(inifo)
     else:
         inifo['address'] = 'location unknown'
     return HttpResponse(json.dumps(inifo))
     
 
+# get realtime weather at the users' location
 def weather(request):
     weather_info = {}
     if request.method == 'POST':
@@ -127,17 +120,15 @@ def weather(request):
     return HttpResponse(json.dumps(weather_info))
 
 
+# select involved stops along the route.
 def printresult(request):
-    # print("printrequest")
     if request.method == 'POST':
         rebody = json.loads(request.body)
         # with open ('result.txt', 'w') as rt:
         #     rt.write(str(rebody))
         # rt.close()
         bounds = rebody.get('bounds')
-        # print(type(bounds),bounds)
         bus = rebody.get('bus')
-        # print(bus)
         with open("./local-bus-data/route-data.json") as rt:
             allroutes = json.load(rt)
             rt.close()
@@ -160,14 +151,11 @@ def printresult(request):
                 if (slat >= south and slat <= north) or (slat >= north and slat <= south):
                     if (slng >= west and slng <= east) or (slng >= east and slng <= west):
                         stop_locations.append({"id": STOP["stopno"], 'lat':slat, 'lng':slng})
-            # route_stop_locations
-            # print(stop_locations)
     return HttpResponse(json.dumps({'stop_locations':stop_locations}))
 
+# show realtime info when a marker alongside the route is clicked
 def rtmarkerinfo(request):
     if request.method == 'POST':
-        # print(request.body)
-        # rebody = json.loads(request.body)
         stop_id = request.POST.get('id')
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
@@ -179,5 +167,4 @@ def rtmarkerinfo(request):
             key = result.get('route')
             rsp[obj_json.get('stopid')].append({key: {'arrivaltime':result.get('arrivaldatetime'), 'destination':result.get('destination')}})
             allinfo += "Route:"+ key + "  arrive at:" + result.get('arrivaldatetime') + " Towards " + result.get('destination') +"<br>"
-        # print(rsp)
         return HttpResponse(json.dumps({"allinfo":allinfo}))

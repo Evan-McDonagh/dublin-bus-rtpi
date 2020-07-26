@@ -31,7 +31,6 @@ var directionsService = new google.maps.DirectionsService();
 var directionsRenderer = new google.maps.DirectionsRenderer();
 var singlestopmarker = [];
 var directionresults = [];
-var fareRoutes = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -232,28 +231,12 @@ function calcRoute() {
                 steps = legs[j]['steps']
                 for (k in steps){
                     if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
-                    else if (steps[k].travel_mode == 'TRANSIT'){
-                        bus_dur += steps[k]['duration'].value; 
-                        bus_name.push(steps[k]['transit']['line'].short_name);
-
-                        // Establish the number of stops on each necessary bus route for fare calculation 
-                        fareRoutes.push(steps[k]['transit']['num_stops']);
-                    }
+                    else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
                 }
-                // Call function to calculate cost of fare
-                if (fareRoutes.length > 0){
-                    calcFare(fareRoutes);
-                }
-
                 if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
                 else{bus_name_str = bus_name[0]};
                 routes_dict[bus_name_str] = result['routes'][i];
-                
-                //Changing travel time to mins for UI
-                walk_time = Math.round((walking_dur/60));
-                transit_time = Math.round((bus_dur/60));
-                
-                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes.<br>Transit: "+ transit_time +" minutes.</p>";
+                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
                 loadstops(bus_name, result['routes'][i]['bounds'], map);
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
 
@@ -507,8 +490,6 @@ function select_ori_dest(id){
         clearmarkers(destinationmarkers);
         // destinationmarkers=[];
     }
-    var ori_address = "";
-    var dest_address = "";
     google.maps.event.addListener(map, 'click', function(event) {
         if (originmarkers.length > 1) {
             clearmarkers(originmarkers);
@@ -519,8 +500,6 @@ function select_ori_dest(id){
             destinationmarkers = [];
         }
 
-        var Latitude = event.latLng.lat();//get clicking location
-        var Longitude = event.latLng.lng();
         getclicklocation(event.latLng);
     })
 }
@@ -601,9 +580,10 @@ function getclicklocation(latLng){
                 showmarkers(destinationmarkers, map)
                 $("#destination").val(address);
             });
-        }//if
+        }
     })
 }
+// initMap();
 
 //To calculate the estimated fare of the journey 
 function calcFare(fareRoutes){
@@ -635,71 +615,3 @@ function calcFare(fareRoutes){
     document.getElementById("fares").innerHTML = fares;
 }
 
-
-    //     $.ajax({
-    //     headers: {'X-CSRFToken': csrftoken},
-    //     url: '/init',
-    //     type: 'POST',
-    //     data: {'lat':Latitude, 'lng':Longitude},
-    //     dataType: 'json',
-    //     // async:false,
-    //     success: function (data) {
-    //         //get the address msg of clicking location
-    //         var loc_infoWindow = new google.maps.InfoWindow({});
-    //         var loc_marker = new google.maps.Marker({
-    //                 // map: map,
-    //                 position: {'lat':Latitude, 'lng':Longitude},
-    //                 draggable:true,
-    //                 animation: google.maps.Animation.DROP,
-    //             });
-    //         loc_infoWindow.setContent(
-    //             "<h5 id='address'>"+data.address+"</h5>"+"<br>"+
-    //             "<button id='ori-sel'>"+"As Origin"+"</button>"+
-    //             "<button id='dest-sel'>"+"As Destination"+"</button>"
-    //         )
-    //         loc_infoWindow.open(map, loc_marker);
-    //         showmarkers([loc_marker], map);
-    //
-    //         //enable user to chose this address as origin or destination
-    //         $(document).on('click', "#ori-sel", function () {
-    //             clearmarkers(originmarkers);
-    //             loc_marker.setMap(null);
-    //             var ori_infowindow = new google.maps.InfoWindow();
-    //             ori_infowindow.setContent("<h5 id='ori-address'>"+"Origin:"+data.address+"</h5>");
-    //             var orimarker = new google.maps.Marker({
-    //                     position: {'lat':Latitude, 'lng':Longitude},
-    //                     draggable:true,
-    //                     animation: google.maps.Animation.DROP,
-    //                 });
-    //             ori_infowindow.open(map, orimarker);
-    //             google.maps.event.addListener(orimarker, 'dragend', function (event) {
-    //                 orimarker.setPosition(event.latLng);
-    //                 var address =
-    //                 ori_infowindow.setContent("<h5 id='ori-address'>"+"Origin:"+data.address+"</h5>");
-    //             })
-    //             originmarkers = [];
-    //             originmarkers.push(orimarker);
-    //             showmarkers(originmarkers, map);
-    //             $("#origin").val(data.address);
-    //             // $("#dest-sel").hide();
-    //         });
-    //         $(document).on("click", "#dest-sel", function () {
-    //             clearmarkers(destinationmarkers);
-    //             loc_marker.setMap(null);
-    //             var dest_infowindow = new google.maps.InfoWindow();
-    //             dest_infowindow.setContent("<h5 id='dest-address'>"+"Destination:"+data.address+"</h5>");
-    //             var destmarker = new google.maps.Marker({
-    //                     position: {'lat':Latitude, 'lng':Longitude},
-    //                     draggable:true,
-    //                     animation: google.maps.Animation.DROP,
-    //                 });
-    //             dest_infowindow.open(map, destmarker);
-    //             destinationmarkers = [];
-    //             destinationmarkers.push(destmarker);
-    //             showmarkers(destinationmarkers, map)
-    //             $("#destination").val(data.address);
-    //         });
-    //     },
-    //     error: function () {return "error";alert("error");},
-    // });
-// initMap();
