@@ -219,27 +219,60 @@ function calcRoute() {
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
         directionresults = [result];
+        // var routes_dict = {}
+        // // var route_choices = {}
+        // var routes_list = result['routes'];
+        // for (i in result['routes']){
+        //     legs = result['routes'][i]['legs'];
+        //     for (j in legs){
+        //         var walking_dur = 0;
+        //         var bus_dur = 0;
+        //         var bus_name = [];
+        //         var bus_name_str = '';
+        //         steps = legs[j]['steps']
+        //         for (k in steps){
+        //             if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
+        //             else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
+        //         }
+        //         if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
+        //         else{bus_name_str = bus_name[0]};
+        //         routes_dict[bus_name_str] = result['routes'][i];
+        //         document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
+        //         loadstops(bus_name, result['routes'][i]['bounds'], map);
+        //         document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
+        //
+        //     }
+        // }
         var routes_dict = {}
-        var route_choices = {}
-        for (i in result['routes']){
-            legs = result['routes'][i]['legs'];
+        // var route_choices = {}
+        var routes_list = result['routes'];
+        for (i in routes_list){
+            var ROUTE = routes_list[i];
+            var legs = ROUTE['legs'];
             for (j in legs){
+                var LEG = legs[i];
                 var walking_dur = 0;
                 var bus_dur = 0;
                 var bus_name = [];
                 var bus_name_str = '';
-                steps = legs[j]['steps']
+                var steps = LEG['steps']
                 for (k in steps){
                     if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
-                    else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
+                    else if (steps[k].travel_mode == 'TRANSIT'){
+                        bus_dur += steps[k]['duration'].value;
+                        bus_name.push(steps[k]['transit']['line'].short_name)
+                    }
                 }
-                if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
-                else{bus_name_str = bus_name[0]};
+                if (bus_name.length > 1){
+                    for (var i in bus_name){bus_name_str += (i == 0? bus_name[i]:"->"+bus_name[i])}
+                }
+                else{
+                    bus_name_str = bus_name[0]
+                }
                 routes_dict[bus_name_str] = result['routes'][i];
                 document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
                 loadstops(bus_name, result['routes'][i]['bounds'], map);
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
-
             }
         }
         function showinfowindow(marker, id, map){
