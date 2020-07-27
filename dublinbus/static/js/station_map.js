@@ -209,6 +209,7 @@ function calcRoute() {
     clearmarkers(alongroutemarkers);
     alongroutemarkers = [];
     clearmarkers(nearmemarkers);
+    segmentsinfo = [];
       var request = {
         origin: {query: document.getElementById('origin').value},
         destination: {query: document.getElementById('destination').value},
