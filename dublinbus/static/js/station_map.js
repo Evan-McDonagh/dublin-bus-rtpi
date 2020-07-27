@@ -260,7 +260,7 @@ function calcRoute() {
                     if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
                     else if (steps[k].travel_mode == 'TRANSIT'){
                         bus_dur += steps[k]['duration'].value;
-                        alert(steps[k]['transit'])
+                        // alert(steps[k]['transit'])
                         bus_name.push(steps[k]['transit']['line'].short_name)
                     }
                 }
