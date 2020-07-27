@@ -32,6 +32,7 @@ var directionsRenderer = new google.maps.DirectionsRenderer();
 var singlestopmarker = [];
 var directionresults = [];
 var segmentsinfo = [];
+var fareRoutes = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -256,7 +257,8 @@ function calcRoute() {
                 var bus_dur = 0;
                 var bus_name = [];
                 var bus_name_str = '';
-                var steps = LEG['steps']
+                var steps = LEG['steps'];
+                var fareStops = [];
                 for (k in steps){
                     if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
                     else if (steps[k].travel_mode == 'TRANSIT'){
@@ -273,9 +275,16 @@ function calcRoute() {
                             'numstops':steps[k]['transit'].num_stops
                         }
                         segmentsinfo.push(seg)
+
+                        fareStops.push(steps[k]['transit']['num_stops']);
                     }
                 }
                 showPrediction(segmentsinfo);
+                if (fareStops.length > 0){
+                    fareRoutes.push(fareStops);
+                    console.log(fareRoutes);
+                    calcFare(fareRoutes);
+                }
                 for (var p in bus_name){bus_name_str += (p == 0? bus_name[p]:"->"+bus_name[p])}
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
                 document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
@@ -631,14 +640,15 @@ function getclicklocation(latLng){
 function calcFare(fareRoutes){
     var leapFare = 0;
     var cashFare = 0;
-    for (var i=0; i < fareRoutes.length; i++){
-        if (fareRoutes[i] > 1 && fareRoutes[i] < 4){
+    var journey = fareRoutes[fareRoutes.length - 1];
+    for (var i=0; i < journey.length; i++){
+        if (journey[i] > 1 && journey[i] < 4){
             leapFare += 1.55;
             cashFare += 2.15;
-        } else if (fareRoutes[i] > 3 && fareRoutes[i] < 14){
+        } else if (journey[i] > 3 && journey[i] < 14){
             leapFare += 2.25;
             cashFare += 3.00;
-        } else if (fareRoutes[i] > 13){
+        } else if (journey[i] > 13){
             leapFare += 2.50;
             cashFare += 3.30;
         }
