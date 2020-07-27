@@ -31,6 +31,7 @@ var directionsService = new google.maps.DirectionsService();
 var directionsRenderer = new google.maps.DirectionsRenderer();
 var singlestopmarker = [];
 var directionresults = [];
+var segmentsinfo = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -261,9 +262,20 @@ function calcRoute() {
                     else if (steps[k].travel_mode == 'TRANSIT'){
                         bus_dur += steps[k]['duration'].value;
                         // alert(steps[k]['transit'])
-                        bus_name.push(steps[k]['transit']['line'].short_name)
+                        bus_name.push(steps[k]['transit']['line'].short_name);
+                        var seg = {
+                            'busname':steps[k]['transit']['line'].short_name,
+                            'startstopname':steps[k]['transit']['arrival_stop'].name,
+                            'startstoplocation': steps[k]['transit']['arrival_stop']['location'],
+                            'endstopname':steps[k]['transit']['departure_stop'].name,
+                            'endstoplocation': steps[k]['transit']['departure_stop']['location'],
+                            'headsign': steps[k]['transit']['headsign'],
+                            'numstops':steps[k]['transit'].num_stops
+                        }
+                        segmentsinfo.push(seg)
                     }
                 }
+                showPrediction(segmentsinfo);
                 for (var p in bus_name){bus_name_str += (p == 0? bus_name[p]:"->"+bus_name[p])}
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
                 document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
@@ -308,7 +320,8 @@ function calcRoute() {
                                 // map: map,
                                 position: new google.maps.LatLng(data.stop_locations[i].lat, data.stop_locations[i].lng)
                             });
-                            showinfowindow(marker, data.stop_locations[i].id, map);
+                            // marker.addListener('click', alert('asd') );
+                            showinfowindow(marker, data.stop_locations[i].id, map)
                             alongroutemarkers.push(marker);
                             // showmarkers(alongroutemarkers, map);
                         }
@@ -644,3 +657,21 @@ function calcFare(fareRoutes){
     document.getElementById("fares").innerHTML = fares;
 }
 
+//send starts, ends in different segments to backend
+function showPrediction(segmentsinfo){
+    // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
+    $.ajax({
+        headers: {'X-CSRFToken': csrftoken}, //just for security issue
+        url: '/showprediction', //correspond to a route in urls.py and the function "showprediction(request)" in views.py will be triggered
+        data: JSON.stringify(segmentsinfo), // the data that will be post to backend. if the data is not a dictionary, should use JSON.stringfy(segs)
+        type: 'POST', // could be 'POST' or 'GET'
+        dataType: 'json',// declare the type of sent data
+        success: function (data) {
+            // if the correspond function in backend given response successfully, this function is triggered and parameter "data" is the responded data.
+            alert(data.prediction)
+        }, error: function () {
+            // if the correspond function in backend geives response successfully, this function is triggered and parameter "data" is the responded data.
+            alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
+        },
+    });
+}

@@ -12,4 +12,5 @@ urlpatterns = [
     url('weather',views.weather),
     url('printresult', views.printresult),
     url('rtmarkerinfo', views.rtmarkerinfo),
+    url('showprediction', views.showprediction),
 ]

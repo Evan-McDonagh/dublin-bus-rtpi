@@ -80,7 +80,6 @@ def init(request):
     if request.method == 'POST':
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
-        print(lat, lng)
 
         # get the address of the post coordinate
         address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
@@ -160,7 +159,7 @@ def rtmarkerinfo(request):
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
         obj_json = obj.json()
-        print(stop_id)
+        # print(stop_id)
         allinfo = "Stop No." + obj_json.get('stopid') +"<br>"
         rsp ={obj_json.get('stopid'): []}
         for result in obj_json['results']:
@@ -168,3 +167,14 @@ def rtmarkerinfo(request):
             rsp[obj_json.get('stopid')].append({key: {'arrivaltime':result.get('arrivaldatetime'), 'destination':result.get('destination')}})
             allinfo += "Route:"+ key + "  arrive at:" + result.get('arrivaldatetime') + " Towards " + result.get('destination') +"<br>"
         return HttpResponse(json.dumps({"allinfo":allinfo}))
+
+# show prediction
+def showprediction(request):
+    #  just pring some info, but later on, the pkl file can be added and give prediction using info contained in segs.
+    if request.method == 'POST':
+        segs = json.loads(request.body)
+        for seg in segs:
+            for key in seg:
+                print(key, ":", seg[key])
+            print('----------------')
+    return HttpResponse(json.dumps({'prediction': "prediction info"}))
