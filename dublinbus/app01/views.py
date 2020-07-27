@@ -122,6 +122,8 @@ def weather(request):
 
 # select involved stops along the route.
 def printresult(request):
+    import os
+
     if request.method == 'POST':
         rebody = json.loads(request.body)
         # with open ('result.txt', 'w') as rt:
@@ -129,10 +131,15 @@ def printresult(request):
         # rt.close()
         bounds = rebody.get('bounds')
         bus = rebody.get('bus')
-        with open("./local-bus-data/route-data.json") as rt:
+
+        dirname = os.path.dirname(__file__)
+        stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
+        routefile = os.path.join(dirname, "../local-bus-data/route-data.json")
+
+        with open(routefile) as rt:
             allroutes = json.load(rt)
             rt.close()
-        with open("./local-bus-data/stop-data.json") as st:
+        with open(stopfile) as st:
             allstops = json.load(st)
             st.close()
         stop_locations = []
