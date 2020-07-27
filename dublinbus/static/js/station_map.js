@@ -275,19 +275,28 @@ function calcRoute() {
                             'numstops':steps[k]['transit'].num_stops
                         }
                         segmentsinfo.push(seg)
-
+                        
+                        //adding number of stops on route(s) to array for calcFare function
                         fareStops.push(steps[k]['transit']['num_stops']);
                     }
                 }
                 showPrediction(segmentsinfo);
+                
+                // if entered route requires transit, call calcFare function 
                 if (fareStops.length > 0){
+                    //adding array to array to calc individual routes 
                     fareRoutes.push(fareStops);
-                    console.log(fareRoutes);
                     calcFare(fareRoutes);
                 }
+
                 for (var p in bus_name){bus_name_str += (p == 0? bus_name[p]:"->"+bus_name[p])}
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
-                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
+
+                //convert to mins for readability 
+                walk_time = Math.round(walking_dur/60);
+                bus_time = Math.round(bus_dur/60);
+
+                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes.<br>Transit: "+ bus_time +" minutes</p>";
                 loadstops(bus_name, result['routes'][i]['bounds'], map);
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
             }
