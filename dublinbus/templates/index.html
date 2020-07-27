@@ -11,25 +11,31 @@
     <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
     
     <!--import css -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'css/mian.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-datetimepicker.min.css' %}">
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-    
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+
     <!--add favicon-->
     <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
     
     <!--import js -->
     <!-- <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script> -->
     <!-- <script type="text/javascript" src="{% static 'js/bootstrap.min.js.js' %}"></script> -->
-    
     <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cookiemonster.js' %}"></script>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/cookies-monster/0.1.4/cookies-monster.js"></script> -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
-
+    
 </head>
 <body>
     <script type="text/javascript">window.onload=function () {
@@ -46,13 +52,23 @@
                 <li><a id = "stop" onclick="showstopsearchcontent()">Stop</a></li>
                 <!-- <li><a id= "twitter">Twitter</a></li> -->
                 <li><a id = "leapcard">Leapcard</a></li>
+                <li><a href = "#" id= "favorite" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Favorites</a>
+                    <ul class="db collapse list-unstyled" id="fav-options">
+                        <li>
+                            <a href="#" id = "myplace">My Places</a>
+                        </li>
+                        <li>
+                            <a href="#" id = "mystop">My Stops</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
 
             <div class="forms">
                 <div id = "searchid">
                     <div>
                         <form action="" method="post">
-                            
+                            <i class = "far fa-star place" ></i>
                             <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')">
                             <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')">
 
@@ -86,19 +102,25 @@
                     <div id ="lparea"></div>
                 </div>
 
+                <div id = "favoriteid">
+                    
+                    <div id ="favoritearea"></div>
+                </div>
+
             
                 <div id = "stopid">
                     <div>
                         <form method="post" id = "stopadd">
                             {% csrf_token %}
-                            Stop ID: <input type='text' id = "stop_id" name = "stop_id">
+                            Stop ID: <i class = "far fa-star star" ></i>
+                            <input type='text' id = "stop_id" name = "stop_id">
                             <button id = "stopbtn" type="button" onclick="stopsearch()">submit</button>
                         </form>
                     </div>
                     <div id ="stoparea"></div>
                 </div>
                 <div id="nearme"></div>
-            
+                
                 
             </div>
             </div>
@@ -125,14 +147,18 @@
 
     </div>
 
-    
-
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#sidebarCollapse').on('click', function () {
             $('#sidebar').toggleClass('active');
         });
+    });
+</script>
+
+<script type="text/javascript">
+    $(".star").click(function(){
+        $(this).toggleClass("fa fa-star fa fa-star");
     });
 </script>
     
@@ -184,6 +210,9 @@
                 $('#leapcardid').siblings().hide();
                 $('#twitterid').show();
                 $('#leapcardid').show();
+                $('#myplace').hide();
+                $('#mystop').hide();
+                $(".db").removeClass("show");
             })
         </script>
         <script type = "text/javascript">
@@ -191,6 +220,9 @@
                 $('#stopid').siblings().hide();
                 $('#twitterid').show();
                 $('#stopid').show();
+                $('#myplace').hide();
+                $('#mystop').hide();
+                $(".db").removeClass("show");
             })
         </script>
         <script type = "text/javascript">
@@ -199,16 +231,220 @@
                 $('#twitterid').show();
                 $('#searchid').show();
                 $('#nearme').show();
+                $('#myplace').hide();
+                $('#mystop').hide();
+                $(".db").removeClass("show");
             })
         </script>
-        <!-- <script type = "text/javascript">
-            $('#twitter').click(function(){
-                $('#twitterid').siblings().hide();
-                $('#twitterid').show();
+        <script type = "text/javascript">
+            $('#favorite').click(function(){
+                $('#favoriteid').siblings().hide();
+                $('#myplace').show();
+                $('#mystop').show();
+                // $('#searchid').empty();
+                // $('#nearme').empty();
+                // $('#stoparea').empty();
+                $("#favoritearea").empty();
+                $('#favoriteid').show();
+                $(".db").toggleClass("show");
+                $('#twitterid').show(); 
+                 
             })
-        </script> -->
-    
-    
+        </script>
+        
+
+    <!-- when user click the star, and stop they input will be added to the favorite -->   
+    <script type="text/javascript" >
+        $('.star').click(function(e){
+            e.preventDefault;
+            var stop = [];
+            if (document.getElementById("stop_id").value === ""){
+                alert('please input stop')
+            }
+            else{
+                // the first time user input the form 
+                stop.push(document.getElementById("stop_id").value);
+                try{
+                    cookiemonster.get('stop');
+                }
+                catch{
+                    cookiemonster.set('stop', stop, 3650);
+                    console.log(cookiemonster.get('stop'))
+                    alert('Save Sucessfully');
+                    return ;
+                }
+
+                // except the first time of the user input, to get the cookies
+                var input_stop =  document.getElementById("stop_id").value;
+                var previous_arr = cookiemonster.get('stop');
+                // console.log(input_stop);
+                // console.log(previous_arr);
+                var flag = 0;
+                for (let i = 0; i<previous_arr.length; i++){
+                    if (input_stop == previous_arr[i]){
+                        alert("This stop is already in the list");
+                        flag = 1;
+                    }
+                }
+                if (flag == 0){
+                    // $(this).toggleClass("fa fa-star fa fa-star");
+                    try{
+                        cookiemonster.get('stop');
+                        console.log(cookiemonster.get('stop'));
+                        cookiemonster.append('stop', stop, 3650);
+                        console.log(cookiemonster.get('stop'));
+
+                    } catch(err){
+                        cookiemonster.set('stop', stop, 3650);
+                    }
+                    alert('Save Sucessfully');
+                }
+
+            }
+        });
+    </script>
+
+
+    <!-- showthe cookies of the stop on the favorite page  -->
+    <script type="text/javascript" >
+        $(function(){
+            $("#mystop").click(function(e){
+            $("#favoritearea").html("");
+            // alert("hi");
+            var tableContent = document.createElement("div");
+            var stopArr = cookiemonster.get('stop');
+            document.body.appendChild(tableContent);
+
+            var iconstar;
+            
+                for (let i = 0; i<stopArr.length; i++){
+                    let stop = stopArr[i];
+                    var stop_elem = document.createElement("span");
+                    var t = document.createTextNode(stop);
+                    stop_elem.appendChild(t); 
+                    
+                    // iconstar = document.createElement("i");
+                    // iconstar.setAttribute('class', 'fa fa-star starcancel');
+
+                    iconstar = document.createElement("button");
+                     
+                    tableContent.appendChild(stop_elem);
+                    tableContent.appendChild(iconstar);
+                    document.getElementById("favorite").appendChild(tableContent);
+
+                    // delete the favorite stop when they click the button
+                    iconstar.addEventListener('click', function(){
+                        // alert("hi");
+                        var stopList = cookiemonster.get('stop');
+                        for (let j = 0; j < stopArr.length; j++){
+                            if (stopList[j] === stopArr[i]){
+                                cookiemonster.splice('stop',i,1,3650);
+                            }
+                        }
+                    });
+                }
+            
+            $("#favoritearea").html(tableContent);
+            });
+        });
+    </script>
+
+<!-- add user favorite palce to the cookies when they click the star button -->
+<script type="text/javascript" >
+    $('.place').click(function(e){
+        e.preventDefault;
+        var place = [];
+        // alert('hiiiii');
+        if ($('#origin').val() === ""){
+            alert('please input place')
+        }
+        else{
+            place.push($('#origin').val());
+            try{
+                cookiemonster.get('place');
+            }
+            catch{
+                cookiemonster.set('place', place, 3650);
+                console.log(cookiemonster.get('place'))
+                alert('Save Sucessfully');
+                return ;
+            }
+
+
+            var input_place =  $('#origin').val();
+            var previous_arr = cookiemonster.get('place');
+            // console.log(input_stop);
+            // console.log(previous_arr);
+            var flag = 0;
+            for (let i = 0; i<previous_arr.length; i++){
+                if (input_place == previous_arr[i]){
+                    alert("This place is already in the list");
+                    flag = 1;
+                }
+            }
+            if (flag == 0){
+                // $(this).toggleClass("fa fa-star fa fa-star");
+                try{
+                    cookiemonster.get('place');
+                    console.log(cookiemonster.get('place'));
+                    cookiemonster.append('place', place, 3650);
+                    console.log(cookiemonster.get('place'));
+
+                } catch(err){
+                    cookiemonster.set('place', place, 3650);
+                }
+                alert('Save Sucessfully');
+            }
+
+        }
+    });
+</script>
+
+<!-- show their favorite place on the page -->
+<script type="text/javascript" >
+    $(function(){
+        $("#myplace").click(function(e){
+        $("#favoritearea").html("");
+        // alert("hi");
+        var tableContent = document.createElement("div");
+        var placeArr = cookiemonster.get('place');
+        document.body.appendChild(tableContent);
+
+        var iconstar;
+        
+            for (let i = 0; i<placeArr.length; i++){
+                let place = placeArr[i];
+                var place_elem = document.createElement("span");
+                var t = document.createTextNode(place);
+                place_elem.appendChild(t); 
+                
+                // iconstar = document.createElement("i");
+                // iconstar.setAttribute('class', 'fa fa-star starcancel');
+
+                iconstar = document.createElement("button");
+                 
+                tableContent.appendChild(place_elem);
+                tableContent.appendChild(iconstar);
+                document.getElementById("favorite").appendChild(tableContent);
+
+                // delete the place when they click the button
+                iconstar.addEventListener('click', function(){
+                    // alert("hi");
+                    var placeList = cookiemonster.get('place');
+                    for (let j = 0; j < placeArr.length; j++){
+                        if (placeList[j] === placeArr[i]){
+                            cookiemonster.splice('place',i,1,3650);
+                        }
+                    }
+                });
+            }
+        
+        $("#favoritearea").html(tableContent);
+        });
+    });
+</script>
+
+
     
 <!-- the function that let the page refrensh only in some part     -->
         <!-- let the leapcard feature refresh -->

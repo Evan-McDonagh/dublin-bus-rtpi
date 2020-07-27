@@ -149,6 +149,37 @@ input {
 #sidebar ul li a:hover {
     color: #17a2b8;
     background: #fff;
+    text-decoration: none;
+}
+
+
+/* Favorites dropdown styling  */
+.dropdown-toggle {
+    color: #fff;
+}
+
+.dropdown-toggle:hover {
+    text-decoration: none;
+}
+
+.dropdown-toggle:visited {
+    color: #fff;
+    text-decoration: none !important;
+}
+
+.dropdown-toggle:link {
+    color: #fff;
+    text-decoration: none !important;
+}
+
+#fav-options li a {
+    color: #fff;
+    background: rgb(71, 71, 95);
+}
+
+#fav-options li a:hover{
+    color: #17a2b8;
+    background: #fff;
 }
 
 a[data-toggle="collapse"] {
