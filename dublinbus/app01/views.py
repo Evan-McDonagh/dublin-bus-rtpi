@@ -184,4 +184,4 @@ def showprediction(request):
             for key in seg:
                 print(key, ":", seg[key])
             print('----------------')
-    return HttpResponse(json.dumps({'prediction': "prediction info"}))
+    return HttpResponse(json.dumps({'prediction': str(segs)}))

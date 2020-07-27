@@ -395,6 +395,7 @@ function addallmarkers(map) {
                 position: new google.maps.LatLng(
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
+                title: stopdata[stopKey]['stopno'],
             });
             marker.addListener('click', (function (marker, stopKey) {
                 return function () {getStopInfo(marker, stopKey, map);}
@@ -659,6 +660,12 @@ function calcFare(fareRoutes){
 
 //send starts, ends in different segments to backend
 function showPrediction(segmentsinfo){
+    // Add nearest stopmarkers to segmentsinfo
+    for (var i=0; i<segmentsinfo.length; i++) {
+        segmentsinfo[i]['startstopno'] = find_closest_stopmarker(segmentsinfo[i]["startstoplocation"]);
+        segmentsinfo[i]['endstopno'] = find_closest_stopmarker(segmentsinfo[i]["endstoplocation"]);
+    }
+
     // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
     $.ajax({
         headers: {'X-CSRFToken': csrftoken}, //just for security issue
@@ -675,3 +682,17 @@ function showPrediction(segmentsinfo){
         },
     });
 }
+
+function find_closest_stopmarker(location) {
+    // Finds nearest stopmarker to a given LatLng
+    var distances = [];
+    var closest = -1;
+    for (i = 0; i < allstopmarkers.length; i++) {
+      var d = google.maps.geometry.spherical.computeDistanceBetween(allstopmarkers[i].position, location);
+      distances[i] = d;
+      if (closest == -1 || d < distances[closest]) {
+        closest = i;
+      }
+    }
+    return allstopmarkers[closest].getTitle();
+  }
