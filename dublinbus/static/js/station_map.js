@@ -182,13 +182,17 @@ function calcRoute() {
                         // alert(steps[k]['transit'])
                         bus_name.push(steps[k]['transit']['line'].short_name);
                         var seg = {
+                            'travelmode':steps[k].travel_mode,
                             'busname':steps[k]['transit']['line'].short_name,
                             'startstopname':steps[k]['transit']['departure_stop'].name,
                             'startstoplocation': steps[k]['transit']['departure_stop']['location'],
                             'endstopname':steps[k]['transit']['arrival_stop'].name,
                             'endstoplocation': steps[k]['transit']['arrival_stop']['location'],
                             'headsign': steps[k]['transit']['headsign'],
-                            'numstops':steps[k]['transit'].num_stops
+                            'numstops':steps[k]['transit'].num_stops,
+                            'agency':steps[k]['transit']['line']['agencies'][0]['name'],
+                            'traveltime':steps[k]['duration'].value,
+                            'instructions':steps[k]['instructions']
                         }
                         segmentsinfo.push(seg)
 
@@ -196,7 +200,7 @@ function calcRoute() {
                         fareStops.push(steps[k]['transit']['num_stops']);
                     }
                 }
-                // showPrediction(segmentsinfo);
+                showPrediction(segmentsinfo);
                 
                 // if entered route requires transit, call calcFare function 
                 if (fareStops.length > 0){
@@ -340,6 +344,8 @@ function addallmarkers(map) {
                 position: new google.maps.LatLng(
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
+                title: stopdata[stopKey]['stopno'],
+                label: stopKey,
             });
             marker.addListener('click', (function (marker, stopKey) {
                 return function () {getStopInfo(marker, stopKey, map);}
@@ -637,4 +643,59 @@ function showPrediction(segmentsinfo){
             alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
         },
     });
+}
+function find_closest_stopmarker(location,route) {
+    // Finds nearest stopmarker to a given LatLng which  a given route in its route array
+    var distances = [];
+    var closest = -1;
+    for (i = 0; i < allstopmarkers.length; i++) {
+        var d = google.maps.geometry.spherical.computeDistanceBetween(allstopmarkers[i].position, location);
+        distances[i] = d;
+        if (closest == -1 || d < distances[closest] && stopdata[allstopmarkers[i].getLabel()].routes.includes(route)) {
+            closest = i;
+        }
+    }
+    return allstopmarkers[closest].getTitle();
+  }
+
+function displayDirections(segmentsinfo,data) {
+    var number_buses = 0;
+    for (i in segmentsinfo) {
+        if (segmentsinfo[i].agency == "Dublin Bus" || segmentsinfo[i].agency == "Go-Ahead"){
+            // alert(segmentsinfo[i].predictedtraveltime)
+        }
+        else {
+            // alert(segmentsinfo[i].traveltime);
+        }
+    }
+    renderTravelPlan(segmentsinfo);
+}
+
+function renderTravelPlan(segmentsinfo) {
+    var totaltraveltime = 0;
+    document.getElementById('directions-body').innerHTML = '';
+    for (i in segmentsinfo) {
+        renderLegCard(segmentsinfo[i]);
+        totaltraveltime += segmentsinfo[i].traveltime;
+    }
+    document.getElementById('directions-body').innerHTML = '<span style="font-variant: small-caps;">Arrival in: </span><span style="font-size:large; font-weight:bold;">' + Math.round(totaltraveltime/60) + ' minutes</span>' +  document.getElementById('directions-body').innerHTML;
+}
+
+function renderLegCard(seg) {
+    var time = Math.round(seg.traveltime/60);
+    var busname = '';
+
+    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; "><table style="border-spacing: 10px;border-collapse: separate;"><tr>';
+    if (seg.travelmode == 'WALKING') {
+        html_out += '<td><img src="../static/images/icon-WALKING.png" alt="" style="width: 50px;"></td>';
+    } else if (seg.agency == "Dublin Bus" || seg.agency == "Go-Ahead"){
+        html_out += '<td><img src="../static/images/icon-BUS.png" alt="" style="width: 50px;"></td>';
+        busname = '(' + seg.busname + ')';
+    } else {
+        html_out += '<td><img src="../static/images/icon-TRAIN.png" alt="" style="width: 50px;"></td>';
+    }
+    html_out += '<td><h4 class="card-title" style="color: black;">' + time + ' minutes ' + '</h4>';
+    html_out += '<p class="card-text">' + seg.instructions  + busname + '</p></td>';
+    html_out += '</tr></table>';
+    document.getElementById('directions-body').innerHTML += html_out;
 }
