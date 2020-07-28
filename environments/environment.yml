@@ -2,12 +2,16 @@ name: dublin-bus-rtpi
 channels:
   - defaults
 dependencies:
+  - python=3.7
   - numpy
   - pip
   - pip:
     - django
     - pyleapcard
+    - jupytext
+    - pymysql
+    - sshtunnel
   - pandas
-  - scikit-learn
+  - scikit-learn==0.22.1
 prefix: /home/student/anaconda3/envs/dublin-bus-rtpi
 
