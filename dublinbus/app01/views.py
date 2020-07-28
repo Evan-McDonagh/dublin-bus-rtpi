@@ -138,6 +138,7 @@ def printresult(request):
         for seg in segments:
             busname = seg['busname']
             alongroutestops = matchstop(seg, allstops)
+            print(len(alongroutestops), alongroutestops)
             alongroutestopinfos = []
             # print(alongroutestops)
             for stop in alongroutestops:
@@ -146,7 +147,7 @@ def printresult(request):
                         STOP = allstops[stopkey]
                         alongroutestopinfos.append({"id":STOP['stopno'], 'lat':STOP["latitude"], 'lng':STOP["longitude"]})
             seg_stops[busname] = alongroutestopinfos
-        print(seg_stops)
+        # print(seg_stops)
         return JsonResponse(seg_stops, safe=False)
 
 
@@ -162,7 +163,36 @@ def matchstop(seg, allstops):
     alongroutestopids = []
     print('start',startstopname, pattern.findall(startstopname))
     print('stop',endstopname, pattern.findall(endstopname))
-    if len(pattern.findall(startstopname)) > 0:
+    if len(pattern.findall(startstopname)) > 0 and len(pattern.findall(endstopname)) > 0:
+        startstopno = pattern.findall(startstopname)[0]
+        endstopno = pattern.findall(endstopname)[0]
+        startstopkey = ""
+        endstopkey = ""
+        for stopkey in allstops:
+            if allstops[stopkey].get('stopno') == startstopno:
+                startstopkey = stopkey
+                continue
+            if allstops[stopkey].get('stopno') == endstopno:
+                endstopkey = stopkey
+                continue
+        for route in allroutes:
+            if route == busname:
+                ROUTE = allroutes[route]
+                for in_out in ROUTE:
+                    atcocodes = ROUTE[in_out]['atcocodes']
+                    # print(atcocodes)
+                    if startstopkey in atcocodes and endstopkey in atcocodes:
+                        startindex = atcocodes.index(startstopkey)
+                        endindex = atcocodes.index(endstopkey)
+                        if startindex <= endindex:
+                            alongroutestopids = atcocodes[startindex:endindex + 1]
+                            return alongroutestopids
+                        else:
+                            alongroutestopids = atcocodes[endindex:startindex + 1]
+                            return  alongroutestopids
+                    else:
+                        continue
+    elif len(pattern.findall(startstopname)) > 0:
         startstopno = pattern.findall(startstopname)[0]  # if startstopname contains stopno info
         for stopkey in allstops:
             if allstops[stopkey].get('stopno') == startstopno:
@@ -173,6 +203,7 @@ def matchstop(seg, allstops):
         endstopno = pattern.findall(endstopname)[0]
         for stopkey in allstops:
             if allstops[stopkey].get('stopno') == endstopno:
+                print(stopkey)
                 alongroutestopids += slicealongroutestopsid(stopkey, busname, numstops, "end")
                 # print('stopno', alongroutestopids)
                 return alongroutestopids
@@ -207,7 +238,7 @@ def matchstop(seg, allstops):
 def gettwostopdistance(loc1, loc2):
     # print('loc1',loc1)
     # print('loc2',loc2)
-    print('comparing locations')
+    # print('comparing locations')
     lat_diff = loc1['lat'] - loc2['lat']
     lng_diff = loc1['lng'] - loc2['lng']
     dist = math.sqrt(pow(lat_diff, 2)+pow(lng_diff, 2))
@@ -215,6 +246,7 @@ def gettwostopdistance(loc1, loc2):
 
 
 def slicealongroutestopsid(longstopid, busname, numstops, start_or_end):
+    print("numstops", numstops)
     for route in allroutes:
         if route == busname:
             ROUTE = allroutes[route]
@@ -222,12 +254,19 @@ def slicealongroutestopsid(longstopid, busname, numstops, start_or_end):
                 atcocodes = ROUTE[in_out]['atcocodes']
                 for i in range(0, len(atcocodes)):
                     if atcocodes[i] == longstopid:
+                        print('i', i)
                         if start_or_end == 'start':
-                            alongroutestopids = atcocodes[i:i+numstops+1]
-                            return alongroutestopids
+                            if i+numstops+1 <= len(atcocodes):
+                                alongroutestopids = atcocodes[i:i+numstops+1]
+                                return alongroutestopids
+                            else:
+                                continue
                         else:
-                            alongroutestopids = atcocodes[i-numstops:i+1]
-                            return alongroutestopids
+                            if i-numstops >= 0:
+                                alongroutestopids = atcocodes[i-numstops:i+1]
+                                return alongroutestopids
+                            else:
+                                continue
 
 # show realtime info when a marker alongside the route is clicked
 def rtmarkerinfo(request):
