@@ -32,6 +32,7 @@ var directionsRenderer = new google.maps.DirectionsRenderer();
 var singlestopmarker = [];
 var directionresults = [];
 var segmentsinfo = [];
+var segmentcount = 0;
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -258,20 +259,33 @@ function calcRoute() {
                 var bus_name = [];
                 var bus_name_str = '';
                 var steps = LEG['steps']
+                console.log(steps);
                 for (k in steps){
-                    if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
-                    else if (steps[k].travel_mode == 'TRANSIT'){
+                    if (steps[k].travel_mode == 'WALKING'){
+                        walking_dur += steps[k]['duration'].value;
+                        var seg = {
+                            'travelmode':steps[k].travel_mode,
+                            'traveltime':steps[k]['duration'].value,
+                            'instructions':steps[k]['instructions']
+                        }
+                        segmentsinfo.push(seg)
+                    }
+                    else if (steps[k].travel_mode == 'TRANSIT') {
                         bus_dur += steps[k]['duration'].value;
                         // alert(steps[k]['transit'])
                         bus_name.push(steps[k]['transit']['line'].short_name);
                         var seg = {
+                            'travelmode':steps[k].travel_mode,
                             'busname':steps[k]['transit']['line'].short_name,
                             'startstopname':steps[k]['transit']['arrival_stop'].name,
                             'startstoplocation': steps[k]['transit']['arrival_stop']['location'],
                             'endstopname':steps[k]['transit']['departure_stop'].name,
                             'endstoplocation': steps[k]['transit']['departure_stop']['location'],
                             'headsign': steps[k]['transit']['headsign'],
-                            'numstops':steps[k]['transit'].num_stops
+                            'numstops':steps[k]['transit'].num_stops,
+                            'agency':steps[k]['transit']['line']['agencies'][0]['name'],
+                            'traveltime':steps[k]['duration'].value,
+                            'instructions':steps[k]['instructions']
                         }
                         segmentsinfo.push(seg)
                     }
@@ -332,10 +346,11 @@ function calcRoute() {
                 });
             }
         }
-      directionsRenderer.setDirections(result);
+        directionsRenderer.setDirections(result);
     }
   });
-   directionsRenderer.setPanel(document.getElementById('h51'));
+//    directionsRenderer.setPanel(document.getElementById('h51'));
+   
 }
 
 //Find the nearme stops and generate a msg to describe them.
@@ -664,9 +679,13 @@ function calcFare(fareRoutes){
 function showPrediction(segmentsinfo){
     // Add nearest stopmarkers to segmentsinfo
     for (var i=0; i<segmentsinfo.length; i++) {
-        segmentsinfo[i]['startstopno'] = find_closest_stopmarker(segmentsinfo[i]["startstoplocation"],segmentsinfo[i]['busname']);
-        segmentsinfo[i]['endstopno'] = find_closest_stopmarker(segmentsinfo[i]["endstoplocation"],segmentsinfo[i]['busname']);
+        if (segmentsinfo[i].travelmode == 'TRANSIT') {
+            segmentsinfo[i]['startstopno'] = find_closest_stopmarker(segmentsinfo[i]["startstoplocation"],segmentsinfo[i]['busname']);
+            segmentsinfo[i]['endstopno'] = find_closest_stopmarker(segmentsinfo[i]["endstoplocation"],segmentsinfo[i]['busname']);
+        }
     }
+
+
 
     // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
     $.ajax({
@@ -677,7 +696,14 @@ function showPrediction(segmentsinfo){
         dataType: 'json',// declare the type of sent data
         success: function (data) {
             // if the correspond function in backend given response successfully, this function is triggered and parameter "data" is the responded data.
-            alert(data.prediction)
+            var no_predictions = 0;
+            for (i in segmentsinfo) {
+                if (segmentsinfo[i].travelmode == 'TRANSIT') {
+                    segmentsinfo[i]['traveltime'] = data.prediction[no_predictions];
+                    np_predictions = 0;
+                }
+            }
+            displayDirections(segmentsinfo,data);
         }, error: function () {
             // if the correspond function in backend geives response successfully, this function is triggered and parameter "data" is the responded data.
             alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
@@ -698,3 +724,42 @@ function find_closest_stopmarker(location,route) {
     }
     return allstopmarkers[closest].getTitle();
   }
+
+function displayDirections(segmentsinfo,data) {
+    var number_buses = 0;
+    for (i in segmentsinfo) {
+        if (segmentsinfo[i].agency == "Dublin Bus" || segmentsinfo[i].agency == "Go-Ahead"){
+            // alert(segmentsinfo[i].predictedtraveltime)
+        }
+        else {
+            // alert(segmentsinfo[i].traveltime);
+        }
+    }
+    renderTravelPlan(segmentsinfo);
+}
+
+function renderTravelPlan(segmentsinfo) {
+    document.getElementById('directions-body').innerHTML = '';
+    for (i in segmentsinfo) {
+        renderLegCard(segmentsinfo[i])
+    }
+}
+
+function renderLegCard(seg) {
+    var time = Math.round(seg.traveltime/60);
+    var busname = '';
+
+    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; "><table style="border-spacing: 10px;border-collapse: separate;"><tr>';
+    if (seg.travelmode == 'WALKING') {
+        html_out += '<td><img src="../static/images/icon-WALKING.png" alt="" style="width: 50px;"></td>';
+    } else if (seg.agency == "Dublin Bus" || seg.agency == "Go-Ahead"){
+        html_out += '<td><img src="../static/images/icon-BUS.png" alt="" style="width: 50px;"></td>';
+        busname = '(' + seg.busname + ')';
+    } else {
+        html_out += '<td><img src="../static/images/icon-TRAIN.png" alt="" style="width: 50px;"></td>';
+    }
+    html_out += '<td><h4 class="card-title" style="color: black;">' + time + ' minutes ' + '</h4>';
+    html_out += '<p class="card-text">' + seg.instructions  + busname + '</p></td>';
+    html_out += '</tr></table>';
+    document.getElementById('directions-body').innerHTML += html_out;
+}

@@ -189,16 +189,17 @@ def showprediction(request):
 
         predictions = []
         for seg in segs:
-            datestring = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            route = seg['busname'].upper()
-            stopA = int(seg['startstopno'])
-            stopB = int(seg['endstopno'])
+            if seg['travelmode'] == 'TRANSIT':
+                datestring = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                route = seg['busname'].upper()
+                stopA = int(seg['startstopno'])
+                stopB = int(seg['endstopno'])
 
-            try: 
-                prediction = int(get_prediction.get_prediction(route,1,datestring,stopA,stopB))
-            except IndexError as e:
-                prediction = int(get_prediction.get_prediction(route,2,datestring,stopA,stopB))
+                try: 
+                    prediction = int(get_prediction.get_prediction(route,1,datestring,stopA,stopB))
+                except IndexError as e:
+                    prediction = int(get_prediction.get_prediction(route,2,datestring,stopA,stopB))
             
-            predictions += [prediction]
+                predictions += [prediction]
     print(predictions)
-    return HttpResponse(json.dumps({'prediction': str(predictions)}))
+    return HttpResponse(json.dumps({'prediction': predictions}))
