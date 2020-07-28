@@ -1,3 +1,4 @@
+import math
 import re
 
 from django.http import JsonResponse
@@ -131,89 +132,25 @@ def weather(request):
 
 # select involved stops along the route.
 def printresult(request):
-    # if request.method == 'POST':
-    #     rebody = json.loads(request.body)
-    #     # with open ('result.txt', 'w') as rt:
-    #     #     rt.write(str(rebody))
-    #     # rt.close()
-    #     bounds = rebody.get('bounds')
-    #     bus = rebody.get('bus')
-    #     with open("./local-bus-data/route-data.json") as rt:
-    #         allroutes = json.load(rt)
-    #         rt.close()
-    #     with open("./local-bus-data/stop-data.json") as st:
-    #         allstops = json.load(st)
-    #         st.close()
-    #     stop_locations = []
-    #
-    #     # route_stop_locations = {}
-    #     for i in bus:
-    #         bus_route = allroutes[i]
-    #         west = bounds['west']
-    #         east = bounds['east']
-    #         north = bounds['north']
-    #         south = bounds['south']
-    #         for stop in bus_route:
-    #             STOP = allstops[stop]
-    #             slat = STOP["latitude"]
-    #             slng = STOP["longitude"]
-    #             if (slat >= south and slat <= north) or (slat >= north and slat <= south):
-    #                 if (slng >= west and slng <= east) or (slng >= east and slng <= west):
-    #                     stop_locations.append({"id": STOP["stopno"], 'lat':slat, 'lng':slng})
-    # return HttpResponse(json.dumps({'stop_locations':stop_locations}))
-
     if request.method == 'POST':
-        segments= json.loads(request.body)
-        # print(segments)
-
+        segments = json.loads(request.body)
         seg_stops = {}
         for seg in segments:
             busname = seg['busname']
-            startstopname = seg['startstopname']
-            startstoplocation = seg['startstoplocation']
-            endstopname = seg['endstopname']
-            endstoplocation = seg['endstoplocation']
-            headsign = seg['headsign']
-            numstops = seg['numstops']
-            # busname = seg.get('busname')
-            # startstopname = seg.get('startstopname')
-            # startstoplocation = json.loads(seg.get('startstoplocation'))
-            # endstopname = seg.get('endstopname')
-            # endstoplocation = json.loads(seg.get('endstoplocation'))
-            # headsign = seg.get('headsign')
-            # numstops = seg.get('numstops')
-            print(busname)
-            print(startstopname)
-            print(startstoplocation)
-            print(endstopname)
-            print(endstoplocation)
-            print(headsign)
-            print(numstops)
-            # for stopkey in allstops:
-            #     # print(stopkey)
-            #     stop_loc = {'lat': allstops[stopkey].get('latitude'), 'lng': allstops[stopkey].get('longitude')}
-            #     difference = matchstop(startstoplocation, stop_loc)
-            #     if difference['D_lat'] <= 0.000001 and difference['D_lat'] != -1:
-            #         # print()
-            #         print('--------------------->', allstops[stopkey].get('stopno'))
-        # # route_stop_locations = {}
-        # for i in bus:
-        #     bus_route = allroutes[i]
-        #     west = bounds['west']
-        #     east = bounds['east']
-        #     north = bounds['north']
-        #     south = bounds['south']
-        #     for stop in bus_route:
-        #         STOP = allstops[stop]
-        #         slat = STOP["latitude"]
-        #         slng = STOP["longitude"]
-        #         if (slat >= south and slat <= north) or (slat >= north and slat <= south):
-        #             if (slng >= west and slng <= east) or (slng >= east and slng <= west):
-        #                 stop_locations.append({"id": STOP["stopno"], 'lat':slat, 'lng':slng})
-    return HttpResponse(json.dumps({'stop_locations':"stop_locations"}))
+            alongroutestops = matchstop(seg, allstops)
+            alongroutestopinfos = []
+            # print(alongroutestops)
+            for stop in alongroutestops:
+                for stopkey in allstops:
+                    if stop == stopkey:
+                        STOP = allstops[stopkey]
+                        alongroutestopinfos.append({"id":STOP['stopno'], 'lat':STOP["latitude"], 'lng':STOP["longitude"]})
+            seg_stops[busname] = alongroutestopinfos
+        print(seg_stops)
+        return JsonResponse(seg_stops, safe=False)
 
 
-def matchstop(seg, allstops, allroutes):
+def matchstop(seg, allstops):
     busname = seg['busname']
     startstopname = seg['startstopname']
     startstoplocation = seg['startstoplocation']
@@ -223,48 +160,74 @@ def matchstop(seg, allstops, allroutes):
     numstops = seg['numstops']
     pattern = re.compile(r'(?<=stop )\d+\.?\d*')
     alongroutestopids = []
-    if len(pattern.findall(startstopname))>0:
-        startstopno = pattern.findall(startstopname)
-    if len(pattern.findall(endstopname))>0:
-        endstopno = pattern.findall(endstopname)
-    if startstopno: #if startstopname contains stopno info
+    print('start',startstopname, pattern.findall(startstopname))
+    print('stop',endstopname, pattern.findall(endstopname))
+    if len(pattern.findall(startstopname)) > 0:
+        startstopno = pattern.findall(startstopname)[0]  # if startstopname contains stopno info
         for stopkey in allstops:
             if allstops[stopkey].get('stopno') == startstopno:
                 alongroutestopids += slicealongroutestopsid(stopkey, busname, numstops, "start")
-                break
-    elif endstopno:
+                # print('startno', alongroutestopids)
+                return alongroutestopids
+    elif len(pattern.findall(endstopname)) > 0:
+        endstopno = pattern.findall(endstopname)[0]
         for stopkey in allstops:
             if allstops[stopkey].get('stopno') == endstopno:
                 alongroutestopids += slicealongroutestopsid(stopkey, busname, numstops, "end")
-                break
+                # print('stopno', alongroutestopids)
+                return alongroutestopids
     else:
-        try:
-            for stopkey in allstops:
-                stop_loc = {'lat': allstops[stopkey].get('latitude'), 'lng': allstops[stopkey].get('longitude')}
-                difference = matchstop(startstoplocation, stop_loc)
-                lat_D_val = abs(latlng1['lat']-latlng2['lat'])
-                lng_D_val = abs(latlng1['lng']-latlng2['lng'])
-        except:
-            return {"D_lat": -1, "D_lng": -1}
-        return {"D_lat": lat_D_val, "D_lng": lng_D_val}
+        distance = 0.01
+        longstopid = ""
+        routestopskeys = allroutes[busname]['Inbound']['atcocodes'] + allroutes[busname]['Outbound']['atcocodes']
+        print(routestopskeys)
+        routestops = {}
+        for stopkey in allstops:
+            for key in routestopskeys:
+                if stopkey == key:
+                    routestops[stopkey] = allstops[stopkey]
+        print(routestops)
+        for stopkey in routestops:
+            if routestops[stopkey].get('latitude') is not None:
+                stop_loc = {'lat': routestops[stopkey].get('latitude'), 'lng': routestops[stopkey].get('longitude')}
+            else:
+                print(stopkey, "location does not exist, replaced with {0,0}")
+                stop_loc = {'lat': 0, 'lng': 0}
+            DIST = gettwostopdistance(startstoplocation, stop_loc);
+            if DIST >= distance:
+                continue
+            else:
+                distance = DIST
+                longstopid = stopkey
+        alongroutestopids += slicealongroutestopsid(longstopid, busname, numstops, "start")
+        print('startloc', alongroutestopids)
+        return alongroutestopids
 
 
 def gettwostopdistance(loc1, loc2):
-    lat_diff = long(loc1.lat - loc2.lat)
+    # print('loc1',loc1)
+    # print('loc2',loc2)
+    print('comparing locations')
+    lat_diff = loc1['lat'] - loc2['lat']
+    lng_diff = loc1['lng'] - loc2['lng']
+    dist = math.sqrt(pow(lat_diff, 2)+pow(lng_diff, 2))
+    return dist
+
+
 def slicealongroutestopsid(longstopid, busname, numstops, start_or_end):
     for route in allroutes:
         if route == busname:
             ROUTE = allroutes[route]
             for in_out in ROUTE:
-                for atocode in ROUTE[in_out]:
-                    for i in range(0, len(atocode)+1):
-                        if atocode[i] == longstopid:
-                            if start_or_end == 'start':
-                                alongroutestopids = atocode[i:i+numstops+1]
-                                return alongroutestopids
-                            else:
-                                alongroutestopids = atocode[i-numstops:i+1]
-                                return alongroutestopids
+                atcocodes = ROUTE[in_out]['atcocodes']
+                for i in range(0, len(atcocodes)):
+                    if atcocodes[i] == longstopid:
+                        if start_or_end == 'start':
+                            alongroutestopids = atcocodes[i:i+numstops+1]
+                            return alongroutestopids
+                        else:
+                            alongroutestopids = atcocodes[i-numstops:i+1]
+                            return alongroutestopids
 
 # show realtime info when a marker alongside the route is clicked
 def rtmarkerinfo(request):
