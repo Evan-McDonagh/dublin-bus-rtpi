@@ -624,6 +624,16 @@ function calcFare(fareRoutes){
 
 //send starts, ends in different segments to backend
 function showPrediction(segmentsinfo){
+    // Add nearest stopmarkers to segmentsinfo
+    for (var i=0; i<segmentsinfo.length; i++) {
+        if (segmentsinfo[i].travelmode == 'TRANSIT') {
+            segmentsinfo[i]['startstopno'] = find_closest_stopmarker(segmentsinfo[i]["startstoplocation"],segmentsinfo[i]['busname']);
+            segmentsinfo[i]['endstopno'] = find_closest_stopmarker(segmentsinfo[i]["endstoplocation"],segmentsinfo[i]['busname']);
+        }
+    }
+
+
+
     // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
     $.ajax({
         headers: {'X-CSRFToken': csrftoken}, //just for security issue
@@ -633,7 +643,14 @@ function showPrediction(segmentsinfo){
         dataType: 'json',// declare the type of sent data
         success: function (data) {
             // if the correspond function in backend given response successfully, this function is triggered and parameter "data" is the responded data.
-            // alert(data.prediction)
+            var no_predictions = 0;
+            for (i in segmentsinfo) {
+                if (segmentsinfo[i].travelmode == 'TRANSIT') {
+                    segmentsinfo[i]['traveltime'] = data.prediction[no_predictions];
+                    np_predictions = 0;
+                }
+            }
+            displayDirections(segmentsinfo,data);
         }, error: function () {
             // if the correspond function in backend geives response successfully, this function is triggered and parameter "data" is the responded data.
             alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
