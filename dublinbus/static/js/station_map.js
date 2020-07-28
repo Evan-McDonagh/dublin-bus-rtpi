@@ -293,7 +293,7 @@ function calcRoute() {
                 showPrediction(segmentsinfo);
                 for (var p in bus_name){bus_name_str += (p == 0? bus_name[p]:"->"+bus_name[p])}
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
-                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
+                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>";
                 loadstops(bus_name, result['routes'][i]['bounds'], map);
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
             }
@@ -739,10 +739,13 @@ function displayDirections(segmentsinfo,data) {
 }
 
 function renderTravelPlan(segmentsinfo) {
+    var totaltraveltime = 0;
     document.getElementById('directions-body').innerHTML = '';
     for (i in segmentsinfo) {
-        renderLegCard(segmentsinfo[i])
+        renderLegCard(segmentsinfo[i]);
+        totaltraveltime += segmentsinfo[i].traveltime;
     }
+    document.getElementById('directions-body').innerHTML = '<span style="font-variant: small-caps;">Arrival in: </span><span style="font-size:large; font-weight:bold;">' + Math.round(totaltraveltime/60) + ' minutes</span>' +  document.getElementById('directions-body').innerHTML;
 }
 
 function renderLegCard(seg) {
