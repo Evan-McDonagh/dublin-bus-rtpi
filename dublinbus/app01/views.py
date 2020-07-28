@@ -141,17 +141,20 @@ def printresult(request):
         segments = SEGSINFO[0]
         bounds = SEGSINFO[1]
         for seg in segments:
-            busname = seg['busname']
-            alongroutestops = matchstop(seg, allstops)
-            alongroutestopinfos = []
-            # print(alongroutestops)
-            for stop in alongroutestops:
-                for stopkey in allstops:
-                    if stop == stopkey:
-                        STOP = allstops[stopkey]
-                        if isInbounds(bounds, STOP):
-                            alongroutestopinfos.append({"id":STOP['stopno'], 'lat':STOP["latitude"], 'lng':STOP["longitude"]})
-            seg_stops[busname] = alongroutestopinfos
+            if seg['travelmode'].upper() == 'TRANSIT':
+                busname = seg['busname']
+                alongroutestops = matchstop(seg, allstops)
+                alongroutestopinfos = []
+                # print(alongroutestops)
+                for stop in alongroutestops:
+                    for stopkey in allstops:
+                        if stop == stopkey:
+                            STOP = allstops[stopkey]
+                            if isInbounds(bounds, STOP):
+                                alongroutestopinfos.append({"id":STOP['stopno'], 'lat':STOP["latitude"], 'lng':STOP["longitude"]})
+                seg_stops[busname] = alongroutestopinfos
+            else:
+                continue
         # print(seg_stops)
         return JsonResponse(seg_stops, safe=False)
 

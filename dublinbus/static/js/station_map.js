@@ -176,7 +176,15 @@ function calcRoute() {
                 var steps = LEG['steps'];
                 var fareStops = [];
                 for (k in steps){
-                    if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
+                    if (steps[k].travel_mode == 'WALKING'){
+                        walking_dur += steps[k]['duration'].value;
+                        var seg = {
+                            'travelmode':steps[k].travel_mode,
+                            'traveltime':steps[k]['duration'].value,
+                            'instructions':steps[k]['instructions']
+                        }
+                        segmentsinfo.push(seg)
+                    }
                     else if (steps[k].travel_mode == 'TRANSIT'){
                         bus_dur += steps[k]['duration'].value;
                         // alert(steps[k]['transit'])
