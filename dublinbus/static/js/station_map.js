@@ -165,14 +165,6 @@ function calcRoute() {
         var routes_list = result['routes'];
         for (var i in routes_list){
             var bounds = result['routes'][0]['bounds']
-            alert(bounds)
-            // var postbounds = {
-            //     'norestlat': bounds['northeast']['lat'],
-            //     'norestlng': bounds['northeast'].lng,
-            //     'souwstlat': bounds['southwest'].lat,
-            //     'souwstlng': bounds['southwest'].lng,
-            // }
-            // alert(postbounds['norestlat'])
             var ROUTE = routes_list[i];
             var legs = ROUTE['legs'];
             for (j in legs){
@@ -278,17 +270,6 @@ function calcRoute() {
                                 alongroutemarkers.push(Marker);
                             }
                         }
-                        // alert(alongroutemarkers.length)
-                        // for (var i = 0; i < data.stop_locations.length; i++) {
-                        //     var marker = new google.maps.Marker({
-                        //         // map: map,
-                        //         position: new google.maps.LatLng(data.stop_locations[i].lat, data.stop_locations[i].lng)
-                        //     });
-                        //     // marker.addListener('click', alert('asd') );
-                        //     // showinfowindow(marker, data.stop_locations[i].id, map)
-                        //     alongroutemarkers.push(marker);
-                        //     // showmarkers(alongroutemarkers, map);
-                        // }
                     }, error: function () {
                         alert('error'+" involved js function loadstops(bus_name, bounds, map) serving function calcRoute()"+" involved views.py function printresult(request)");
                     },
