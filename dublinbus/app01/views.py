@@ -10,7 +10,10 @@ import json
 import requests
 import re
 import datetime
+import os
+
 from app01 import get_prediction
+
 #  Google Map Apikey
 gmap_api = 'AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8'
 
@@ -20,9 +23,21 @@ weather_fore_api = '9570260da25526e20bf66bdf7e1c25e5'
 # OpenWeather Preent Apikey
 weather_pre_api = 'c9d5929c3180f174f633828540c0fbc5'
 
+
+dirname = os.path.dirname(__file__)
+stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
+routefile = os.path.join(dirname, "../local-bus-data/all-routes-sequences.json")
+
+with open(routefile) as rt:
+    allroutes = json.load(rt)
+    rt.close()
+with open(stopfile) as st:
+    allstops = json.load(st)
+    st.close()
+
+
 # Create your views here.
 def index(request):
-    
     context = load_bus_data()
     return render(request,'index.html', context)
 
@@ -120,45 +135,33 @@ def weather(request):
     return HttpResponse(json.dumps(weather_info))
 
 
-# select involved stops along the route.
-def printresult(request):
-    import os
-
-    if request.method == 'POST':
-        rebody = json.loads(request.body)
-        # with open ('result.txt', 'w') as rt:
-        #     rt.write(str(rebody))
-        # rt.close()
-        bounds = rebody.get('bounds')
-        bus = rebody.get('bus')
-
-        dirname = os.path.dirname(__file__)
-        stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
-        routefile = os.path.join(dirname, "../local-bus-data/route-data.json")
-
-        with open(routefile) as rt:
-            allroutes = json.load(rt)
-            rt.close()
-        with open(stopfile) as st:
-            allstops = json.load(st)
-            st.close()
-        stop_locations = []
-
-        # route_stop_locations = {}
-        for i in bus:
-            bus_route = allroutes[i]
-            west = bounds['west']
-            east = bounds['east']
-            north = bounds['north']
-            south = bounds['south']
-            for stop in bus_route:
-                STOP = allstops[stop]
-                slat = STOP["latitude"]
-                slng = STOP["longitude"]
-                if (slat >= south and slat <= north) or (slat >= north and slat <= south):
-                    if (slng >= west and slng <= east) or (slng >= east and slng <= west):
-                        stop_locations.append({"id": STOP["stopno"], 'lat':slat, 'lng':slng})
-    return HttpResponse(json.dumps({'stop_locations':stop_locations}))
+# # select involved stops along the route.
+# def printresult(request):
+#
+#     if request.method == 'POST':
+#         rebody = json.loads(request.body)
+#         # with open ('result.txt', 'w') as rt:
+#         #     rt.write(str(rebody))
+#         # rt.close()
+#         bounds = rebody.get('bounds')
+#         bus = rebody.get('bus')
+#
+#
+#         # route_stop_locations = {}
+#         for i in bus:
+#             bus_route = allroutes[i]
+#             west = bounds['west']
+#             east = bounds['east']
+#             north = bounds['north']
+#             south = bounds['south']
+#             for stop in bus_route:
+#                 STOP = allstops[stop]
+#                 slat = STOP["latitude"]
+#                 slng = STOP["longitude"]
+#                 if (slat >= south and slat <= north) or (slat >= north and slat <= south):
+#                     if (slng >= west and slng <= east) or (slng >= east and slng <= west):
+#                         stop_locations.append({"id": STOP["stopno"], 'lat':slat, 'lng':slng})
+#     return HttpResponse(json.dumps({'stop_locations':stop_locations}))
 
 # show realtime info when a marker alongside the route is clicked
 def rtmarkerinfo(request):
