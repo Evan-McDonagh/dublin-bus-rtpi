@@ -397,6 +397,7 @@ function addallmarkers(map) {
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
                 title: stopdata[stopKey]['stopno'],
+                label: stopKey,
             });
             marker.addListener('click', (function (marker, stopKey) {
                 return function () {getStopInfo(marker, stopKey, map);}
@@ -646,7 +647,7 @@ function calcFare(fareRoutes){
         }
             
     }
-    if (leapFare > 7){
+    if (leapFare > 7){  
         // Accounting for leap card capping 
         leapFare = 7;
     }
@@ -663,8 +664,8 @@ function calcFare(fareRoutes){
 function showPrediction(segmentsinfo){
     // Add nearest stopmarkers to segmentsinfo
     for (var i=0; i<segmentsinfo.length; i++) {
-        segmentsinfo[i]['startstopno'] = find_closest_stopmarker(segmentsinfo[i]["startstoplocation"]);
-        segmentsinfo[i]['endstopno'] = find_closest_stopmarker(segmentsinfo[i]["endstoplocation"]);
+        segmentsinfo[i]['startstopno'] = find_closest_stopmarker(segmentsinfo[i]["startstoplocation"],segmentsinfo[i]['busname']);
+        segmentsinfo[i]['endstopno'] = find_closest_stopmarker(segmentsinfo[i]["endstoplocation"],segmentsinfo[i]['busname']);
     }
 
     // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
@@ -684,16 +685,16 @@ function showPrediction(segmentsinfo){
     });
 }
 
-function find_closest_stopmarker(location) {
-    // Finds nearest stopmarker to a given LatLng
+function find_closest_stopmarker(location,route) {
+    // Finds nearest stopmarker to a given LatLng which  a given route in its route array
     var distances = [];
     var closest = -1;
     for (i = 0; i < allstopmarkers.length; i++) {
-      var d = google.maps.geometry.spherical.computeDistanceBetween(allstopmarkers[i].position, location);
-      distances[i] = d;
-      if (closest == -1 || d < distances[closest]) {
-        closest = i;
-      }
+        var d = google.maps.geometry.spherical.computeDistanceBetween(allstopmarkers[i].position, location);
+        distances[i] = d;
+        if (closest == -1 || d < distances[closest] && stopdata[allstopmarkers[i].getLabel()].routes.includes(route)) {
+            closest = i;
+        }
     }
     return allstopmarkers[closest].getTitle();
   }
