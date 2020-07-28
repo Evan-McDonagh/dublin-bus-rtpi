@@ -9,7 +9,8 @@ from pprint import pprint
 import json
 import requests
 import re
-
+import datetime
+from app01 import get_prediction
 #  Google Map Apikey
 gmap_api = 'AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8'
 
@@ -177,6 +178,7 @@ def rtmarkerinfo(request):
 
 # show prediction
 def showprediction(request):
+    import pickle
     #  just pring some info, but later on, the pkl file can be added and give prediction using info contained in segs.
     if request.method == 'POST':
         segs = json.loads(request.body)
@@ -184,4 +186,20 @@ def showprediction(request):
             for key in seg:
                 print(key, ":", seg[key])
             print('----------------')
-    return HttpResponse(json.dumps({'prediction': "prediction info"}))
+
+        predictions = []
+        for seg in segs:
+            if seg['travelmode'] == 'TRANSIT':
+                datestring = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                route = seg['busname'].upper()
+                stopA = int(seg['startstopno'])
+                stopB = int(seg['endstopno'])
+
+                try: 
+                    prediction = int(get_prediction.get_prediction(route,1,datestring,stopA,stopB))
+                except IndexError as e:
+                    prediction = int(get_prediction.get_prediction(route,2,datestring,stopA,stopB))
+            
+                predictions += [prediction]
+    print(predictions)
+    return HttpResponse(json.dumps({'prediction': predictions}))
