@@ -142,68 +142,6 @@ function handleLocationError(browserHasGeolocation, pos, map) {
     // infoWindow.open(map);
 }
 
-//trigger relevant functions to generate directions
-// function search() {
-//     clearmarkers(allstopmarkers);
-//     clearmarkers(nearmemarkers);
-//     //query the place according to the input boxes.
-//     if ($("#origin").val() == "" || $("#destination").val() == "") {alert('The "from" or "to" box cannot be empty')}
-//     else {
-//         var s_origin = document.getElementById('origin').value
-//         var s_dest = document.getElementById('destination').value;
-//
-//         var service = new google.maps.places.PlacesService(map);
-//
-//         //search the location of origin input
-//         var s_origin_request = {
-//             query: s_origin,
-//             fields: ['name', 'geometry'],
-//         };
-//         service.findPlaceFromQuery(s_origin_request, function (results, status) {
-//             if (status === google.maps.places.PlacesServiceStatus.OK) {
-//                 map.setCenter(results[0].geometry.location);
-//                 var infowindow_ori = new google.maps.InfoWindow({
-//                     content: s_origin,
-//                 });
-//                 var marker_ori = new google.maps.Marker({
-//                     map: map,
-//                     position: results[0].geometry.location,
-//                     icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-//
-//                 });
-//                 marker_ori.addListener("mouseover", function () {infowindow_ori.open(map, marker_ori);});
-//                 marker_ori.addListener("mouseout", function () {infowindow_ori.close(map, marker_ori);});
-//                 origin_pos = results[0].geometry.location;
-//                 ori_dest_markers.push(marker_ori);
-//                 // origin_pos = {'lat': results[0].geometry.location.lat(), 'lng': results[0].geometry.location.lng()}
-//             }
-//         });
-//
-//         //search the location of destination input
-//         var s_dest_request = {
-//             query: s_dest,
-//             fields: ['name', 'geometry'],
-//         };
-//         service.findPlaceFromQuery(s_dest_request, function (results, status) {
-//             if (status === google.maps.places.PlacesServiceStatus.OK) {
-//                 // map.setCenter(results[0].geometry.location);
-//                 var infowindow_dest = new google.maps.InfoWindow({
-//                     content: s_dest,
-//                 });
-//                 var marker_dest = new google.maps.Marker({
-//                     map: map,
-//                     position: results[0].geometry.location,
-//                     icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-//                 });
-//                 marker_dest.addListener("mouseover", function () {infowindow_dest.open(map, marker_dest);});
-//                 marker_dest.addListener("mouseout", function () {infowindow_dest.close(map, marker_dest);});
-//                 destination_pos = {'lat': results[0].geometry.location.lat(), 'lng': results[0].geometry.location.lng()};
-//                 ori_dest_markers.push(marker_dest);
-//             }
-//         });
-//     }
-// }
-
 function calcRoute() {
     directionsRenderer.setMap(null);
     clearmarkers(alongroutemarkers);
@@ -220,30 +158,6 @@ function calcRoute() {
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
         directionresults = [result];
-        // var routes_dict = {}
-        // // var route_choices = {}
-        // var routes_list = result['routes'];
-        // for (i in result['routes']){
-        //     legs = result['routes'][i]['legs'];
-        //     for (j in legs){
-        //         var walking_dur = 0;
-        //         var bus_dur = 0;
-        //         var bus_name = [];
-        //         var bus_name_str = '';
-        //         steps = legs[j]['steps']
-        //         for (k in steps){
-        //             if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
-        //             else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
-        //         }
-        //         if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
-        //         else{bus_name_str = bus_name[0]};
-        //         routes_dict[bus_name_str] = result['routes'][i];
-        //         document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
-        //         loadstops(bus_name, result['routes'][i]['bounds'], map);
-        //         document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
-        //
-        //     }
-        // }
         var routes_dict = {}
         // var route_choices = {}
         var routes_list = result['routes'];
@@ -265,10 +179,10 @@ function calcRoute() {
                         bus_name.push(steps[k]['transit']['line'].short_name);
                         var seg = {
                             'busname':steps[k]['transit']['line'].short_name,
-                            'startstopname':steps[k]['transit']['arrival_stop'].name,
-                            'startstoplocation': steps[k]['transit']['arrival_stop']['location'],
-                            'endstopname':steps[k]['transit']['departure_stop'].name,
-                            'endstoplocation': steps[k]['transit']['departure_stop']['location'],
+                            'startstopname':steps[k]['transit']['departure_stop'].name,
+                            'startstoplocation': steps[k]['transit']['departure_stop']['location'],
+                            'endstopname':steps[k]['transit']['arrival_stop'].name,
+                            'endstoplocation': steps[k]['transit']['arrival_stop']['location'],
                             'headsign': steps[k]['transit']['headsign'],
                             'numstops':steps[k]['transit'].num_stops
                         }
@@ -280,6 +194,13 @@ function calcRoute() {
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
                 document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
                 loadstops(bus_name, result['routes'][i]['bounds'], map);
+
+                //convert to mins for readability 
+                walk_time = Math.round(walking_dur/60);
+                bus_time = Math.round(bus_dur/60);
+
+                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: "+ bus_time +" minutes</p>";
+                loadstops(segmentsinfo, result['routes'][i]['bounds'], map);
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
             }
         }
@@ -302,15 +223,15 @@ function calcRoute() {
                 }
             })
         }
-        function loadstops(bus_name, bounds, map) {
+        function loadstops(segmentsinfo, map) {
             if (alongroutemarkers.length !== 0) {
                 showmarkers(alongroutemarkers, map)
             } else {
-                post_data = {'bus': bus_name, 'bounds': bounds}
+                // post_data = {'bus': bus_name, 'bounds': bounds}
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     url: '/printresult',
-                    data: JSON.stringify(post_data),
+                    data: JSON.stringify(segmentsinfo),
                     type: 'POST',
                     dataType: 'json',
                     success: function (data) {
@@ -321,7 +242,7 @@ function calcRoute() {
                                 position: new google.maps.LatLng(data.stop_locations[i].lat, data.stop_locations[i].lng)
                             });
                             // marker.addListener('click', alert('asd') );
-                            showinfowindow(marker, data.stop_locations[i].id, map)
+                            // showinfowindow(marker, data.stop_locations[i].id, map)
                             alongroutemarkers.push(marker);
                             // showmarkers(alongroutemarkers, map);
                         }
@@ -541,11 +462,11 @@ function select_ori_dest(id){
             clearmarkers(destinationmarkers);
             destinationmarkers = [];
         }
-
         getclicklocation(event.latLng);
     })
 }
-//supportinh function to get event location for function select_ori_dest(id)
+
+//supporting function to get event location for function select_ori_dest(id)
 function getclicklocation(latLng){
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({'location': latLng}, function(responses, status) {
@@ -668,7 +589,7 @@ function showPrediction(segmentsinfo){
         dataType: 'json',// declare the type of sent data
         success: function (data) {
             // if the correspond function in backend given response successfully, this function is triggered and parameter "data" is the responded data.
-            alert(data.prediction)
+            // alert(data.prediction)
         }, error: function () {
             // if the correspond function in backend geives response successfully, this function is triggered and parameter "data" is the responded data.
             alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
