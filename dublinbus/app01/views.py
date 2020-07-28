@@ -11,6 +11,8 @@ import json
 import requests
 import re
 import os
+import datetime
+from app01 import get_prediction
 
 #  Google Map Apikey
 gmap_api = 'AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8'
