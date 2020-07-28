@@ -164,6 +164,15 @@ function calcRoute() {
         // var route_choices = {}
         var routes_list = result['routes'];
         for (var i in routes_list){
+            var bounds = result['routes'][0]['bounds']
+            alert(bounds)
+            // var postbounds = {
+            //     'norestlat': bounds['northeast']['lat'],
+            //     'norestlng': bounds['northeast'].lng,
+            //     'souwstlat': bounds['southwest'].lat,
+            //     'souwstlng': bounds['southwest'].lng,
+            // }
+            // alert(postbounds['norestlat'])
             var ROUTE = routes_list[i];
             var legs = ROUTE['legs'];
             for (j in legs){
@@ -190,7 +199,7 @@ function calcRoute() {
                             'numstops':steps[k]['transit'].num_stops
                         }
                         segmentsinfo.push(seg)
-                        
+
                         //adding number of stops on route(s) to array for calcFare function
                         fareStops.push(steps[k]['transit']['num_stops']);
                     }
@@ -212,7 +221,7 @@ function calcRoute() {
                 bus_time = Math.round(bus_dur/60);
 
                 document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: "+ bus_time +" minutes</p>";
-                loadstops(segmentsinfo, map);
+                loadstops(segmentsinfo, bounds, map);
                 // $(document).on('click', "#showalongroutemarker", function () {showmarkers(alongroutemarkers, map)});
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){showmarkers(alongroutemarkers, map)});
             }
@@ -238,15 +247,16 @@ function calcRoute() {
                 }
             })
         }
-        function loadstops(segmentsinfo, map) {
+        function loadstops(segmentsinfo,  bounds, map) {
             if (alongroutemarkers.length !== 0) {
                 showmarkers(alongroutemarkers, map)
             } else {
-                // post_data = {'bus': bus_name, 'bounds': bounds}
+                // var post_data = {'segmentsinfo': segmentsinfo, 'bounds': bounds}
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     url: '/printresult',
-                    data: JSON.stringify(segmentsinfo),
+                    // data: post_data,
+                    data: JSON.stringify([segmentsinfo, bounds]),
                     type: 'POST',
                     dataType: 'json',
                     success: function (data) {

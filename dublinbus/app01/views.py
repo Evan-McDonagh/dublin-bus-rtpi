@@ -133,24 +133,28 @@ def weather(request):
 # select involved stops along the route.
 def printresult(request):
     if request.method == 'POST':
-        segments = json.loads(request.body)
+        # print(request.body)
+        SEGSINFO = json.loads(request.body)
         seg_stops = {}
+        segments = SEGSINFO[0]
+        bounds = SEGSINFO[1]
         for seg in segments:
             busname = seg['busname']
             alongroutestops = matchstop(seg, allstops)
-            print(len(alongroutestops), alongroutestops)
             alongroutestopinfos = []
             # print(alongroutestops)
             for stop in alongroutestops:
                 for stopkey in allstops:
                     if stop == stopkey:
                         STOP = allstops[stopkey]
-                        alongroutestopinfos.append({"id":STOP['stopno'], 'lat':STOP["latitude"], 'lng':STOP["longitude"]})
+                        if isInbounds(bounds, STOP):
+                            alongroutestopinfos.append({"id":STOP['stopno'], 'lat':STOP["latitude"], 'lng':STOP["longitude"]})
             seg_stops[busname] = alongroutestopinfos
         # print(seg_stops)
         return JsonResponse(seg_stops, safe=False)
 
 
+# to match all stops to see if the stop is standing in the route.
 def matchstop(seg, allstops):
     busname = seg['busname']
     startstopname = seg['startstopname']
@@ -161,8 +165,6 @@ def matchstop(seg, allstops):
     numstops = seg['numstops']
     pattern = re.compile(r'(?<=stop )\d+\.?\d*')
     alongroutestopids = []
-    print('start',startstopname, pattern.findall(startstopname))
-    print('stop',endstopname, pattern.findall(endstopname))
     if len(pattern.findall(startstopname)) > 0 and len(pattern.findall(endstopname)) > 0:
         startstopno = pattern.findall(startstopname)[0]
         endstopno = pattern.findall(endstopname)[0]
@@ -211,13 +213,11 @@ def matchstop(seg, allstops):
         distance = 0.01
         longstopid = ""
         routestopskeys = allroutes[busname]['Inbound']['atcocodes'] + allroutes[busname]['Outbound']['atcocodes']
-        print(routestopskeys)
         routestops = {}
         for stopkey in allstops:
             for key in routestopskeys:
                 if stopkey == key:
                     routestops[stopkey] = allstops[stopkey]
-        print(routestops)
         for stopkey in routestops:
             if routestops[stopkey].get('latitude') is not None:
                 stop_loc = {'lat': routestops[stopkey].get('latitude'), 'lng': routestops[stopkey].get('longitude')}
@@ -231,20 +231,32 @@ def matchstop(seg, allstops):
                 distance = DIST
                 longstopid = stopkey
         alongroutestopids += slicealongroutestopsid(longstopid, busname, numstops, "start")
-        print('startloc', alongroutestopids)
         return alongroutestopids
 
 
+#  to check if the stop in bounds
+def isInbounds(bounds, stop):
+    slat = stop['latitude']
+    slng = stop['longitude']
+    south = bounds['south']
+    north = bounds['north']
+    west = bounds['west']
+    east = bounds['east']
+    if (slat >= south and slat <= north) or (slat <= south and slat >= north):
+        if (slng >= west and slng <= east) or (slng <= west and slng >= east):
+            return True
+    return False
+
+
+#  to get the distance between two stops
 def gettwostopdistance(loc1, loc2):
-    # print('loc1',loc1)
-    # print('loc2',loc2)
-    # print('comparing locations')
     lat_diff = loc1['lat'] - loc2['lat']
     lng_diff = loc1['lng'] - loc2['lng']
     dist = math.sqrt(pow(lat_diff, 2)+pow(lng_diff, 2))
     return dist
 
 
+# to extract the sublist in a route sequence list
 def slicealongroutestopsid(longstopid, busname, numstops, start_or_end):
     print("numstops", numstops)
     for route in allroutes:
