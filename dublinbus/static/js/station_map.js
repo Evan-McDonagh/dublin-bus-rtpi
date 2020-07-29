@@ -143,68 +143,6 @@ function handleLocationError(browserHasGeolocation, pos, map) {
     // infoWindow.open(map);
 }
 
-//trigger relevant functions to generate directions
-// function search() {
-//     clearmarkers(allstopmarkers);
-//     clearmarkers(nearmemarkers);
-//     //query the place according to the input boxes.
-//     if ($("#origin").val() == "" || $("#destination").val() == "") {alert('The "from" or "to" box cannot be empty')}
-//     else {
-//         var s_origin = document.getElementById('origin').value
-//         var s_dest = document.getElementById('destination').value;
-//
-//         var service = new google.maps.places.PlacesService(map);
-//
-//         //search the location of origin input
-//         var s_origin_request = {
-//             query: s_origin,
-//             fields: ['name', 'geometry'],
-//         };
-//         service.findPlaceFromQuery(s_origin_request, function (results, status) {
-//             if (status === google.maps.places.PlacesServiceStatus.OK) {
-//                 map.setCenter(results[0].geometry.location);
-//                 var infowindow_ori = new google.maps.InfoWindow({
-//                     content: s_origin,
-//                 });
-//                 var marker_ori = new google.maps.Marker({
-//                     map: map,
-//                     position: results[0].geometry.location,
-//                     icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-//
-//                 });
-//                 marker_ori.addListener("mouseover", function () {infowindow_ori.open(map, marker_ori);});
-//                 marker_ori.addListener("mouseout", function () {infowindow_ori.close(map, marker_ori);});
-//                 origin_pos = results[0].geometry.location;
-//                 ori_dest_markers.push(marker_ori);
-//                 // origin_pos = {'lat': results[0].geometry.location.lat(), 'lng': results[0].geometry.location.lng()}
-//             }
-//         });
-//
-//         //search the location of destination input
-//         var s_dest_request = {
-//             query: s_dest,
-//             fields: ['name', 'geometry'],
-//         };
-//         service.findPlaceFromQuery(s_dest_request, function (results, status) {
-//             if (status === google.maps.places.PlacesServiceStatus.OK) {
-//                 // map.setCenter(results[0].geometry.location);
-//                 var infowindow_dest = new google.maps.InfoWindow({
-//                     content: s_dest,
-//                 });
-//                 var marker_dest = new google.maps.Marker({
-//                     map: map,
-//                     position: results[0].geometry.location,
-//                     icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-//                 });
-//                 marker_dest.addListener("mouseover", function () {infowindow_dest.open(map, marker_dest);});
-//                 marker_dest.addListener("mouseout", function () {infowindow_dest.close(map, marker_dest);});
-//                 destination_pos = {'lat': results[0].geometry.location.lat(), 'lng': results[0].geometry.location.lng()};
-//                 ori_dest_markers.push(marker_dest);
-//             }
-//         });
-//     }
-// }
-
 function calcRoute() {
     directionsRenderer.setMap(null);
     clearmarkers(alongroutemarkers);
@@ -222,34 +160,11 @@ function calcRoute() {
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
         directionresults = [result];
-        // var routes_dict = {}
-        // // var route_choices = {}
-        // var routes_list = result['routes'];
-        // for (i in result['routes']){
-        //     legs = result['routes'][i]['legs'];
-        //     for (j in legs){
-        //         var walking_dur = 0;
-        //         var bus_dur = 0;
-        //         var bus_name = [];
-        //         var bus_name_str = '';
-        //         steps = legs[j]['steps']
-        //         for (k in steps){
-        //             if (steps[k].travel_mode == 'WALKING'){walking_dur += steps[k]['duration'].value}
-        //             else if (steps[k].travel_mode == 'TRANSIT'){bus_dur += steps[k]['duration'].value; bus_name.push(steps[k]['transit']['line'].short_name)}
-        //         }
-        //         if (bus_name.length > 1){for (var i in bus_name){bus_name_str += bus_name[i] + "->"}}
-        //         else{bus_name_str = bus_name[0]};
-        //         routes_dict[bus_name_str] = result['routes'][i];
-        //         document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "walk:" + walking_dur + "s, on bus:"+ bus_dur+"s<br>";
-        //         loadstops(bus_name, result['routes'][i]['bounds'], map);
-        //         document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
-        //
-        //     }
-        // }
         var routes_dict = {}
         // var route_choices = {}
         var routes_list = result['routes'];
         for (var i in routes_list){
+            var bounds = result['routes'][0]['bounds']
             var ROUTE = routes_list[i];
             var legs = ROUTE['legs'];
             for (j in legs){
@@ -270,17 +185,17 @@ function calcRoute() {
                         }
                         segmentsinfo.push(seg)
                     }
-                    else if (steps[k].travel_mode == 'TRANSIT') {
+                    else if (steps[k].travel_mode == 'TRANSIT'){
                         bus_dur += steps[k]['duration'].value;
                         // alert(steps[k]['transit'])
                         bus_name.push(steps[k]['transit']['line'].short_name);
                         var seg = {
                             'travelmode':steps[k].travel_mode,
                             'busname':steps[k]['transit']['line'].short_name,
-                            'startstopname':steps[k]['transit']['arrival_stop'].name,
-                            'startstoplocation': steps[k]['transit']['arrival_stop']['location'],
-                            'endstopname':steps[k]['transit']['departure_stop'].name,
-                            'endstoplocation': steps[k]['transit']['departure_stop']['location'],
+                            'startstopname':steps[k]['transit']['departure_stop'].name,
+                            'startstoplocation': steps[k]['transit']['departure_stop']['location'],
+                            'endstopname':steps[k]['transit']['arrival_stop'].name,
+                            'endstoplocation': steps[k]['transit']['arrival_stop']['location'],
                             'headsign': steps[k]['transit']['headsign'],
                             'numstops':steps[k]['transit'].num_stops,
                             'agency':steps[k]['transit']['line']['agencies'][0]['name'],
@@ -288,16 +203,16 @@ function calcRoute() {
                             'instructions':steps[k]['instructions']
                         }
                         segmentsinfo.push(seg)
-                        
+
                         //adding number of stops on route(s) to array for calcFare function
                         fareStops.push(steps[k]['transit']['num_stops']);
                     }
                 }
                 showPrediction(segmentsinfo);
-                
-                // if entered route requires transit, call calcFare function 
+
+                // if entered route requires transit, call calcFare function
                 if (fareStops.length > 0){
-                    //adding array to array to calc individual routes 
+                    //adding array to array to calc individual routes
                     fareRoutes.push(fareStops);
                     calcFare(fareRoutes);
                 }
@@ -305,16 +220,18 @@ function calcRoute() {
                 for (var p in bus_name){bus_name_str += (p == 0? bus_name[p]:"->"+bus_name[p])}
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
 
-                //convert to mins for readability 
+                //convert to mins for readability
                 walk_time = Math.round(walking_dur/60);
                 bus_time = Math.round(bus_dur/60);
 
-                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>";
-                loadstops(bus_name, result['routes'][i]['bounds'], map);
-                document.getElementById("showalongroutemarker").addEventListener('click', function(){changemarkerstatus(alongroutemarkers, map)});
+                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: "+ bus_time +" minutes</p>";
+                loadstops(segmentsinfo, bounds, map);
+                // $(document).on('click', "#showalongroutemarker", function () {showmarkers(alongroutemarkers, map)});
+                document.getElementById("showalongroutemarker").addEventListener('click', function(){showmarkers(alongroutemarkers, map)});
             }
         }
-        function showinfowindow(marker, id, map){
+        function showinfowindow(marker, map){
+            var id = marker.getTitle();
             $.ajax({
                 headers: {'X-CSRFToken': csrftoken},
                 url:'/rtmarkerinfo',
@@ -327,34 +244,43 @@ function calcRoute() {
                     var infowindow = new google.maps.InfoWindow({
                         content:data.allinfo
                     });
+                    // infowindow.open(marker, map)
                     marker.addListener('click', function(){infowindow.open(map,marker)})
                     // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
                     // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
                 }
             })
         }
-        function loadstops(bus_name, bounds, map) {
+        function loadstops(segmentsinfo,  bounds, map) {
             if (alongroutemarkers.length !== 0) {
                 showmarkers(alongroutemarkers, map)
             } else {
-                post_data = {'bus': bus_name, 'bounds': bounds}
+                // var post_data = {'segmentsinfo': segmentsinfo, 'bounds': bounds}
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     url: '/printresult',
-                    data: JSON.stringify(post_data),
+                    // data: post_data,
+                    data: JSON.stringify([segmentsinfo, bounds]),
                     type: 'POST',
                     dataType: 'json',
                     success: function (data) {
-                        // alongroutemarkers = [];
-                        for (var i = 0; i < data.stop_locations.length; i++) {
-                            var marker = new google.maps.Marker({
-                                // map: map,
-                                position: new google.maps.LatLng(data.stop_locations[i].lat, data.stop_locations[i].lng)
-                            });
-                            // marker.addListener('click', alert('asd') );
-                            showinfowindow(marker, data.stop_locations[i].id, map)
-                            alongroutemarkers.push(marker);
-                            // showmarkers(alongroutemarkers, map);
+                        for (key in data){
+                            var stops = data[key];
+                            for (var i=0; i<stops.length; i++) {
+                                var stop = stops[i];
+                                var id = stop.id;
+                                var lat = stop.lat;
+                                var lng = stop.lng;
+                                var Marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(lat, lng),
+                                    title: id,
+                                    icon:"https://img.icons8.com/android/24/000000/bus.png"
+                                });
+                                // Marker.addListener('click', showinfowindow(Marker, map));
+                                // google.maps.event.addListener(Marker, 'click', showinfowindow(Marker, map));
+                                showinfowindow(Marker, map);
+                                alongroutemarkers.push(Marker);
+                            }
                         }
                     }, error: function () {
                         alert('error'+" involved js function loadstops(bus_name, bounds, map) serving function calcRoute()"+" involved views.py function printresult(request)");
@@ -362,11 +288,10 @@ function calcRoute() {
                 });
             }
         }
-        directionsRenderer.setDirections(result);
+      directionsRenderer.setDirections(result);
     }
   });
-//    directionsRenderer.setPanel(document.getElementById('h51'));
-   
+   directionsRenderer.setPanel(document.getElementById('h51'));
 }
 
 //Find the nearme stops and generate a msg to describe them.
@@ -388,7 +313,7 @@ function nearMe(ls){
         }
         msg += "</p>"
         document.getElementById("nearme").innerHTML = msg;
-    } 
+    }
 }
 
 //To make the markers in a list invisible.
@@ -575,11 +500,11 @@ function select_ori_dest(id){
             clearmarkers(destinationmarkers);
             destinationmarkers = [];
         }
-
         getclicklocation(event.latLng);
     })
 }
-//supportinh function to get event location for function select_ori_dest(id)
+
+//supporting function to get event location for function select_ori_dest(id)
 function getclicklocation(latLng){
     var geocoder = new google.maps.Geocoder();
     geocoder.geocode({'location': latLng}, function(responses, status) {
@@ -661,7 +586,7 @@ function getclicklocation(latLng){
 }
 // initMap();
 
-//To calculate the estimated fare of the journey 
+//To calculate the estimated fare of the journey
 function calcFare(fareRoutes){
     var leapFare = 0;
     var cashFare = 0;
@@ -677,10 +602,10 @@ function calcFare(fareRoutes){
             leapFare += 2.50;
             cashFare += 3.30;
         }
-            
+
     }
-    if (leapFare > 7){  
-        // Accounting for leap card capping 
+    if (leapFare > 7){
+        // Accounting for leap card capping
         leapFare = 7;
     }
 
@@ -727,7 +652,6 @@ function showPrediction(segmentsinfo){
         },
     });
 }
-
 function find_closest_stopmarker(location,route) {
     // Finds nearest stopmarker to a given LatLng which  a given route in its route array
     var distances = [];
