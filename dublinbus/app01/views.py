@@ -143,7 +143,7 @@ def printresult(request):
         for seg in segments:
             if seg['travelmode'].upper() == 'TRANSIT':
                 busname = seg['busname']
-                alongroutestops = matchstop(seg, allstops)
+                alongroutestops = matchstop(seg, allstops, bounds)
                 alongroutestopinfos = []
                 # print(alongroutestops)
                 for stop in alongroutestops:
@@ -160,7 +160,7 @@ def printresult(request):
 
 
 # to match all stops to see if the stop is standing in the route.
-def matchstop(seg, allstops):
+def matchstop(seg, allstops, bounds):
     busname = seg['busname']
     startstopname = seg['startstopname']
     startstoplocation = seg['startstoplocation']
@@ -173,6 +173,7 @@ def matchstop(seg, allstops):
     if len(pattern.findall(startstopname)) > 0 and len(pattern.findall(endstopname)) > 0:
         startstopno = pattern.findall(startstopname)[0]
         endstopno = pattern.findall(endstopname)[0]
+        print('stopnos', startstopno,'   ',endstopno)
         startstopkey = ""
         endstopkey = ""
         for stopkey in allstops:
@@ -189,6 +190,7 @@ def matchstop(seg, allstops):
                     atcocodes = ROUTE[in_out]['atcocodes']
                     # print(atcocodes)
                     if startstopkey in atcocodes and endstopkey in atcocodes:
+                        print('keys', startstopkey, endstopkey)
                         startindex = atcocodes.index(startstopkey)
                         endindex = atcocodes.index(endstopkey)
                         if startindex <= endindex:
@@ -196,11 +198,12 @@ def matchstop(seg, allstops):
                             return alongroutestopids
                         else:
                             alongroutestopids = atcocodes[endindex:startindex + 1]
-                            return  alongroutestopids
+                            return alongroutestopids
                     else:
                         continue
     elif len(pattern.findall(startstopname)) > 0:
         startstopno = pattern.findall(startstopname)[0]  # if startstopname contains stopno info
+        print("start", startstopno)
         for stopkey in allstops:
             if allstops[stopkey].get('stopno') == startstopno:
                 alongroutestopids += slicealongroutestopsid(stopkey, busname, numstops, "start")
@@ -208,6 +211,7 @@ def matchstop(seg, allstops):
                 return alongroutestopids
     elif len(pattern.findall(endstopname)) > 0:
         endstopno = pattern.findall(endstopname)[0]
+        print("end", endstopno)
         for stopkey in allstops:
             if allstops[stopkey].get('stopno') == endstopno:
                 print(stopkey)
@@ -263,7 +267,8 @@ def gettwostopdistance(loc1, loc2):
 
 # to extract the sublist in a route sequence list
 def slicealongroutestopsid(longstopid, busname, numstops, start_or_end):
-    print("numstops", numstops)
+    print('slicealongroutestopsid---------------------------------------------',longstopid)
+    alongroutestopids = []
     for route in allroutes:
         if route == busname:
             ROUTE = allroutes[route]
@@ -271,19 +276,20 @@ def slicealongroutestopsid(longstopid, busname, numstops, start_or_end):
                 atcocodes = ROUTE[in_out]['atcocodes']
                 for i in range(0, len(atcocodes)):
                     if atcocodes[i] == longstopid:
-                        print('i', i)
+                        print('i', i, "numstops", numstops, "length", len(atcocodes))
                         if start_or_end == 'start':
                             if i+numstops+1 <= len(atcocodes):
-                                alongroutestopids = atcocodes[i:i+numstops+1]
+                                alongroutestopids += atcocodes[i:i+numstops+1]
                                 return alongroutestopids
                             else:
                                 continue
                         else:
                             if i-numstops >= 0:
-                                alongroutestopids = atcocodes[i-numstops:i+1]
+                                alongroutestopids += atcocodes[i-numstops:i+1]
                                 return alongroutestopids
                             else:
                                 continue
+
 
 # show realtime info when a marker alongside the route is clicked
 def rtmarkerinfo(request):
@@ -308,10 +314,10 @@ def showprediction(request):
     #  just pring some info, but later on, the pkl file can be added and give prediction using info contained in segs.
     if request.method == 'POST':
         segs = json.loads(request.body)
-        for seg in segs:
-            for key in seg:
-                print(key, ":", seg[key])
-            print('----------------')
+        # for seg in segs:
+        #     for key in seg:
+        #         print(key, ":", seg[key])
+        #     print('----------------')
 
         predictions = []
         for seg in segs:
