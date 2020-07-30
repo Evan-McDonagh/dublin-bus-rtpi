@@ -68,12 +68,16 @@ def leapcard(request):
             overview = session.get_card_overview()
             # print(overview)
             leap_content = vars(overview)
+            print(leap_content)
             context['card_num'] = leap_content.get('card_num')
+            context['card_label'] = leap_content.get('card_label')
             context['balance'] = leap_content.get('balance')
+            context['card_type'] = leap_content.get('card_type')
+            context['expiry_date'] = leap_content.get('expiry_date')
 
         except:
-            context['wrong'] = "The user or the password is wrong, please try again"
-            print("the wrong password")
+            context['wrong'] = "wrong"
+            # print("the wrong password")
             return JsonResponse(context,safe=False)
         
         return JsonResponse(context,safe=False)

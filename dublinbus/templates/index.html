@@ -471,10 +471,26 @@
                         type:"POST",
                         url: "/leapcard/",
                         cache: false,
-                        dataType: "html",
+                        dataType: "json",
                         data:info,
                         success: function(result, statues, xml){
-                            $("#lparea").html(result);
+                            console.log(result)
+                            if (result["wrong"] == "wrong"){
+                                $("#lparea").html("Wrong username or password, please try again!");
+                                // alert("hi")
+                            }
+                            else{
+                                var leap_table = "<br><table> ";
+
+                                    leap_table += "<tr><td>Card Number </td><td>:   "+result["card_num"]+"</td></tr>";
+                                    leap_table += "<tr><td>Card Label </td><td>:  "+result["card_label"] +"</td></tr>";
+                                    leap_table += "<tr><td>Card Balance </td><td>:  "+result["balance"] +"</td></tr>";
+                                    leap_table += "<tr><td>Card Type </td><td>:  "+result["card_type"] +"</td></tr>";
+                                    leap_table += "<tr><td>Expiry Date </td><td>:  "+result["expiry_date"] +"</td></tr>";
+                                    leap_table += "</table>";
+                                    console.log(result["card_num"]);
+                                    $("#lparea").html(leap_table);
+                            }
                         },
                         error: function(){
                             alert("false");
