@@ -153,7 +153,10 @@ function calcRoute() {
         origin: {query: document.getElementById('origin').value},
         destination: {query: document.getElementById('destination').value},
         travelMode: 'TRANSIT',
-        transitOptions:{departureTime: new Date(document.getElementById("datetimepicker1").value)},
+        transitOptions:{
+            departureTime: new Date(document.getElementById("datetimepicker1").value),
+            routingPreference: 'LESS_WALKING'
+        },
         provideRouteAlternatives: false,
       };
     directionsRenderer.setMap(map);
