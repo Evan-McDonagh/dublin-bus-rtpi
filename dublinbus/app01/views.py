@@ -365,25 +365,33 @@ def showprediction(request):
     #  just pring some info, but later on, the pkl file can be added and give prediction using info contained in segs.
     if request.method == 'POST':
         segs = json.loads(request.body)
-        # for seg in segs:
-        #     for key in seg:
-        #         print(key, ":", seg[key])
-        #     print('----------------')
-
         predictions = []
+
+        datetimedeparture = segs[0]['initialdeparture']
+        if datetimedeparture == '':
+            datetimedeparture = datetime.datetime.now()
+        else:
+            datetimedeparture = datetime.datetime.strptime(datetimedeparture, '%Y-%m-%d %H:%M')
+
         for seg in segs:
-            if seg['travelmode'] == 'TRANSIT':
-                datestring = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            if seg['travelmode'] == 'TRANSIT' and seg['agency'] in ['Dublin Bus', 'Go-Ahead']:
+                datestring = datetimedeparture.strftime("%Y-%m-%d %H:%M:%S")
                 route = seg['busname'].upper()
-                stopB = int(seg['startstopno'])
-                stopA = int(seg['endstopno'])
+                stopA = int(seg['startstopno'])
+                stopB = int(seg['endstopno'])
 
                 try:
-                    prediction = int(get_prediction.get_prediction(route, 1, datestring, stopA, stopB))
+                    prediction = int(get_prediction.get_prediction(route, 1, datestring, stopB, stopA))
                 except IndexError as e:
-                    prediction = int(get_prediction.get_prediction(route, 2, datestring, stopA, stopB))
+                    prediction = int(get_prediction.get_prediction(route, 2, datestring, stopB, stopA))
 
+                datetimedeparture += datetime.timedelta(seconds=prediction)
                 predictions += [prediction]
+            else:
+                datetimedeparture += datetime.timedelta(seconds=seg['traveltime'])
+
     print(predictions)
     return HttpResponse(json.dumps({'prediction': predictions}))
+
+
 
