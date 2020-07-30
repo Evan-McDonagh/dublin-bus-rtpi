@@ -622,6 +622,7 @@ function calcFare(fareRoutes){
 
 //send starts, ends in different segments to backend
 function showPrediction(segmentsinfo){
+    segmentsinfo[0]['initialdeparture'] = document.getElementById('datetimepicker1').value;
     // Add nearest stopmarkers to segmentsinfo
     for (var i=0; i<segmentsinfo.length; i++) {
         if (segmentsinfo[i].travelmode == 'TRANSIT') {
@@ -629,8 +630,6 @@ function showPrediction(segmentsinfo){
             segmentsinfo[i]['endstopno'] = find_closest_stopmarker(segmentsinfo[i]["endstoplocation"],segmentsinfo[i]['busname']);
         }
     }
-
-
 
     // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
     $.ajax({
