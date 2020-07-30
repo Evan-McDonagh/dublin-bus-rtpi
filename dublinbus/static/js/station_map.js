@@ -424,10 +424,13 @@ function stopsearch() {
             dataType: "json",
             data:{'stop_id':$('#stop_id').val()},
             success: function(result, statues, xml){
-                var real_info = "Time Table" +"<br>";
+                // console.log(result);
+                var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                 for (var i =0; i< result["results"].length; i++){
-                    real_info += result["results"][i]["route"]+"        "+result["results"][i]["arrivaldatetime"] +"<br>";
+                    
+                    real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
                 }
+                real_info += "</table>";
                 $("#stoparea").html(real_info);
             },
             error: function(){
@@ -641,6 +644,7 @@ function calcFare(fareRoutes){
 
 //send starts, ends in different segments to backend
 function showPrediction(segmentsinfo){
+    segmentsinfo[0]['initialdeparture'] = document.getElementById('datetimepicker1').value;
     // Add nearest stopmarkers to segmentsinfo
     for (var i=0; i<segmentsinfo.length; i++) {
         if (segmentsinfo[i].travelmode == 'TRANSIT') {
@@ -648,8 +652,6 @@ function showPrediction(segmentsinfo){
             segmentsinfo[i]['endstopno'] = find_closest_stopmarker(segmentsinfo[i]["endstoplocation"],segmentsinfo[i]['busname']);
         }
     }
-
-
 
     // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
     $.ajax({
