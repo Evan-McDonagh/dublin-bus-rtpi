@@ -142,18 +142,38 @@ def printresult(request):
         bounds = SEGSINFO[1]
         post_alongroutestops = []
         for seg in segments:
+            # print(seg)
             if seg['travelmode'].upper() == 'TRANSIT':
                 busname = seg['busname']
-                numstops = seg['numstops']
-                startstopid = matchstop(seg, allstops)[0]
-                endstopid = matchstop(seg, allstops)[1]
-                alongroutestops = slicealongroutestopsid(startstopid, endstopid, busname, allstops, numstops, bounds)
-                for STOP in alongroutestops:
-                    post_alongroutestops.append({"id":STOP['stopno'], 'lat':STOP["latitude"], 'lng':STOP["longitude"]})
-                seg_stops[busname] = post_alongroutestops
+                if ('Line' not in busname) and ('Dart' not in busname):
+                    numstops = seg['numstops']
+                    startstopid = matchstop(seg, allstops)[0]
+                    endstopid = matchstop(seg, allstops)[1]
+                    alongroutestops = slicealongroutestopsid(startstopid, endstopid, busname, allstops, numstops, bounds)
+                    for STOP in alongroutestops:
+                        post_alongroutestops.append({"id":STOP['stopno'], 'lat':STOP["latitude"], 'lng':STOP["longitude"]})
+                    seg_stops[busname] = post_alongroutestops
+                else:
+                    try:
+                        post_alongroutestops.append({
+                            "id": "non-bus-start",
+                            'lat':seg['startstoplocation']['lat'],
+                            'lng':seg['startstoplocation']['lng'],
+                            'non_bus_stopname':seg['agency'] + ":" + seg['startstopname'],
+                        })
+                        post_alongroutestops.append({
+                            "id": "non-bus-end",
+                            'lat':seg['endstoplocation']['lat'],
+                            'lng':seg['endstoplocation']['lng'],
+                            'non_bus_stopname': seg['agency'] + ":" + seg['endstopname'],
+                        })
+                    except:
+                        print('non-bus-info-missed')
+                    finally:
+                        seg_stops[busname] = post_alongroutestops
             else:
                 continue
-        print(seg_stops)
+        # print(seg_stops)
         return JsonResponse(seg_stops, safe=False)
 
 

@@ -155,7 +155,7 @@ function calcRoute() {
         travelMode: 'TRANSIT',
         transitOptions:{
             departureTime: new Date(document.getElementById("datetimepicker1").value),
-            routingPreference: 'LESS_WALKING'
+            // routingPreference: 'LESS_WALKING'
         },
         provideRouteAlternatives: false,
       };
@@ -190,11 +190,15 @@ function calcRoute() {
                     }
                     else if (steps[k].travel_mode == 'TRANSIT'){
                         bus_dur += steps[k]['duration'].value;
-                        // alert(steps[k]['transit'])
-                        bus_name.push(steps[k]['transit']['line'].short_name);
-                        var seg = {
+                        var current_busname = '';
+                        if (steps[k]['transit']['line']['short_name']) {current_busname = steps[k]['transit']['line']['short_name'];};
+                        if (steps[k]['transit']['line']['name']) {current_busname = steps[k]['transit']['line']['name'];};
+                        bus_name.push(current_busname);
+                        {
+                            // alert(steps[k]['transit']['line']['name']);
+                            var seg = {
                             'travelmode':steps[k].travel_mode,
-                            'busname':steps[k]['transit']['line'].short_name,
+                            'busname':current_busname,
                             'startstopname':steps[k]['transit']['departure_stop'].name,
                             'startstoplocation': steps[k]['transit']['departure_stop']['location'],
                             'endstopname':steps[k]['transit']['arrival_stop'].name,
@@ -204,8 +208,9 @@ function calcRoute() {
                             'agency':steps[k]['transit']['line']['agencies'][0]['name'],
                             'traveltime':steps[k]['duration'].value,
                             'instructions':steps[k]['instructions']
+                            }
+                            segmentsinfo.push(seg)
                         }
-                        segmentsinfo.push(seg)
 
                         //adding number of stops on route(s) to array for calcFare function
                         fareStops.push(steps[k]['transit']['num_stops']);
@@ -229,30 +234,40 @@ function calcRoute() {
 
                 document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: "+ bus_time +" minutes</p>";
                 loadstops(segmentsinfo, bounds, map);
-                // $(document).on('click', "#showalongroutemarker", function () {showmarkers(alongroutemarkers, map)});
                 document.getElementById("showalongroutemarker").addEventListener('click', function(){showmarkers(alongroutemarkers, map)});
             }
         }
-        function showinfowindow(marker, map){
+        function showinfowindow(marker, map) {
             var id = marker.getTitle();
-            $.ajax({
-                headers: {'X-CSRFToken': csrftoken},
-                url:'/rtmarkerinfo',
-                data:{'id':id},
-                type:'POST',
-                dataType:'json',
-                async:true,
-                success: function (data) {
-                    // alert(data.allinfo)
-                    var infowindow = new google.maps.InfoWindow({
-                        content:data.allinfo
-                    });
-                    // infowindow.open(marker, map)
-                    marker.addListener('click', function(){infowindow.open(map,marker)})
-                    // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
-                    // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
-                }
-            })
+            if (id.indexOf(':') != -1) {
+                var infowindow = new google.maps.InfoWindow({
+                    content: id
+                });
+                marker.addListener('click', function () {
+                    infowindow.open(map, marker)
+                })
+            } else {
+                $.ajax({
+                    headers: {'X-CSRFToken': csrftoken},
+                    url: '/rtmarkerinfo',
+                    data: {'id': id},
+                    type: 'POST',
+                    dataType: 'json',
+                    async: true,
+                    success: function (data) {
+                        // alert(data.allinfo)
+                        var infowindow = new google.maps.InfoWindow({
+                            content: data.allinfo
+                        });
+                        // infowindow.open(marker, map)
+                        marker.addListener('click', function () {
+                            infowindow.open(map, marker)
+                        })
+                        // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
+                        // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
+                    }
+                })
+            }
         }
         function loadstops(segmentsinfo,  bounds, map) {
             if (alongroutemarkers.length !== 0) {
@@ -274,10 +289,14 @@ function calcRoute() {
                                 var id = stop.id;
                                 var lat = stop.lat;
                                 var lng = stop.lng;
+                                var icontype = id.indexOf('non-bus') == -1?
+                                    "https://img.icons8.com/android/24/000000/bus.png":
+                                    "https://img.icons8.com/material/24/000000/railway-station--v1.png";
+                                var title = id.indexOf('non-bus') == -1? id:stop['non_bus_stopname'];
                                 var Marker = new google.maps.Marker({
                                     position: new google.maps.LatLng(lat, lng),
-                                    title: id,
-                                    icon:"https://img.icons8.com/android/24/000000/bus.png"
+                                    title: title,
+                                    icon: icontype
                                 });
                                 // Marker.addListener('click', showinfowindow(Marker, map));
                                 // google.maps.event.addListener(Marker, 'click', showinfowindow(Marker, map));
@@ -710,3 +729,5 @@ function renderLegCard(seg) {
     html_out += '</tr></table>';
     document.getElementById('directions-body').innerHTML += html_out;
 }
+
+//
