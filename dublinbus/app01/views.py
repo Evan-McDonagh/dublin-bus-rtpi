@@ -375,9 +375,9 @@ def showprediction(request):
                 stopA = int(seg['endstopno'])
 
                 try:
-                    prediction = int(get_prediction.get_prediction(route, 1, datestring, stopB, stopA))
+                    prediction = int(get_prediction.get_prediction(route, 1, datestring, stopA, stopB))
                 except IndexError as e:
-                    prediction = int(get_prediction.get_prediction(route, 2, datestring, stopB, stopA))
+                    prediction = int(get_prediction.get_prediction(route, 2, datestring, stopA, stopB))
 
                 predictions += [prediction]
     print(predictions)
