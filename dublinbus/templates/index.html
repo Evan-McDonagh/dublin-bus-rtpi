@@ -68,9 +68,9 @@
                 <div id = "searchid">
                     <div>
                         <form action="" method="post">
-                            <i class = "far fa-star place" ></i>
-                            <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')">
-                            <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')">
+                            
+                            <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')" style="vertical-align:middle; width: 90%;"><span> </span><i class = "far fa-heart place" style="vertical-align:middle" ></i>
+                            <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')" style="vertical-align:middle; width: 90%;"><span> </span><i class = "far fa-heart place2" style="vertical-align:middle" ></i>
 
                             <div class="col-md-13">
                                 <div class='input-group date' >
@@ -122,7 +122,7 @@
                     <div>
                         <form method="post" id = "stopadd">
                             {% csrf_token %}
-                            Stop ID: <i class = "far fa-star star" ></i>
+                            Stop ID: <i class = "far fa-heart star" id = "starbefore"></i>
                             <input type='text' id = "stop_id" name = "stop_id">
                             <button id = "stopbtn" type="button" onclick="stopsearch()">submit</button>
                         </form>
@@ -266,6 +266,7 @@
     <!-- when user click the star, and stop they input will be added to the favorite -->   
     <script type="text/javascript" >
         $('.star').click(function(e){
+            // document.getElementById("starbefore").classList.replace("far","fa");
             e.preventDefault;
             var stop = [];
             if (document.getElementById("stop_id").value === ""){
@@ -311,6 +312,7 @@
                 }
 
             }
+            // document.getElementById("starbefore").classList.replace("fa","far");
         });
     </script>
 
@@ -334,7 +336,7 @@
                     stop_elem.appendChild(t); 
                     
                     // iconstar = document.createElement("i");
-                    // iconstar.setAttribute('class', 'fa fa-star starcancel');
+                    // iconstar.setAttribute('class', 'far fa-star starcancel');
 
                     iconstar = document.createElement("button");
                      
@@ -453,6 +455,59 @@
         });
     });
 </script>
+
+
+
+<script type="text/javascript" >
+    $('.place2').click(function(e){
+        e.preventDefault;
+        var place = [];
+        // alert('hiiiii');
+        if ($('#destination').val() === ""){
+            alert('please input place2')
+        }
+        else{
+            place.push($('#destination').val());
+            try{
+                cookiemonster.get('place');
+            }
+            catch{
+                cookiemonster.set('place', place, 3650);
+                console.log(cookiemonster.get('place'))
+                alert('Save Sucessfully');
+                return ;
+            }
+
+
+            var input_place =  $('#destination').val();
+            var previous_arr = cookiemonster.get('place');
+            // console.log(input_stop);
+            // console.log(previous_arr);
+            var flag = 0;
+            for (let i = 0; i<previous_arr.length; i++){
+                if (input_place == previous_arr[i]){
+                    alert("This place is already in the list");
+                    flag = 1;
+                }
+            }
+            if (flag == 0){
+                // $(this).toggleClass("fa fa-star fa fa-star");
+                try{
+                    cookiemonster.get('place');
+                    console.log(cookiemonster.get('place'));
+                    cookiemonster.append('place', place, 3650);
+                    console.log(cookiemonster.get('place'));
+
+                } catch(err){
+                    cookiemonster.set('place', place, 3650);
+                }
+                alert('Save Sucessfully');
+            }
+
+        }
+    });
+</script>
+
 
 
     
