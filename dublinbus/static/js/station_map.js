@@ -149,7 +149,7 @@ function calcRoute() {
     alongroutemarkers = [];
     clearmarkers(nearmemarkers);
     segmentsinfo = [];
-      var request = {
+    var request = {
         origin: {query: document.getElementById('origin').value},
         destination: {query: document.getElementById('destination').value},
         travelMode: 'TRANSIT',
@@ -158,7 +158,7 @@ function calcRoute() {
             // routingPreference: 'LESS_WALKING'
         },
         provideRouteAlternatives: false,
-      };
+    };
     directionsRenderer.setMap(map);
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
@@ -231,10 +231,11 @@ function calcRoute() {
                 //convert to mins for readability 
                 walk_time = Math.round(walking_dur/60);
                 bus_time = Math.round(bus_dur/60);
-
-                document.getElementById('routes').innerHTML = "<button id="+"showalongroutemarker>"+bus_name_str+"</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: "+ bus_time +" minutes</p>";
-                loadstops(segmentsinfo, bounds, map);
-                document.getElementById("showalongroutemarker").addEventListener('click', function(){showmarkers(alongroutemarkers, map)});
+                if (bus_name_str != '') {
+                    document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + bus_name_str + "</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: " + bus_time + " minutes</p>";
+                    loadstops(segmentsinfo, bounds, map);
+                    document.getElementById("showalongroutemarker").addEventListener('click', function () {showmarkers(alongroutemarkers, map)});
+                }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: " + bus_time + " minutes</p>";}
             }
         }
         function showinfowindow(marker, map) {
