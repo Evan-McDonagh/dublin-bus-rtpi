@@ -532,6 +532,14 @@ function showstopsearchcontent(){
 
 
 function routesearch(){
+    clearmarkers(Outboundmarkers);
+    clearpolylines(Outboundpolyline)
+    clearmarkers(nearmemarkers);
+    clearmarkers(alongroutemarkers);
+    clearmarkers(originmarkers);
+    clearmarkers(destinationmarkers);
+    clearmarkers(Inboundmarkers);
+    clearpolylines(Inboundpolyline)
     var route = $("#route_id").val();
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
@@ -555,6 +563,7 @@ function routesearch(){
                 url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
                 scaledSize: new google.maps.Size(30, 30)
             }
+            Inboundmarkers = []
             for (var i = 0; i < Inboundstops.length; i++) {
                 var id = Inboundstops[i].id;
                 var lat = Inboundstops[i].lat;
@@ -578,6 +587,7 @@ function routesearch(){
                                         // width: 6
                                     });
             Inboundpolyline = [inboundroutepath];
+            Outboundmarkers = []
             for (var i =0; i<Outboundstops.length; i++){
                 var id = Outboundstops[i].id;
                 var lat = Outboundstops[i].lat;
