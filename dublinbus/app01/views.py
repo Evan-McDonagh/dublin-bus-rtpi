@@ -366,18 +366,20 @@ def slicealongroutestopsid(startstopid, endstopid, busname, allstops, numstops, 
 def rtmarkerinfo(request):
     if request.method == 'POST':
         stop_id = request.POST.get('id')
+        # print(stop_id)
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
         obj_json = obj.json()
-        # print(stop_id)
-        allinfo = "Stop No." + obj_json.get('stopid') +"<br>"
-        rsp ={obj_json.get('stopid'): []}
-        for result in obj_json['results']:
-            key = result.get('route')
-            rsp[obj_json.get('stopid')].append({key: {'arrivaltime':result.get('arrivaldatetime'), 'destination':result.get('destination')}})
-            allinfo += "Route:"+ key + "  arrive at:" + result.get('arrivaldatetime') + " Towards " + result.get('destination') +"<br>"
-        return HttpResponse(json.dumps({"allinfo":allinfo}))
-
+        # # print(stop_id)
+        # allinfo = "Stop No." + obj_json.get('stopid') +"<br>"
+        # rsp ={obj_json.get('stopid'): []}
+        # for result in obj_json['results']:
+        #     key = result.get('route')
+        #     rsp[obj_json.get('stopid')].append({key: {'arrivaltime':result.get('arrivaldatetime'), 'destination':result.get('destination')}})
+        #     allinfo += "Route:"+ key + "  arrive at:" + result.get('arrivaldatetime') + " Towards " + result.get('destination') +"<br>"
+        # return HttpResponse(json.dumps({"allinfo":allinfo}))
+        # print(obj_json)
+    return HttpResponse(json.dumps(obj_json))
 
 # show prediction
 def showprediction(request):
@@ -412,6 +414,32 @@ def showprediction(request):
 
     print(predictions)
     return HttpResponse(json.dumps({'prediction': predictions}))
+
+
+# to search a specific route
+def routesearch(request):
+    if request.method == 'POST':
+        route_id = request.POST.get('route')
+        routestopids = {}
+        routestops = {}
+        for route in allroutes:
+            if route == route_id:
+                ROUTE = allroutes[route]
+                for in_out in ROUTE:
+                    routestopids[in_out] = ROUTE[in_out]['atcocodes']
+        for in_out in routestopids:
+            allalongroutestops = []
+            in_out_stops = routestopids[in_out]
+            for i in range(0,len(in_out_stops)):
+                STOP = allstops[in_out_stops[i]]
+                allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
+            routestops[in_out] = allalongroutestops
+        # print(routestops)
+        return HttpResponse(json.dumps(routestops))
+
+
+
+
 
 
 

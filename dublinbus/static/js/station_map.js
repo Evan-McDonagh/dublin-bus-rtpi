@@ -33,6 +33,8 @@ var singlestopmarker = [];
 var directionresults = [];
 var segmentsinfo = [];
 var fareRoutes = [];
+var Inboundmarkers = [];
+var Outboundmarkers = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -496,6 +498,137 @@ function showsearchcontent(){
 //triggered by clicking "Stop" button to show current searching result if it is made invisible.
 function showstopsearchcontent(){
     showmarkers(singlestopmarker, map);
+}
+// function showroutesearchcontent(){}
+
+
+function routesearch(){
+    var route = $("#route_id").val();
+    $.ajax({
+        headers: {'X-CSRFToken': csrftoken},
+        url: '/routesearch',
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        data: {'route':route},
+        async:true,
+        success: function (routestops) {
+            var in_out_btn = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
+            // document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route+ "-Inbound" + "</button>" +"<br>"+ "<button id=" + "Outbound>" + route+ "-Outbound" + "</button>";
+            document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
+            var Inboundstops = routestops['Inbound'];
+            var Outboundstops = routestops['Outbound'];
+            Inboundmarkers = [];
+            Outboundmarkers = [];
+            var inboundpath = [];
+            var outboundpath = [];
+            var icon = {
+                url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
+                scaledSize: new google.maps.Size(30, 30)
+            }
+            for (var i = 0; i < Inboundstops.length; i++) {
+                var id = Inboundstops[i].id;
+                var lat = Inboundstops[i].lat;
+                var lng = Inboundstops[i].lng;
+                inboundpath.push({'lat': lat, 'lng': lng})
+
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat, lng),
+                    title: id,
+                    icon: icon,
+                });
+                showmarkerinfo(marker);
+                Inboundmarkers.push(marker);
+            }
+            var inboundroutepath = new google.maps.Polyline({
+                path: inboundpath,
+                geodesic: true,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 5,
+                // width: 6
+            });
+            for (var i =0; i<Outboundstops.length; i++){
+                var id = Outboundstops[i].id;
+                var lat = Outboundstops[i].lat;
+                var lng = Outboundstops[i].lng;
+                outboundpath.push({'lat':lat, 'lng':lng})
+
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat, lng),
+                    title: id,
+                    icon: icon
+                })
+                showmarkerinfo(marker);
+                Outboundmarkers.push(marker);
+            }
+            var outboundroutepath = new google.maps.Polyline({
+                path: outboundpath,
+                geodesic: true,
+                strokeColor: "blue",
+                strokeOpacity: 1.0,
+                strokeWeight: 5,
+                // width:4
+            });
+            document.getElementById("Inbound").addEventListener('click', function () {
+                clearmarkers(Outboundmarkers);
+                outboundroutepath.setMap(null);
+                showmarkers(Inboundmarkers, map);
+                inboundroutepath.setMap(map);
+            //     // for (var marker in Inboundmarkers){
+            //     //     var MARKER = Inboundmarkers[marker]
+            //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
+            //     //         alert(1)
+            //     //         // alert(MARKER.getTitle())
+            //     //         // var content = showmarkerinfo(MARKER);
+            //     //         // var infowindow = new google.maps.InfoWindow({content:content});
+            //     //         // infowindow.open(MARKER, map)
+            //     //     })(MARKER));
+                })
+            // });
+            document.getElementById("Outbound").addEventListener('click', function () {
+                clearmarkers(Inboundmarkers);
+                inboundroutepath.setMap(null);
+                showmarkers(Outboundmarkers, map);
+                outboundroutepath.setMap(map);
+            });
+        },
+        error: function () {
+            alert('route data missed')
+        }
+    })
+    function showmarkerinfo(marker) {
+        var id = marker.getTitle();
+        var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
+        $.ajax({
+            headers: {'X-CSRFToken': csrftoken},
+            url: '/rtmarkerinfo',
+            // url:"https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + '11' +"&format=json",
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            // jsonp:'callback',
+            // jsonpCallback: "success_jsonpCallback",
+            data: {'id':id},
+            success: function (data) {
+                var results = data['results'];
+                for (var result in results){
+                    var rst = results[result];
+                    content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
+                }
+                content += '</tbody></table>'
+                var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.open(map, marker)})
+            },
+            error: function () {
+                // alert('error', id)
+                content += '</tbody></table>'
+                var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.open(map, marker)})
+                // alert('rtpi error')
+            }
+        })
+    }
 }
 
 //change the markers to be visible from being invisible or reversely.
