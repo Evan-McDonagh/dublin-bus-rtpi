@@ -542,37 +542,11 @@ function routesearch(){
         data: {'route':route},
         async:true,
         success: function (routestops) {
-            var directions = Object.keys(routestops);
-            if (directions.length == 1) {
-                var in_out_btn = "<button id=" + "Inbound>" + directions[0] + "</button>";
-                document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
-                // document.getElementById("Inbound").addEventListener('click', function () {
-                clearmarkers(Outboundmarkers);
-                clearpolylines(Outboundpolyline)
-                clearmarkers(nearmemarkers);
-                clearmarkers(alongroutemarkers);
-                clearmarkers(originmarkers);
-                clearmarkers(destinationmarkers);
-                clearmarkers(Inboundmarkers, map);
-                clearpolylines(Inboundpolyline, map);
-                alert(routestops[directions[0]]);
-                //     // for (var marker in Inboundmarkers){
-                //     //     var MARKER = Inboundmarkers[marker]
-                //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
-                //     //         alert(1)
-                //     //         // alert(MARKER.getTitle())
-                //     //         // var content = showmarkerinfo(MARKER);
-                //     //         // var infowindow = new google.maps.InfoWindow({content:content});
-                //     //         // infowindow.open(MARKER, map)
-                //     //     })(MARKER));
-            } else {
-            var dir1 = directions[0];
-            var dir2 = directions[1];
-            var in_out_btn = "<button id=" + "Inbound>" + dir1 + "</button>" + "<br>" + "<button id=" + "Outbound>" + dir2 + "</button>";
-            document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
-            // document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
-            var Inboundstops = routestops[dir1];
-            var Outboundstops = routestops[dir2];
+            var in_out_btn = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
+            // document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route+ "-Inbound" + "</button>" +"<br>"+ "<button id=" + "Outbound>" + route+ "-Outbound" + "</button>";
+            document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
+            var Inboundstops = routestops['Inbound'];
+            var Outboundstops = routestops['Outbound'];
             Inboundmarkers = [];
             Outboundmarkers = [];
             var inboundpath = [];
@@ -596,24 +570,19 @@ function routesearch(){
                 Inboundmarkers.push(marker);
             }
             var inboundroutepath = new google.maps.Polyline({
-                path: inboundpath,
-                geodesic: true,
-                strokeColor: "#FF0000",
-                strokeOpacity: 1.0,
-                strokeWeight: 5,
-                // width: 6
-            });
+                                        path: inboundpath,
+                                        geodesic: true,
+                                        strokeColor: "#FF0000",
+                                        strokeOpacity: 1.0,
+                                        strokeWeight: 5,
+                                        // width: 6
+                                    });
             Inboundpolyline = [inboundroutepath];
-<<<<<<< Updated upstream
             for (var i =0; i<Outboundstops.length; i++){
-=======
-            Outboundmarkers = []
-            for (var i = 0; i < Outboundstops.length; i++) {
->>>>>>> Stashed changes
                 var id = Outboundstops[i].id;
                 var lat = Outboundstops[i].lat;
                 var lng = Outboundstops[i].lng;
-                outboundpath.push({'lat': lat, 'lng': lng})
+                outboundpath.push({'lat':lat, 'lng':lng})
 
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(lat, lng),
@@ -624,13 +593,13 @@ function routesearch(){
                 Outboundmarkers.push(marker);
             }
             var outboundroutepath = new google.maps.Polyline({
-                path: outboundpath,
-                geodesic: true,
-                strokeColor: "blue",
-                strokeOpacity: 1.0,
-                strokeWeight: 5,
-                // width:4
-            });
+                                        path: outboundpath,
+                                        geodesic: true,
+                                        strokeColor: "blue",
+                                        strokeOpacity: 1.0,
+                                        strokeWeight: 5,
+                                        // width:4
+                                    });
             Outboundpolyline = [outboundroutepath];
             document.getElementById("Inbound").addEventListener('click', function () {
                 clearmarkers(Outboundmarkers);
@@ -641,16 +610,16 @@ function routesearch(){
                 clearmarkers(destinationmarkers);
                 showmarkers(Inboundmarkers, map);
                 showpolylines(Inboundpolyline, map)
-                //     // for (var marker in Inboundmarkers){
-                //     //     var MARKER = Inboundmarkers[marker]
-                //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
-                //     //         alert(1)
-                //     //         // alert(MARKER.getTitle())
-                //     //         // var content = showmarkerinfo(MARKER);
-                //     //         // var infowindow = new google.maps.InfoWindow({content:content});
-                //     //         // infowindow.open(MARKER, map)
-                //     //     })(MARKER));
-            })
+            //     // for (var marker in Inboundmarkers){
+            //     //     var MARKER = Inboundmarkers[marker]
+            //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
+            //     //         alert(1)
+            //     //         // alert(MARKER.getTitle())
+            //     //         // var content = showmarkerinfo(MARKER);
+            //     //         // var infowindow = new google.maps.InfoWindow({content:content});
+            //     //         // infowindow.open(MARKER, map)
+            //     //     })(MARKER));
+                })
             // });
             document.getElementById("Outbound").addEventListener('click', function () {
                 clearmarkers(Inboundmarkers);
@@ -662,7 +631,6 @@ function routesearch(){
                 showmarkers(Outboundmarkers, map);
                 showpolylines(Outboundpolyline, map)
             });
-        }
         },
         error: function () {
             alert('route data missed')

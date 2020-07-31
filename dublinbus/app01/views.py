@@ -1,5 +1,4 @@
 import math
-import multiprocessing
 import re
 
 from django.http import JsonResponse
@@ -27,7 +26,6 @@ weather_pre_api = 'c9d5929c3180f174f633828540c0fbc5'
 dirname = os.path.dirname(__file__)
 stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
 routefile = os.path.join(dirname, "../local-bus-data/all-routes-sequences.json")
-scrappedroutefile = os.path.join(dirname, "../local-bus-data/route-data-sequence.json")
 
 with open(routefile) as rt:
     allroutes = json.load(rt)
@@ -35,9 +33,6 @@ with open(routefile) as rt:
 with open(stopfile) as st:
     allstops = json.load(st)
     st.close()
-with open(scrappedroutefile) as srt:
-    scrappedallroutes = json.load(srt)
-    srt.close()
 
 # Create your views here.
 def index(request):
@@ -424,80 +419,26 @@ def showprediction(request):
 # to search a specific route
 def routesearch(request):
     if request.method == 'POST':
-        route = request.POST.get('route')
-        routestopnos = {}
+        route_id = request.POST.get('route')
+        routestopids = {}
         routestops = {}
-        if route in allroutes and route in scrappedallroutes:
-            ROUTE = scrappedallroutes[route]
-            for in_out in ROUTE:
-                key = re.sub('\(.*?\)', '', in_out).replace('  ', ' ').replace('From', '').replace('To', '->')
-                scrappeddirstops = ROUTE[in_out]['stops']
-                purestopnolist = []
-                for stop in scrappeddirstops:
-                    purestopnolist.append(stop['stopno'])
-                routestopnos[key] = purestopnolist
-            # print(routestopnos)
-            for in_out in routestopnos:
-                in_out_stops = routestopnos[in_out]
-                # print(in_out_stops)
-                allalongroutestops = []
-                # pool = multiprocessing.Pool(6)
-                # for i in range(1):
-                #     pool.apply_async(func=extractloc, args=(in_out_stops, allalongroutestops), callback=None)
-                # pool.close()
-                # pool.join()
-                extractloc(in_out_stops, allalongroutestops)
-                # print(allalongroutestops)
-                allalongroutestopslist = allalongroutestops
-                # allalongroutestopslist = list(allalongroutestops.intersection(allalongroutestops))
-                routestops[in_out] = allalongroutestopslist
-        else:
-            routestops['Route does not exist'] = 'Route does not exist'
-        print(routestops)
+        for route in allroutes:
+            if route == route_id:
+                ROUTE = allroutes[route]
+                for in_out in ROUTE:
+                    routestopids[in_out] = ROUTE[in_out]['atcocodes']
+        for in_out in routestopids:
+            allalongroutestops = []
+            in_out_stops = routestopids[in_out]
+            for i in range(0,len(in_out_stops)):
+                STOP = allstops[in_out_stops[i]]
+                allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
+            routestops[in_out] = allalongroutestops
+        # print(routestops)
         return HttpResponse(json.dumps(routestops))
 
 
-def extractloc(routestopnos, allalongroutestops):
-    count = 1
-    for stopno in routestopnos:
-        for stop in allstops:
-            STOP = allstops[stop]
-            count += 1
-            if stopno == STOP['stopno']:
-                # print(STOP['stopno'],'-----------',stopno)
-                # print('---------------------------------------------------------',stopno)
-                # if {"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]} not in allalongroutestops:
-                allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-    print(count)
-    # route_id = request.POST.get('route')
-    # routestopids = {}
-    # routestops = {}
-    # if route_id in allroutes and route_id in scrappedallroutes:
-    #     ROUTE = scrappedallroutes[route]
-    #     for in_out in ROUTE:
-    #         key = re.sub('\(.*?\)', '', in_out).replace('  ', ' ')
-    #         routestopids[key] = ROUTE[in_out]['stops']
-    # for in_out in routestopids:
-    #     key = re.sub('\(.*?\)', '', in_out).replace('  ', ' ')
-    #     allalongroutestops = []
-    #     in_out_stops = routestopids[in_out]
-    #     for i in range(0,len(in_out_stops)):
-    #         STOP = allstops[in_out_stops[i]]
-    #         allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-    #     routestops[in_out] = allalongroutestops
-    # for route in allroutes:
-    #     if route == route_id:
-    #         ROUTE = allroutes[route]
-    #         for in_out in ROUTE:
-    #             routestopids[in_out] = ROUTE[in_out]['atcocodes']
-    # for in_out in routestopids:
-    #     allalongroutestops = []
-    #     in_out_stops = routestopids[in_out]
-    #     for i in range(0,len(in_out_stops)):
-    #         STOP = allstops[in_out_stops[i]]
-    #         allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-    #     routestops[in_out] = allalongroutestops
-    # print(routestops)
+
 
 
 
