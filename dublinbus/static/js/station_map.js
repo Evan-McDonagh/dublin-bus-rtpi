@@ -33,6 +33,10 @@ var singlestopmarker = [];
 var directionresults = [];
 var segmentsinfo = [];
 var fareRoutes = [];
+var Inboundmarkers = [];
+var Outboundmarkers = [];
+var Inboundpolyline = [];
+var Outboundpolyline = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -234,7 +238,13 @@ function calcRoute() {
                 if (bus_name_str != '') {
                     document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + bus_name_str + "</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: " + bus_time + " minutes</p>";
                     loadstops(segmentsinfo, bounds, map);
-                    document.getElementById("showalongroutemarker").addEventListener('click', function () {showmarkers(alongroutemarkers, map)});
+                    document.getElementById("showalongroutemarker").addEventListener('click', function () {
+                        clearmarkers(Inboundmarkers);
+                        clearmarkers(Outboundmarkers);
+                        clearpolylines(Inboundpolyline);
+                        clearpolylines(Outboundpolyline);
+                        showmarkers(alongroutemarkers, map);
+                    });
                 }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: " + bus_time + " minutes</p>";}
             }
         }
@@ -248,6 +258,7 @@ function calcRoute() {
                     infowindow.open(map, marker)
                 })
             } else {
+                var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     url: '/rtmarkerinfo',
@@ -256,7 +267,12 @@ function calcRoute() {
                     dataType: 'json',
                     async: true,
                     success: function (data) {
-                        // alert(data.allinfo)
+                        var results = data['results'];
+                        for (var result in results){
+                            var rst = results[result];
+                            content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
+                        }
+                        content += '</tbody></table>'
                         var infowindow = new google.maps.InfoWindow({
                             content: data.allinfo
                         });
@@ -266,6 +282,10 @@ function calcRoute() {
                         })
                         // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
                         // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
+                    },error: function () {
+                        content += '</tbody></table>'
+                        var infowindow = new google.maps.InfoWindow({content:content});
+                        marker.addListener('click', function(){infowindow.open(map, marker)})
                     }
                 })
             }
@@ -343,6 +363,17 @@ function nearMe(ls){
 function clearmarkers(markerlist){
     for (var i=0; i < markerlist.length; i++){
         markerlist[i].setMap(null);
+    }
+}
+
+function showpolylines(polylinelist, map){
+    for (var i=0; i < polylinelist.length; i++){
+        polylinelist[i].setMap(map);
+    }
+}
+function clearpolylines(polylinelist){
+    for (var i=0; i < polylinelist.length; i++){
+        polylinelist[i].setMap(null);
     }
 }
 
@@ -496,6 +527,147 @@ function showsearchcontent(){
 //triggered by clicking "Stop" button to show current searching result if it is made invisible.
 function showstopsearchcontent(){
     showmarkers(singlestopmarker, map);
+}
+// function showroutesearchcontent(){}
+
+
+function routesearch(){
+    var route = $("#route_id").val();
+    $.ajax({
+        headers: {'X-CSRFToken': csrftoken},
+        url: '/routesearch',
+        type: "POST",
+        cache: false,
+        dataType: "json",
+        data: {'route':route},
+        async:true,
+        success: function (routestops) {
+            var in_out_btn = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
+            // document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route+ "-Inbound" + "</button>" +"<br>"+ "<button id=" + "Outbound>" + route+ "-Outbound" + "</button>";
+            document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
+            var Inboundstops = routestops['Inbound'];
+            var Outboundstops = routestops['Outbound'];
+            Inboundmarkers = [];
+            Outboundmarkers = [];
+            var inboundpath = [];
+            var outboundpath = [];
+            var icon = {
+                url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
+                scaledSize: new google.maps.Size(30, 30)
+            }
+            for (var i = 0; i < Inboundstops.length; i++) {
+                var id = Inboundstops[i].id;
+                var lat = Inboundstops[i].lat;
+                var lng = Inboundstops[i].lng;
+                inboundpath.push({'lat': lat, 'lng': lng})
+
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat, lng),
+                    title: id,
+                    icon: icon,
+                });
+                showmarkerinfo(marker);
+                Inboundmarkers.push(marker);
+            }
+            var inboundroutepath = new google.maps.Polyline({
+                                        path: inboundpath,
+                                        geodesic: true,
+                                        strokeColor: "#FF0000",
+                                        strokeOpacity: 1.0,
+                                        strokeWeight: 5,
+                                        // width: 6
+                                    });
+            Inboundpolyline = [inboundroutepath];
+            for (var i =0; i<Outboundstops.length; i++){
+                var id = Outboundstops[i].id;
+                var lat = Outboundstops[i].lat;
+                var lng = Outboundstops[i].lng;
+                outboundpath.push({'lat':lat, 'lng':lng})
+
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(lat, lng),
+                    title: id,
+                    icon: icon
+                })
+                showmarkerinfo(marker);
+                Outboundmarkers.push(marker);
+            }
+            var outboundroutepath = new google.maps.Polyline({
+                                        path: outboundpath,
+                                        geodesic: true,
+                                        strokeColor: "blue",
+                                        strokeOpacity: 1.0,
+                                        strokeWeight: 5,
+                                        // width:4
+                                    });
+            Outboundpolyline = [outboundroutepath];
+            document.getElementById("Inbound").addEventListener('click', function () {
+                clearmarkers(Outboundmarkers);
+                clearpolylines(Outboundpolyline)
+                clearmarkers(nearmemarkers);
+                clearmarkers(alongroutemarkers);
+                clearmarkers(originmarkers);
+                clearmarkers(destinationmarkers);
+                showmarkers(Inboundmarkers, map);
+                showpolylines(Inboundpolyline, map)
+            //     // for (var marker in Inboundmarkers){
+            //     //     var MARKER = Inboundmarkers[marker]
+            //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
+            //     //         alert(1)
+            //     //         // alert(MARKER.getTitle())
+            //     //         // var content = showmarkerinfo(MARKER);
+            //     //         // var infowindow = new google.maps.InfoWindow({content:content});
+            //     //         // infowindow.open(MARKER, map)
+            //     //     })(MARKER));
+                })
+            // });
+            document.getElementById("Outbound").addEventListener('click', function () {
+                clearmarkers(Inboundmarkers);
+                clearpolylines(Inboundpolyline)
+                clearmarkers(nearmemarkers);
+                clearmarkers(alongroutemarkers);
+                clearmarkers(originmarkers);
+                clearmarkers(destinationmarkers);
+                showmarkers(Outboundmarkers, map);
+                showpolylines(Outboundpolyline, map)
+            });
+        },
+        error: function () {
+            alert('route data missed')
+        }
+    })
+    function showmarkerinfo(marker) {
+        var id = marker.getTitle();
+        var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
+        $.ajax({
+            headers: {'X-CSRFToken': csrftoken},
+            url: '/rtmarkerinfo',
+            // url:"https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + '11' +"&format=json",
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            // jsonp:'callback',
+            // jsonpCallback: "success_jsonpCallback",
+            data: {'id':id},
+            success: function (data) {
+                var results = data['results'];
+                for (var result in results){
+                    var rst = results[result];
+                    content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
+                }
+                content += '</tbody></table>'
+                var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.open(map, marker)})
+            },
+            error: function () {
+                // alert('error', id)
+                content += '</tbody></table>'
+                var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.open(map, marker)})
+                // alert('rtpi error')
+            }
+        })
+    }
 }
 
 //change the markers to be visible from being invisible or reversely.

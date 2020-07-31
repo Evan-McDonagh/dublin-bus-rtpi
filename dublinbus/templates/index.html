@@ -38,111 +38,126 @@
     
 </head>
 <body>
-    <script type="text/javascript">window.onload=function () {
-        initMap();
-    };</script>
+    <script type="text/javascript">window.onload=function () {initMap();}</script>
 
     <div class="wrapper">
 
         <nav id="sidebar">
             <div class = "side-top">
 
-            <ul class="list-unstyled components">
-                <li class="active"><a id = "search" onclick="showsearchcontent();">Search</a></li>
-                <li><a id = "stop" onclick="showstopsearchcontent()">Stop</a></li>
-                <!-- <li><a id= "twitter">Twitter</a></li> -->
-                <li><a id = "leapcard">Leapcard</a></li>
-                <li><a href = "#" id= "favorite" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Favorites</a>
-                    <ul class="db collapse list-unstyled" id="fav-options">
-                        <li>
-                            <a href="#" id = "myplace">My Places</a>
-                        </li>
-                        <li>
-                            <a href="#" id = "mystop">My Stops</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+                <ul class="list-unstyled components">
+                    <li class="active"><a id = "search" onclick="showsearchcontent();">Search</a></li>
+                    <li><a id = "stop" onclick="showstopsearchcontent()">Stop</a></li>
+                    <li><a id = "route" >Routes</a></li>
+    {#                <li><a id = "route" onclick="showroutesearchcontent()">Routes</a></li>#}
+                    <!-- <li><a id= "twitter">Twitter</a></li> -->
+                    <li><a id = "leapcard">Leapcard</a></li>
+                    <li><a href = "#" id= "favorite" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Favorites</a>
+                        <ul class="db collapse list-unstyled" id="fav-options">
+                            <li><a href="#" id = "myplace">My Places</a></li>
+                            <li><a href="#" id = "mystop">My Stops</a></li>
+                        </ul>
+                    </li>
+                </ul>
 
-            <div class="forms">
-                <div id = "searchid">
-                    <div>
-                        <form action="" method="post">
-                            
-                            <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')" style="vertical-align:middle; width: 90%;"><span> </span><i class = "far fa-heart place" style="vertical-align:middle" ></i>
-                            <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')" style="vertical-align:middle; width: 90%;"><span> </span><i class = "far fa-heart place2" style="vertical-align:middle" ></i>
+                <div class="forms">
+                    <div id = "searchid">
+                        <div>
+                            <form action="" method="post">
+                                <i class = "far fa-star place" ></i>
+                                <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')">
+                                <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')">
 
-                            <div class="col-md-13">
-                                <div class='input-group date' >
-                                    <input type='text' id='datetimepicker1' class="form-control"/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                                <div class="col-md-13">
+                                    <div class='input-group date' >
+                                        <input type='text' id='datetimepicker1' class="form-control"/>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
                                 </div>
+
+                                <button id="go" type = "button" onclick = "calcRoute()">Go!</button>
+                            </form>
+                        </div>
+                        <div id="routes"></div>
+{#                        <div id="singleroutesearchresult"></div>#}
+                        <div id="fares"></div>
+    {#                    <div><div></div><h4 id="h51"></h4></div>#}
+                        <!-- <div class="card">
+                            <div class="card-body">
+                                <img src="../static/images/icon-BUS.png">
                             </div>
-
-                            <button id="go" type = "button" onclick = "calcRoute()">Go!</button>
-                        </form>
+                        </div> -->
+{#                        <div class="card" style="background-color:aliceblue;">#}
+                            <div id="directions-body" class="card-body" style='color:black;'></div>
+{#                        </div>#}
+                        <div><h4 id="h51"></h4></div>
                     </div>
-                    <div id="routes"></div>
-                    <div id="fares"></div>
-{#                    <div><div></div><h4 id="h51"></h4></div>#}
-                    <!-- <div class="card">
-                        <div class="card-body">
-                            <img src="../static/images/icon-BUS.png">
+
+                    <div id = "routeid">
+                        <div>
+                            <form method="post" id = "routeadd">
+                                {% csrf_token %}
+                                Route: <i class = "far fa-star star" ></i>
+                                <input type='text' id = "route_id" name = "route_id">
+                                <button id = "stopbtn" type="button" onclick="routesearch()">submit</button>
+                            </form>
                         </div>
-                    </div> -->
-                    <div class="card" style="background-color:aliceblue;">
-                        <div id="directions-body" class="card-body" style='color:black;'>
+{#                        <div id="routes"></div>#}
+                        <div id="singleroutesearchresult"></div>
+                    </div>
+
+                    <div id = "leapcardid">
+                        <div>
+                            <form method="post" id = "lpadd">
+                                {% csrf_token %}
+                                Username: <input type='text' id = "username" name = "username">
+                                Password: <input type='password' id = "password" name = "password">
+                                <button id = "lpbtn" type="button">submit</button>
+                            </form>
                         </div>
+                        <div id ="lparea"></div>
                     </div>
-                    <div><div></div><h4 id="h51"></h4></div>
-                </div>
 
-                
-                <div id = "leapcardid">
-                    <div>
-                        <form method="post" id = "lpadd">
-                            {% csrf_token %}
-                            Username: <input type='text' id = "username" name = "username">
-                            Password: <input type='password' id = "password" name = "password">
-                            <button id = "lpbtn" type="button">submit</button>
-                        </form>
+                    <div id = "favoriteid">
+                        <div id ="favoritearea"></div>
                     </div>
-                    <div id ="lparea"></div>
-                </div>
 
-                <div id = "favoriteid">
-                    
-                    <div id ="favoritearea"></div>
-                </div>
-
-            
-                <div id = "stopid">
-                    <div>
-                        <form method="post" id = "stopadd">
-                            {% csrf_token %}
-                            Stop ID: <i class = "far fa-heart star" id = "starbefore"></i>
-                            <input type='text' id = "stop_id" name = "stop_id">
-                            <button id = "stopbtn" type="button" onclick="stopsearch()">submit</button>
-                        </form>
+                    <div id = "stopid">
+                        <div>
+                            <form method="post" id = "stopadd">
+                                {% csrf_token %}
+                                Stop ID: <i class = "far fa-star star" ></i>
+                                <input type='text' id = "stop_id" name = "stop_id">
+                                <button id = "stopbtn" type="button" onclick="stopsearch()">submit</button>
+                            </form>
+                        </div>
+                        <div id ="stoparea"></div>
                     </div>
-                    <div id ="stoparea"></div>
-                </div>
+
+{#                <div id = "routeid">#}
+{#                    <div>#}
+{#                        <form method="post" id = "routeadd">#}
+{#                            {% csrf_token %}#}
+{#                            Route: <i class = "far fa-star star" ></i>#}
+{#                            <input type='text' id = "route_id" name = "route_id" autocomplete="on">#}
+{#                            <button id = "routebtn" type="button" onclick="routesearch()">submit</button>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                    <div id ="routearea"></div>#}
+{#                </div>#}
                 <div id="nearme"></div>
-                
-                
-            </div>
-            </div>
-                <div id = "twitterid">
-                    <a class="twitter-timeline" data-width="350" data-height="450" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                </div>
-        </nav>
+                </div> {# end of class 'form' #}
+            </div> {# end of class "side-top" #}
+            <div id = "twitterid">
+                <a class="twitter-timeline" data-width="350" data-height="450" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div> {# end of id "twitterid" #}
+        </nav> {# end of 'nav' tag "sidebar" #}
 
         <div id="content">
             <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: rgb(71, 71, 95) !important; color: #fff;">
                 <div class="container-fluid">
-
                     <button type="button" id="sidebarCollapse" class="btn btn-info">
                         <i class="fas fa-align-left"></i>
                         <span></span>
@@ -153,9 +168,8 @@
             <div id="googleMap" style="width:100%;height:90%;"></div>
             <div id="stopMap" style="width:100%;height:90%;"></div>
             <div class="line"></div>
-        </div>
-
-    </div>
+        </div> {# end of  id "content" div#}
+    </div> {#end of class wrapper#}
 
 
 <script type="text/javascript">
@@ -211,7 +225,6 @@
             $('#twitterid').show();
             $('#searchid').show();
             $('#nearme').show();
-
         });
             
         </script>
@@ -230,6 +243,18 @@
                 $('#stopid').siblings().hide();
                 $('#twitterid').show();
                 $('#stopid').show();
+                $('#routeid').hide();
+                $('#myplace').hide();
+                $('#mystop').hide();
+                $(".db").removeClass("show");
+            })
+        </script>
+        <script type = "text/javascript">
+            $('#route').click(function(){
+                $('#routeid').siblings().hide();
+                $('#twitterid').show();
+                $('#routeid').show();
+                $('#stopid').hide();
                 $('#myplace').hide();
                 $('#mystop').hide();
                 $(".db").removeClass("show");
@@ -266,7 +291,6 @@
     <!-- when user click the star, and stop they input will be added to the favorite -->   
     <script type="text/javascript" >
         $('.star').click(function(e){
-            // document.getElementById("starbefore").classList.replace("far","fa");
             e.preventDefault;
             var stop = [];
             if (document.getElementById("stop_id").value === ""){
@@ -312,7 +336,6 @@
                 }
 
             }
-            // document.getElementById("starbefore").classList.replace("fa","far");
         });
     </script>
 
@@ -336,7 +359,7 @@
                     stop_elem.appendChild(t); 
                     
                     // iconstar = document.createElement("i");
-                    // iconstar.setAttribute('class', 'far fa-star starcancel');
+                    // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
                     iconstar = document.createElement("button");
                      
@@ -457,59 +480,6 @@
 </script>
 
 
-
-<script type="text/javascript" >
-    $('.place2').click(function(e){
-        e.preventDefault;
-        var place = [];
-        // alert('hiiiii');
-        if ($('#destination').val() === ""){
-            alert('please input place2')
-        }
-        else{
-            place.push($('#destination').val());
-            try{
-                cookiemonster.get('place');
-            }
-            catch{
-                cookiemonster.set('place', place, 3650);
-                console.log(cookiemonster.get('place'))
-                alert('Save Sucessfully');
-                return ;
-            }
-
-
-            var input_place =  $('#destination').val();
-            var previous_arr = cookiemonster.get('place');
-            // console.log(input_stop);
-            // console.log(previous_arr);
-            var flag = 0;
-            for (let i = 0; i<previous_arr.length; i++){
-                if (input_place == previous_arr[i]){
-                    alert("This place is already in the list");
-                    flag = 1;
-                }
-            }
-            if (flag == 0){
-                // $(this).toggleClass("fa fa-star fa fa-star");
-                try{
-                    cookiemonster.get('place');
-                    console.log(cookiemonster.get('place'));
-                    cookiemonster.append('place', place, 3650);
-                    console.log(cookiemonster.get('place'));
-
-                } catch(err){
-                    cookiemonster.set('place', place, 3650);
-                }
-                alert('Save Sucessfully');
-            }
-
-        }
-    });
-</script>
-
-
-
     
 <!-- the function that let the page refrensh only in some part     -->
         <!-- let the leapcard feature refresh -->
@@ -526,26 +496,10 @@
                         type:"POST",
                         url: "/leapcard/",
                         cache: false,
-                        dataType: "json",
+                        dataType: "html",
                         data:info,
                         success: function(result, statues, xml){
-                            console.log(result)
-                            if (result["wrong"] == "wrong"){
-                                $("#lparea").html("Wrong username or password, please try again!");
-                                // alert("hi")
-                            }
-                            else{
-                                var leap_table = "<br><table> ";
-
-                                    leap_table += "<tr><td>Card Number </td><td>:   "+result["card_num"]+"</td></tr>";
-                                    leap_table += "<tr><td>Card Label </td><td>:  "+result["card_label"] +"</td></tr>";
-                                    leap_table += "<tr><td>Card Balance </td><td>:  "+result["balance"] +"</td></tr>";
-                                    leap_table += "<tr><td>Card Type </td><td>:  "+result["card_type"] +"</td></tr>";
-                                    leap_table += "<tr><td>Expiry Date </td><td>:  "+result["expiry_date"] +"</td></tr>";
-                                    leap_table += "</table>";
-                                    console.log(result["card_num"]);
-                                    $("#lparea").html(leap_table);
-                            }
+                            $("#lparea").html(result);
                         },
                         error: function(){
                             alert("false");
