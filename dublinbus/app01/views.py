@@ -453,10 +453,10 @@ def routesearch(request):
                 routestops[in_out] = allalongroutestopslist
         else:
             routestops['Route does not exist'] = 'Route does not exist'
-        print(routestops)
+        # print(routestops)
         return HttpResponse(json.dumps(routestops))
 
-
+# to extract stop details from stop-data.json
 def extractloc(routestopnos, allalongroutestops):
     count = 1
     for stopno in routestopnos:
@@ -499,6 +499,12 @@ def extractloc(routestopnos, allalongroutestops):
     #     routestops[in_out] = allalongroutestops
     # print(routestops)
 
+# to handle error logger
+def errorhandler(request):
+    if request.method == 'POST':
+        errorinfo = json.loads(request.body)
+        print("*********ErrorLogger***********", errorinfo)
+        return HttpResponse(json.dumps({}))
 
 
 

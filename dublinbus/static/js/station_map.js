@@ -70,7 +70,9 @@ function initMap(){
         pos['status'] = "ERROR";
         sendlocation(pos, map);
         realtimeweather(pos);
-        handleLocationError(true, map.getCenter(), map);
+        var initmaperror = 'ERROR--->initMap(),type:js,file:station_map.js, ErrorMSG: Browser has Geolocation but service failed. location not accessible';
+        errorhandler(initmaperror, 'location not accessible, default location used');
+        // handleLocationError(true, map.getCenter(), map);
         addallmarkers(map);
         clearmarkers(allstopmarkers);
         addnearmemarkers(map, pos);
@@ -80,7 +82,9 @@ function initMap(){
       pos['status'] = 'ERROR';
       sendlocation(pos, map);
       realtimeweather(pos);
-      handleLocationError(false, map.getCenter(), map);
+      var initmaperror = 'ERROR--->initMap(),type:js,file:station_map.js, ErrorMSG: Browser does not support Geolocation';
+      errorhandler(initmaperror, 'Browser does not support Geolocation, default location used');
+      // handleLocationError(false, map.getCenter(), map);
       addallmarkers(map);
       clearmarkers(allstopmarkers);
       addnearmemarkers(map, pos);
@@ -102,10 +106,7 @@ function sendlocation(pos, map){
         dataType: 'json',
         // async:false,
         success: function (data) {
-                // loc_infoWindow = new google.maps.InfoWindow; //display user's location msg
-            var loc_infoWindow = new google.maps.InfoWindow({
-                    // position:{'lat':pos.lat, 'lng':pos.lng}
-                });
+            var loc_infoWindow = new google.maps.InfoWindow({});
             var loc_marker = new google.maps.Marker({
                     map: map,
                     position: {'lat':pos.lat, 'lng':pos.lng},
@@ -113,7 +114,10 @@ function sendlocation(pos, map){
             loc_infoWindow.setContent((pos.status == 'OK'? "Your position:":"(Unlocated)Map center:")+data.address)
             loc_infoWindow.open(map, loc_marker);
         },
-        error: function () {alert("error"+" failed js function:sendlocation"+" involved views.py function:init(request)");},
+        error: function () {
+            var errormsg = 'ERROR--->sendlocation(pos, map) supporting initMap(),type:js/jquery response error,file:station_map.js, ErrorMSG: init(request) function gives no response';
+            errorhandler(errormsg, null)
+            },
     });
 }
 
@@ -129,23 +133,27 @@ function realtimeweather(pos) {
             var icon = data['iconUrl']
             var weather_show ="<img src='" + icon  + "'>" +data['descp'] +" "+ data['temp'];
             document.getElementById("weather").innerHTML = weather_show;
+        },
+        error: function () {
+            var errorweathermsg = 'ERROR--->realtimeweather(pos),type:js/jquery response error,file:station_map.js, ErrorMSG: weather(request) function in views.py gives no response';
+            errorhandler(errorweathermsg, null);
         }
     })
 }
 
 //deal with the geolocation error
-function handleLocationError(browserHasGeolocation, pos, map) {
-    //supporting functions of initMap()
-    alert(browserHasGeolocation ?
-        'Error: The Geolocation service failed. location not accessible' :
-        'Error: Your browser doesn\'t support geolocation.')
-    // infoWindow = new google.maps.InfoWindow();
-    // infoWindow.setPosition(pos);
-    // infoWindow.setContent(browserHasGeolocation ?
-    //                       'Error: The Geolocation service failed.' :
-    //                       'Error: Your browser doesn\'t support geolocation.');
-    // infoWindow.open(map);
-}
+// function handleLocationError(browserHasGeolocation, pos, map) {
+//     //supporting functions of initMap()
+//     alert(browserHasGeolocation ?
+//         'Error: The Geolocation service failed. location not accessible' :
+//         'Error: Your browser doesn\'t support geolocation.')
+//     // infoWindow = new google.maps.InfoWindow();
+//     // infoWindow.setPosition(pos);
+//     // infoWindow.setContent(browserHasGeolocation ?
+//     //                       'Error: The Geolocation service failed.' :
+//     //                       'Error: Your browser doesn\'t support geolocation.');
+//     // infoWindow.open(map);
+// }
 
 function calcRoute() {
     clearmarkers(Outboundmarkers);
@@ -333,12 +341,18 @@ function calcRoute() {
                             }
                         }
                     }, error: function () {
-                        alert('error'+" involved js function loadstops(bus_name, bounds, map) serving function calcRoute()"+" involved views.py function printresult(request)");
+                        var errormsg = 'ERROR--->loadstops(segmentsinfo,  bounds, map) supporting calcRoute() using showinfowindow(marker, map), type:js/jquery response error,file:station_map.js, ErrorMSG: printresult(request) function gives no response';
+                        errorhandler(errormsg, null);
+                        // alert('error'+" involved js function loadstops(bus_name, bounds, map) serving function calcRoute()"+" involved views.py function printresult(request)");
                     },
                 });
             }
         }
       directionsRenderer.setDirections(result);
+    }
+    else{
+        var errormsg = 'ERROR--->calcRoute(),type:js/google directions service error,file:station_map.js, ErrorMSG: Google direction service gives result with status not "OK"';
+        errorhandler(errormsg, null)
     }
   });
    // directionsRenderer.setPanel(document.getElementById('h51'));
@@ -473,7 +487,9 @@ function stopsearch() {
                 $("#stoparea").html(real_info);
             },
             error: function(){
-                alert("false"+" involved js function stopsearch() involved views.py function stop(request)");
+                var errormsg = 'ERROR--->stopsearch(),type:js/jquery response error,file:station_map.js, ErrorMSG: stop(request) function in views.py gives no response';
+                errorhandler(errormsg);
+                // alert("false"+" involved js function stopsearch() involved views.py function stop(request)");
             }
         });
     var stop_id = $('#stop_id').val();
@@ -666,7 +682,9 @@ function routesearch(){
             }
         },
         error: function () {
-            alert('route data missed')
+            var errormsg = 'ERROR--->routesearch(),type:js/jquery response error,file:station_map.js, ErrorMSG: routesearch(request) function in views.py gives no response';
+            errorhandler(errormsg, null);
+            // alert('route data missed')
         }
     })
     function showmarkerinfo(marker) {
@@ -877,8 +895,10 @@ function showPrediction(segmentsinfo){
             }
             displayDirections(segmentsinfo,data);
         }, error: function () {
+            var errormsg = 'ERROR--->showPrediction(segmentsinfo),type:js/jquery response error,file:station_map.js, ErrorMSG: showprediction(request)function in views.py gives no response';
+            errorhandler(errorweathermsg, null);
             // if the correspond function in backend geives response successfully, this function is triggered and parameter "data" is the responded data.
-            alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
+            // alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
         },
     });
 }
@@ -936,6 +956,17 @@ function renderLegCard(seg) {
     html_out += '<p class="card-text">' + seg.instructions  + busname + '</p></td>';
     html_out += '</tr></table>';
     document.getElementById('directions-body').innerHTML += html_out;
+}
+
+function errorhandler(msgtobackend, msgtoalert) {
+    $.ajax({
+        headers:{'X-CSRFToken': csrftoken},
+        url:'/errorhandler',
+        type:'POST',
+        dataType:'json',
+        data:JSON.stringify(msgtobackend),
+        success: function () {if (msgtoalert != null){alert(msgtoalert)}}
+    })
 }
 
 //
