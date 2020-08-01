@@ -14,4 +14,5 @@ urlpatterns = [
     url('rtmarkerinfo', views.rtmarkerinfo),
     url('showprediction', views.showprediction),
     url('routesearch', views.routesearch),
+    url('errorhandler', views.errorhandler),
 ]
