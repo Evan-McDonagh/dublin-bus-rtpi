@@ -12,11 +12,9 @@
     
     <!--import css -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/mian.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-datetimepicker.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    
     <!-- Bootstrap CSS CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
 
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
@@ -25,11 +23,12 @@
     <!--add favicon-->
     <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
     
+    <!--adding google icons for mobile nav-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <!--import js -->
     <!-- <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script> -->
-    <!-- <script type="text/javascript" src="{% static 'js/bootstrap.min.js.js' %}"></script> -->
     <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/cookiemonster.js' %}"></script>
     <!-- <script src="https://cdn.bootcdn.net/ajax/libs/cookies-monster/0.1.4/cookies-monster.js"></script> -->
@@ -40,26 +39,53 @@
 <body>
     <script type="text/javascript">window.onload=function () {initMap();}</script>
 
-    <div class="wrapper">
 
-        <nav id="sidebar">
-            <div class = "side-top">
 
-                <ul class="list-unstyled components">
-                    <li class="active"><a id = "search" onclick="showsearchcontent();">Search</a></li>
-                    <li><a id = "stop" onclick="showstopsearchcontent()">Stop</a></li>
-                    <li><a id = "route" >Routes</a></li>
-    {#                <li><a id = "route" onclick="showroutesearchcontent()">Routes</a></li>#}
-                    <!-- <li><a id= "twitter">Twitter</a></li> -->
-                    <li><a id = "leapcard">Leapcard</a></li>
-                    <li><a href = "#" id= "favorite" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Favorites</a>
-                        <ul class="db collapse list-unstyled" id="fav-options">
-                            <li><a href="#" id = "myplace">My Places</a></li>
-                            <li><a href="#" id = "mystop">My Stops</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
+    <div id="googleMap"></div>
+    <header>
+        <nav>
+            <div class="burger">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <div class="spacer"></div>
+            <div id="weather"></div>
+        </nav>         
+    </header>
+    <div class="modal" id="modal">
+        <div class="modal-top">
+            <div class="modal-menu">
+                <a class="nav-link" id="search" onclick="showsearchcontent();">
+                    <span class="material-icons nav-icon">directions</span>
+                    <span class="nav-text">Plan Route</span>
+                </a>
+                <a class="nav-link" id = "stop" onclick="showstopsearchcontent()">
+                    <span class="material-icons nav-icon">place</span>
+                    <span class="nav-text">Search By Stop</span>
+                </a>
+                <a class="nav-link">
+                    <span class="material-icons nav-icon">directions_bus</span>
+                    <span class="nav-text">Search By Route</span>
+                </a>
+                <a class="nav-link" id = "leapcard">
+                    <span class="material-icons nav-icon">payment</span>
+                    <span class="nav-text">Leapcard</span>
+                </a>
+                <a class="nav-link" href="#" id="favorite" class="dropdown">
+                    <span class="material-icons nav-icon">star</span>
+                    <span class="nav-text">Favorites</span>
+                </a>
+                            {% comment %} <ul class="db collapse list-unstyled" id="fav-options">
+                                <li>
+                                    <a href="#" id = "myplace">My Places</a>
+                                </li>
+                                <li>
+                                    <a href="#" id = "mystop">My Stops</a>
+                                </li>
+                            </ul> {% endcomment %}
+            </div>
+            <div class="modal-cont">
                 <div class="forms">
                     <div id = "searchid">
                         <div>
@@ -68,13 +94,8 @@
                                 <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')">
                                 <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')">
 
-                                <div class="col-md-13">
-                                    <div class='input-group date' >
-                                        <input type='text' id='datetimepicker1' class="form-control"/>
-                                        <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                        </span>
-                                    </div>
+                                <div class="datetimes">
+                                    <input type="datetime-local" id="datetimepicker1"/>
                                 </div>
 
                                 <button id="go" type = "button" onclick = "calcRoute()">Go!</button>
@@ -153,24 +174,32 @@
             <div id = "twitterid">
                 <a class="twitter-timeline" data-width="350" data-height="450" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div> {# end of id "twitterid" #}
-        </nav> {# end of 'nav' tag "sidebar" #}
 
-        <div id="content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: rgb(71, 71, 95) !important; color: #fff;">
-                <div class="container-fluid">
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fas fa-align-left"></i>
-                        <span></span>
-                    </button>
-                    <div id="weather" style="display: inline; float:right;"></div>
-                </div>
-            </nav>
-            <div id="googleMap" style="width:100%;height:90%;"></div>
-            <div id="stopMap" style="width:100%;height:90%;"></div>
-            <div class="line"></div>
-        </div> {# end of  id "content" div#}
-    </div> {#end of class wrapper#}
 
+<script>
+    const modalSlide = () => {
+        const burger = document.querySelector('.burger');
+        const modal = document.querySelector('.modal');
+            
+        burger.addEventListener('click', () => {
+
+            //Toggle nav
+            modal.classList.toggle('modal-active');
+
+            //Animation for burger
+            burger.classList.toggle('toggle');
+        });
+    }
+
+    modalSlide();
+</script>
+
+
+<script>
+	$('#datetimepicker1').datetimepicker({
+	inline:true,
+	});
+	</script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -508,12 +537,12 @@
             });
         </script>
 
-        <script type="text/javascript">
+        {% comment %} <script type="text/javascript">
             var todayDate = new Date().getDate();
             $('#datetimepicker1').datetimepicker({
         
             });
-        </script>
+        </script> {% endcomment %}
 
         <script>
             var stopdata = '{{stopdata|safe}}';
