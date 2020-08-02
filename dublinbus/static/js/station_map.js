@@ -239,19 +239,22 @@ function calcRoute() {
                 
                 // if entered route requires transit, call calcFare function 
                 if (fareStops.length > 0){
+                    fareRoutes = [];
                     //adding array to array to calc individual routes 
                     fareRoutes.push(fareStops);
+                    calcFare(fareRoutes);
+                } else {
+                    // Accounting for when route has no bus/transit involved
+                    var noTrasnit = [0];
+                    fareRoutes.push(noTrasnit);
                     calcFare(fareRoutes);
                 }
 
                 for (var p in bus_name){bus_name_str += (p == 0? bus_name[p]:"->"+bus_name[p])}
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
 
-                //convert to mins for readability 
-                walk_time = Math.round(walking_dur/60);
-                bus_time = Math.round(bus_dur/60);
                 if (bus_name_str != '') {
-                    document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + bus_name_str + "</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: " + bus_time + " minutes</p>";
+                    document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + bus_name_str + "</button>";
                     loadstops(segmentsinfo, bounds, map);
                     document.getElementById("showalongroutemarker").addEventListener('click', function () {
                         clearmarkers(Inboundmarkers);
@@ -841,7 +844,10 @@ function calcFare(fareRoutes){
     var cashFare = 0;
     var journey = fareRoutes[fareRoutes.length - 1];
     for (var i=0; i < journey.length; i++){
-        if (journey[i] > 1 && journey[i] < 4){
+        if(journey[i] === 0){
+            leapFare += 0;
+            cashFare += 0;
+        } else if (journey[i] > 1 && journey[i] < 4){
             leapFare += 1.55;
             cashFare += 2.15;
         } else if (journey[i] > 3 && journey[i] < 14){
