@@ -35,6 +35,16 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
     
+    <!-- <script src="js/jquery-3.1.1.min.js"></script> -->
+    <!-- <script src="jquery-ui-1.12.1/jquery-ui.min.js"></script> -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <!-- <link href="jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" /> -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'js/jquery-ui-timepicker-addon.min.js' %}"></script>
+    
+    <link type="text/css" href="{% static 'css/jquery-ui-timepicker-addon.min.css' %}" rel="stylesheet" />
+
+
 </head>
 <body>
     <script type="text/javascript">window.onload=function () {initMap();}</script>
@@ -92,7 +102,7 @@
                                 <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')">
                                 
                                 <div class="datetimes">
-                                    <input type="datetime-local" id="datetimepicker1"/>
+                                    <input type="text" id="datetimepicker1"/>
                                 </div>
 
                                 
@@ -538,12 +548,21 @@
             });
         </script>
 
-        {% comment %} <script type="text/javascript">
-            var todayDate = new Date().getDate();
-            $('#datetimepicker1').datetimepicker({
         
+        <script type="text/javascript">
+            // var todayDate = new Date().getDate();
+            // $('#datetimepicker1').datetimepicker({
+        
+            // });
+            $('#datetimepicker1').datetimepicker({
+                needDay:true,
+                changeMonth: true, //显示月份
+                changeYear: true, //显示年份
+                showButtonPanel: true, //显示按钮
+                timeFormat: "HH:mm",
+                dateFormat: "yy-mm-dd"
             });
-        </script> {% endcomment %}
+        </script> 
 
         <script>
             var stopdata = '{{stopdata|safe}}';
