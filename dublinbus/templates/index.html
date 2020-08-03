@@ -82,13 +82,9 @@
                     <span class="material-icons nav-icon">payment</span>
                     <span class="nav-text">Leapcard</span>
                 </a>
-                <a class="nav-link" href="#" id="favorite" class="dropdown">
+                <a class="nav-link" href="#" id="favorite" class="dropbtn" onclick="dropDown()">
                     <span class="material-icons nav-icon">star</span>
                     <span class="nav-text">Favorites</span>
-                    <div class="dropdown-cont">
-                        <a href="#" id = "myplace">My Places</a>
-                        <a href="#" id = "mystop">My Stops</a>
-                    </div>
                 </a>
             </div>
             <div class="modal-cont">
@@ -151,7 +147,11 @@
                     </div>
 
                     <div id = "favoriteid">
-                        <div id ="favoritearea"></div>
+                        <ul class="fav-links">
+                            <li><a href="#" id = "myplace">My Places</a></li>
+                            <li><a href="#" id = "mystop">My Stops</a></li>
+                        </ul>
+                        <div class="modal-populated" id ="favoritearea"></div>
                     </div>
 
                     <div id = "stopid">
@@ -163,7 +163,7 @@
                                 <button id = "stopbtn" type="button" onclick="stopsearch()">Submit</button>
                             </form>
                         </div>
-                        <div id ="stoparea"></div>
+                        <div class="modal-populated" id ="stoparea"></div>
                     </div>
 
 {#                <div id = "routeid">#}
@@ -345,7 +345,7 @@
                 catch{
                     cookiemonster.set('stop', stop, 3650);
                     console.log(cookiemonster.get('stop'))
-                    alert('Save Sucessfully');
+                    alert('Saved Sucessfully');
                     return ;
                 }
 
@@ -372,7 +372,7 @@
                     } catch(err){
                         cookiemonster.set('stop', stop, 3650);
                     }
-                    alert('Save Sucessfully');
+                    alert('Saved Sucessfully');
                 }
 
             }
@@ -441,7 +441,7 @@
             catch{
                 cookiemonster.set('place', place, 3650);
                 console.log(cookiemonster.get('place'))
-                alert('Save Sucessfully');
+                alert('Saved Sucessfully');
                 return ;
             }
 
@@ -468,7 +468,7 @@
                 } catch(err){
                     cookiemonster.set('place', place, 3650);
                 }
-                alert('Save Sucessfully');
+                alert('Saved Sucessfully');
             }
 
         }

@@ -894,7 +894,7 @@ function showPrediction(segmentsinfo){
             displayDirections(segmentsinfo,data);
         }, error: function () {
             var errormsg = 'ERROR--->showPrediction(segmentsinfo),type:js/jquery response error,file:station_map.js, ErrorMSG: showprediction(request)function in views.py gives no response';
-            errorhandler(errorweathermsg, null);
+            errorhandler(errormsg, null);
             // if the correspond function in backend geives response successfully, this function is triggered and parameter "data" is the responded data.
             // alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
         },

@@ -134,6 +134,36 @@ nav {
     border-radius: 5px;
 }
 
+/* Favourites Sub-menu*/
+.fav-links {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    color: #292f33;
+    padding-left: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.fav-links li {
+    list-style: none;
+    padding: 5px;
+}
+
+.fav-links a {
+    text-decoration: none;
+}
+
+.fav-links li:hover {
+    background: rgb(236, 236, 236);
+    border-radius: 5px;
+}
+
+.fav-links a:visited {
+    color: #292f33;
+}
+
+/* Modal Content */
 .modal-cont {
     padding-top: 1.5rem;
 }
@@ -164,16 +194,40 @@ input {
     box-sizing: border-box;
 }
 
+/* Modal-populated styles */
+
+.modal-populated {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+#favoritearea {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+#favoritearea div {
+    border-bottom: 2px solid #23b36f;
+}
+
+#favoritearea button {
+    width: 14px;
+    height: 14px;
+    margin-right: 20px;
+}
+
+/* Bottom section of modal styles */
+
 .modal-bottom {
     margin-left: 2rem;
 }
 
 button {
-    /* background-color: #5a6770; */
     position: absolute;
     right: 10px;
     background-image: linear-gradient(to right, #23b36f , #69be55);
-    border: #292f33;
+    border: none;
     border-radius: 10px;
     width: 100px;
     cursor: pointer;
@@ -224,7 +278,19 @@ button {
     transform: rotate(45deg) translate(-5px,-6px);
 }
 
+#ui-datepicker-div button {
+    background-image: linear-gradient(to right, #23b36f , #69be55);
+    border: none;
+    border-radius: 10px;
+    width: 100px;
+    cursor: pointer;
+    height: 25px;
+}
 
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border:#23b36f !important;
+    background: #23b36f !important;
+}
 
 
 /* ---------------------------------------------------
@@ -242,6 +308,10 @@ button {
 
     .modal-top {
         margin-right: 2rem;
+    }
+
+    .fav-links {
+        margin-right: 10px;
     }
 
     button {
