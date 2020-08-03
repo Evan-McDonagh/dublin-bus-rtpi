@@ -35,6 +35,15 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
     
+    
+    <link href="http://cdn.bootcss.com/twitter-bootstrap/2.2.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://www.bootcss.com/p/bootstrap-datetimepicker/bootstrap-datetimepicker/css/datetimepicker.css" rel="stylesheet">
+
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://www.bootcss.com/p/bootstrap-datetimepicker/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+
 </head>
 <body>
     <script type="text/javascript">window.onload=function () {initMap();}</script>
@@ -95,7 +104,12 @@
                                 <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')">
 
                                 <div class="datetimes">
-                                    <input type="datetime-local" id="datetimepicker1"/>
+                                    <!-- <input type="datetime-local" id="datetimepicker1"/> -->
+                                    <div class="input-append date " id = "datetimepicker1">
+                                        <input size="20" type="text" value="" readonly>
+                                        <span class="add-on"><i class="icon-remove"></i></span>
+                                        <span class="add-on"><i class="icon-calendar"></i></span>
+                                    </div>
                                 </div>
 
                                 <button id="go" type = "button" onclick = "calcRoute()">Go!</button>
@@ -537,12 +551,12 @@
             });
         </script>
 
-        {% comment %} <script type="text/javascript">
+        <script type="text/javascript">
             var todayDate = new Date().getDate();
             $('#datetimepicker1').datetimepicker({
         
             });
-        </script> {% endcomment %}
+        </script> 
 
         <script>
             var stopdata = '{{stopdata|safe}}';
