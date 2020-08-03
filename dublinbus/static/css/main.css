@@ -1,0 +1,328 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+#googleMap {
+    height: 100%;
+}
+
+
+html,
+body {
+    box-sizing: border-box;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    overflow-x: hidden;
+}
+  
+
+header {
+    position: absolute;
+    top: .5rem;
+    left: 2rem;
+    right: 2rem;
+    margin: 20px auto;
+    padding: 10px;
+    /* background: #667580; */
+    background-image: linear-gradient(to right, #23b36f , #69be55);
+    box-sizing: border-box;
+    border-radius: 5px;
+    z-index: 5;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 3rem;
+    max-height: 3rem;
+}
+
+
+.burger {
+    cursor: pointer;
+    color: #292f33;
+    float: left;
+    padding-left: 1rem;
+}
+
+.burger div {
+    width: 24px;
+    height: 3px;
+    margin: 5px;
+    background-color: #292f33;
+    transition: all 0.3s ease;
+}
+
+.spacer {
+    flex: 1;
+}
+
+#weather {
+    float: right;
+    font-size: 12px;
+}
+
+#weather img {
+    vertical-align: middle;
+}
+
+.modal {
+    position: absolute;
+    top:7rem;
+    left:0rem;
+    z-index: 5;
+    text-decoration: none;
+    z-index: 5;
+    width: 40%;
+    min-width: 350px;
+    max-width: 400px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in;
+    cursor: pointer;
+    max-height: 85%;
+    overflow-y: scroll;
+}
+
+/* Hide the scrollbar in Chrome, Safari and Opera */
+.modal::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide the scrollbar in IE, Edge and Firefox */
+.modal {
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+}
+
+.modal-top {
+    margin-left: 2rem;
+    background: #ffffff;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    margin-bottom: 1rem;
+}
+
+.modal-menu {
+    display: flex;
+    overflow-x: auto;
+}
+
+.nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    min-width: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 10px;
+    color: #5a6770;
+    font-weight: 500;
+    padding-top: 5px;
+}
+
+.nav-link:hover {
+    background: rgb(236, 236, 236);
+    border-radius: 5px;
+}
+
+/* Favourites Sub-menu*/
+.fav-links {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    color: #292f33;
+    padding-left: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.fav-links li {
+    list-style: none;
+    padding: 5px;
+}
+
+.fav-links a {
+    text-decoration: none;
+}
+
+.fav-links li:hover {
+    background: rgb(236, 236, 236);
+    border-radius: 5px;
+}
+
+.fav-links a:visited {
+    color: #292f33;
+}
+
+/* Modal Content */
+.modal-cont {
+    padding-top: 1.5rem;
+}
+
+.form {
+    display: flex;
+}
+
+.input-fields {
+    display: flex;
+    flex-direction: column;
+    margin-right: 4px;
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%
+}
+
+.input-fields input {
+    margin: 10px 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid #23b36f;
+    padding: 10px;
+    width: 100%;
+}
+
+input {
+    box-sizing: border-box;
+}
+
+/* Modal-populated styles */
+
+.modal-populated {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+#favoritearea {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+#favoritearea div {
+    border-bottom: 2px solid #23b36f;
+}
+
+#favoritearea button {
+    width: 14px;
+    height: 14px;
+    margin-right: 20px;
+}
+
+/* Bottom section of modal styles */
+
+.modal-bottom {
+    margin-left: 2rem;
+}
+
+button {
+    position: absolute;
+    right: 10px;
+    background-image: linear-gradient(to right, #23b36f , #69be55);
+    border: none;
+    border-radius: 10px;
+    width: 100px;
+    cursor: pointer;
+    height: 25px;
+}
+
+#fares, #nearme {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#nearme {
+    padding-bottom: 20px;
+}
+
+/*Directions/steps pannel */
+
+#showalongroutemarker {
+    margin-right: 10px;
+}
+
+.card-body {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.card-body div {
+    border: 2px solid #23b36f;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/*Modal and nav animations*/
+
+.modal-active {
+    transform: translateX(0%);
+}
+
+.toggle .bar1{
+    transform: rotate(-45deg) translate(-5px,6px);
+}
+
+.toggle .bar2{
+    opacity: 0;
+}
+
+.toggle .bar3{
+    transform: rotate(45deg) translate(-5px,-6px);
+}
+
+#ui-datepicker-div button {
+    background-image: linear-gradient(to right, #23b36f , #69be55);
+    border: none;
+    border-radius: 10px;
+    width: 100px;
+    cursor: pointer;
+    height: 25px;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-button.ui-state-active:hover {
+    border:#23b36f !important;
+    background: #23b36f !important;
+}
+
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+@media (max-width: 880px) {
+    .modal-bottom {
+        display: none !important;
+    }
+
+    .modal {
+        min-width: 100%;
+        max-width: 750px;
+    }
+
+    .modal-top {
+        margin-right: 2rem;
+    }
+
+    .fav-links {
+        margin-right: 10px;
+    }
+
+    button {
+        right: 40px;
+    }
+}
+
+
+
+@media (max-width: 400px){
+    .nav-text {
+        display: none;
+    }
+}

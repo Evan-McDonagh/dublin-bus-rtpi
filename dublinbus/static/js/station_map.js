@@ -46,7 +46,8 @@ function initMap(){
     var pos = {lat:53.350140, lng:-6.266155}; //used to initialize the map, if geolocation enabled, the pos will be changed
     map =new google.maps.Map(document.getElementById('googleMap'), {
         center:pos,
-        zoom: 10
+        zoom: 10, 
+        disableDefaultUI: true
     });
 
     //get user's location
@@ -868,7 +869,7 @@ function calcFare(fareRoutes){
     leapFare = leapFare.toFixed(2);
     cashFare = cashFare.toFixed(2);
 
-    var fares = "<p style='color: white;'><b>Estimated Adult Fares:</b><br>Leap: €" + leapFare + "<br>Cash: €" + cashFare + "</p>";
+    var fares = "<p style='color: black; font-variant: small-caps;'>Estimated Adult Fares:</p><p>Leap: €" + leapFare + "<br>Cash: €" + cashFare + "</p>";
     document.getElementById("fares").innerHTML = fares;
 }
 
@@ -902,7 +903,7 @@ function showPrediction(segmentsinfo){
             displayDirections(segmentsinfo,data);
         }, error: function () {
             var errormsg = 'ERROR--->showPrediction(segmentsinfo),type:js/jquery response error,file:station_map.js, ErrorMSG: showprediction(request)function in views.py gives no response';
-            errorhandler(errorweathermsg, null);
+            errorhandler(errormsg, null);
             // if the correspond function in backend geives response successfully, this function is triggered and parameter "data" is the responded data.
             // alert('error'+" involved js function showPrediction(segs) "+" involved views.py function showprediction(request)");
         },
