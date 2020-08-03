@@ -84,12 +84,22 @@ nav {
     transition: transform 0.3s ease-in;
     cursor: pointer;
     max-height: 85%;
-    overflow: auto;
+    overflow-y: scroll;
+}
+
+/* Hide the scrollbar in Chrome, Safari and Opera */
+.modal::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide the scrollbar in IE, Edge and Firefox */
+.modal {
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
 }
 
 .modal-top {
     margin-left: 2rem;
-    /* background: #667580; */
     background: #ffffff;
     box-sizing: border-box;
     border-radius: 5px;
@@ -145,7 +155,7 @@ nav {
     margin: 10px 0;
     background: transparent;
     border: 0;
-    border-bottom: 2px solid #292f33;
+    border-bottom: 2px solid #23b36f;
     padding: 10px;
     width: 100%;
 }

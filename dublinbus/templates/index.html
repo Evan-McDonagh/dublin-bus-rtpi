@@ -75,15 +75,11 @@
                 <a class="nav-link" href="#" id="favorite" class="dropdown">
                     <span class="material-icons nav-icon">star</span>
                     <span class="nav-text">Favorites</span>
+                    <div class="dropdown-cont">
+                        <a href="#" id = "myplace">My Places</a>
+                        <a href="#" id = "mystop">My Stops</a>
+                    </div>
                 </a>
-                            {% comment %} <ul class="db collapse list-unstyled" id="fav-options">
-                                <li>
-                                    <a href="#" id = "myplace">My Places</a>
-                                </li>
-                                <li>
-                                    <a href="#" id = "mystop">My Stops</a>
-                                </li>
-                            </ul> {% endcomment %}
             </div>
             <div class="modal-cont">
                 <div class="forms">
@@ -125,7 +121,7 @@
                                 {% csrf_token %}
                                 Route: <i class = "far fa-star star" ></i>
                                 <input type='text' id = "route_id" name = "route_id">
-                                <button id = "stopbtn" type="button" onclick="routesearch()">submit</button>
+                                <button id = "stopbtn" type="button" onclick="routesearch()">Submit</button>
                             </form>
                         </div>
 {#                        <div id="routes"></div>#}
@@ -138,7 +134,7 @@
                                 {% csrf_token %}
                                 <input type='text' id = "username" name = "username" placeholder="Username">
                                 <input type='password' id = "password" name = "password" placeholder="Password">
-                                <button id = "lpbtn" type="button">submit</button>
+                                <button id = "lpbtn" type="button">Submit</button>
                             </form>
                         </div>
                         <div id ="lparea"></div>
@@ -154,7 +150,7 @@
                                 {% csrf_token %}
                                 <i class = "far fa-star star" ></i>
                                 <input type='text' id = "stop_id" name = "stop_id" placeholder="Stop ID">
-                                <button id = "stopbtn" type="button" onclick="stopsearch()">submit</button>
+                                <button id = "stopbtn" type="button" onclick="stopsearch()">Submit</button>
                             </form>
                         </div>
                         <div id ="stoparea"></div>
@@ -166,7 +162,7 @@
 {#                            {% csrf_token %}#}
 {#                            Route: <i class = "far fa-star star" ></i>#}
 {#                            <input type='text' id = "route_id" name = "route_id" autocomplete="on">#}
-{#                            <button id = "routebtn" type="button" onclick="routesearch()">submit</button>#}
+{#                            <button id = "routebtn" type="button" onclick="routesearch()">Submit</button>#}
 {#                        </form>#}
 {#                    </div>#}
 {#                    <div id ="routearea"></div>#}

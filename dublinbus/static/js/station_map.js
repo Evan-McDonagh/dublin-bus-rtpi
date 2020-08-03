@@ -46,7 +46,8 @@ function initMap(){
     var pos = {lat:53.350140, lng:-6.266155}; //used to initialize the map, if geolocation enabled, the pos will be changed
     map =new google.maps.Map(document.getElementById('googleMap'), {
         center:pos,
-        zoom: 10
+        zoom: 10, 
+        disableDefaultUI: true
     });
 
     //get user's location
