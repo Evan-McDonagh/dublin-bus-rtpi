@@ -37,6 +37,7 @@ var Inboundmarkers = [];
 var Outboundmarkers = [];
 var Inboundpolyline = [];
 var Outboundpolyline = [];
+var allstopmarkers_repeat = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -67,6 +68,7 @@ function initMap(){
         addallmarkers(map);
         clearmarkers(allstopmarkers);
         addnearmemarkers(map, pos);
+        // addallmarkers_repeat(map);
       }, function() {
         pos['status'] = "ERROR";
         sendlocation(pos, map);
@@ -77,6 +79,7 @@ function initMap(){
         addallmarkers(map);
         clearmarkers(allstopmarkers);
         addnearmemarkers(map, pos);
+        // addallmarkers_repeat(map);
       });
     } else {
       // Browser doesn't support Geolocation
@@ -89,6 +92,7 @@ function initMap(){
       addallmarkers(map);
       clearmarkers(allstopmarkers);
       addnearmemarkers(map, pos);
+    //   addallmarkers_repeat(map);
     }
     // create marker clusters using array of markers
     // var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
@@ -444,6 +448,31 @@ function addallmarkers(map) {
         }
     }
     showmarkers(allstopmarkers, map);
+    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+}
+
+function addallmarkers_repeat(map) {
+    var stopKeys = Object.keys(stopdata);
+    for (var i=0;i<stopKeys.length;i++) {
+        var stopKey = stopKeys[i];
+        if (stopdata[stopKey]['routes'] != "") {
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(
+                    stopdata[stopKey]['latitude'],
+                    stopdata[stopKey]['longitude']),
+                // title: stopdata[stopKey]['stopno'],
+                // label: stopKey,
+                map: map
+            });
+            marker.setMap(map)
+            // markers.push(marker);
+            marker.addListener('click', (function (marker, stopKey) {
+                return function () {getStopInfo(marker, stopKey, map);}
+            })(marker, stopKey));
+            allstopmarkers_repeat.push(marker);
+        }
+    }
+    showmarkers(allstopmarkers_repeat, map);
     // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
