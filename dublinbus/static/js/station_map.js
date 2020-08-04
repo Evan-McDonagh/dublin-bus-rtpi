@@ -841,36 +841,74 @@ function getclicklocation(latLng){
 
 //To calculate the estimated fare of the journey 
 function calcFare(fareRoutes){
-    var leapFare = 0;
-    var cashFare = 0;
+    var leapFareA = 0;
+    var cashFareA = 0;
+    var leapFareS = 0;
+    var cashFareS = 0;
+    var leapFareC = 0;
+    var cashFareC = 0;
+
+    var times = new Date(document.getElementById("datetimepicker1").value);
+    var currentHour = times.getHours();
+    var currentDay = times.getDay();
+    console.log(currentDay);
+    console.log(currentHour);
+
     var journey = fareRoutes[fareRoutes.length - 1];
     for (var i=0; i < journey.length; i++){
         if(journey[i] === 0){
-            leapFare += 0;
-            cashFare += 0;
+            leapFareA += 0;
+            cashFareA += 0;
+            leapFareS += 0;
+            cashFareS += 0;
+            leapFareC += 0;
+            cashFareC += 0;
         } else if (journey[i] > 1 && journey[i] < 4){
-            leapFare += 1.55;
-            cashFare += 2.15;
+            leapFareA,leapFareS += 1.55;
+            cashFareA,cashFareS += 2.15;
         } else if (journey[i] > 3 && journey[i] < 14){
-            leapFare += 2.25;
-            cashFare += 3.00;
+            leapFareA,leapFareS += 2.25;
+            cashFareA,cashFareS += 3.00;
         } else if (journey[i] > 13){
-            leapFare += 2.50;
-            cashFare += 3.30;
+            leapFareA,leapFareS += 2.50;
+            cashFareA,cashFareS += 3.30;
+        }
+        
+        // Account for school hours fares 
+        if (currentDay === 6 && currentHour < 13) {
+            leapFareC += .8;
+            cashFareC += 1;
+        } else if (currentDay > 0 && currentDay < 6 && currentHour < 19){
+            leapFareC += .8;
+            cashFareC += 1;
+        } else {
+            leapFareC += 1;
+            cashFareC += 1.3;
         }
             
     }
-    if (leapFare > 7){
-        // Accounting for leap card capping 
-        leapFare = 7;
+
+    //Accounting for leapcard capping 
+    if (leapFareA > 7){
+        leapFareA = 7;
+    }
+    if (leapFareS > 5){
+        leapFareS = 5;
+    } 
+    if (leapFareC > 2.7){
+        leapFareC = 2.7;
     }
 
     //Makes sure price is rounded to 2 decimal places
-    leapFare = leapFare.toFixed(2);
-    cashFare = cashFare.toFixed(2);
+    leapFareA = leapFareA.toFixed(2);
+    cashFareA = cashFareA.toFixed(2);
+    leapFareS = leapFareS.toFixed(2);
+    cashFareS = cashFareS.toFixed(2);
+    leapFareC = leapFareC.toFixed(2);
+    cashFareC = cashFareC.toFixed(2);
 
-    var fares = "<p style='color: black; font-variant: small-caps;'>Estimated Adult Fares:</p><p>Leap: €" + leapFare + "<br>Cash: €" + cashFare + "</p>";
-    document.getElementById("fares").innerHTML = fares;
+    var faresA = "<p style='color: black; font-variant: small-caps;'>Estimated Adult Fares:</p><p>Leap: €" + leapFareA + "<br>Cash: €" + cashFareA + "</p>";
+    document.getElementById("fares").innerHTML = faresA;
 }
 
 //send starts, ends in different segments to backend
