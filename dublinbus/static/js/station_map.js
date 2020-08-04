@@ -271,7 +271,7 @@ function calcRoute() {
                 }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>";}
             }
         }
-        function showinfowindow(marker, map) {
+        function showinfowindow(marker, infowindow, map) {
             var id = marker.getTitle();
             if (id.indexOf(':') != -1) {
                 var infowindow = new google.maps.InfoWindow({
@@ -296,19 +296,15 @@ function calcRoute() {
                             content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
                         }
                         content += '</tbody></table>'
-                        var infowindow = new google.maps.InfoWindow({
-                            content: content
-                        });
-                        // infowindow.open(marker, map)
                         marker.addListener('click', function () {
-                            infowindow.open(map, marker)
+                            infowindow.setContent(content);
+                            infowindow.open(map, marker);
                         })
                         // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
                         // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
                     },error: function () {
                         content += '</tbody></table>'
-                        var infowindow = new google.maps.InfoWindow({content:content});
-                        marker.addListener('click', function(){infowindow.open(map, marker)})
+                        marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
                     }
                 })
             }
@@ -328,6 +324,7 @@ function calcRoute() {
                     success: function (data) {
                         for (key in data){
                             var stops = data[key];
+                            var infowindow = new google.maps.InfoWindow();
                             for (var i=0; i<stops.length; i++) {
                                 var stop = stops[i];
                                 var id = stop.id;
@@ -344,7 +341,7 @@ function calcRoute() {
                                 });
                                 // Marker.addListener('click', showinfowindow(Marker, map));
                                 // google.maps.event.addListener(Marker, 'click', showinfowindow(Marker, map));
-                                showinfowindow(Marker, map);
+                                showinfowindow(Marker, infowindow, map);
                                 alongroutemarkers.push(Marker);
                             }
                         }
@@ -640,6 +637,7 @@ function routesearch(){
                     url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
                     scaledSize: new google.maps.Size(30, 30)
                 }
+                var infowindow = new google.maps.InfoWindow();
                 for (var i = 0; i < Inboundstops.length; i++) {
                     var id = Inboundstops[i].id;
                     var lat = Inboundstops[i].lat;
@@ -651,7 +649,7 @@ function routesearch(){
                         title: id,
                         icon: icon,
                     });
-                    showmarkerinfo(marker);
+                    showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
                 }
                 var inboundroutepath = new google.maps.Polyline({
@@ -674,7 +672,7 @@ function routesearch(){
                         title: id,
                         icon: icon
                     })
-                    showmarkerinfo(marker);
+                    showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
                 }
                 var outboundroutepath = new google.maps.Polyline({
@@ -724,7 +722,7 @@ function routesearch(){
             // alert('route data missed')
         }
     })
-    function showmarkerinfo(marker) {
+    function showmarkerinfo(marker, infowindow) {
         var id = marker.getTitle();
         var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
         $.ajax({
@@ -744,14 +742,14 @@ function routesearch(){
                     content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
                 }
                 content += '</tbody></table>'
-                var infowindow = new google.maps.InfoWindow({content:content});
-                marker.addListener('click', function(){infowindow.open(map, marker)})
+                // var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
             },
             error: function () {
                 // alert('error', id)
                 content += '</tbody></table>'
-                var infowindow = new google.maps.InfoWindow({content:content});
-                marker.addListener('click', function(){infowindow.open(map, marker)})
+                // var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
                 // alert('rtpi error')
             }
         })
