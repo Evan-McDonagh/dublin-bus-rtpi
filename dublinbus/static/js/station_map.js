@@ -432,7 +432,7 @@ function addallmarkers(map) {
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
                 title: stopdata[stopKey]['stopno'],
-                label: stopKey,
+                // label: stopKey,
                 map: map
             });
             marker.setMap(map)
@@ -749,6 +749,8 @@ function select_ori_dest(id){
         // destinationmarkers=[];
     }
     google.maps.event.addListener(map, 'click', function(event) {
+        clearmarkers(originmarkers);
+        clearmarkers(destinationmarkers);
         if (originmarkers.length > 1) {
             clearmarkers(originmarkers);
             originmarkers = [];
