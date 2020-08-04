@@ -431,9 +431,12 @@ function addallmarkers(map) {
                 position: new google.maps.LatLng(
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
-                title: stopdata[stopKey]['stopno'],
-                label: stopKey,
+                // title: stopdata[stopKey]['stopno'],
+                // label: stopKey,
+                map: map
             });
+            marker.setMap(map)
+            // markers.push(marker);
             marker.addListener('click', (function (marker, stopKey) {
                 return function () {getStopInfo(marker, stopKey, map);}
             })(marker, stopKey));
@@ -441,6 +444,7 @@ function addallmarkers(map) {
         }
     }
     showmarkers(allstopmarkers, map);
+    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
 //Add the markers of nearme stops and display them on map

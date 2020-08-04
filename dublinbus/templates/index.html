@@ -161,6 +161,8 @@
                                 <i class = "far fa-star star" ></i>
                                 <input type='text' id = "stop_id" name = "stop_id" placeholder="Stop ID">
                                 <button id = "stopbtn" type="button" onclick="stopsearch()">Submit</button>
+                                <div ><button id = "markerbtn"  type="button" onclick="showandhide()" >Show</button></div>
+                                
                             </form>
                         </div>
                         <div class="modal-populated" id ="stoparea"></div>
@@ -252,6 +254,24 @@
             var near_place_des = autocomplete.getPlace();
         });
     })
+</script>
+
+
+<script type="text/javascript">
+    var flag = 0;
+    function showandhide(){
+        if (flag == 0){
+            // alert("hiiii")
+            addallmarkers(map);
+            flag = 1;
+            document.getElementById("markerbtn").innerHTML = "Hide";
+        }
+        else{
+            addallmarkers(null);
+            flag = 0;
+            document.getElementById("markerbtn").innerHTML = "Show";
+        }
+    }
 </script>
 
 
