@@ -843,37 +843,101 @@ function getclicklocation(latLng){
 }
 // initMap();
 
-//To calculate the estimated fare of the journey 
+//To calculate the estimated fare of the journey based on time
 function calcFare(fareRoutes){
-    var leapFare = 0;
-    var cashFare = 0;
+    var leapFareA = 0;
+    var cashFareA = 0;
+
+    var leapFareS = 0;
+    var cashFareS = 0;
+
+    var leapFareC = 0;
+    var cashFareC = 0;
+
+    var timeFromPicker = document.getElementById("datetimepicker1").value;
+    var predictionTime = new Date(timeFromPicker);
+    var hour;
+    var day;    
+
+    //If user has selected a date
+    if (timeFromPicker != '') {
+        hour = predictionTime.getHours();
+        day = predictionTime.getDay(); 
+    } else {
+        //if user has not selected a date, use current time 
+        var today = new Date();
+        hour = today.getHours();
+        day = today.getDay();
+    }
+
     var journey = fareRoutes[fareRoutes.length - 1];
+
+    // Account for adult/student fares - affected by number of stages
     for (var i=0; i < journey.length; i++){
         if(journey[i] === 0){
-            leapFare += 0;
-            cashFare += 0;
+            leapFareA += 0;
+            cashFareA += 0;
+            leapFareS += 0;
+            cashFareS += 0;
         } else if (journey[i] > 1 && journey[i] < 4){
-            leapFare += 1.55;
-            cashFare += 2.15;
+            leapFareA += 1.55;
+            leapFareS += 1.55;
+            cashFareA += 2.15;
+            cashFareS += 2.15;
         } else if (journey[i] > 3 && journey[i] < 14){
-            leapFare += 2.25;
-            cashFare += 3.00;
+            leapFareA += 2.25;
+            leapFareS += 2.25;
+            cashFareA += 3.00;
+            cashFareS += 3.00;
         } else if (journey[i] > 13){
-            leapFare += 2.50;
-            cashFare += 3.30;
-        }
-            
+            leapFareA += 2.50;
+            leapFareS += 2.50;
+            cashFareA += 3.30;
+            cashFareS += 3.30;
+        }   
     }
-    if (leapFare > 7){
-        // Accounting for leap card capping 
-        leapFare = 7;
+
+    // Account for childrens fares - affected by time of day
+    for (var i=0; i < journey.length; i++){  
+        if(journey[i] === 0){
+            leapFareC += 0;
+            cashFareC += 0;
+        } else if (day === 6 && hour < 13) {
+            leapFareC += .8;
+            cashFareC += 1;
+        } else if (day > 0 && day < 6 && hour < 19){
+            leapFareC += .8;
+            cashFareC += 1;
+        } else {
+            leapFareC += 1;
+            cashFareC += 1.3;
+        }
+    }
+
+    //Accounting for leapcard capping 
+    if (leapFareA > 7){
+        leapFareA = 7;
+    }
+    if (leapFareS > 5){
+        leapFareS = 5;
+    } 
+    if (leapFareC > 2.7){
+        leapFareC = 2.7;
     }
 
     //Makes sure price is rounded to 2 decimal places
-    leapFare = leapFare.toFixed(2);
-    cashFare = cashFare.toFixed(2);
+    leapFareA = leapFareA.toFixed(2);
+    cashFareA = cashFareA.toFixed(2);
+    leapFareS = leapFareS.toFixed(2);
+    cashFareS = cashFareS.toFixed(2);
+    leapFareC = leapFareC.toFixed(2);
+    cashFareC = cashFareC.toFixed(2);
 
-    var fares = "<p style='color: black; font-variant: small-caps;'>Estimated Adult Fares:</p><p>Leap: €" + leapFare + "<br>Cash: €" + cashFare + "</p>";
+    // build table to display fares 
+    var fares = "<table class='fares-table'><tr class='table-header'><td>Estimated Fares</td><td>Adult</td><td>Student</td><td>Child</td></tr>";
+    fares += "<tr><td class='table-header'>Leap: </td><td>€" + leapFareA + "</td><td>€" + leapFareS + "</td><td>€" + leapFareC + "</td></tr>";
+    fares += "<tr><td class='table-header'>Cash: </td><td>€" + cashFareA + "</td><td>€" + cashFareS + "</td><td>€" + cashFareC + "</td></tr></table>";
+    
     document.getElementById("fares").innerHTML = fares;
 }
 

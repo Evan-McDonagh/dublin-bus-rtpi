@@ -243,6 +243,16 @@ button {
     padding-bottom: 20px;
 }
 
+.fares-table {
+    width: 100%;
+    margin-bottom: 20px;
+    max-width: 400px;
+}
+
+.table-header {
+    font-variant: small-caps;
+}
+
 /*Directions/steps pannel */
 
 #showalongroutemarker {
@@ -319,10 +329,20 @@ button {
     }
 }
 
-
-
 @media (max-width: 400px){
+    .nav-link {
+        min-width: 40px;
+    }
+    
     .nav-text {
         display: none;
+    }
+
+    #showalongroutemarker {
+        max-width: 50px;
+    }
+
+    .fares-table {
+        font-size: 12px;
     }
 }
