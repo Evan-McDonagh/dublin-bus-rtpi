@@ -776,8 +776,9 @@ function getclicklocation(latLng){
             });
             loc_infoWindow.setContent(
                 "<p id='address'>" + address + "</p>" + 
-                "<div class='ori-dest' style='min-width:140px;'><button id='ori-sel' style='left:10px;margin-right:10px;font-size:12px;'>As Origin</button>" + 
-                "<button id='dest-sel' style='right:10px;margin-left:10px;font-size:12px;'>As Destination</button></div>"
+                "<div class='ori-dest' style='min-width:140px; min-height:30px;'>" + 
+                "<button id='ori-sel' style='left:10px; margin-right:10px; font-size:12px; margin-bottom:10px;'>As Origin</button>" + 
+                "<button id='dest-sel' style='right:10px; margin-left:10px; font-size:12px; margin-bottom:10px;'>As Destination</button></div>"
             )
             loc_infoWindow.open(map, loc_marker);
             showmarkers([loc_marker], map);
