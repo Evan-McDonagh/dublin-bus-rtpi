@@ -431,8 +431,8 @@ function addallmarkers(map) {
                 position: new google.maps.LatLng(
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
-                // title: stopdata[stopKey]['stopno'],
-                // label: stopKey,
+                title: stopdata[stopKey]['stopno'],
+                label: stopKey,
                 map: map
             });
             marker.setMap(map)
