@@ -264,7 +264,7 @@ function calcRoute() {
                         clearpolylines(Outboundpolyline);
                         showmarkers(alongroutemarkers, map);
                     });
-                }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: " + bus_time + " minutes</p>";}
+                }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>";}
             }
         }
         function showinfowindow(marker, map) {
