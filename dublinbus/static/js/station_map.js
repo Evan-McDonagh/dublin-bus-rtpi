@@ -624,7 +624,8 @@ function routesearch(){
             } else {
                 var dir1 = directions[0];
                 var dir2 = directions[1];
-                var in_out_btn = "<button id=" + "Inbound>" + dir1 + "</button>" + "<br>" + "<button id=" + "Outbound>" + dir2 + "</button>";
+                var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + dir1 + "</a></div>" +
+                                "<div><a id='Outbound'><span class='material-icons nav-icon'>directions_bus</span>" + dir2 + "</a></div>";
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
                 // document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
                 var Inboundstops = routestops[dir1];
