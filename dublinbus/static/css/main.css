@@ -257,7 +257,6 @@ button {
 }
 
 
-
 /*Search By Routes direction links */
 
 #singleroutesearchresult {
@@ -290,6 +289,21 @@ button {
     vertical-align: middle;
 }
 
+
+/* Leapcard error message styling */
+
+#leapcardid {
+    padding-bottom: 10px;
+}
+
+#lparea {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+#lpbtn {
+    margin-bottom: 5px;
+}
 
 /*Directions/steps pannel */
 

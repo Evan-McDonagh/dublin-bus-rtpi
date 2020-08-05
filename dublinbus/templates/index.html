@@ -83,7 +83,7 @@
                     <span class="nav-text">Leapcard</span>
                 </a>
                 <a class="nav-link" href="#" id="favorite" class="dropbtn" onclick="dropDown()">
-                    <span class="material-icons nav-icon">star</span>
+                    <span class="material-icons nav-icon">favorite</span>
                     <span class="nav-text">Favorites</span>
                 </a>
             </div>
@@ -91,7 +91,7 @@
                 <div class="forms">
                     <div id = "searchid">
                         <div class="form">
-                            <form class= "input-fields" action="" method="post">
+                            <form id="routesearch" class= "input-fields" action="" method="post">
                                 
                                 <i class = "far fa-heart place" ></i>
                                 <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')">
@@ -127,7 +127,7 @@
                                 {% csrf_token %}
                                 Route: <i class = "far fa-heart route" ></i>
                                 <input type='text' id = "route_id" name = "route_id">
-                                <button id = "stopbtn" type="button" onclick="routesearch()">Submit</button>
+                                <button id = "routebtn" type="button" onclick="routesearch()">Submit</button>
 
                                 <div id="singleroutesearchresult"></div>
                             </form>
@@ -139,7 +139,7 @@
 
                     <div id = "leapcardid">
                         <div class="form">
-                            <form class="input-fields" method="post" id = "lpadd">
+                            <form id="leaplogin" class="input-fields" method="post" id = "lpadd">
                                 {% csrf_token %}
                                 <input type='text' id = "username" name = "username" placeholder="Username">
                                 <input type='password' id = "password" name = "password" placeholder="Password">
@@ -211,6 +211,42 @@
     modalSlide();
 </script>
 
+<script>
+    var input = document.getElementById("route_id");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("routebtn").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("routesearch");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("go").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("leaplogin");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("lpbtn").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("stop_id");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("stopbtn").click();
+        }
+    });
+</script>
 
 <script>
 	$('#datetimepicker1').datetimepicker({
