@@ -6,3 +6,11 @@ ml-notebooks/rt_trips_2017_I_DB_1000.txt
 ml-notebooks/sample10.csv
 .ipynb_checkpoints
 .ipynb 
+ml-notebooks/google_transit_dublinbus/agency.txt
+ml-notebooks/google_transit_dublinbus/calendar_dates.txt
+ml-notebooks/google_transit_dublinbus/calendar.txt
+ml-notebooks/google_transit_dublinbus/routes.txt
+ml-notebooks/google_transit_dublinbus/shapes.txt
+ml-notebooks/google_transit_dublinbus/stop_times.txt
+ml-notebooks/google_transit_dublinbus/stops.txt
+ml-notebooks/google_transit_dublinbus/trips.txt

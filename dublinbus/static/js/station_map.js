@@ -37,6 +37,7 @@ var Inboundmarkers = [];
 var Outboundmarkers = [];
 var Inboundpolyline = [];
 var Outboundpolyline = [];
+var allstopmarkers_repeat = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -67,6 +68,7 @@ function initMap(){
         addallmarkers(map);
         clearmarkers(allstopmarkers);
         addnearmemarkers(map, pos);
+        // addallmarkers_repeat(map);
       }, function() {
         pos['status'] = "ERROR";
         sendlocation(pos, map);
@@ -77,6 +79,7 @@ function initMap(){
         addallmarkers(map);
         clearmarkers(allstopmarkers);
         addnearmemarkers(map, pos);
+        // addallmarkers_repeat(map);
       });
     } else {
       // Browser doesn't support Geolocation
@@ -89,6 +92,7 @@ function initMap(){
       addallmarkers(map);
       clearmarkers(allstopmarkers);
       addnearmemarkers(map, pos);
+    //   addallmarkers_repeat(map);
     }
     // create marker clusters using array of markers
     var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
@@ -264,10 +268,10 @@ function calcRoute() {
                         clearpolylines(Outboundpolyline);
                         showmarkers(alongroutemarkers, map);
                     });
-                }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>" + "<p style='color: white;'><b>Estimated Travel Time: </b><br>Walking: " + walk_time + " minutes<br>Transit: " + bus_time + " minutes</p>";}
+                }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>";}
             }
         }
-        function showinfowindow(marker, map) {
+        function showinfowindow(marker, infowindow, map) {
             var id = marker.getTitle();
             if (id.indexOf(':') != -1) {
                 var infowindow = new google.maps.InfoWindow({
@@ -292,19 +296,15 @@ function calcRoute() {
                             content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
                         }
                         content += '</tbody></table>'
-                        var infowindow = new google.maps.InfoWindow({
-                            content: content
-                        });
-                        // infowindow.open(marker, map)
                         marker.addListener('click', function () {
-                            infowindow.open(map, marker)
+                            infowindow.setContent(content);
+                            infowindow.open(map, marker);
                         })
                         // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
                         // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
                     },error: function () {
                         content += '</tbody></table>'
-                        var infowindow = new google.maps.InfoWindow({content:content});
-                        marker.addListener('click', function(){infowindow.open(map, marker)})
+                        marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
                     }
                 })
             }
@@ -324,6 +324,7 @@ function calcRoute() {
                     success: function (data) {
                         for (key in data){
                             var stops = data[key];
+                            var infowindow = new google.maps.InfoWindow();
                             for (var i=0; i<stops.length; i++) {
                                 var stop = stops[i];
                                 var id = stop.id;
@@ -340,7 +341,7 @@ function calcRoute() {
                                 });
                                 // Marker.addListener('click', showinfowindow(Marker, map));
                                 // google.maps.event.addListener(Marker, 'click', showinfowindow(Marker, map));
-                                showinfowindow(Marker, map);
+                                showinfowindow(Marker, infowindow, map);
                                 alongroutemarkers.push(Marker);
                             }
                         }
@@ -433,7 +434,10 @@ function addallmarkers(map) {
                     stopdata[stopKey]['longitude']),
                 title: stopdata[stopKey]['stopno'],
                 label: stopKey,
+                map: map
             });
+            marker.setMap(map)
+            // markers.push(marker);
             marker.addListener('click', (function (marker, stopKey) {
                 return function () {getStopInfo(marker, stopKey, map);}
             })(marker, stopKey));
@@ -441,6 +445,32 @@ function addallmarkers(map) {
         }
     }
     showmarkers(allstopmarkers, map);
+    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+}
+
+function addallmarkers_repeat(map) {
+    var stopKeys = Object.keys(stopdata);
+    for (var i=0;i<stopKeys.length;i++) {
+        var stopKey = stopKeys[i];
+        if (stopdata[stopKey]['routes'] != "") {
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(
+                    stopdata[stopKey]['latitude'],
+                    stopdata[stopKey]['longitude']),
+                // title: stopdata[stopKey]['stopno'],
+                // label: stopKey,
+                map: map
+            });
+            marker.setMap(map)
+            // markers.push(marker);
+            marker.addListener('click', (function (marker, stopKey) {
+                return function () {getStopInfo(marker, stopKey, map);}
+            })(marker, stopKey));
+            allstopmarkers_repeat.push(marker);
+        }
+    }
+    showmarkers(allstopmarkers_repeat, map);
+    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
 //Add the markers of nearme stops and display them on map
@@ -607,6 +637,7 @@ function routesearch(){
                     url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
                     scaledSize: new google.maps.Size(30, 30)
                 }
+                var infowindow = new google.maps.InfoWindow();
                 for (var i = 0; i < Inboundstops.length; i++) {
                     var id = Inboundstops[i].id;
                     var lat = Inboundstops[i].lat;
@@ -618,7 +649,7 @@ function routesearch(){
                         title: id,
                         icon: icon,
                     });
-                    showmarkerinfo(marker);
+                    showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
                 }
                 var inboundroutepath = new google.maps.Polyline({
@@ -641,7 +672,7 @@ function routesearch(){
                         title: id,
                         icon: icon
                     })
-                    showmarkerinfo(marker);
+                    showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
                 }
                 var outboundroutepath = new google.maps.Polyline({
@@ -691,7 +722,7 @@ function routesearch(){
             // alert('route data missed')
         }
     })
-    function showmarkerinfo(marker) {
+    function showmarkerinfo(marker, infowindow) {
         var id = marker.getTitle();
         var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
         $.ajax({
@@ -711,14 +742,14 @@ function routesearch(){
                     content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
                 }
                 content += '</tbody></table>'
-                var infowindow = new google.maps.InfoWindow({content:content});
-                marker.addListener('click', function(){infowindow.open(map, marker)})
+                // var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
             },
             error: function () {
                 // alert('error', id)
                 content += '</tbody></table>'
-                var infowindow = new google.maps.InfoWindow({content:content});
-                marker.addListener('click', function(){infowindow.open(map, marker)})
+                // var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
                 // alert('rtpi error')
             }
         })
@@ -745,6 +776,8 @@ function select_ori_dest(id){
         // destinationmarkers=[];
     }
     google.maps.event.addListener(map, 'click', function(event) {
+        clearmarkers(originmarkers);
+        clearmarkers(destinationmarkers);
         if (originmarkers.length > 1) {
             clearmarkers(originmarkers);
             originmarkers = [];
@@ -771,9 +804,10 @@ function getclicklocation(latLng){
                 animation: google.maps.Animation.DROP,
             });
             loc_infoWindow.setContent(
-                "<h5 id='address'>" + address + "</h5>" + "<br>" +
-                "<button id='ori-sel'>" + "As Origin" + "</button>" +
-                "<button id='dest-sel'>" + "As Destination" + "</button>"
+                "<p id='address'>" + address + "</p>" + 
+                "<div class='ori-dest' style='min-width:140px; min-height:30px;'>" + 
+                "<button id='ori-sel' style='left:10px; margin-right:10px; font-size:12px; margin-bottom:10px;'>As Origin</button>" + 
+                "<button id='dest-sel' style='right:10px; margin-left:10px; font-size:12px; margin-bottom:10px;'>As Destination</button></div>"
             )
             loc_infoWindow.open(map, loc_marker);
             showmarkers([loc_marker], map);
@@ -839,37 +873,101 @@ function getclicklocation(latLng){
 }
 // initMap();
 
-//To calculate the estimated fare of the journey 
+//To calculate the estimated fare of the journey based on time
 function calcFare(fareRoutes){
-    var leapFare = 0;
-    var cashFare = 0;
+    var leapFareA = 0;
+    var cashFareA = 0;
+
+    var leapFareS = 0;
+    var cashFareS = 0;
+
+    var leapFareC = 0;
+    var cashFareC = 0;
+
+    var timeFromPicker = document.getElementById("datetimepicker1").value;
+    var predictionTime = new Date(timeFromPicker);
+    var hour;
+    var day;    
+
+    //If user has selected a date
+    if (timeFromPicker != '') {
+        hour = predictionTime.getHours();
+        day = predictionTime.getDay(); 
+    } else {
+        //if user has not selected a date, use current time 
+        var today = new Date();
+        hour = today.getHours();
+        day = today.getDay();
+    }
+
     var journey = fareRoutes[fareRoutes.length - 1];
+
+    // Account for adult/student fares - affected by number of stages
     for (var i=0; i < journey.length; i++){
         if(journey[i] === 0){
-            leapFare += 0;
-            cashFare += 0;
+            leapFareA += 0;
+            cashFareA += 0;
+            leapFareS += 0;
+            cashFareS += 0;
         } else if (journey[i] > 1 && journey[i] < 4){
-            leapFare += 1.55;
-            cashFare += 2.15;
+            leapFareA += 1.55;
+            leapFareS += 1.55;
+            cashFareA += 2.15;
+            cashFareS += 2.15;
         } else if (journey[i] > 3 && journey[i] < 14){
-            leapFare += 2.25;
-            cashFare += 3.00;
+            leapFareA += 2.25;
+            leapFareS += 2.25;
+            cashFareA += 3.00;
+            cashFareS += 3.00;
         } else if (journey[i] > 13){
-            leapFare += 2.50;
-            cashFare += 3.30;
-        }
-            
+            leapFareA += 2.50;
+            leapFareS += 2.50;
+            cashFareA += 3.30;
+            cashFareS += 3.30;
+        }   
     }
-    if (leapFare > 7){
-        // Accounting for leap card capping 
-        leapFare = 7;
+
+    // Account for childrens fares - affected by time of day
+    for (var i=0; i < journey.length; i++){  
+        if(journey[i] === 0){
+            leapFareC += 0;
+            cashFareC += 0;
+        } else if (day === 6 && hour < 13) {
+            leapFareC += .8;
+            cashFareC += 1;
+        } else if (day > 0 && day < 6 && hour < 19){
+            leapFareC += .8;
+            cashFareC += 1;
+        } else {
+            leapFareC += 1;
+            cashFareC += 1.3;
+        }
+    }
+
+    //Accounting for leapcard capping 
+    if (leapFareA > 7){
+        leapFareA = 7;
+    }
+    if (leapFareS > 5){
+        leapFareS = 5;
+    } 
+    if (leapFareC > 2.7){
+        leapFareC = 2.7;
     }
 
     //Makes sure price is rounded to 2 decimal places
-    leapFare = leapFare.toFixed(2);
-    cashFare = cashFare.toFixed(2);
+    leapFareA = leapFareA.toFixed(2);
+    cashFareA = cashFareA.toFixed(2);
+    leapFareS = leapFareS.toFixed(2);
+    cashFareS = cashFareS.toFixed(2);
+    leapFareC = leapFareC.toFixed(2);
+    cashFareC = cashFareC.toFixed(2);
 
-    var fares = "<p style='color: black; font-variant: small-caps;'>Estimated Adult Fares:</p><p>Leap: €" + leapFare + "<br>Cash: €" + cashFare + "</p>";
+    // build table to display fares 
+    var fares = "<table class='fares-table'><tr class='table-header'><td>Estimated Fares</td><td>Adult</td><td>Student</td><td>Child</td></tr>";
+    fares += "<tr><td class='table-header'>Leap: </td><td>€" + leapFareA + "</td><td>€" + leapFareS + "</td><td>€" + leapFareC + "</td></tr>";
+    fares += "<tr><td class='table-header'>Cash: </td><td>€" + cashFareA + "</td><td>€" + cashFareS + "</td><td>€" + cashFareC + "</td></tr></table>";
+    
     document.getElementById("fares").innerHTML = fares;
 }
 
