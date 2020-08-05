@@ -188,6 +188,7 @@ function calcRoute() {
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
         directionresults = [result];
+        console.log(directionresults);
         var routes_dict = {}
         // var route_choices = {}
         var routes_list = result['routes'];
@@ -358,7 +359,7 @@ function calcRoute() {
       directionsRenderer.setDirections(result);
     }
     else if (status == 'ZERO_RESULTS') {
-        document.getElementById('routes').innerHTML = '';
+        directionsRenderer.setDirections({routes:[]});
         noTransitDisplay();
     }
     else{
@@ -1190,6 +1191,8 @@ function errorhandler(msgtobackend, msgtoalert) {
 }
 
 function noTransitDisplay() {
+    document.getElementById('routes').innerHTML = '';
+
     document.getElementById('directions-body').innerHTML = '';
     var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
 
