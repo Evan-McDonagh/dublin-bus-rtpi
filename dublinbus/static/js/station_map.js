@@ -37,6 +37,7 @@ var Inboundmarkers = [];
 var Outboundmarkers = [];
 var Inboundpolyline = [];
 var Outboundpolyline = [];
+var allstopmarkers_repeat = [];
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -67,6 +68,7 @@ function initMap(){
         addallmarkers(map);
         clearmarkers(allstopmarkers);
         addnearmemarkers(map, pos);
+        // addallmarkers_repeat(map);
       }, function() {
         pos['status'] = "ERROR";
         sendlocation(pos, map);
@@ -77,6 +79,7 @@ function initMap(){
         addallmarkers(map);
         clearmarkers(allstopmarkers);
         addnearmemarkers(map, pos);
+        // addallmarkers_repeat(map);
       });
     } else {
       // Browser doesn't support Geolocation
@@ -89,6 +92,7 @@ function initMap(){
       addallmarkers(map);
       clearmarkers(allstopmarkers);
       addnearmemarkers(map, pos);
+    //   addallmarkers_repeat(map);
     }
     // create marker clusters using array of markers
     // var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
@@ -267,7 +271,7 @@ function calcRoute() {
                 }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>";}
             }
         }
-        function showinfowindow(marker, map) {
+        function showinfowindow(marker, infowindow, map) {
             var id = marker.getTitle();
             if (id.indexOf(':') != -1) {
                 var infowindow = new google.maps.InfoWindow({
@@ -292,19 +296,15 @@ function calcRoute() {
                             content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
                         }
                         content += '</tbody></table>'
-                        var infowindow = new google.maps.InfoWindow({
-                            content: content
-                        });
-                        // infowindow.open(marker, map)
                         marker.addListener('click', function () {
-                            infowindow.open(map, marker)
+                            infowindow.setContent(content);
+                            infowindow.open(map, marker);
                         })
                         // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
                         // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
                     },error: function () {
                         content += '</tbody></table>'
-                        var infowindow = new google.maps.InfoWindow({content:content});
-                        marker.addListener('click', function(){infowindow.open(map, marker)})
+                        marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
                     }
                 })
             }
@@ -324,6 +324,7 @@ function calcRoute() {
                     success: function (data) {
                         for (key in data){
                             var stops = data[key];
+                            var infowindow = new google.maps.InfoWindow();
                             for (var i=0; i<stops.length; i++) {
                                 var stop = stops[i];
                                 var id = stop.id;
@@ -340,7 +341,7 @@ function calcRoute() {
                                 });
                                 // Marker.addListener('click', showinfowindow(Marker, map));
                                 // google.maps.event.addListener(Marker, 'click', showinfowindow(Marker, map));
-                                showinfowindow(Marker, map);
+                                showinfowindow(Marker, infowindow, map);
                                 alongroutemarkers.push(Marker);
                             }
                         }
@@ -444,6 +445,31 @@ function addallmarkers(map) {
         }
     }
     showmarkers(allstopmarkers, map);
+    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+}
+
+function addallmarkers_repeat(map) {
+    var stopKeys = Object.keys(stopdata);
+    for (var i=0;i<stopKeys.length;i++) {
+        var stopKey = stopKeys[i];
+        if (stopdata[stopKey]['routes'] != "") {
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(
+                    stopdata[stopKey]['latitude'],
+                    stopdata[stopKey]['longitude']),
+                // title: stopdata[stopKey]['stopno'],
+                // label: stopKey,
+                map: map
+            });
+            marker.setMap(map)
+            // markers.push(marker);
+            marker.addListener('click', (function (marker, stopKey) {
+                return function () {getStopInfo(marker, stopKey, map);}
+            })(marker, stopKey));
+            allstopmarkers_repeat.push(marker);
+        }
+    }
+    showmarkers(allstopmarkers_repeat, map);
     // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
@@ -611,6 +637,7 @@ function routesearch(){
                     url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
                     scaledSize: new google.maps.Size(30, 30)
                 }
+                var infowindow = new google.maps.InfoWindow();
                 for (var i = 0; i < Inboundstops.length; i++) {
                     var id = Inboundstops[i].id;
                     var lat = Inboundstops[i].lat;
@@ -622,7 +649,7 @@ function routesearch(){
                         title: id,
                         icon: icon,
                     });
-                    showmarkerinfo(marker);
+                    showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
                 }
                 var inboundroutepath = new google.maps.Polyline({
@@ -645,7 +672,7 @@ function routesearch(){
                         title: id,
                         icon: icon
                     })
-                    showmarkerinfo(marker);
+                    showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
                 }
                 var outboundroutepath = new google.maps.Polyline({
@@ -695,7 +722,7 @@ function routesearch(){
             // alert('route data missed')
         }
     })
-    function showmarkerinfo(marker) {
+    function showmarkerinfo(marker, infowindow) {
         var id = marker.getTitle();
         var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
         $.ajax({
@@ -715,14 +742,14 @@ function routesearch(){
                     content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
                 }
                 content += '</tbody></table>'
-                var infowindow = new google.maps.InfoWindow({content:content});
-                marker.addListener('click', function(){infowindow.open(map, marker)})
+                // var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
             },
             error: function () {
                 // alert('error', id)
                 content += '</tbody></table>'
-                var infowindow = new google.maps.InfoWindow({content:content});
-                marker.addListener('click', function(){infowindow.open(map, marker)})
+                // var infowindow = new google.maps.InfoWindow({content:content});
+                marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
                 // alert('rtpi error')
             }
         })
@@ -777,9 +804,10 @@ function getclicklocation(latLng){
                 animation: google.maps.Animation.DROP,
             });
             loc_infoWindow.setContent(
-                "<h5 id='address'>" + address + "</h5>" + "<br>" +
-                "<button id='ori-sel'>" + "As Origin" + "</button>" +
-                "<button id='dest-sel'>" + "As Destination" + "</button>"
+                "<p id='address'>" + address + "</p>" + 
+                "<div class='ori-dest' style='min-width:140px; min-height:30px;'>" + 
+                "<button id='ori-sel' style='left:10px; margin-right:10px; font-size:12px; margin-bottom:10px;'>As Origin</button>" + 
+                "<button id='dest-sel' style='right:10px; margin-left:10px; font-size:12px; margin-bottom:10px;'>As Destination</button></div>"
             )
             loc_infoWindow.open(map, loc_marker);
             showmarkers([loc_marker], map);

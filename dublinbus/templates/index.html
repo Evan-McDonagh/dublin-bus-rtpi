@@ -262,12 +262,12 @@
     function showandhide(){
         if (flag == 0){
             // alert("hiiii")
-            addallmarkers(map);
+            addallmarkers_repeat(map);
             flag = 1;
             document.getElementById("markerbtn").innerHTML = "Hide";
         }
         else{
-            addallmarkers(null);
+            addallmarkers_repeat(null);
             flag = 0;
             document.getElementById("markerbtn").innerHTML = "Show";
         }
