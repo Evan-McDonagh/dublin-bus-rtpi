@@ -694,7 +694,7 @@ function routesearch(){
         success: function (routestops) {
             var directions = Object.keys(routestops);
             if (directions.length == 1) {
-                var in_out_btn = "<button id=" + "Inbound>" + directions[0] + "</button>";
+                var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + directions[0] + "</a></div>"
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
                 alert(routestops[directions[0]]);
                 //     // for (var marker in Inboundmarkers){
