@@ -433,7 +433,7 @@ function addallmarkers(map) {
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
                 title: stopdata[stopKey]['stopno'],
-                // label: stopKey,
+                label: stopKey,
                 map: map
             });
             marker.setMap(map)
