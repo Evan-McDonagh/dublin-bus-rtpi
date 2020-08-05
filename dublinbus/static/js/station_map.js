@@ -414,9 +414,83 @@ function showmarkers(markerlist, map) {
 //triggered by clicking the markers to show stop info.
 function getStopInfo(marker, stopKey) {
     infowindow = new google.maps.InfoWindow();
-    let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
-    content += "Routes: " + stopdata[stopKey]['routes'];
-    content += "</div>"
+    // let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
+    // content += "Routes: " + stopdata[stopKey]['routes'];
+    // content += "</div>"
+
+    var content = document.createElement("div");
+    content.setAttribute("style","width:200px;");
+    document.body.appendChild(content);
+
+    var stop_elem = document.createElement("span");
+    var stop_text = "Stop_number:"+stopdata[stopKey]["stopno"];
+    var br = document.createElement("br");
+    var route_text = "Routes:"+stopdata[stopKey]['routes'];
+    var t = document.createTextNode(stop_text);
+    var m = document.createTextNode(route_text);
+
+
+    stop_elem.appendChild(t);
+    stop_elem.appendChild(br);
+    stop_elem.appendChild(m);
+
+    var space = document.createElement("span");
+    
+
+    iconstar = document.createElement("button");
+    // iconstar.setAttribute("id","infowindow_button");
+    iconstar.setAttribute("style","width:1px");
+    content.appendChild(stop_elem);
+    content.appendChild(space);
+    content.appendChild(iconstar);
+
+
+    const modalSlide = () => {
+        const burger = document.querySelector('.burger');
+        const modal = document.querySelector('.modal');
+        
+        iconstar.addEventListener('click', function(){
+            // alert("hi");
+            modal.classList.add('modal-active');
+            burger.classList.add('toggle');
+            $('#stopid').siblings().hide();
+                $('#twitterid').show();
+                $('#stopid').show();
+                $('#routeid').hide();
+                $('#myplace').hide();
+                $('#mystop').hide();
+                $('#myroute').hide();
+                $(".db").removeClass("show");
+
+                // console.log(stopdata[stopKey]["stopno"])
+                var stop_click_id = stopdata[stopKey]["stopno"];
+                $.ajax({
+                    headers: {'X-CSRFToken': csrftoken},
+                    type:"POST",
+                    url: "/stop/",
+                    cache: false,
+                    dataType: "json",
+                    data:{'stop_id':stop_click_id},
+                    success: function(result, statues, xml){
+                        // console.log(result);
+                        var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
+                        for (var i =0; i< result["results"].length; i++){
+                            
+                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                        }
+                        real_info += "</table>";
+                        $("#stoparea").html(real_info);
+                    },
+                    error: function(){
+                        var errormsg = 'ERROR--->stopsearch(),type:js/jquery response error,file:station_map.js, ErrorMSG: stop(request) function in views.py gives no response';
+                        errorhandler(errormsg);
+                        // alert("false"+" involved js function stopsearch() involved views.py function stop(request)");
+                    }
+                });
+
+        });
+    }
+    modalSlide();
 
     // add content of get request to info window
     infowindow.setContent(content);
