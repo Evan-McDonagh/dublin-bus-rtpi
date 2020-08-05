@@ -183,6 +183,7 @@ function calcRoute() {
         },
         provideRouteAlternatives: false,
     };
+
     directionsRenderer.setMap(map);
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
@@ -355,6 +356,10 @@ function calcRoute() {
             }
         }
       directionsRenderer.setDirections(result);
+    }
+    else if (status == 'ZERO_RESULTS') {
+        document.getElementById('routes').innerHTML = '';
+        noTransitDisplay();
     }
     else{
         var errormsg = 'ERROR--->calcRoute(),type:js/google directions service error,file:station_map.js, ErrorMSG: Google direction service gives result with status not "OK"';
@@ -1182,6 +1187,19 @@ function errorhandler(msgtobackend, msgtoalert) {
         data:JSON.stringify(msgtobackend),
         success: function () {if (msgtoalert != null){alert(msgtoalert)}}
     })
+}
+
+function noTransitDisplay() {
+    document.getElementById('directions-body').innerHTML = '';
+    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
+
+    html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
+    html_out += '<td><img src="../static/images/icon-NOROUTE.png" alt="" style="width: 50px;"></td>';
+    html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + ' No Transit Route Available' + '</h4>';
+    html_out += '<p class="card-text">' + 'For late-night Dublin Bus services see <a href="https://www.dublinbus.ie/Your-Journey1/Timetables/Nitelink-Services/">Dublin Bus Nitelink</a>.' + '</p></td>';
+
+    html_out += '</tr></table></div>'
+    document.getElementById('directions-body').innerHTML += html_out;
 }
 
 //
