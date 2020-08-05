@@ -231,7 +231,8 @@ function calcRoute() {
                             'numstops':steps[k]['transit'].num_stops,
                             'agency':steps[k]['transit']['line']['agencies'][0]['name'],
                             'traveltime':steps[k]['duration'].value,
-                            'instructions':steps[k]['instructions']
+                            'instructions':steps[k]['instructions'],
+                            'gmapsprediction':true
                             }
                             segmentsinfo.push(seg)
                         }
@@ -993,8 +994,12 @@ function showPrediction(segmentsinfo){
             var no_predictions = 0;
             for (i in segmentsinfo) {
                 if (segmentsinfo[i].travelmode == 'TRANSIT') {
-                    segmentsinfo[i]['traveltime'] = data.prediction[no_predictions];
-                    np_predictions = 0;
+                    if (data.prediction[no_predictions] == null) {
+                        no_predictions++;
+                    } else {
+                        segmentsinfo[i]['traveltime'] = data.prediction[no_predictions];
+                        segmentsinfo[i]['gmapsprediction'] = false;
+                    }
                 }
             }
             displayDirections(segmentsinfo,data);
@@ -1047,7 +1052,28 @@ function renderLegCard(seg) {
     var time = Math.round(seg.traveltime/60);
     var busname = '';
 
-    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; "><table style="border-spacing: 10px;border-collapse: separate;"><tr>';
+    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
+    
+    // if (seg.travelmode == 'TRANSIT') {
+    //     html_out += '<h6 style="font-variant: small-caps; padding-bottom: 0; margin-bottom:0; text-align: right;">';
+    //     if (seg.gmapsprediction == true) {
+    //         html_out += "Google Directions Service";
+    //     } else {
+    //         html_out += "Predictive Model";
+    //     }
+    //     html_out += '</h6>';
+    // }
+
+    var prediction_source;
+    if (seg.travelmode == 'TRANSIT') {
+        if (seg.gmapsprediction == true) {
+            prediction_source = "Google Directions Service";
+        } else {
+            prediction_source = "Our Predictive Model";
+        }
+    }
+    
+    html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
     if (seg.travelmode == 'WALKING') {
         html_out += '<td><img src="../static/images/icon-WALKING.png" alt="" style="width: 50px;"></td>';
     } else if (seg.agency == "Dublin Bus" || seg.agency == "Go-Ahead"){
@@ -1056,9 +1082,18 @@ function renderLegCard(seg) {
     } else {
         html_out += '<td><img src="../static/images/icon-TRAIN.png" alt="" style="width: 50px;"></td>';
     }
-    html_out += '<td><h4 class="card-title" style="color: black;">' + time + ' minutes ' + '</h4>';
+
+    if (seg.travelmode == 'TRANSIT') {
+        html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + time + ' minutes ' + '</h4>';
+        html_out += '<p style="font-variant: small-caps; font-weight: normal; font-size=small; margin-block-start: 0;">' + 'from ' + prediction_source + '</span>';
+    } else {
+        html_out += '<td><h4 class="card-title" style="color: black;">' + time + ' minutes ' + '</h4>';
+    }
     html_out += '<p class="card-text">' + seg.instructions  + busname + '</p></td>';
-    html_out += '</tr></table>';
+    html_out += '</tr></table></div>';
+
+    
+
     document.getElementById('directions-body').innerHTML += html_out;
 }
 

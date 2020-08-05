@@ -31,6 +31,9 @@ def get_prediction(route, direction, datestring, stopA, stopB):
     prediction = predict_travel_time(route, direction, datetime_departure, forecast['feels_like'],
                                      forecast['weather_main'], stopA, stopB)
 
+    if prediction is None:
+        return None
+
     return int(prediction)
 
 
@@ -76,6 +79,10 @@ def predict_travel_time(route, direction, datetime_departure, feels_like, weathe
         in departure_times[route][direction][datetime_departure.weekday()]]
 
     predictions = predict_total_triptimes(route, direction, schedule, feels_like, weather_main)
+
+    if predictions is None:
+        return None
+
     for i, start_time in enumerate(schedule):
         if start_time + datetime.timedelta(seconds=predictions[i] * stopA_frac) > datetime_departure:
             prediction = predictions[i] * fraction
@@ -89,6 +96,9 @@ def predict_total_triptimes(route, direction, datetimes_departure, feels_like, w
     """
 
     model = find_model(route, direction)
+
+    if model is None:
+        return None
 
     feels_like = normalize(feels_like, model['max_feels_like'], model['min_feels_like'])
 
@@ -137,6 +147,7 @@ def find_model(route, direction):
     for model in models:
         if model['route'] == route and model['direction'] == direction:
             return model
+    return None
 
 
 def get_5day_forcast():
