@@ -422,35 +422,70 @@ def showprediction(request):
 
 
 # to search a specific route
+# def routesearch(request):
+#     if request.method == 'POST':
+#         route = request.POST.get('route')
+#         routestopnos = {}
+#         routestops = {}
+#         if route in allroutes and route in scrappedallroutes:
+#             ROUTE = scrappedallroutes[route]
+#             for in_out in ROUTE:
+#                 key = re.sub('\(.*?\)', '', in_out).replace('  ', ' ').replace('From', '').replace('To', '->')
+#                 scrappeddirstops = ROUTE[in_out]['stops']
+#                 purestopnolist = []
+#                 for stop in scrappeddirstops:
+#                     purestopnolist.append(stop['stopno'])
+#                 routestopnos[key] = purestopnolist
+#             # print(routestopnos)
+#             for in_out in routestopnos:
+#                 in_out_stops = routestopnos[in_out]
+#                 # print(in_out_stops)
+#                 allalongroutestops = []
+#                 # pool = multiprocessing.Pool(6)
+#                 # for i in range(1):
+#                 #     pool.apply_async(func=extractloc, args=(in_out_stops, allalongroutestops), callback=None)
+#                 # pool.close()
+#                 # pool.join()
+#                 extractloc(in_out_stops, allalongroutestops)
+#                 # print(allalongroutestops)
+#                 allalongroutestopslist = allalongroutestops
+#                 # allalongroutestopslist = list(allalongroutestops.intersection(allalongroutestops))
+#                 routestops[in_out] = allalongroutestopslist
+#         else:
+#             routestops['Route does not exist'] = 'Route does not exist'
+#         # print(routestops)
+#         return HttpResponse(json.dumps(routestops))
+
+
+# to search a specific route
 def routesearch(request):
     if request.method == 'POST':
         route = request.POST.get('route')
         routestopnos = {}
         routestops = {}
-        if route in allroutes and route in scrappedallroutes:
-            ROUTE = scrappedallroutes[route]
+        if route in allroutes:
+            ROUTE = allroutes[route]
             for in_out in ROUTE:
-                key = re.sub('\(.*?\)', '', in_out).replace('  ', ' ').replace('From', '').replace('To', '->')
-                scrappeddirstops = ROUTE[in_out]['stops']
-                purestopnolist = []
-                for stop in scrappeddirstops:
-                    purestopnolist.append(stop['stopno'])
-                routestopnos[key] = purestopnolist
+                routestopnos[in_out] = ROUTE[in_out]['atcocodes']
             # print(routestopnos)
             for in_out in routestopnos:
                 in_out_stops = routestopnos[in_out]
+                routestops[in_out] = []
+                for key in in_out_stops:
+                    STOP = allstops[key]
+                    routestops[in_out].append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
                 # print(in_out_stops)
-                allalongroutestops = []
+                # allalongroutestops = []
                 # pool = multiprocessing.Pool(6)
                 # for i in range(1):
                 #     pool.apply_async(func=extractloc, args=(in_out_stops, allalongroutestops), callback=None)
                 # pool.close()
                 # pool.join()
-                extractloc(in_out_stops, allalongroutestops)
+                # extractloc(in_out_stops, allalongroutestops)
                 # print(allalongroutestops)
-                allalongroutestopslist = allalongroutestops
+                # allalongroutestopslist = allalongroutestops
                 # allalongroutestopslist = list(allalongroutestops.intersection(allalongroutestops))
-                routestops[in_out] = allalongroutestopslist
+                # routestops[in_out] = allalongroutestopslist
         else:
             routestops['Route does not exist'] = 'Route does not exist'
         # print(routestops)

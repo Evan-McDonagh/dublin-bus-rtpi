@@ -99,3 +99,5 @@ def extractloc(routestopnos, allalongroutestops):
 # def listappend(dict):
 #     allalongroutestops.add
 routesearchtest('11')
+
+print(len(allroutes), len(scrappedallroutes))

@@ -91,7 +91,7 @@ function initMap(){
       addnearmemarkers(map, pos);
     }
     // create marker clusters using array of markers
-    // var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 
 }
 
@@ -661,7 +661,7 @@ function routesearch(){
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
                     showmarkers(Inboundmarkers, map);
-                    showpolylines(Inboundpolyline, map)
+                    // showpolylines(Inboundpolyline, map)
                     //     // for (var marker in Inboundmarkers){
                     //     //     var MARKER = Inboundmarkers[marker]
                     //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
@@ -681,7 +681,7 @@ function routesearch(){
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
                     showmarkers(Outboundmarkers, map);
-                    showpolylines(Outboundpolyline, map)
+                    // showpolylines(Outboundpolyline, map)
                 });
             }
         },
