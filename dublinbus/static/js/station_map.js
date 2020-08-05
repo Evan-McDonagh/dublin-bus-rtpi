@@ -358,6 +358,10 @@ function calcRoute() {
         }
       directionsRenderer.setDirections(result);
     }
+    else if (status == 'ZERO_RESULTS' && request.transitOptions.departureTime < Date.now()) {
+        directionsRenderer.setDirections({routes:[]});
+        invalidDatetime();
+    }
     else if (status == 'ZERO_RESULTS') {
         directionsRenderer.setDirections({routes:[]});
         noTransitDisplay();
@@ -1200,6 +1204,21 @@ function noTransitDisplay() {
     html_out += '<td><img src="../static/images/icon-NOROUTE.png" alt="" style="width: 50px;"></td>';
     html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + ' No Transit Route Available' + '</h4>';
     html_out += '<p class="card-text">' + 'For late-night Dublin Bus services see <a href="https://www.dublinbus.ie/Your-Journey1/Timetables/Nitelink-Services/">Dublin Bus Nitelink</a>.' + '</p></td>';
+
+    html_out += '</tr></table></div>'
+    document.getElementById('directions-body').innerHTML += html_out;
+}
+
+function invalidDatetime() {
+    document.getElementById('routes').innerHTML = '';
+
+    document.getElementById('directions-body').innerHTML = '';
+    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
+
+    html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
+    html_out += '<td><img src="../static/images/icon-CLOCK.png" alt="" style="width: 50px;"></td>';
+    html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + 'Invalid Date or Time Selected' + '</h4>';
+    html_out += '<p class="card-text">' + 'Please select a date and time in the future.' + '</p></td>';
 
     html_out += '</tr></table></div>'
     document.getElementById('directions-body').innerHTML += html_out;
