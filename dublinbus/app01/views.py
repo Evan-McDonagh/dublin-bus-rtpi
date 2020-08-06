@@ -408,11 +408,16 @@ def showprediction(request):
                 stopB = int(seg['endstopno'])
 
                 try:
-                    prediction = int(get_prediction.get_prediction(route, 1, datestring, stopB, stopA))
+                    prediction = get_prediction.get_prediction(route, 1, datestring, stopB, stopA)
                 except IndexError as e:
-                    prediction = int(get_prediction.get_prediction(route, 2, datestring, stopB, stopA))
+                    prediction = get_prediction.get_prediction(route, 2, datestring, stopB, stopA)
 
-                datetimedeparture += datetime.timedelta(seconds=prediction)
+                if prediction != None:
+                    prediction = int(prediction)
+                    datetimedeparture += datetime.timedelta(seconds=prediction)
+                else:
+                    datetimedeparture += datetime.timedelta(seconds=seg['traveltime'])
+                    
                 predictions += [prediction]
             else:
                 datetimedeparture += datetime.timedelta(seconds=seg['traveltime'])
