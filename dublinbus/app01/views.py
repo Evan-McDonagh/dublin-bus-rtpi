@@ -154,7 +154,7 @@ def printresult(request):
             # print(seg)
             if seg['travelmode'].upper() == 'TRANSIT':
                 busname = seg['busname']
-                if ('Line' not in busname) and ('Dart' not in busname):
+                if seg['agency'] in ['Dublin Bus', 'Go-Ahead']:
                     numstops = seg['numstops']
                     startstopid = matchstop(seg, allstops)[0]
                     endstopid = matchstop(seg, allstops)[1]
@@ -408,11 +408,16 @@ def showprediction(request):
                 stopB = int(seg['endstopno'])
 
                 try:
-                    prediction = int(get_prediction.get_prediction(route, 1, datestring, stopB, stopA))
+                    prediction = get_prediction.get_prediction(route, 1, datestring, stopB, stopA)
                 except IndexError as e:
-                    prediction = int(get_prediction.get_prediction(route, 2, datestring, stopB, stopA))
+                    prediction = get_prediction.get_prediction(route, 2, datestring, stopB, stopA)
 
-                datetimedeparture += datetime.timedelta(seconds=prediction)
+                if prediction != None:
+                    prediction = int(prediction)
+                    datetimedeparture += datetime.timedelta(seconds=prediction)
+                else:
+                    datetimedeparture += datetime.timedelta(seconds=seg['traveltime'])
+                    
                 predictions += [prediction]
             else:
                 datetimedeparture += datetime.timedelta(seconds=seg['traveltime'])

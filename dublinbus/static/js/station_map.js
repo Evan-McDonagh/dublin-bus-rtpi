@@ -1079,13 +1079,12 @@ function showPrediction(segmentsinfo){
             // if the correspond function in backend given response successfully, this function is triggered and parameter "data" is the responded data.
             var no_predictions = 0;
             for (i in segmentsinfo) {
-                if (segmentsinfo[i].travelmode == 'TRANSIT') {
-                    if (data.prediction[no_predictions] == null) {
-                        no_predictions++;
-                    } else {
+                if (segmentsinfo[i].travelmode == 'TRANSIT' && ['Dublin Bus', 'Go-Ahead'].includes(segmentsinfo[i].agency)) {
+                    if (data.prediction[no_predictions] == null) {} else {
                         segmentsinfo[i]['traveltime'] = data.prediction[no_predictions];
                         segmentsinfo[i]['gmapsprediction'] = false;
                     }
+                    no_predictions++;
                 }
             }
             displayDirections(segmentsinfo,data);

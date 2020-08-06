@@ -68,6 +68,9 @@ def predict_travel_time(route, direction, datetime_departure, feels_like, weathe
     departure_times = pickle.load(open(filepath_departures, 'rb'))
     stopfractions = pickle.load(open(filepath_stopfractions, 'rb'))
 
+    if route not in stopfractions['LINEID'].unique():
+        return None
+
     stopA_frac = stopfractions[stopfractions['LINEID'] == route][stopfractions['DIRECTION'] == direction][
         stopfractions['STOPPOINTID'] == stopA]['TRIP_FRAC'].iloc[0]
     stopB_frac = stopfractions[stopfractions['LINEID'] == route][stopfractions['DIRECTION'] == direction][
