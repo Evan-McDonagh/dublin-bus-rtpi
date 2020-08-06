@@ -862,6 +862,8 @@ function select_ori_dest(id){
         // destinationmarkers=[];
     }
     google.maps.event.addListener(map, 'click', function(event) {
+        clearmarkers(originmarkers);
+        clearmarkers(destinationmarkers);
         if (originmarkers.length > 1) {
             clearmarkers(originmarkers);
             originmarkers = [];
