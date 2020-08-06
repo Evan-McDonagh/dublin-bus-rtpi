@@ -3,8 +3,11 @@ from django.urls import path
 
 from app01 import views
 
+app_name = 'app01'
+
 urlpatterns = [
     url('^$', views.index),
+    url(r'^index$', views.index, name='index'),
     url('stop/', views.stop),
     url('leapcard/',views.leapcard),
     # url('real_info/',views.real_info),
