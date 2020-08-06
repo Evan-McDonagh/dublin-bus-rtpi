@@ -229,7 +229,7 @@ input {
 .favs-wrapper a {
     line-height: 30px;
     vertical-align: middle;
-    font-size: 16px;
+    font-size: 20px;
     float: right;
 }
 
@@ -311,6 +311,9 @@ button {
     vertical-align: middle;
 }
 
+#routebtn, #stopbtn, #go {
+    top: 80px;
+}
 
 /* Leapcard error message styling */
 
@@ -324,7 +327,7 @@ button {
 }
 
 #lpbtn {
-    margin-bottom: 5px;
+    top: 70px;
 }
 
 /*Directions/steps pannel */

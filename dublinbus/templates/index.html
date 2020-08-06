@@ -125,8 +125,8 @@
                         <div class="form">
                             <form class="input-fields" method="post" id = "routeadd">
                                 {% csrf_token %}
-                                Route: <i class = "far fa-heart route" ></i>
-                                <input type='text' id = "route_id" name = "route_id">
+                                <i class = "far fa-heart route" ></i>
+                                <input type='text' id = "route_id" name = "route_id" placeholder="Route ID">
                                 <button id = "routebtn" type="button" onclick="routesearch()">Submit</button>
 
                                 <div id="singleroutesearchresult"></div>
