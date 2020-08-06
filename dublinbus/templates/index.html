@@ -82,7 +82,7 @@
                     <span class="material-icons nav-icon">payment</span>
                     <span class="nav-text">Leapcard</span>
                 </a>
-                <a class="nav-link" href="#" id="favorite" class="dropbtn" onclick="dropDown()">
+                <a class="nav-link" href="#" id="favorite" class="dropbtn">
                     <span class="material-icons nav-icon">favorite</span>
                     <span class="nav-text">Favorites</span>
                 </a>
@@ -473,17 +473,24 @@
             
                 for (let i = 0; i<stopArr.length; i++){
                     let stop = stopArr[i];
+                    
+                    var wrapper = document.createElement("div");
+                    wrapper.className = "favs-wrapper"; 
+
                     var stop_elem = document.createElement("span");
                     var t = document.createTextNode(stop);
                     stop_elem.appendChild(t); 
-                    
                     // iconstar = document.createElement("i");
                     // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                    iconstar = document.createElement("button");
-                     
-                    tableContent.appendChild(stop_elem);
-                    tableContent.appendChild(iconstar);
+                    iconstar = document.createElement("a");
+                    iconstar.innerHTML = "&times;";
+                    
+                    wrapper.appendChild(stop_elem);
+                    wrapper.appendChild(iconstar);
+
+                    tableContent.appendChild(wrapper);
+                    
                     document.getElementById("favorite").appendChild(tableContent);
 
                     // delete the favorite stop when they click the button
@@ -568,6 +575,11 @@
         
             for (let i = 0; i<placeArr.length; i++){
                 let place = placeArr[i];
+
+                //Creating wrapper div for each fav
+                var wrapper = document.createElement("div");
+                wrapper.className = "favs-wrapper"; 
+
                 var place_elem = document.createElement("span");
                 var t = document.createTextNode(place);
                 place_elem.appendChild(t); 
@@ -575,10 +587,13 @@
                 // iconstar = document.createElement("i");
                 // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                iconstar = document.createElement("button");
+                iconstar = document.createElement("a");
+                iconstar.innerHTML = "&times;";
                  
-                tableContent.appendChild(place_elem);
-                tableContent.appendChild(iconstar);
+                wrapper.appendChild(place_elem);
+                wrapper.appendChild(iconstar);
+
+                tableContent.appendChild(wrapper);
                 document.getElementById("favorite").appendChild(tableContent);
 
                 // delete the place when they click the button
@@ -663,6 +678,10 @@
         
             for (let i = 0; i<routeArr.length; i++){
                 let route = routeArr[i];
+
+                var wrapper = document.createElement("div");
+                wrapper.className = "favs-wrapper";
+
                 var route_elem = document.createElement("span");
                 var t = document.createTextNode(route);
                 route_elem.appendChild(t); 
@@ -670,11 +689,16 @@
                 // iconstar = document.createElement("i");
                 // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                iconstar = document.createElement("button");
-                 
-                tableContent.appendChild(route_elem);
-                tableContent.appendChild(iconstar);
+                iconstar = document.createElement("a");
+                iconstar.innerHTML = "&times;";
+
+                wrapper.appendChild(route_elem);
+                wrapper.appendChild(iconstar);
+
+                tableContent.appendChild(wrapper);
+
                 document.getElementById("favorite").appendChild(tableContent);
+            
 
                 // delete the favorite stop when they click the button
                 iconstar.addEventListener('click', function(){
