@@ -154,7 +154,7 @@ def printresult(request):
             # print(seg)
             if seg['travelmode'].upper() == 'TRANSIT':
                 busname = seg['busname']
-                if ('Line' not in busname) and ('Dart' not in busname):
+                if seg['agency'] in ['Dublin Bus', 'Go-Ahead']:
                     numstops = seg['numstops']
                     startstopid = matchstop(seg, allstops)[0]
                     endstopid = matchstop(seg, allstops)[1]
