@@ -486,7 +486,7 @@ function getStopInfo(marker, stopKey) {
                         var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                         for (var i =0; i< result["results"].length; i++){
                             
-                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["duetime"] +" mins</td><td>" +result["results"][i]["destination"]  +"</tr>";
                         }
                         real_info += "</table>";
                         $("#stoparea").html(real_info);
@@ -600,7 +600,7 @@ function stopsearch() {
                 var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                 for (var i =0; i< result["results"].length; i++){
                     
-                    real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                    real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["duetime"] +" mins</td><td>" +result["results"][i]["destination"]  +"</tr>";
                 }
                 real_info += "</table>";
                 $("#stoparea").html(real_info);
