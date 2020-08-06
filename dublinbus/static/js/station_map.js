@@ -183,10 +183,12 @@ function calcRoute() {
         },
         provideRouteAlternatives: false,
     };
+
     directionsRenderer.setMap(map);
     directionsService.route(request, function(result, status) {
     if (status == 'OK') {
         directionresults = [result];
+        console.log(directionresults);
         var routes_dict = {}
         // var route_choices = {}
         var routes_list = result['routes'];
@@ -231,7 +233,8 @@ function calcRoute() {
                             'numstops':steps[k]['transit'].num_stops,
                             'agency':steps[k]['transit']['line']['agencies'][0]['name'],
                             'traveltime':steps[k]['duration'].value,
-                            'instructions':steps[k]['instructions']
+                            'instructions':steps[k]['instructions'],
+                            'gmapsprediction':true
                             }
                             segmentsinfo.push(seg)
                         }
@@ -355,6 +358,14 @@ function calcRoute() {
         }
       directionsRenderer.setDirections(result);
     }
+    else if (status == 'ZERO_RESULTS' && request.transitOptions.departureTime < Date.now()) {
+        directionsRenderer.setDirections({routes:[]});
+        invalidDatetime();
+    }
+    else if (status == 'ZERO_RESULTS') {
+        directionsRenderer.setDirections({routes:[]});
+        noTransitDisplay();
+    }
     else{
         var errormsg = 'ERROR--->calcRoute(),type:js/google directions service error,file:station_map.js, ErrorMSG: Google direction service gives result with status not "OK"';
         errorhandler(errormsg, null)
@@ -413,9 +424,83 @@ function showmarkers(markerlist, map) {
 //triggered by clicking the markers to show stop info.
 function getStopInfo(marker, stopKey) {
     infowindow = new google.maps.InfoWindow();
-    let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
-    content += "Routes: " + stopdata[stopKey]['routes'];
-    content += "</div>"
+    // let content = "<div id='infowindow'><h5>Stop Number: " + stopdata[stopKey]["stopno"] + "</h5>";
+    // content += "Routes: " + stopdata[stopKey]['routes'];
+    // content += "</div>"
+
+    var content = document.createElement("div");
+    content.setAttribute("style","width:200px;");
+    document.body.appendChild(content);
+
+    var stop_elem = document.createElement("span");
+    var stop_text = "Stop_number:"+stopdata[stopKey]["stopno"];
+    var br = document.createElement("br");
+    var route_text = "Routes:"+stopdata[stopKey]['routes'];
+    var t = document.createTextNode(stop_text);
+    var m = document.createTextNode(route_text);
+
+
+    stop_elem.appendChild(t);
+    stop_elem.appendChild(br);
+    stop_elem.appendChild(m);
+
+    var space = document.createElement("span");
+    
+
+    iconstar = document.createElement("button");
+    // iconstar.setAttribute("id","infowindow_button");
+    iconstar.setAttribute("style","width:1px");
+    content.appendChild(stop_elem);
+    content.appendChild(space);
+    content.appendChild(iconstar);
+
+
+    const modalSlide = () => {
+        const burger = document.querySelector('.burger');
+        const modal = document.querySelector('.modal');
+        
+        iconstar.addEventListener('click', function(){
+            // alert("hi");
+            modal.classList.add('modal-active');
+            burger.classList.add('toggle');
+            $('#stopid').siblings().hide();
+                $('#twitterid').show();
+                $('#stopid').show();
+                $('#routeid').hide();
+                $('#myplace').hide();
+                $('#mystop').hide();
+                $('#myroute').hide();
+                $(".db").removeClass("show");
+
+                // console.log(stopdata[stopKey]["stopno"])
+                var stop_click_id = stopdata[stopKey]["stopno"];
+                $.ajax({
+                    headers: {'X-CSRFToken': csrftoken},
+                    type:"POST",
+                    url: "/stop/",
+                    cache: false,
+                    dataType: "json",
+                    data:{'stop_id':stop_click_id},
+                    success: function(result, statues, xml){
+                        // console.log(result);
+                        var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
+                        for (var i =0; i< result["results"].length; i++){
+                            
+                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                        }
+                        real_info += "</table>";
+                        $("#stoparea").html(real_info);
+                    },
+                    error: function(){
+                        var errormsg = 'ERROR--->stopsearch(),type:js/jquery response error,file:station_map.js, ErrorMSG: stop(request) function in views.py gives no response';
+                        errorhandler(errormsg);
+                        // alert("false"+" involved js function stopsearch() involved views.py function stop(request)");
+                    }
+                });
+
+        });
+    }
+    modalSlide();
 
     // add content of get request to info window
     infowindow.setContent(content);
@@ -624,7 +709,8 @@ function routesearch(){
             } else {
                 var dir1 = directions[0];
                 var dir2 = directions[1];
-                var in_out_btn = "<button id=" + "Inbound>" + dir1 + "</button>" + "<br>" + "<button id=" + "Outbound>" + dir2 + "</button>";
+                var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + dir1 + "</a></div>" +
+                                "<div><a id='Outbound'><span class='material-icons nav-icon'>directions_bus</span>" + dir2 + "</a></div>";
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
                 // document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
                 var Inboundstops = routestops[dir1];
@@ -974,6 +1060,8 @@ function calcFare(fareRoutes){
 //send starts, ends in different segments to backend
 function showPrediction(segmentsinfo){
     segmentsinfo[0]['initialdeparture'] = document.getElementById('datetimepicker1').value;
+
+    // console.log(document.getElementById('datetimepicker1').value);
     // Add nearest stopmarkers to segmentsinfo
     for (var i=0; i<segmentsinfo.length; i++) {
         if (segmentsinfo[i].travelmode == 'TRANSIT') {
@@ -993,9 +1081,12 @@ function showPrediction(segmentsinfo){
             // if the correspond function in backend given response successfully, this function is triggered and parameter "data" is the responded data.
             var no_predictions = 0;
             for (i in segmentsinfo) {
-                if (segmentsinfo[i].travelmode == 'TRANSIT') {
-                    segmentsinfo[i]['traveltime'] = data.prediction[no_predictions];
-                    np_predictions = 0;
+                if (segmentsinfo[i].travelmode == 'TRANSIT' && ['Dublin Bus', 'Go-Ahead'].includes(segmentsinfo[i].agency)) {
+                    if (data.prediction[no_predictions] == null) {} else {
+                        segmentsinfo[i]['traveltime'] = data.prediction[no_predictions];
+                        segmentsinfo[i]['gmapsprediction'] = false;
+                    }
+                    no_predictions++;
                 }
             }
             displayDirections(segmentsinfo,data);
@@ -1048,7 +1139,28 @@ function renderLegCard(seg) {
     var time = Math.round(seg.traveltime/60);
     var busname = '';
 
-    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; "><table style="border-spacing: 10px;border-collapse: separate;"><tr>';
+    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
+    
+    // if (seg.travelmode == 'TRANSIT') {
+    //     html_out += '<h6 style="font-variant: small-caps; padding-bottom: 0; margin-bottom:0; text-align: right;">';
+    //     if (seg.gmapsprediction == true) {
+    //         html_out += "Google Directions Service";
+    //     } else {
+    //         html_out += "Predictive Model";
+    //     }
+    //     html_out += '</h6>';
+    // }
+
+    var prediction_source;
+    if (seg.travelmode == 'TRANSIT') {
+        if (seg.gmapsprediction == true) {
+            prediction_source = "Google Directions Service";
+        } else {
+            prediction_source = "Our Predictive Model";
+        }
+    }
+    
+    html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
     if (seg.travelmode == 'WALKING') {
         html_out += '<td><img src="../static/images/icon-WALKING.png" alt="" style="width: 50px;"></td>';
     } else if (seg.agency == "Dublin Bus" || seg.agency == "Go-Ahead"){
@@ -1057,9 +1169,18 @@ function renderLegCard(seg) {
     } else {
         html_out += '<td><img src="../static/images/icon-TRAIN.png" alt="" style="width: 50px;"></td>';
     }
-    html_out += '<td><h4 class="card-title" style="color: black;">' + time + ' minutes ' + '</h4>';
+
+    if (seg.travelmode == 'TRANSIT') {
+        html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + time + ' minutes ' + '</h4>';
+        html_out += '<p style="font-variant: small-caps; font-weight: normal; font-size=small; margin-block-start: 0;">' + 'from ' + prediction_source + '</span>';
+    } else {
+        html_out += '<td><h4 class="card-title" style="color: black;">' + time + ' minutes ' + '</h4>';
+    }
     html_out += '<p class="card-text">' + seg.instructions  + busname + '</p></td>';
-    html_out += '</tr></table>';
+    html_out += '</tr></table></div>';
+
+    
+
     document.getElementById('directions-body').innerHTML += html_out;
 }
 
@@ -1072,6 +1193,36 @@ function errorhandler(msgtobackend, msgtoalert) {
         data:JSON.stringify(msgtobackend),
         success: function () {if (msgtoalert != null){alert(msgtoalert)}}
     })
+}
+
+function noTransitDisplay() {
+    document.getElementById('routes').innerHTML = '';
+
+    document.getElementById('directions-body').innerHTML = '';
+    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
+
+    html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
+    html_out += '<td><img src="../static/images/icon-NOROUTE.png" alt="" style="width: 50px;"></td>';
+    html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + ' No Transit Route Available' + '</h4>';
+    html_out += '<p class="card-text">' + 'For late-night Dublin Bus services see <a href="https://www.dublinbus.ie/Your-Journey1/Timetables/Nitelink-Services/">Dublin Bus Nitelink</a>.' + '</p></td>';
+
+    html_out += '</tr></table></div>'
+    document.getElementById('directions-body').innerHTML += html_out;
+}
+
+function invalidDatetime() {
+    document.getElementById('routes').innerHTML = '';
+
+    document.getElementById('directions-body').innerHTML = '';
+    var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
+
+    html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
+    html_out += '<td><img src="../static/images/icon-CLOCK.png" alt="" style="width: 50px;"></td>';
+    html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + 'Invalid Date or Time Selected' + '</h4>';
+    html_out += '<p class="card-text">' + 'Please select a date and time in the future.' + '</p></td>';
+
+    html_out += '</tr></table></div>'
+    document.getElementById('directions-body').innerHTML += html_out;
 }
 
 //
