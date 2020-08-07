@@ -1,187 +1,158 @@
-INFO 2020-08-06 01:05:16,747 autoreload 67686 4676804032 Watching for file changes with StatReloader
-INFO 2020-08-06 01:05:22,713 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6334
-INFO 2020-08-06 01:05:22,763 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:05:50,656 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 6347
-INFO 2020-08-06 01:05:59,852 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 6347
-INFO 2020-08-06 01:07:22,308 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 6347
-INFO 2020-08-06 01:07:27,005 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6334
-INFO 2020-08-06 01:14:33,797 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6921
-INFO 2020-08-06 01:14:34,053 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6921
-INFO 2020-08-06 01:16:56,705 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:19:11,787 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:20:24,666 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:20:25,801 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:21:55,591 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:21:57,784 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:22:01,183 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:23:24,463 basehttp 67686 123145375772672 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:23:24,600 basehttp 67686 123145375772672 "GET /static/css/register.css HTTP/1.1" 200 1991
-INFO 2020-08-06 01:23:24,603 basehttp 67686 123145381027840 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 200 89476
-WARNING 2020-08-06 01:23:24,706 log 67686 123145381027840 Not Found: /favicon.ico
-WARNING 2020-08-06 01:23:24,706 basehttp 67686 123145381027840 "GET /favicon.ico HTTP/1.1" 404 3748
-INFO 2020-08-06 01:24:55,780 basehttp 67686 123145381027840 "GET /user_manage/register/ HTTP/1.1" 200 6980
-INFO 2020-08-06 01:24:55,806 basehttp 67686 123145381027840 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:24:55,806 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:26:12,404 basehttp 67686 123145381027840 "GET /user_manage/register/ HTTP/1.1" 200 7054
-INFO 2020-08-06 01:26:12,440 basehttp 67686 123145381027840 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:26:12,442 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:26:12,442 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5172
-INFO 2020-08-06 01:34:54,245 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 7028
-INFO 2020-08-06 01:34:54,277 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:34:54,281 basehttp 67686 123145370517504 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:34:54,282 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:39:18,149 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 7028
-INFO 2020-08-06 01:39:18,179 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 200 1991
-INFO 2020-08-06 01:39:18,182 basehttp 67686 123145370517504 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:39:18,182 basehttp 67686 123145375772672 "GET /static/js/register.js HTTP/1.1" 200 5317
-INFO 2020-08-06 01:40:30,789 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 7028
-INFO 2020-08-06 01:40:30,823 basehttp 67686 123145375772672 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:40:30,824 basehttp 67686 123145370517504 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:40:30,824 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:40:58,866 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 7028
-INFO 2020-08-06 01:40:58,884 basehttp 67686 123145375772672 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:40:58,892 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:40:58,892 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5317
-INFO 2020-08-06 01:42:00,777 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 7055
-INFO 2020-08-06 01:42:00,801 basehttp 67686 123145375772672 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:42:00,806 basehttp 67686 123145381027840 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:42:00,807 basehttp 67686 123145375772672 "GET /static/js/register.js HTTP/1.1" 200 5262
-INFO 2020-08-06 01:42:51,810 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 7055
-INFO 2020-08-06 01:42:51,832 basehttp 67686 123145381027840 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:42:51,833 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:42:51,833 basehttp 67686 123145370517504 "GET /static/js/register.js HTTP/1.1" 200 5203
-INFO 2020-08-06 01:44:48,356 basehttp 67686 123145370517504 "GET /user_manage/register/ HTTP/1.1" 200 7055
-INFO 2020-08-06 01:44:48,387 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:44:48,389 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:44:48,390 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5203
-INFO 2020-08-06 01:44:57,961 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7068
-INFO 2020-08-06 01:44:58,030 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:47:10,938 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7068
-INFO 2020-08-06 01:47:10,989 basehttp 67686 123145370517504 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:52:31,145 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7151
-INFO 2020-08-06 01:52:31,171 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:52:31,173 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:52:31,174 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5663
-INFO 2020-08-06 01:53:56,548 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7151
-INFO 2020-08-06 01:53:56,608 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:54:57,890 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 01:54:57,927 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5712
-INFO 2020-08-06 01:55:28,531 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 01:55:28,580 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:59:36,741 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 01:59:36,775 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 01:59:36,776 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:59:36,777 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5714
-INFO 2020-08-06 01:59:38,676 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 01:59:38,701 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 01:59:41,394 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 01:59:41,424 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:00:00,861 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 02:00:00,890 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:02:10,995 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 02:02:11,021 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 02:02:11,023 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:02:11,023 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5712
-INFO 2020-08-06 02:02:14,802 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 02:02:14,852 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:02:18,310 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 02:02:18,368 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:02:33,888 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 02:02:33,908 basehttp 67686 123145381027840 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 02:02:33,912 basehttp 67686 123145381027840 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:02:33,912 basehttp 67686 123145375772672 "GET /static/js/register.js HTTP/1.1" 200 5711
-INFO 2020-08-06 02:02:35,694 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 02:02:35,729 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:02:38,176 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7138
-INFO 2020-08-06 02:02:38,205 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:04:36,211 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:04:36,240 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 02:04:36,242 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:04:36,243 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5704
-INFO 2020-08-06 02:04:38,110 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:04:38,138 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:01,196 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:05:01,212 basehttp 67686 123145381027840 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:01,214 basehttp 67686 123145381027840 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:01,216 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 200 5705
-INFO 2020-08-06 02:05:02,844 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:05:02,871 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:05,588 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:05:05,616 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:31,002 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:05:31,030 basehttp 67686 123145381027840 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:31,030 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:31,031 basehttp 67686 123145370517504 "GET /static/js/register.js HTTP/1.1" 200 5722
-INFO 2020-08-06 02:05:32,456 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:05:32,488 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:34,461 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:05:34,495 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:05:36,746 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7477
-INFO 2020-08-06 02:05:36,775 basehttp 67686 123145381027840 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:08:41,157 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7491
-INFO 2020-08-06 02:08:41,184 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 200 1991
-INFO 2020-08-06 02:08:41,186 basehttp 67686 123145370517504 "GET /static/js/register.js HTTP/1.1" 200 5724
-INFO 2020-08-06 02:08:41,193 basehttp 67686 123145370517504 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-WARNING 2020-08-06 02:08:41,538 log 67686 123145370517504 Not Found: /favicon.ico
-WARNING 2020-08-06 02:08:41,538 basehttp 67686 123145370517504 "GET /favicon.ico HTTP/1.1" 404 3748
-INFO 2020-08-06 02:11:22,277 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7520
-INFO 2020-08-06 02:11:22,300 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 02:11:22,302 basehttp 67686 123145370517504 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:11:22,303 basehttp 67686 123145375772672 "GET /static/js/register.js HTTP/1.1" 200 5698
-INFO 2020-08-06 02:11:38,478 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7520
-INFO 2020-08-06 02:11:38,501 basehttp 67686 123145370517504 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:11:38,501 basehttp 67686 123145375772672 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 02:11:38,503 basehttp 67686 123145375772672 "GET /static/js/register.js HTTP/1.1" 200 5680
-INFO 2020-08-06 02:13:37,969 basehttp 67686 123145370517504 "POST /user_manage/register/ HTTP/1.1" 200 7520
-INFO 2020-08-06 02:13:37,989 basehttp 67686 123145370517504 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 02:13:37,992 basehttp 67686 123145375772672 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 02:13:37,993 basehttp 67686 123145370517504 "GET /static/js/register.js HTTP/1.1" 200 5696
-INFO 2020-08-06 08:12:07,881 autoreload 67686 4676804032 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
-INFO 2020-08-06 08:12:09,034 autoreload 68520 4534717888 Watching for file changes with StatReloader
-INFO 2020-08-06 08:16:03,231 autoreload 68520 4534717888 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
-INFO 2020-08-06 08:16:04,853 autoreload 68568 4504604096 Watching for file changes with StatReloader
-INFO 2020-08-06 08:20:10,864 autoreload 68568 4504604096 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
-INFO 2020-08-06 08:20:11,925 autoreload 68616 4419636672 Watching for file changes with StatReloader
-INFO 2020-08-06 08:22:59,817 autoreload 68616 4419636672 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
-INFO 2020-08-06 08:23:00,850 autoreload 68644 4589211072 Watching for file changes with StatReloader
-INFO 2020-08-06 08:30:15,853 autoreload 68644 4589211072 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
-INFO 2020-08-06 08:30:16,959 autoreload 68707 4567756224 Watching for file changes with StatReloader
-INFO 2020-08-06 08:33:56,256 autoreload 68707 4567756224 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/models.py changed, reloading.
-INFO 2020-08-06 08:33:57,231 autoreload 68736 4424027584 Watching for file changes with StatReloader
-INFO 2020-08-06 08:39:31,141 autoreload 68736 4424027584 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/models.py changed, reloading.
-INFO 2020-08-06 08:39:32,191 autoreload 68796 4520222144 Watching for file changes with StatReloader
-INFO 2020-08-06 08:41:43,534 autoreload 68796 4520222144 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
-INFO 2020-08-06 08:41:44,578 autoreload 68851 4591832512 Watching for file changes with StatReloader
-INFO 2020-08-06 08:41:53,982 basehttp 68851 123145519099904 "POST /user_manage/register/ HTTP/1.1" 200 7539
-INFO 2020-08-06 08:41:54,010 basehttp 68851 123145519099904 "GET /static/css/register.css HTTP/1.1" 200 1991
-INFO 2020-08-06 08:41:54,012 basehttp 68851 123145519099904 "GET /static/js/register.js HTTP/1.1" 200 5696
-INFO 2020-08-06 08:41:54,013 basehttp 68851 123145524355072 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 304 0
-ERROR 2020-08-06 08:42:42,627 log 68851 123145519099904 Internal Server Error: /user_manage/register/
-Traceback (most recent call last):
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 86, in _execute
-    return self.cursor.execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/mysql/base.py", line 74, in execute
-    return self.cursor.execute(query, args)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/cursors.py", line 163, in execute
-    result = self._query(query)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/cursors.py", line 321, in _query
-    conn.query(q)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 505, in query
-    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 724, in _read_query_result
-    result.read()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 1069, in read
-    first_packet = self.connection._read_packet()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 676, in _read_packet
-    packet.raise_for_error()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/protocol.py", line 223, in raise_for_error
-    err.raise_mysql_exception(self._data)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/err.py", line 107, in raise_mysql_exception
-    raise errorclass(errno, errval)
-pymysql.err.OperationalError: (1054, "Unknown column 'user_manage_user.gender' in 'field list'")
-
-The above exception was the direct cause of the following exception:
-
+INFO 2020-08-07 08:42:39,428 basehttp 73966 123145453142016 "POST /user_manage/login/ HTTP/1.1" 302 0
+INFO 2020-08-07 08:42:39,508 basehttp 73966 123145453142016 "GET /app01/index HTTP/1.1" 200 930671
+INFO 2020-08-07 08:42:39,549 basehttp 73966 123145453142016 "GET /static/css/main.css HTTP/1.1" 304 0
+INFO 2020-08-07 08:42:39,549 basehttp 73966 123145458397184 "GET /static/js/station_map.js HTTP/1.1" 304 0
+INFO 2020-08-07 08:42:39,552 basehttp 73966 123145463652352 "GET /static/css/jquery-ui-timepicker-addon.min.css HTTP/1.1" 304 0
+INFO 2020-08-07 08:42:39,552 basehttp 73966 123145458397184 "GET /static/js/jquery-ui-timepicker-addon.min.js HTTP/1.1" 304 0
+WARNING 2020-08-07 08:42:39,906 log 73966 123145453142016 Not Found: /errorhandler
+WARNING 2020-08-07 08:42:39,911 log 73966 123145463652352 Not Found: /weather
+WARNING 2020-08-07 08:42:39,911 basehttp 73966 123145463652352 "POST /weather HTTP/1.1" 404 2174
+WARNING 2020-08-07 08:42:39,913 basehttp 73966 123145453142016 "POST /errorhandler HTTP/1.1" 404 2189
+WARNING 2020-08-07 08:42:39,915 log 73966 123145458397184 Not Found: /init
+WARNING 2020-08-07 08:42:39,915 basehttp 73966 123145458397184 "POST /init HTTP/1.1" 404 2165
+WARNING 2020-08-07 08:42:40,048 log 73966 123145463652352 Not Found: /errorhandler
+WARNING 2020-08-07 08:42:40,049 basehttp 73966 123145463652352 "POST /errorhandler HTTP/1.1" 404 2189
+WARNING 2020-08-07 08:42:40,050 log 73966 123145458397184 Not Found: /errorhandler
+WARNING 2020-08-07 08:42:40,050 basehttp 73966 123145458397184 "POST /errorhandler HTTP/1.1" 404 2189
+INFO 2020-08-07 08:43:41,799 basehttp 73966 123145458397184 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 08:43:41,951 basehttp 73966 123145463652352 "GET /static/js/login.js HTTP/1.1" 304 0
+INFO 2020-08-07 08:43:41,951 basehttp 73966 123145458397184 "GET /static/css/register.css HTTP/1.1" 304 0
+INFO 2020-08-07 08:43:50,673 basehttp 73966 123145458397184 "POST /user_manage/login/ HTTP/1.1" 302 0
+INFO 2020-08-07 08:43:50,867 basehttp 73966 123145458397184 "GET /app01/index HTTP/1.1" 200 930671
+WARNING 2020-08-07 08:43:51,413 log 73966 123145458397184 Not Found: /init
+WARNING 2020-08-07 08:43:51,415 log 73966 123145453142016 Not Found: /errorhandler
+WARNING 2020-08-07 08:43:51,415 basehttp 73966 123145458397184 "POST /init HTTP/1.1" 404 2165
+WARNING 2020-08-07 08:43:51,416 basehttp 73966 123145453142016 "POST /errorhandler HTTP/1.1" 404 2189
+WARNING 2020-08-07 08:43:51,417 log 73966 123145463652352 Not Found: /weather
+WARNING 2020-08-07 08:43:51,418 basehttp 73966 123145463652352 "POST /weather HTTP/1.1" 404 2174
+WARNING 2020-08-07 08:43:51,555 log 73966 123145463652352 Not Found: /errorhandler
+WARNING 2020-08-07 08:43:51,558 basehttp 73966 123145463652352 "POST /errorhandler HTTP/1.1" 404 2189
+WARNING 2020-08-07 08:43:51,561 log 73966 123145453142016 Not Found: /errorhandler
+WARNING 2020-08-07 08:43:51,561 basehttp 73966 123145453142016 "POST /errorhandler HTTP/1.1" 404 2189
+INFO 2020-08-07 08:44:57,934 basehttp 73966 123145468907520 "GET /user_manage/login HTTP/1.1" 301 0
+INFO 2020-08-07 08:44:57,941 basehttp 73966 123145468907520 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 08:44:58,011 basehttp 73966 123145479417856 "GET /static/js/login.js HTTP/1.1" 200 293
+INFO 2020-08-07 08:44:58,011 basehttp 73966 123145468907520 "GET /static/css/register.css HTTP/1.1" 200 1991
+INFO 2020-08-07 08:44:58,013 basehttp 73966 123145474162688 "GET /static/js/jquery-3.5.1.min.js HTTP/1.1" 200 89476
+WARNING 2020-08-07 08:44:58,203 log 73966 123145474162688 Not Found: /favicon.ico
+WARNING 2020-08-07 08:44:58,204 basehttp 73966 123145474162688 "GET /favicon.ico HTTP/1.1" 404 2187
+INFO 2020-08-07 08:45:07,254 basehttp 73966 123145474162688 "POST /user_manage/login/ HTTP/1.1" 302 0
+INFO 2020-08-07 08:45:07,293 basehttp 73966 123145474162688 "GET /app01/index HTTP/1.1" 200 930671
+INFO 2020-08-07 08:45:07,324 basehttp 73966 123145474162688 "GET /static/css/main.css HTTP/1.1" 200 6041
+INFO 2020-08-07 08:45:07,335 basehttp 73966 123145489928192 "GET /static/css/jquery-ui-timepicker-addon.min.css HTTP/1.1" 200 1901
+INFO 2020-08-07 08:45:07,336 basehttp 73966 123145484673024 "GET /static/js/cookiemonster.js HTTP/1.1" 200 2761
+INFO 2020-08-07 08:45:07,337 basehttp 73966 123145479417856 "GET /static/js/station_map.js HTTP/1.1" 200 48134
+INFO 2020-08-07 08:45:07,338 basehttp 73966 123145474162688 "GET /static/js/jquery-ui-timepicker-addon.min.js HTTP/1.1" 200 41441
+INFO 2020-08-07 08:45:07,338 basehttp 73966 123145468907520 "GET /static/js/jquery-1.8.3.min.js HTTP/1.1" 200 93636
+WARNING 2020-08-07 08:45:07,868 log 73966 123145479417856 Not Found: /errorhandler
+WARNING 2020-08-07 08:45:07,870 log 73966 123145474162688 Not Found: /weather
+WARNING 2020-08-07 08:45:07,871 log 73966 123145468907520 Not Found: /init
+WARNING 2020-08-07 08:45:07,872 basehttp 73966 123145474162688 "POST /weather HTTP/1.1" 404 2176
+WARNING 2020-08-07 08:45:07,872 basehttp 73966 123145479417856 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 08:45:07,872 basehttp 73966 123145468907520 "POST /init HTTP/1.1" 404 2167
+INFO 2020-08-07 08:45:07,970 basehttp 73966 123145468907520 "GET /static/images/favicon.png HTTP/1.1" 200 40821
+WARNING 2020-08-07 08:45:07,998 log 73966 123145468907520 Not Found: /errorhandler
+WARNING 2020-08-07 08:45:07,999 log 73966 123145479417856 Not Found: /errorhandler
+WARNING 2020-08-07 08:45:08,000 basehttp 73966 123145468907520 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 08:45:08,000 basehttp 73966 123145479417856 "POST /errorhandler HTTP/1.1" 404 2191
+INFO 2020-08-07 08:56:22,919 autoreload 73966 4638825920 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 08:56:24,265 autoreload 74743 4678077888 Watching for file changes with StatReloader
+INFO 2020-08-07 09:00:31,333 autoreload 74743 4678077888 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 09:00:32,187 autoreload 74778 4355321280 Watching for file changes with StatReloader
+INFO 2020-08-07 09:00:37,727 basehttp 74778 123145320648704 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 09:00:49,454 basehttp 74778 123145320648704 "POST /user_manage/login/ HTTP/1.1" 200 350
+WARNING 2020-08-07 09:01:25,304 log 74778 123145320648704 Not Found: /user_manage/logout/
+WARNING 2020-08-07 09:01:25,304 basehttp 74778 123145320648704 "POST /user_manage/logout/ HTTP/1.1" 404 2466
+INFO 2020-08-07 09:06:20,020 autoreload 74778 4355321280 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/urls.py changed, reloading.
+INFO 2020-08-07 09:06:20,730 autoreload 74808 4383641024 Watching for file changes with StatReloader
+INFO 2020-08-07 09:06:33,993 basehttp 74808 123145560940544 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 09:06:43,242 basehttp 74808 123145560940544 "POST /user_manage/login/ HTTP/1.1" 200 350
+WARNING 2020-08-07 09:06:49,514 log 74808 123145560940544 Forbidden (CSRF token missing or incorrect.): /user_manage/logout/
+WARNING 2020-08-07 09:06:49,514 basehttp 74808 123145560940544 "POST /user_manage/logout/ HTTP/1.1" 403 2513
+INFO 2020-08-07 09:07:11,826 basehttp 74808 123145560940544 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 09:07:19,930 basehttp 74808 123145560940544 "POST /user_manage/login/ HTTP/1.1" 200 480
+INFO 2020-08-07 09:07:21,452 basehttp 74808 123145560940544 "POST /user_manage/logout/ HTTP/1.1" 302 0
+INFO 2020-08-07 09:07:21,504 basehttp 74808 123145560940544 "GET /app01/index HTTP/1.1" 200 930671
+WARNING 2020-08-07 09:07:22,010 log 74808 123145566195712 Not Found: /weather
+WARNING 2020-08-07 09:07:22,011 log 74808 123145560940544 Not Found: /init
+WARNING 2020-08-07 09:07:22,012 log 74808 123145571450880 Not Found: /errorhandler
+WARNING 2020-08-07 09:07:22,013 basehttp 74808 123145566195712 "POST /weather HTTP/1.1" 404 2176
+WARNING 2020-08-07 09:07:22,013 basehttp 74808 123145560940544 "POST /init HTTP/1.1" 404 2167
+WARNING 2020-08-07 09:07:22,013 basehttp 74808 123145571450880 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:07:22,147 log 74808 123145560940544 Not Found: /errorhandler
+WARNING 2020-08-07 09:07:22,148 basehttp 74808 123145560940544 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:07:22,164 log 74808 123145560940544 Not Found: /errorhandler
+WARNING 2020-08-07 09:07:22,165 basehttp 74808 123145560940544 "POST /errorhandler HTTP/1.1" 404 2191
+INFO 2020-08-07 09:12:29,872 basehttp 74808 123145560940544 "GET / HTTP/1.1" 200 930671
+WARNING 2020-08-07 09:12:30,302 log 74808 123145560940544 Not Found: /init
+WARNING 2020-08-07 09:12:30,303 basehttp 74808 123145560940544 "POST /init HTTP/1.1" 404 2167
+WARNING 2020-08-07 09:12:30,310 log 74808 123145560940544 Not Found: /weather
+WARNING 2020-08-07 09:12:30,311 log 74808 123145566195712 Not Found: /errorhandler
+WARNING 2020-08-07 09:12:30,312 basehttp 74808 123145560940544 "POST /weather HTTP/1.1" 404 2176
+WARNING 2020-08-07 09:12:30,312 basehttp 74808 123145566195712 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:12:30,436 log 74808 123145566195712 Not Found: /errorhandler
+WARNING 2020-08-07 09:12:30,437 basehttp 74808 123145566195712 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:12:30,442 log 74808 123145566195712 Not Found: /errorhandler
+WARNING 2020-08-07 09:12:30,443 basehttp 74808 123145566195712 "POST /errorhandler HTTP/1.1" 404 2191
+INFO 2020-08-07 09:12:41,198 basehttp 74808 123145566195712 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 09:12:53,843 basehttp 74808 123145566195712 "POST /user_manage/login/ HTTP/1.1" 200 671
+INFO 2020-08-07 09:12:56,785 basehttp 74808 123145566195712 "POST /user_manage/logout/ HTTP/1.1" 302 0
+INFO 2020-08-07 09:12:56,835 basehttp 74808 123145566195712 "GET /app01/index HTTP/1.1" 200 930671
+WARNING 2020-08-07 09:12:57,312 log 74808 123145560940544 Not Found: /weather
+WARNING 2020-08-07 09:12:57,313 log 74808 123145566195712 Not Found: /init
+WARNING 2020-08-07 09:12:57,314 basehttp 74808 123145560940544 "POST /weather HTTP/1.1" 404 2176
+WARNING 2020-08-07 09:12:57,314 basehttp 74808 123145566195712 "POST /init HTTP/1.1" 404 2167
+WARNING 2020-08-07 09:12:57,316 log 74808 123145571450880 Not Found: /errorhandler
+WARNING 2020-08-07 09:12:57,316 basehttp 74808 123145571450880 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:12:57,407 log 74808 123145571450880 Not Found: /errorhandler
+WARNING 2020-08-07 09:12:57,408 basehttp 74808 123145571450880 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:12:57,411 log 74808 123145571450880 Not Found: /errorhandler
+WARNING 2020-08-07 09:12:57,411 basehttp 74808 123145571450880 "POST /errorhandler HTTP/1.1" 404 2191
+INFO 2020-08-07 09:15:38,447 autoreload 74808 4383641024 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 09:15:39,483 autoreload 74862 4516359616 Watching for file changes with StatReloader
+INFO 2020-08-07 09:17:37,559 autoreload 74862 4516359616 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 09:17:38,276 autoreload 74879 4570877376 Watching for file changes with StatReloader
+INFO 2020-08-07 09:17:55,656 basehttp 74879 123145353269248 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 09:18:04,830 basehttp 74879 123145353269248 "POST /user_manage/login/ HTTP/1.1" 200 671
+INFO 2020-08-07 09:19:06,763 autoreload 74879 4570877376 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 09:19:07,623 autoreload 74899 4538932672 Watching for file changes with StatReloader
+INFO 2020-08-07 09:19:36,910 basehttp 74899 123145494794240 "POST /user_manage/logout/ HTTP/1.1" 302 0
+INFO 2020-08-07 09:19:36,965 basehttp 74899 123145494794240 "GET /app01/index HTTP/1.1" 200 930671
+WARNING 2020-08-07 09:19:37,341 log 74899 123145500049408 Not Found: /weather
+WARNING 2020-08-07 09:19:37,342 log 74899 123145505304576 Not Found: /errorhandler
+WARNING 2020-08-07 09:19:37,344 log 74899 123145494794240 Not Found: /init
+WARNING 2020-08-07 09:19:37,344 basehttp 74899 123145500049408 "POST /weather HTTP/1.1" 404 2176
+WARNING 2020-08-07 09:19:37,344 basehttp 74899 123145505304576 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:19:37,344 basehttp 74899 123145494794240 "POST /init HTTP/1.1" 404 2167
+WARNING 2020-08-07 09:19:37,439 log 74899 123145505304576 Not Found: /errorhandler
+WARNING 2020-08-07 09:19:37,439 basehttp 74899 123145505304576 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:19:37,441 log 74899 123145494794240 Not Found: /errorhandler
+WARNING 2020-08-07 09:19:37,442 basehttp 74899 123145494794240 "POST /errorhandler HTTP/1.1" 404 2191
+INFO 2020-08-07 09:20:28,441 autoreload 74899 4538932672 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 09:20:29,319 autoreload 74914 4490010048 Watching for file changes with StatReloader
+INFO 2020-08-07 09:26:45,839 autoreload 74914 4490010048 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 09:26:46,884 autoreload 75043 4610690496 Watching for file changes with StatReloader
+INFO 2020-08-07 09:26:57,967 basehttp 75043 123145427640320 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 09:27:06,795 basehttp 75043 123145427640320 "POST /user_manage/login/ HTTP/1.1" 200 671
+INFO 2020-08-07 09:27:12,344 basehttp 75043 123145427640320 "POST /user_manage/logout/ HTTP/1.1" 302 0
+INFO 2020-08-07 09:27:12,396 basehttp 75043 123145427640320 "GET /app01/index HTTP/1.1" 200 930671
+WARNING 2020-08-07 09:27:12,597 log 75043 123145427640320 Not Found: /init
+WARNING 2020-08-07 09:27:12,599 log 75043 123145432895488 Not Found: /weather
+WARNING 2020-08-07 09:27:12,600 log 75043 123145438150656 Not Found: /errorhandler
+WARNING 2020-08-07 09:27:12,601 basehttp 75043 123145427640320 "POST /init HTTP/1.1" 404 2167
+WARNING 2020-08-07 09:27:12,601 basehttp 75043 123145432895488 "POST /weather HTTP/1.1" 404 2176
+WARNING 2020-08-07 09:27:12,601 basehttp 75043 123145438150656 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:27:12,708 log 75043 123145432895488 Not Found: /errorhandler
+WARNING 2020-08-07 09:27:12,709 basehttp 75043 123145432895488 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:27:12,710 log 75043 123145438150656 Not Found: /errorhandler
+WARNING 2020-08-07 09:27:12,710 basehttp 75043 123145438150656 "POST /errorhandler HTTP/1.1" 404 2191
+INFO 2020-08-07 09:37:31,696 autoreload 75043 4610690496 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/settings.py changed, reloading.
+INFO 2020-08-07 09:37:32,817 autoreload 75165 4507635136 Watching for file changes with StatReloader
+INFO 2020-08-07 09:45:54,738 autoreload 75165 4507635136 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 09:45:55,804 autoreload 75237 4514713024 Watching for file changes with StatReloader
+INFO 2020-08-07 09:46:02,984 basehttp 75237 123145423261696 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 09:46:13,547 basehttp 75237 123145423261696 "POST /user_manage/login/ HTTP/1.1" 200 671
+ERROR 2020-08-07 09:46:21,935 log 75237 123145423261696 Internal Server Error: /user_manage/logout/
 Traceback (most recent call last):
   File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
     response = get_response(request)
@@ -189,306 +160,27 @@ Traceback (most recent call last):
     response = self.process_exception_by_middleware(e, request)
   File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
     response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py", line 80, in register
-    if users:
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/query.py", line 280, in __bool__
-    self._fetch_all()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/query.py", line 1261, in _fetch_all
-    self._result_cache = list(self._iterable_class(self))
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/query.py", line 57, in __iter__
-    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/sql/compiler.py", line 1152, in execute_sql
-    cursor.execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 100, in execute
-    return super().execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 68, in execute
-    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
-    return executor(sql, params, many, context)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 86, in _execute
-    return self.cursor.execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/utils.py", line 90, in __exit__
-    raise dj_exc_value.with_traceback(traceback) from exc_value
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 86, in _execute
-    return self.cursor.execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/mysql/base.py", line 74, in execute
-    return self.cursor.execute(query, args)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/cursors.py", line 163, in execute
-    result = self._query(query)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/cursors.py", line 321, in _query
-    conn.query(q)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 505, in query
-    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 724, in _read_query_result
-    result.read()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 1069, in read
-    first_packet = self.connection._read_packet()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 676, in _read_packet
-    packet.raise_for_error()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/protocol.py", line 223, in raise_for_error
-    err.raise_mysql_exception(self._data)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/err.py", line 107, in raise_mysql_exception
-    raise errorclass(errno, errval)
-django.db.utils.OperationalError: (1054, "Unknown column 'user_manage_user.gender' in 'field list'")
-ERROR 2020-08-06 08:42:42,664 basehttp 68851 123145519099904 "POST /user_manage/register/ HTTP/1.1" 500 196544
-INFO 2020-08-06 08:46:25,406 autoreload 68939 4635131328 Watching for file changes with StatReloader
-INFO 2020-08-06 08:46:29,655 basehttp 68939 123145390411776 "GET /user_manage/register/ HTTP/1.1" 200 7520
-ERROR 2020-08-06 08:47:02,885 log 68939 123145390411776 Internal Server Error: /user_manage/register/
-Traceback (most recent call last):
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 86, in _execute
-    return self.cursor.execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/mysql/base.py", line 74, in execute
-    return self.cursor.execute(query, args)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/cursors.py", line 163, in execute
-    result = self._query(query)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/cursors.py", line 321, in _query
-    conn.query(q)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 505, in query
-    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 724, in _read_query_result
-    result.read()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 1069, in read
-    first_packet = self.connection._read_packet()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 676, in _read_packet
-    packet.raise_for_error()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/protocol.py", line 223, in raise_for_error
-    err.raise_mysql_exception(self._data)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/err.py", line 107, in raise_mysql_exception
-    raise errorclass(errno, errval)
-pymysql.err.DataError: (1406, "Data too long for column 'password' at row 1")
-
-The above exception was the direct cause of the following exception:
-
-Traceback (most recent call last):
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
-    response = get_response(request)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
-    response = self.process_exception_by_middleware(e, request)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py", line 96, in register
-    user.save()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/base.py", line 746, in save
-    force_update=force_update, update_fields=update_fields)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/base.py", line 784, in save_base
-    force_update, using, update_fields,
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/base.py", line 887, in _save_table
-    results = self._do_insert(cls._base_manager, using, fields, returning_fields, raw)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/base.py", line 926, in _do_insert
-    using=using, raw=raw,
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/manager.py", line 82, in manager_method
-    return getattr(self.get_queryset(), name)(*args, **kwargs)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/query.py", line 1204, in _insert
-    return query.get_compiler(using=using).execute_sql(returning_fields)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/models/sql/compiler.py", line 1392, in execute_sql
-    cursor.execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 100, in execute
-    return super().execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 68, in execute
-    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 77, in _execute_with_wrappers
-    return executor(sql, params, many, context)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 86, in _execute
-    return self.cursor.execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/utils.py", line 90, in __exit__
-    raise dj_exc_value.with_traceback(traceback) from exc_value
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/utils.py", line 86, in _execute
-    return self.cursor.execute(sql, params)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/db/backends/mysql/base.py", line 74, in execute
-    return self.cursor.execute(query, args)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/cursors.py", line 163, in execute
-    result = self._query(query)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/cursors.py", line 321, in _query
-    conn.query(q)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 505, in query
-    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 724, in _read_query_result
-    result.read()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 1069, in read
-    first_packet = self.connection._read_packet()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/connections.py", line 676, in _read_packet
-    packet.raise_for_error()
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/protocol.py", line 223, in raise_for_error
-    err.raise_mysql_exception(self._data)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/pymysql/err.py", line 107, in raise_mysql_exception
-    raise errorclass(errno, errval)
-django.db.utils.DataError: (1406, "Data too long for column 'password' at row 1")
-ERROR 2020-08-06 08:47:02,921 basehttp 68939 123145390411776 "POST /user_manage/register/ HTTP/1.1" 500 217353
-INFO 2020-08-06 08:47:31,526 autoreload 68939 4635131328 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/models.py changed, reloading.
-INFO 2020-08-06 08:47:32,387 autoreload 68951 4689161664 Watching for file changes with StatReloader
-INFO 2020-08-06 08:47:58,029 autoreload 68983 4554960320 Watching for file changes with StatReloader
-INFO 2020-08-06 08:48:02,740 basehttp 68983 123145545154560 "GET /user_manage/register/ HTTP/1.1" 200 7520
-ERROR 2020-08-06 08:48:37,963 log 68983 123145545154560 Internal Server Error: /user_manage/register/
-Traceback (most recent call last):
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/urls/base.py", line 72, in reverse
-    extra, resolver = resolver.namespace_dict[ns]
-KeyError: 'app01'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
-    response = get_response(request)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
-    response = self.process_exception_by_middleware(e, request)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py", line 109, in register
-    return redirect(reverse('app01:'))
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/urls/base.py", line 83, in reverse
-    raise NoReverseMatch("%s is not a registered namespace" % key)
-django.urls.exceptions.NoReverseMatch: 'app01' is not a registered namespace
-ERROR 2020-08-06 08:48:37,990 basehttp 68983 123145545154560 "POST /user_manage/register/ HTTP/1.1" 500 81114
-INFO 2020-08-06 08:51:56,635 autoreload 68983 4554960320 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/app01/urls.py changed, reloading.
-INFO 2020-08-06 08:51:57,739 autoreload 69029 4767796672 Watching for file changes with StatReloader
-INFO 2020-08-06 08:52:11,132 basehttp 69029 123145460948992 "GET /user_manage/register/ HTTP/1.1" 200 7520
-INFO 2020-08-06 08:52:11,194 basehttp 69029 123145460948992 "GET /static/css/register.css HTTP/1.1" 304 0
-INFO 2020-08-06 08:52:11,195 basehttp 69029 123145460948992 "GET /static/js/register.js HTTP/1.1" 200 5696
-ERROR 2020-08-06 08:52:39,530 log 69029 123145460948992 Internal Server Error: /user_manage/register/
-Traceback (most recent call last):
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/urls/base.py", line 72, in reverse
-    extra, resolver = resolver.namespace_dict[ns]
-KeyError: 'app01'
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
-    response = get_response(request)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
-    response = self.process_exception_by_middleware(e, request)
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
-    response = wrapped_callback(request, *callback_args, **callback_kwargs)
-  File "/Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py", line 109, in register
-    return redirect(reverse('app01:index'))
-  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/urls/base.py", line 83, in reverse
-    raise NoReverseMatch("%s is not a registered namespace" % key)
-django.urls.exceptions.NoReverseMatch: 'app01' is not a registered namespace
-ERROR 2020-08-06 08:52:39,557 basehttp 69029 123145460948992 "POST /user_manage/register/ HTTP/1.1" 500 81379
-INFO 2020-08-06 08:53:19,180 autoreload 69029 4767796672 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 08:53:20,238 autoreload 69073 4529716672 Watching for file changes with StatReloader
-INFO 2020-08-06 08:54:13,267 autoreload 69073 4529716672 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 08:54:14,054 autoreload 69088 4576222656 Watching for file changes with StatReloader
-INFO 2020-08-06 08:57:47,297 autoreload 69088 4576222656 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 08:57:48,399 autoreload 69113 4510768576 Watching for file changes with StatReloader
-INFO 2020-08-06 09:01:15,745 autoreload 69113 4510768576 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/app01/urls.py changed, reloading.
-INFO 2020-08-06 09:01:16,737 autoreload 69138 4584914368 Watching for file changes with StatReloader
-INFO 2020-08-06 09:02:00,707 autoreload 69166 4617477568 Watching for file changes with StatReloader
-INFO 2020-08-06 09:02:20,216 autoreload 69166 4617477568 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/app01/urls.py changed, reloading.
-INFO 2020-08-06 09:02:20,914 autoreload 69174 4585217472 Watching for file changes with StatReloader
-INFO 2020-08-06 09:03:22,929 autoreload 69174 4585217472 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 09:03:23,767 autoreload 69184 4445375936 Watching for file changes with StatReloader
-INFO 2020-08-06 09:05:07,949 basehttp 69184 123145438023680 "GET / HTTP/1.1" 200 930645
-INFO 2020-08-06 09:05:08,068 basehttp 69184 123145438023680 "GET /static/css/main.css HTTP/1.1" 304 0
-INFO 2020-08-06 09:05:08,074 basehttp 69184 123145438023680 "GET /static/js/station_map.js HTTP/1.1" 304 0
-INFO 2020-08-06 09:05:08,077 basehttp 69184 123145438023680 "GET /static/css/jquery-ui-timepicker-addon.min.css HTTP/1.1" 304 0
-INFO 2020-08-06 09:05:08,081 basehttp 69184 123145438023680 "GET /static/js/jquery-ui-timepicker-addon.min.js HTTP/1.1" 304 0
-INFO 2020-08-06 09:05:08,496 basehttp 69184 123145448534016 "POST /errorhandler HTTP/1.1" 200 2
-INFO 2020-08-06 09:05:08,680 basehttp 69184 123145443278848 "POST /weather HTTP/1.1" 200 95
-INFO 2020-08-06 09:05:08,892 basehttp 69184 123145438023680 "POST /init HTTP/1.1" 200 55
-INFO 2020-08-06 09:05:35,258 basehttp 69184 123145438023680 "POST /errorhandler HTTP/1.1" 200 2
-INFO 2020-08-06 09:07:55,816 autoreload 69246 4619312576 Watching for file changes with StatReloader
-INFO 2020-08-06 09:22:24,475 autoreload 69330 4594388416 Watching for file changes with StatReloader
-INFO 2020-08-06 09:22:55,985 basehttp 69330 123145485910016 "GET / HTTP/1.1" 200 930645
-INFO 2020-08-06 09:22:56,281 basehttp 69330 123145485910016 "GET / HTTP/1.1" 200 930645
-INFO 2020-08-06 09:22:56,491 basehttp 69330 123145496420352 "POST /errorhandler HTTP/1.1" 200 2
-INFO 2020-08-06 09:22:56,691 basehttp 69330 123145491165184 "POST /weather HTTP/1.1" 200 95
-INFO 2020-08-06 09:22:56,931 basehttp 69330 123145485910016 "POST /init HTTP/1.1" 200 55
-INFO 2020-08-06 09:22:56,948 basehttp 69330 123145496420352 "POST /errorhandler HTTP/1.1" 200 2
-INFO 2020-08-06 09:22:57,109 basehttp 69330 123145491165184 "POST /weather HTTP/1.1" 200 95
-INFO 2020-08-06 09:22:57,260 basehttp 69330 123145485910016 "POST /init HTTP/1.1" 200 55
-INFO 2020-08-06 09:23:16,232 basehttp 69330 123145485910016 "GET /user_manage/register/ HTTP/1.1" 200 7520
-INFO 2020-08-06 09:23:41,221 basehttp 69330 123145485910016 "POST /user_manage/register/ HTTP/1.1" 200 7539
-INFO 2020-08-06 09:27:13,115 autoreload 69360 4584910272 Watching for file changes with StatReloader
-INFO 2020-08-06 09:28:25,856 autoreload 69405 4432240064 Watching for file changes with StatReloader
-INFO 2020-08-06 09:28:39,432 autoreload 69405 4432240064 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 09:28:40,227 autoreload 69409 4552883648 Watching for file changes with StatReloader
-INFO 2020-08-06 09:29:03,238 autoreload 69409 4552883648 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/app01/urls.py changed, reloading.
-INFO 2020-08-06 09:29:04,078 autoreload 69417 4535270848 Watching for file changes with StatReloader
-INFO 2020-08-06 09:40:07,577 autoreload 69478 4448832960 Watching for file changes with StatReloader
-INFO 2020-08-06 09:41:16,595 autoreload 69478 4448832960 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/app01/urls.py changed, reloading.
-INFO 2020-08-06 09:41:17,573 autoreload 69496 4684737984 Watching for file changes with StatReloader
-INFO 2020-08-06 09:41:58,494 autoreload 69496 4684737984 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/app01/urls.py changed, reloading.
-INFO 2020-08-06 09:41:59,532 autoreload 69508 4700896704 Watching for file changes with StatReloader
-INFO 2020-08-06 09:44:58,889 autoreload 69508 4700896704 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/app01/urls.py changed, reloading.
-INFO 2020-08-06 09:44:59,935 autoreload 69567 4588449216 Watching for file changes with StatReloader
-INFO 2020-08-06 09:54:49,500 autoreload 69567 4588449216 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 09:54:50,550 autoreload 69639 4533083584 Watching for file changes with StatReloader
-INFO 2020-08-06 09:59:39,890 autoreload 69639 4533083584 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 09:59:40,912 autoreload 69681 4675009984 Watching for file changes with StatReloader
-INFO 2020-08-06 09:59:58,848 autoreload 69681 4675009984 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 09:59:59,529 autoreload 69694 4533104064 Watching for file changes with StatReloader
-INFO 2020-08-06 10:01:20,002 autoreload 69694 4533104064 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 10:01:20,995 autoreload 69710 4607610304 Watching for file changes with StatReloader
-INFO 2020-08-06 10:02:33,355 autoreload 69710 4607610304 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/dublinbus/urls.py changed, reloading.
-INFO 2020-08-06 10:02:34,381 autoreload 69730 4618071488 Watching for file changes with StatReloader
-INFO 2020-08-06 10:02:59,738 basehttp 69730 123145398345728 "GET /user_manage/register/ HTTP/1.1" 200 7520
-INFO 2020-08-06 10:02:59,766 basehttp 69730 123145398345728 "GET /static/js/register.js HTTP/1.1" 304 0
-INFO 2020-08-06 10:03:30,608 basehttp 69730 123145398345728 "POST /user_manage/register/ HTTP/1.1" 302 0
-INFO 2020-08-06 10:03:30,661 basehttp 69730 123145398345728 "GET /app01/index HTTP/1.1" 200 930645
-WARNING 2020-08-06 10:03:31,400 log 69730 123145398345728 Not Found: /init
-WARNING 2020-08-06 10:03:31,402 log 69730 123145408856064 Not Found: /errorhandler
-WARNING 2020-08-06 10:03:31,403 log 69730 123145403600896 Not Found: /weather
-WARNING 2020-08-06 10:03:31,404 basehttp 69730 123145398345728 "POST /init HTTP/1.1" 404 2165
-WARNING 2020-08-06 10:03:31,404 basehttp 69730 123145408856064 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:03:31,404 basehttp 69730 123145403600896 "POST /weather HTTP/1.1" 404 2174
-WARNING 2020-08-06 10:03:31,519 log 69730 123145403600896 Not Found: /errorhandler
-WARNING 2020-08-06 10:03:31,519 basehttp 69730 123145403600896 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:03:31,528 log 69730 123145403600896 Not Found: /errorhandler
-WARNING 2020-08-06 10:03:31,528 basehttp 69730 123145403600896 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:14:41,136 log 69730 123145398345728 Not Found: /showprediction
-WARNING 2020-08-06 10:14:41,137 log 69730 123145403600896 Not Found: /printresult
-WARNING 2020-08-06 10:14:41,137 basehttp 69730 123145398345728 "POST /showprediction HTTP/1.1" 404 2195
-WARNING 2020-08-06 10:14:41,137 basehttp 69730 123145403600896 "POST /printresult HTTP/1.1" 404 2186
-WARNING 2020-08-06 10:14:41,167 log 69730 123145403600896 Not Found: /errorhandler
-WARNING 2020-08-06 10:14:41,168 log 69730 123145398345728 Not Found: /errorhandler
-WARNING 2020-08-06 10:14:41,168 basehttp 69730 123145403600896 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:14:41,168 basehttp 69730 123145398345728 "POST /errorhandler HTTP/1.1" 404 2189
-INFO 2020-08-06 10:15:40,275 basehttp 69730 123145398345728 "GET /app01/index HTTP/1.1" 200 930645
-WARNING 2020-08-06 10:15:40,639 log 69730 123145398345728 Not Found: /init
-WARNING 2020-08-06 10:15:40,642 basehttp 69730 123145398345728 "POST /init HTTP/1.1" 404 2165
-WARNING 2020-08-06 10:15:40,644 log 69730 123145403600896 Not Found: /weather
-WARNING 2020-08-06 10:15:40,646 log 69730 123145408856064 Not Found: /errorhandler
-WARNING 2020-08-06 10:15:40,647 basehttp 69730 123145403600896 "POST /weather HTTP/1.1" 404 2174
-WARNING 2020-08-06 10:15:40,647 basehttp 69730 123145408856064 "POST /errorhandler HTTP/1.1" 404 2189
-INFO 2020-08-06 10:15:40,844 basehttp 69730 123145408856064 "GET /static/images/favicon.png HTTP/1.1" 200 40821
-WARNING 2020-08-06 10:15:40,894 log 69730 123145403600896 Not Found: /errorhandler
-WARNING 2020-08-06 10:15:40,895 log 69730 123145408856064 Not Found: /errorhandler
-WARNING 2020-08-06 10:15:40,896 basehttp 69730 123145403600896 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:15:40,896 basehttp 69730 123145408856064 "POST /errorhandler HTTP/1.1" 404 2189
-INFO 2020-08-06 10:16:05,241 autoreload 69862 4556164544 Watching for file changes with StatReloader
-INFO 2020-08-06 10:16:10,122 basehttp 69862 123145393156096 "GET / HTTP/1.1" 200 930645
-WARNING 2020-08-06 10:16:10,990 log 69862 123145393156096 Not Found: /init
-WARNING 2020-08-06 10:16:10,992 log 69862 123145403666432 Not Found: /errorhandler
-WARNING 2020-08-06 10:16:10,993 log 69862 123145398411264 Not Found: /weather
-WARNING 2020-08-06 10:16:10,993 basehttp 69862 123145403666432 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:16:10,994 basehttp 69862 123145393156096 "POST /init HTTP/1.1" 404 2165
-WARNING 2020-08-06 10:16:10,994 basehttp 69862 123145398411264 "POST /weather HTTP/1.1" 404 2174
-WARNING 2020-08-06 10:16:11,139 log 69862 123145398411264 Not Found: /errorhandler
-WARNING 2020-08-06 10:16:11,139 basehttp 69862 123145398411264 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:16:11,147 log 69862 123145398411264 Not Found: /errorhandler
-WARNING 2020-08-06 10:16:11,148 basehttp 69862 123145398411264 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:16:21,459 log 69862 123145398411264 Not Found: /errorhandler
-WARNING 2020-08-06 10:16:21,459 basehttp 69862 123145398411264 "POST /errorhandler HTTP/1.1" 404 2189
-INFO 2020-08-06 10:17:02,813 basehttp 69862 123145408921600 "GET / HTTP/1.1" 200 930645
-INFO 2020-08-06 10:17:02,868 basehttp 69862 123145408921600 "GET /static/css/main.css HTTP/1.1" 200 6041
-INFO 2020-08-06 10:17:02,876 basehttp 69862 123145419431936 "GET /static/js/cookiemonster.js HTTP/1.1" 200 2761
-INFO 2020-08-06 10:17:02,879 basehttp 69862 123145408921600 "GET /static/js/jquery-1.8.3.min.js HTTP/1.1" 200 93636
-INFO 2020-08-06 10:17:02,879 basehttp 69862 123145424687104 "GET /static/css/jquery-ui-timepicker-addon.min.css HTTP/1.1" 200 1901
-INFO 2020-08-06 10:17:02,880 basehttp 69862 123145414176768 "GET /static/js/station_map.js HTTP/1.1" 200 48134
-INFO 2020-08-06 10:17:02,880 basehttp 69862 123145419431936 "GET /static/js/jquery-ui-timepicker-addon.min.js HTTP/1.1" 200 41441
-INFO 2020-08-06 10:17:05,609 basehttp 69862 123145414176768 "GET /static/images/favicon.png HTTP/1.1" 200 40821
-WARNING 2020-08-06 10:17:09,095 log 69862 123145414176768 Not Found: /init
-WARNING 2020-08-06 10:17:09,097 log 69862 123145424687104 Not Found: /errorhandler
-WARNING 2020-08-06 10:17:09,099 log 69862 123145419431936 Not Found: /weather
-WARNING 2020-08-06 10:17:09,099 basehttp 69862 123145414176768 "POST /init HTTP/1.1" 404 2165
-WARNING 2020-08-06 10:17:09,099 basehttp 69862 123145424687104 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:17:09,100 basehttp 69862 123145419431936 "POST /weather HTTP/1.1" 404 2174
-WARNING 2020-08-06 10:17:09,211 log 69862 123145414176768 Not Found: /errorhandler
-WARNING 2020-08-06 10:17:09,211 basehttp 69862 123145414176768 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:17:09,212 log 69862 123145419431936 Not Found: /errorhandler
-WARNING 2020-08-06 10:17:09,213 basehttp 69862 123145419431936 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:17:29,928 log 69862 123145414176768 Not Found: /errorhandler
-WARNING 2020-08-06 10:17:29,928 basehttp 69862 123145414176768 "POST /errorhandler HTTP/1.1" 404 2189
-WARNING 2020-08-06 10:17:32,553 log 69862 123145414176768 Not Found: /errorhandler
-WARNING 2020-08-06 10:17:32,553 basehttp 69862 123145414176768 "POST /errorhandler HTTP/1.1" 404 2189
+  File "/Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py", line 186, in logout
+    print(request.session['userid'])
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/contrib/sessions/backends/base.py", line 64, in __getitem__
+    return self._session[key]
+KeyError: 'userid'
+ERROR 2020-08-07 09:46:21,957 basehttp 75237 123145423261696 "POST /user_manage/logout/ HTTP/1.1" 500 70878
+INFO 2020-08-07 09:47:52,039 autoreload 75237 4514713024 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 09:47:52,758 autoreload 75254 4516613568 Watching for file changes with StatReloader
+INFO 2020-08-07 09:48:00,274 basehttp 75254 123145507893248 "GET /user_manage/login/ HTTP/1.1" 200 2695
+INFO 2020-08-07 09:48:11,438 basehttp 75254 123145507893248 "POST /user_manage/login/ HTTP/1.1" 200 671
+INFO 2020-08-07 09:48:27,900 basehttp 75254 123145507893248 "POST /user_manage/logout/ HTTP/1.1" 302 0
+INFO 2020-08-07 09:48:27,953 basehttp 75254 123145507893248 "GET /app01/index HTTP/1.1" 200 930671
+WARNING 2020-08-07 09:48:28,310 log 75254 123145507893248 Not Found: /init
+WARNING 2020-08-07 09:48:28,311 log 75254 123145518403584 Not Found: /errorhandler
+WARNING 2020-08-07 09:48:28,312 log 75254 123145513148416 Not Found: /weather
+WARNING 2020-08-07 09:48:28,313 basehttp 75254 123145507893248 "POST /init HTTP/1.1" 404 2167
+WARNING 2020-08-07 09:48:28,313 basehttp 75254 123145518403584 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:48:28,313 basehttp 75254 123145513148416 "POST /weather HTTP/1.1" 404 2176
+WARNING 2020-08-07 09:48:28,429 log 75254 123145518403584 Not Found: /errorhandler
+WARNING 2020-08-07 09:48:28,429 log 75254 123145513148416 Not Found: /errorhandler
+WARNING 2020-08-07 09:48:28,430 basehttp 75254 123145518403584 "POST /errorhandler HTTP/1.1" 404 2191
+WARNING 2020-08-07 09:48:28,430 basehttp 75254 123145513148416 "POST /errorhandler HTTP/1.1" 404 2191
+INFO 2020-08-07 10:00:56,729 autoreload 75254 4516613568 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-07 10:00:57,771 autoreload 75459 4563783104 Watching for file changes with StatReloader

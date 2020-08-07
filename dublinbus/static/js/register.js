@@ -16,15 +16,15 @@ function getCookie(name) { //csrf verification
 }
 var csrftoken = getCookie('csrftoken'); //store the cookie msg in "csrftoken"
 // $("#register_submit").click(function () {
-//     var fn = $("#firstname").val();
-//     if ($("#firstname").val() == ""){alert('Please fill in your First Name *');return;}
+//     var fn = $("#username").val();
+//     if ($("#username").val() == ""){alert('Please fill in your First Name *');return;}
 //     else if ($("#lastname").val() == ""){alert('Please fill in your Last Name *');return;}
 //     else if ($("#pwd").val() == ""){alert('Please fill the password');return;}
 //     else if ($("#pwdcfm").val() == ""){alert('Please confirm the password');return;}
 //     else if ($("#email").val() == ""){alert('Please fill in your email');return;}
 //     else if ($("#answer").val() == ""){alert('Please answer your question');return;}
 //     else{
-//         var fn = $("#firstname").val();
+//         var fn = $("#username").val();
 //         var ln = $("#lastname").val();
 //         var pwd = $("#pwd").val();
 //         var pwdcfm = $("#pwdcfm").val();
@@ -35,7 +35,7 @@ var csrftoken = getCookie('csrftoken'); //store the cookie msg in "csrftoken"
 //         var gender = $('input[name=age]:checked').val();
 //     }
 // })
-var error_first_name = false;
+var error_username = false;
 var error_last_name = false;
 var error_password = false;
 var error_check_password = false;
@@ -45,8 +45,8 @@ var error_question = false;
 var error_check = false;
 
 $(document).ready(function () {
-    $('#firstname').blur(function () {
-        check_first_name();
+    $('#username').blur(function () {
+        check_username();
     });
 
     $('#lastname').blur(function () {
@@ -85,34 +85,34 @@ $(document).ready(function () {
     });
 })
 
-function check_first_name(){
-    var len = $('#firstname').val().length;
+function check_username(){
+    var len = $('#username').val().length;
     if(len<1)
     {
-        $('#firstname').next().html('please input your first name')
-        $('#firstname').next().show();
-        error_first_name = true;
+        $('#username').next().html('please input your first name')
+        $('#username').next().show();
+        error_username = true;
     }
     else
     {
-        $('#firstname').next().hide();
-        error_first_name = false;
+        $('#username').next().hide();
+        error_username = false;
     }
 }
-function check_last_name(){
-    var len = $('#lastname').val().length;
-    if(len<1)
-    {
-        $('#lastname').next().html('please input your first name')
-        $('#lastname').next().show();
-        error_last_name = true;
-    }
-    else
-    {
-        $('#lastname').next().hide();
-        error_last_name = false;
-    }
-}
+// function check_last_name(){
+//     var len = $('#lastname').val().length;
+//     if(len<1)
+//     {
+//         $('#lastname').next().html('please input your first name')
+//         $('#lastname').next().show();
+//         error_last_name = true;
+//     }
+//     else
+//     {
+//         $('#lastname').next().hide();
+//         error_last_name = false;
+//     }
+// }
 
 function check_pwd(){
     var len = $('#pwd').val().length;
@@ -197,15 +197,15 @@ function check_question(){
 
 
 function validate() {
-    check_first_name();
-    check_last_name();
+    check_username();
+    // check_last_name();
     check_pwd();
     check_pwdcfm();
     check_email();
     check_answer();
     check_question();
 
-    if (error_first_name == false && error_last_name == false && error_password == false && error_check_password == false && error_email == false && error_answer == false && error_question == false && error_check == false) {
+    if (error_username == false && error_password == false && error_check_password == false && error_email == false && error_answer == false && error_question == false && error_check == false) {
         return true;
     } else {
         return false;

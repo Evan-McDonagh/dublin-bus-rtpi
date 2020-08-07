@@ -190,4 +190,8 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
 ]
 
+AUTHENTICATION_BACKENDS = [
+        'user_manage.views.UserLoginBackend',
+]
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
