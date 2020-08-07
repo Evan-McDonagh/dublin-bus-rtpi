@@ -464,6 +464,11 @@ def routesearch(request):
 # to extract stop details from stop-data.json
 def extractloc(routestopnos, allalongroutestops):
     count = 1
+    rtnos = []
+    for stopno in routestopnos:
+        if stopno not in rtnos:
+            rtnos.append(stopno)
+    routestopnos = rtnos
     for stopno in routestopnos:
         for stop in allstops:
             STOP = allstops[stop]

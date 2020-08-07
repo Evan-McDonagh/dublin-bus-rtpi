@@ -463,6 +463,12 @@ function getStopInfo(marker, stopKey) {
             // alert("hi");
             modal.classList.add('modal-active');
             burger.classList.add('toggle');
+
+            var stop_click_input = document.getElementById("stop_id");
+            var stop_click_id = stopdata[stopKey]["stopno"];
+            stop_click_input.setAttribute("value", stop_click_id);
+            // console.log(stop_click_input)
+            
             $('#stopid').siblings().hide();
                 $('#twitterid').show();
                 $('#stopid').show();
@@ -473,7 +479,8 @@ function getStopInfo(marker, stopKey) {
                 $(".db").removeClass("show");
 
                 // console.log(stopdata[stopKey]["stopno"])
-                var stop_click_id = stopdata[stopKey]["stopno"];
+                
+
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     type:"POST",
@@ -485,8 +492,12 @@ function getStopInfo(marker, stopKey) {
                         // console.log(result);
                         var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                         for (var i =0; i< result["results"].length; i++){
-                            
-                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                            if (result["results"][i]["duetime"] == "Due"){
+                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +" Due</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                            }
+                            else{
+                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["duetime"] +" mins</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                            }
                         }
                         real_info += "</table>";
                         $("#stoparea").html(real_info);
@@ -599,8 +610,13 @@ function stopsearch() {
                 // console.log(result);
                 var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                 for (var i =0; i< result["results"].length; i++){
+                    if (result["results"][i]["duetime"] == "Due"){
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +" Due</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                    }
+                    else{
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["duetime"] +" mins</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                    }
                     
-                    real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
                 }
                 real_info += "</table>";
                 $("#stoparea").html(real_info);
