@@ -173,22 +173,64 @@ function calcRoute() {
     alongroutemarkers = [];
     clearmarkers(nearmemarkers);
     segmentsinfo = [];
+    
+    var currentTime = new Date(Date.now());
+    var departureTime = new Date(getDate());
+
+    console.log(departureTime);
     var request = {
         origin: {query: document.getElementById('origin').value},
         destination: {query: document.getElementById('destination').value},
         travelMode: 'TRANSIT',
         transitOptions:{
-            departureTime: new Date(document.getElementById("datetimepicker1").value),
+            departureTime: departureTime
+            // departureTime: departureTime,
             // routingPreference: 'LESS_WALKING'
         },
         provideRouteAlternatives: false,
     };
 
+    var diffDays = parseInt((departureTime - currentTime) / (1000 * 60 * 60 * 24), 10); 
+
+    if (diffDays > 55) {
+        var dayDiff;
+        if (currentTime.getDay() <= departureTime.getDay()) {
+            dayDiff = departureTime.getDay() - currentTime.getDay();
+        }   else {
+            dayDiff = 7 - (currentTime.getDay() - departureTime.getDay());
+        }
+
+        var newTime = new Date(currentTime.getTime());
+
+        newTime.setDate(newTime.getDate() + dayDiff);
+        newTime.setHours(departureTime.getHours());
+        newTime.setMinutes(departureTime.getMinutes());
+        newTime.setSeconds(departureTime.getSeconds());
+
+        request.transitOptions.departureTime = newTime;
+    }
+
+    // var directionsServiceTest = new google.maps.DirectionsService();
+
+    // directionsServiceTest.route(request, function(result, status) {
+    //     if (status != 'OK') {
+    //         console.log(status)
+    //         // var newDate = currentTime;
+    //         // newDate.setDate(currentTime.getDate() + ((newDate.getDay() - departureTime.getDay()) % 7));
+    //         // request.transitOptions.departureTime = newDate.getTime();
+    //         // console.log(request.transitOptions.departureTime);
+    //         request.transitOptions.departureTime = currentTime;
+    //     }
+    // });
+
+    console.log(request.transitOptions.departureTime);
+
     directionsRenderer.setMap(map);
     directionsService.route(request, function(result, status) {
+        console.log(status);
+        console.log(request);
     if (status == 'OK') {
         directionresults = [result];
-        console.log(directionresults);
         var routes_dict = {}
         // var route_choices = {}
         var routes_list = result['routes'];
@@ -1227,6 +1269,15 @@ function invalidDatetime() {
 
     html_out += '</tr></table></div>'
     document.getElementById('directions-body').innerHTML += html_out;
+}
+
+function getDate() {
+    dateText = document.getElementById("datetimepicker1").value;
+    if (dateText == '') {
+        return Date(Date.now());
+    } else {
+        return dateText;
+    }
 }
 
 //

@@ -52,8 +52,8 @@ def find_forecast(datetime_departure):
     avg_monthly_weather = pickle.load(open(filepath, 'rb'))
 
     f_out = {
-        'feels_like': avg_monthly_weather['feels_like'].iloc[datetime_departure.month],
-        'weather_main': avg_monthly_weather['weather_main'].iloc[datetime_departure.month]
+        'feels_like': avg_monthly_weather['feels_like'].iloc[datetime_departure.month-1],
+        'weather_main': avg_monthly_weather['weather_main'].iloc[datetime_departure.month-1]
     }
     return f_out
 
