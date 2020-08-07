@@ -105,7 +105,7 @@ function initMap(){
 function sendlocation(pos, map){
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/app01/init',
+        url:'/app01//init',
         type: 'POST',
         data: pos,
         dataType: 'json',
@@ -130,7 +130,7 @@ function sendlocation(pos, map){
 function realtimeweather(pos) {
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/app01/weather',
+        url: '/app01//weather',
         type: 'POST',
         data:pos,
         dataType: 'json',
@@ -329,7 +329,7 @@ function calcRoute() {
                 var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
-                    url: '/app01/rtmarkerinfo',
+                    url:'/app01/rtmarkerinfo',
                     data: {'id': id},
                     type: 'POST',
                     dataType: 'json',
@@ -361,7 +361,7 @@ function calcRoute() {
                 // var post_data = {'segmentsinfo': segmentsinfo, 'bounds': bounds}
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
-                    url: '/app01/printresult',
+                    url:'/app01/printresult',
                     // data: post_data,
                     data: JSON.stringify([segmentsinfo, bounds]),
                     type: 'POST',
@@ -637,7 +637,7 @@ function stopsearch() {
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
             type:"POST",
-            url: "app01/stop/",
+            url: "/app01/stop/",
             cache: false,
             dataType: "json",
             data:{'stop_id':$('#stop_id').val()},
@@ -721,7 +721,7 @@ function showstopsearchcontent(){
 
 function routesearch(){
     clearmarkers(Outboundmarkers);
-    clearpolylines(Outboundpolyline)
+    clearpolylines(Outboundpolyline);
     clearmarkers(nearmemarkers);
     clearmarkers(alongroutemarkers);
     clearmarkers(originmarkers);
@@ -824,7 +824,7 @@ function routesearch(){
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
                     showmarkers(Inboundmarkers, map);
-                    // showpolylines(Inboundpolyline, map)
+                    showpolylines(Inboundpolyline, map)
                     //     // for (var marker in Inboundmarkers){
                     //     //     var MARKER = Inboundmarkers[marker]
                     //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
@@ -844,7 +844,7 @@ function routesearch(){
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
                     showmarkers(Outboundmarkers, map);
-                    // showpolylines(Outboundpolyline, map)
+                    showpolylines(Outboundpolyline, map)
                 });
             }
         },
