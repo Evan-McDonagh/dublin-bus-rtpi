@@ -143,7 +143,7 @@
                                 {% csrf_token %}
                                 <input type='text' id = "username" name = "username" placeholder="Username">
                                 <input type='password' id = "password" name = "password" placeholder="Password">
-                                <button id = "lpbtn" type="button">Submit</button>
+                                <button id = "lpbtn" type="button">Find Route</button>
                             </form>
                         </div>
                         <div id ="lparea"></div>
@@ -164,8 +164,8 @@
                                 {% csrf_token %}
                                 <i class = "far fa-heart star" ></i>
                                 <input type='text' id = "stop_id" name = "stop_id" placeholder="Stop ID">
-                                <button id = "stopbtn" type="button" onclick="stopsearch()">Submit</button>
-                                <div ><button id = "markerbtn"  type="button" onclick="showandhide()" >Show</button></div>
+                                <button id = "stopbtn" type="button" onclick="stopsearch()">Find Stop</button>
+                                <div ><button id = "markerbtn"  type="button" onclick="showandhide()" >Show Stops</button></div>
                                 
                             </form>
                         </div>
