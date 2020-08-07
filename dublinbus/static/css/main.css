@@ -170,6 +170,7 @@ nav {
 
 .form {
     display: flex;
+    padding-bottom: 10px;
 }
 
 .input-fields {
@@ -253,6 +254,40 @@ button {
 
 .table-header {
     font-variant: small-caps;
+}
+
+
+
+/*Search By Routes direction links */
+
+#singleroutesearchresult {
+    bottom:10px;
+}
+
+#singleroutesearchresult div {
+    bottom: 10px;
+    vertical-align: middle;
+    overflow:hidden; 
+    word-wrap:break-word;
+    min-height: 30px;
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+#singleroutesearchresult a {
+    line-height: 30px;
+    vertical-align: middle;
+    word-wrap: break-word;
+    font-size: 12px;
+}
+
+#singleroutesearchresult a:hover {
+    color: #23b36f;
+}
+
+#singleroutesearchresult span {
+    line-height: 30px;
+    vertical-align: middle;
 }
 
 
@@ -350,3 +385,5 @@ button {
         font-size: 12px;
     }
 }
+
+
