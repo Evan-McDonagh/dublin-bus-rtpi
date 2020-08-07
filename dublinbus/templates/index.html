@@ -82,8 +82,8 @@
                     <span class="material-icons nav-icon">payment</span>
                     <span class="nav-text">Leapcard</span>
                 </a>
-                <a class="nav-link" href="#" id="favorite" class="dropbtn" onclick="dropDown()">
-                    <span class="material-icons nav-icon">star</span>
+                <a class="nav-link" href="#" id="favorite" class="dropbtn">
+                    <span class="material-icons nav-icon">favorite</span>
                     <span class="nav-text">Favorites</span>
                 </a>
             </div>
@@ -91,7 +91,7 @@
                 <div class="forms">
                     <div id = "searchid">
                         <div class="form">
-                            <form class= "input-fields" action="" method="post">
+                            <form id="routesearch" class= "input-fields" action="" method="post">
                                 
                                 <i class = "far fa-heart place" ></i>
                                 <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')">
@@ -125,9 +125,9 @@
                         <div class="form">
                             <form class="input-fields" method="post" id = "routeadd">
                                 {% csrf_token %}
-                                Route: <i class = "far fa-heart route" ></i>
-                                <input type='text' id = "route_id" name = "route_id">
-                                <button id = "stopbtn" type="button" onclick="routesearch()">Submit</button>
+                                <i class = "far fa-heart route" ></i>
+                                <input type='text' id = "route_id" name = "route_id" placeholder="Route ID">
+                                <button id = "routebtn" type="button" onclick="routesearch()">Submit</button>
 
                                 <div id="singleroutesearchresult"></div>
                             </form>
@@ -139,7 +139,7 @@
 
                     <div id = "leapcardid">
                         <div class="form">
-                            <form class="input-fields" method="post" id = "lpadd">
+                            <form id="leaplogin" class="input-fields" method="post" id = "lpadd">
                                 {% csrf_token %}
                                 <input type='text' id = "username" name = "username" placeholder="Username">
                                 <input type='password' id = "password" name = "password" placeholder="Password">
@@ -211,6 +211,42 @@
     modalSlide();
 </script>
 
+<script>
+    var input = document.getElementById("route_id");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("routebtn").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("routesearch");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("go").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("leaplogin");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("lpbtn").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("stop_id");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("stopbtn").click();
+        }
+    });
+</script>
 
 <script>
 	$('#datetimepicker1').datetimepicker({
@@ -437,17 +473,24 @@
             
                 for (let i = 0; i<stopArr.length; i++){
                     let stop = stopArr[i];
+                    
+                    var wrapper = document.createElement("div");
+                    wrapper.className = "favs-wrapper"; 
+
                     var stop_elem = document.createElement("span");
                     var t = document.createTextNode(stop);
                     stop_elem.appendChild(t); 
-                    
                     // iconstar = document.createElement("i");
                     // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                    iconstar = document.createElement("button");
-                     
-                    tableContent.appendChild(stop_elem);
-                    tableContent.appendChild(iconstar);
+                    iconstar = document.createElement("a");
+                    iconstar.innerHTML = "&times;";
+                    
+                    wrapper.appendChild(stop_elem);
+                    wrapper.appendChild(iconstar);
+
+                    tableContent.appendChild(wrapper);
+                    
                     document.getElementById("favorite").appendChild(tableContent);
 
                     // delete the favorite stop when they click the button
@@ -532,6 +575,11 @@
         
             for (let i = 0; i<placeArr.length; i++){
                 let place = placeArr[i];
+
+                //Creating wrapper div for each fav
+                var wrapper = document.createElement("div");
+                wrapper.className = "favs-wrapper"; 
+
                 var place_elem = document.createElement("span");
                 var t = document.createTextNode(place);
                 place_elem.appendChild(t); 
@@ -539,10 +587,13 @@
                 // iconstar = document.createElement("i");
                 // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                iconstar = document.createElement("button");
+                iconstar = document.createElement("a");
+                iconstar.innerHTML = "&times;";
                  
-                tableContent.appendChild(place_elem);
-                tableContent.appendChild(iconstar);
+                wrapper.appendChild(place_elem);
+                wrapper.appendChild(iconstar);
+
+                tableContent.appendChild(wrapper);
                 document.getElementById("favorite").appendChild(tableContent);
 
                 // delete the place when they click the button
@@ -627,6 +678,10 @@
         
             for (let i = 0; i<routeArr.length; i++){
                 let route = routeArr[i];
+
+                var wrapper = document.createElement("div");
+                wrapper.className = "favs-wrapper";
+
                 var route_elem = document.createElement("span");
                 var t = document.createTextNode(route);
                 route_elem.appendChild(t); 
@@ -634,11 +689,16 @@
                 // iconstar = document.createElement("i");
                 // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                iconstar = document.createElement("button");
-                 
-                tableContent.appendChild(route_elem);
-                tableContent.appendChild(iconstar);
+                iconstar = document.createElement("a");
+                iconstar.innerHTML = "&times;";
+
+                wrapper.appendChild(route_elem);
+                wrapper.appendChild(iconstar);
+
+                tableContent.appendChild(wrapper);
+
                 document.getElementById("favorite").appendChild(tableContent);
+            
 
                 // delete the favorite stop when they click the button
                 iconstar.addEventListener('click', function(){

@@ -433,9 +433,9 @@ function getStopInfo(marker, stopKey) {
     document.body.appendChild(content);
 
     var stop_elem = document.createElement("span");
-    var stop_text = "Stop_number:"+stopdata[stopKey]["stopno"];
+    var stop_text = "Stop Number: "+stopdata[stopKey]["stopno"];
     var br = document.createElement("br");
-    var route_text = "Routes:"+stopdata[stopKey]['routes'];
+    var route_text = "Routes: "+stopdata[stopKey]['routes'];
     var t = document.createTextNode(stop_text);
     var m = document.createTextNode(route_text);
 
@@ -444,12 +444,16 @@ function getStopInfo(marker, stopKey) {
     stop_elem.appendChild(br);
     stop_elem.appendChild(m);
 
-    var space = document.createElement("span");
-    
+    var space = document.createElement("div");
+    space.setAttribute("style", "width: 100%; min-height: 30px;");
 
     iconstar = document.createElement("button");
+    iconstar.setAttribute("style", "min-width: 200px; width: auto;bottom: 10px;left:12px;");
+    iconstar.innerHTML = "Click for Real Time Info";
+    space.appendChild(iconstar);
+
     // iconstar.setAttribute("id","infowindow_button");
-    iconstar.setAttribute("style","width:1px");
+    //iconstar.setAttribute("style","font-size:12px;");
     content.appendChild(stop_elem);
     content.appendChild(space);
     content.appendChild(iconstar);
@@ -463,12 +467,6 @@ function getStopInfo(marker, stopKey) {
             // alert("hi");
             modal.classList.add('modal-active');
             burger.classList.add('toggle');
-
-            var stop_click_input = document.getElementById("stop_id");
-            var stop_click_id = stopdata[stopKey]["stopno"];
-            stop_click_input.setAttribute("value", stop_click_id);
-            // console.log(stop_click_input)
-            
             $('#stopid').siblings().hide();
                 $('#twitterid').show();
                 $('#stopid').show();
@@ -479,8 +477,7 @@ function getStopInfo(marker, stopKey) {
                 $(".db").removeClass("show");
 
                 // console.log(stopdata[stopKey]["stopno"])
-                
-
+                var stop_click_id = stopdata[stopKey]["stopno"];
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     type:"POST",
@@ -492,12 +489,8 @@ function getStopInfo(marker, stopKey) {
                         // console.log(result);
                         var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                         for (var i =0; i< result["results"].length; i++){
-                            if (result["results"][i]["duetime"] == "Due"){
-                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +" Due</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                            }
-                            else{
-                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["duetime"] +" mins</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                            }
+                            
+                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
                         }
                         real_info += "</table>";
                         $("#stoparea").html(real_info);
@@ -610,13 +603,8 @@ function stopsearch() {
                 // console.log(result);
                 var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                 for (var i =0; i< result["results"].length; i++){
-                    if (result["results"][i]["duetime"] == "Due"){
-                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +" Due</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                    }
-                    else{
-                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["duetime"] +" mins</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                    }
                     
+                    real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
                 }
                 real_info += "</table>";
                 $("#stoparea").html(real_info);
@@ -710,7 +698,7 @@ function routesearch(){
         success: function (routestops) {
             var directions = Object.keys(routestops);
             if (directions.length == 1) {
-                var in_out_btn = "<button id=" + "Inbound>" + directions[0] + "</button>";
+                var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + directions[0] + "</a></div>"
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
                 alert(routestops[directions[0]]);
                 //     // for (var marker in Inboundmarkers){
