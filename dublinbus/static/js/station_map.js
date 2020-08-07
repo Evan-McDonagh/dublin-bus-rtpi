@@ -105,7 +105,7 @@ function initMap(){
 function sendlocation(pos, map){
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/init',
+        url:'/app01//init',
         type: 'POST',
         data: pos,
         dataType: 'json',
@@ -130,7 +130,7 @@ function sendlocation(pos, map){
 function realtimeweather(pos) {
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/weather',
+        url: '/app01//weather',
         type: 'POST',
         data:pos,
         dataType: 'json',
@@ -329,7 +329,7 @@ function calcRoute() {
                 var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
-                    url: '/rtmarkerinfo',
+                    url:'/app01/rtmarkerinfo',
                     data: {'id': id},
                     type: 'POST',
                     dataType: 'json',
@@ -361,7 +361,7 @@ function calcRoute() {
                 // var post_data = {'segmentsinfo': segmentsinfo, 'bounds': bounds}
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
-                    url: '/printresult',
+                    url:'/app01/printresult',
                     // data: post_data,
                     data: JSON.stringify([segmentsinfo, bounds]),
                     type: 'POST',
@@ -523,7 +523,7 @@ function getStopInfo(marker, stopKey) {
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     type:"POST",
-                    url: "/stop/",
+                    url: "/app01/stop/",
                     cache: false,
                     dataType: "json",
                     data:{'stop_id':stop_click_id},
@@ -637,7 +637,7 @@ function stopsearch() {
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
             type:"POST",
-            url: "/stop/",
+            url: "/app01/stop/",
             cache: false,
             dataType: "json",
             data:{'stop_id':$('#stop_id').val()},
@@ -721,7 +721,7 @@ function showstopsearchcontent(){
 
 function routesearch(){
     clearmarkers(Outboundmarkers);
-    clearpolylines(Outboundpolyline)
+    clearpolylines(Outboundpolyline);
     clearmarkers(nearmemarkers);
     clearmarkers(alongroutemarkers);
     clearmarkers(originmarkers);
@@ -731,7 +731,7 @@ function routesearch(){
     var route = $("#route_id").val();
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/routesearch',
+        url: '/app01/routesearch',
         type: "POST",
         cache: false,
         dataType: "json",
@@ -859,7 +859,7 @@ function routesearch(){
         var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
-            url: '/rtmarkerinfo',
+            url: '/app01/rtmarkerinfo',
             // url:"https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + '11' +"&format=json",
             type: "POST",
             cache: false,
@@ -1119,7 +1119,7 @@ function showPrediction(segmentsinfo){
     // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
     $.ajax({
         headers: {'X-CSRFToken': csrftoken}, //just for security issue
-        url: '/showprediction', //correspond to a route in urls.py and the function "showprediction(request)" in views.py will be triggered
+        url: '/app01/showprediction', //correspond to a route in urls.py and the function "showprediction(request)" in views.py will be triggered
         data: JSON.stringify(segmentsinfo), // the data that will be post to backend. if the data is not a dictionary, should use JSON.stringfy(segs)
         type: 'POST', // could be 'POST' or 'GET'
         dataType: 'json',// declare the type of sent data
@@ -1233,7 +1233,7 @@ function renderLegCard(seg) {
 function errorhandler(msgtobackend, msgtoalert) {
     $.ajax({
         headers:{'X-CSRFToken': csrftoken},
-        url:'/errorhandler',
+        url:'/app01/errorhandler',
         type:'POST',
         dataType:'json',
         data:JSON.stringify(msgtobackend),
