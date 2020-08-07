@@ -197,10 +197,9 @@ function calcRoute() {
         if (currentTime.getDay() <= departureTime.getDay()) {
             dayDiff = departureTime.getDay() - currentTime.getDay();
         }   else {
-            dayDiff = 6 - currentTime.getDay() - departureTime.getDay();
+            dayDiff = 7 - (currentTime.getDay() - departureTime.getDay());
         }
 
-        var dayDiff = (departureTime.getDay() - currentTime.getDay()) % 7;
         var newTime = new Date(currentTime.getTime());
 
         newTime.setDate(newTime.getDate() + dayDiff);
