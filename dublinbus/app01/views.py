@@ -98,6 +98,7 @@ def stop(request):
 
 # get user address info by user's location
 def init(request):
+    print('init')
     inifo = {}
     if request.method == 'POST':
         lat = request.POST.get('lat')

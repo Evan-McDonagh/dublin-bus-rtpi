@@ -125,6 +125,15 @@ def login(request):
         if not all([username, password]):
             return render(request, 'login.html', {'errmsg': 'username or password missed'})
 
+        # check whether the user is a registered user.
+        try:
+            user = User.objects.get(name=username)
+        except:
+            user = None
+        if user == None:
+            return render(request, 'login.html', {'errmsg': 'Username does not exist, cilck "register" to become a registered user.'})
+            # return HttpResponse({'errmsg': 'Username does not exist, cilck "register" to become a registered user.'})
+
         # start verifying the data is correct
         user = authenticate(request=request, username=username, password=password)
         if user is not None:
@@ -152,20 +161,22 @@ def login(request):
             return render(request, "userinfo.html", {'username': username})
         else:
             # password is wrong
-            return render(request, 'login.html', {'errmsg': 'username does not match password'})
+            return render(request, 'login.html', {'errmsg': 'username does not match password', "username":username})
 
 
 def logout(request):
     if request.method == 'POST':
         try:
             print(request.session['userid'])
-            del request.session['userid']
+            # del request.session['userid'] # del do not delete session data from session table
+            request.session.flush()   # flush delete session data data from session table
+            # request.session.clear()  # clear do not delete session data from session table
         except KeyError:
             pass
-        # try:
-        #     print(request.session['userid'])
-        # except KeyError:
-        #     print('keyerror')
+        try:
+            print(request.session['userid'])
+        except KeyError:
+            print('keyerror')
         return redirect(reverse('app01:index'))
 
 
