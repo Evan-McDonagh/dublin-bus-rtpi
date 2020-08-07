@@ -433,9 +433,9 @@ function getStopInfo(marker, stopKey) {
     document.body.appendChild(content);
 
     var stop_elem = document.createElement("span");
-    var stop_text = "Stop_number:"+stopdata[stopKey]["stopno"];
+    var stop_text = "Stop Number: "+stopdata[stopKey]["stopno"];
     var br = document.createElement("br");
-    var route_text = "Routes:"+stopdata[stopKey]['routes'];
+    var route_text = "Routes: "+stopdata[stopKey]['routes'];
     var t = document.createTextNode(stop_text);
     var m = document.createTextNode(route_text);
 
@@ -444,12 +444,16 @@ function getStopInfo(marker, stopKey) {
     stop_elem.appendChild(br);
     stop_elem.appendChild(m);
 
-    var space = document.createElement("span");
-    
+    var space = document.createElement("div");
+    space.setAttribute("style", "width: 100%; min-height: 30px;");
 
     iconstar = document.createElement("button");
+    iconstar.setAttribute("style", "min-width: 200px; width: auto;bottom: 10px;left:12px;");
+    iconstar.innerHTML = "Click for Real Time Info";
+    space.appendChild(iconstar);
+
     // iconstar.setAttribute("id","infowindow_button");
-    iconstar.setAttribute("style","width:1px");
+    //iconstar.setAttribute("style","font-size:12px;");
     content.appendChild(stop_elem);
     content.appendChild(space);
     content.appendChild(iconstar);
