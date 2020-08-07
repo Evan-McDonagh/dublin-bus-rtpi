@@ -173,22 +173,64 @@ function calcRoute() {
     alongroutemarkers = [];
     clearmarkers(nearmemarkers);
     segmentsinfo = [];
+    
+    var currentTime = new Date(Date.now());
+    var departureTime = new Date(getDate());
+
+    console.log(departureTime);
     var request = {
         origin: {query: document.getElementById('origin').value},
         destination: {query: document.getElementById('destination').value},
         travelMode: 'TRANSIT',
         transitOptions:{
-            departureTime: new Date(document.getElementById("datetimepicker1").value),
+            departureTime: departureTime
+            // departureTime: departureTime,
             // routingPreference: 'LESS_WALKING'
         },
         provideRouteAlternatives: false,
     };
 
+    var diffDays = parseInt((departureTime - currentTime) / (1000 * 60 * 60 * 24), 10); 
+
+    if (diffDays > 55) {
+        var dayDiff;
+        if (currentTime.getDay() <= departureTime.getDay()) {
+            dayDiff = departureTime.getDay() - currentTime.getDay();
+        }   else {
+            dayDiff = 7 - (currentTime.getDay() - departureTime.getDay());
+        }
+
+        var newTime = new Date(currentTime.getTime());
+
+        newTime.setDate(newTime.getDate() + dayDiff);
+        newTime.setHours(departureTime.getHours());
+        newTime.setMinutes(departureTime.getMinutes());
+        newTime.setSeconds(departureTime.getSeconds());
+
+        request.transitOptions.departureTime = newTime;
+    }
+
+    // var directionsServiceTest = new google.maps.DirectionsService();
+
+    // directionsServiceTest.route(request, function(result, status) {
+    //     if (status != 'OK') {
+    //         console.log(status)
+    //         // var newDate = currentTime;
+    //         // newDate.setDate(currentTime.getDate() + ((newDate.getDay() - departureTime.getDay()) % 7));
+    //         // request.transitOptions.departureTime = newDate.getTime();
+    //         // console.log(request.transitOptions.departureTime);
+    //         request.transitOptions.departureTime = currentTime;
+    //     }
+    // });
+
+    console.log(request.transitOptions.departureTime);
+
     directionsRenderer.setMap(map);
     directionsService.route(request, function(result, status) {
+        console.log(status);
+        console.log(request);
     if (status == 'OK') {
         directionresults = [result];
-        console.log(directionresults);
         var routes_dict = {}
         // var route_choices = {}
         var routes_list = result['routes'];
@@ -433,9 +475,9 @@ function getStopInfo(marker, stopKey) {
     document.body.appendChild(content);
 
     var stop_elem = document.createElement("span");
-    var stop_text = "Stop_number:"+stopdata[stopKey]["stopno"];
+    var stop_text = "Stop Number: "+stopdata[stopKey]["stopno"];
     var br = document.createElement("br");
-    var route_text = "Routes:"+stopdata[stopKey]['routes'];
+    var route_text = "Routes: "+stopdata[stopKey]['routes'];
     var t = document.createTextNode(stop_text);
     var m = document.createTextNode(route_text);
 
@@ -444,12 +486,16 @@ function getStopInfo(marker, stopKey) {
     stop_elem.appendChild(br);
     stop_elem.appendChild(m);
 
-    var space = document.createElement("span");
-    
+    var space = document.createElement("div");
+    space.setAttribute("style", "width: 100%; min-height: 30px;");
 
     iconstar = document.createElement("button");
+    iconstar.setAttribute("style", "min-width: 200px; width: auto;bottom: 10px;left:12px;");
+    iconstar.innerHTML = "Click for Real Time Info";
+    space.appendChild(iconstar);
+
     // iconstar.setAttribute("id","infowindow_button");
-    iconstar.setAttribute("style","width:1px");
+    //iconstar.setAttribute("style","font-size:12px;");
     content.appendChild(stop_elem);
     content.appendChild(space);
     content.appendChild(iconstar);
@@ -463,12 +509,6 @@ function getStopInfo(marker, stopKey) {
             // alert("hi");
             modal.classList.add('modal-active');
             burger.classList.add('toggle');
-
-            var stop_click_input = document.getElementById("stop_id");
-            var stop_click_id = stopdata[stopKey]["stopno"];
-            stop_click_input.setAttribute("value", stop_click_id);
-            // console.log(stop_click_input)
-            
             $('#stopid').siblings().hide();
                 $('#twitterid').show();
                 $('#stopid').show();
@@ -479,8 +519,7 @@ function getStopInfo(marker, stopKey) {
                 $(".db").removeClass("show");
 
                 // console.log(stopdata[stopKey]["stopno"])
-                
-
+                var stop_click_id = stopdata[stopKey]["stopno"];
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     type:"POST",
@@ -492,12 +531,8 @@ function getStopInfo(marker, stopKey) {
                         // console.log(result);
                         var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                         for (var i =0; i< result["results"].length; i++){
-                            if (result["results"][i]["duetime"] == "Due"){
-                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +" Due</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                            }
-                            else{
-                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["duetime"] +" mins</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                            }
+                            
+                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
                         }
                         real_info += "</table>";
                         $("#stoparea").html(real_info);
@@ -610,13 +645,8 @@ function stopsearch() {
                 // console.log(result);
                 var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
                 for (var i =0; i< result["results"].length; i++){
-                    if (result["results"][i]["duetime"] == "Due"){
-                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +" Due</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                    }
-                    else{
-                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["duetime"] +" mins</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                    }
                     
+                    real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
                 }
                 real_info += "</table>";
                 $("#stoparea").html(real_info);
@@ -710,7 +740,7 @@ function routesearch(){
         success: function (routestops) {
             var directions = Object.keys(routestops);
             if (directions.length == 1) {
-                var in_out_btn = "<button id=" + "Inbound>" + directions[0] + "</button>";
+                var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + directions[0] + "</a></div>"
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
                 alert(routestops[directions[0]]);
                 //     // for (var marker in Inboundmarkers){
@@ -1239,6 +1269,15 @@ function invalidDatetime() {
 
     html_out += '</tr></table></div>'
     document.getElementById('directions-body').innerHTML += html_out;
+}
+
+function getDate() {
+    dateText = document.getElementById("datetimepicker1").value;
+    if (dateText == '') {
+        return Date(Date.now());
+    } else {
+        return dateText;
+    }
 }
 
 //

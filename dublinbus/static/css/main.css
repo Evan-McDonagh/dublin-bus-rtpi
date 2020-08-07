@@ -208,17 +208,39 @@ input {
     padding-right: 20px;
 }
 
-
-#favoritearea div {
-    border-bottom: 2px solid #23b36f;
-}
-
 #favoritearea button {
     width: 14px;
     height: 14px;
     margin-right: 20px;
 }
 
+
+/*Favourites */
+
+.favs-wrapper {
+    bottom: 10px;
+    vertical-align: middle;
+    overflow:hidden; 
+    word-wrap:break-word;
+    min-height: 30px;
+    border-bottom: 2px solid #23b36f;
+}
+
+.favs-wrapper a {
+    line-height: 30px;
+    vertical-align: middle;
+    font-size: 20px;
+    float: right;
+}
+
+.favs-wrapper a:hover {
+    color: #23b36f;
+}
+
+.favs-wrapper span {
+    line-height: 30px;
+    vertical-align: middle;
+}
 
 /* Bottom section of modal styles */
 
@@ -257,7 +279,6 @@ button {
 }
 
 
-
 /*Search By Routes direction links */
 
 #singleroutesearchresult {
@@ -290,6 +311,25 @@ button {
     vertical-align: middle;
 }
 
+#routebtn, #stopbtn, #go {
+    top: 80px;
+}
+
+
+/* Leapcard error message styling */
+
+#leapcardid {
+    padding-bottom: 10px;
+}
+
+#lparea {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+#lpbtn {
+    top: 70px;
+}
 
 /*Directions/steps pannel */
 
