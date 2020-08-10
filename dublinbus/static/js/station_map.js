@@ -1120,6 +1120,8 @@ function calcFare(fareRoutes, segmentsinfo){
     
     if (leapFareA != 0.00){
         document.getElementById("fares").innerHTML = fares;
+    } else {
+        document.getElementById("fares").innerHTML = "<div></div>";
     }
     
 }
