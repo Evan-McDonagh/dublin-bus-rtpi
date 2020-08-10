@@ -333,8 +333,18 @@ button {
 
 /*Directions/steps pannel */
 
+#routes {
+    min-height: 30px;
+    margin-bottom: 10px;
+}
+
 #showalongroutemarker {
     margin-right: 10px;
+    min-width: 100px;
+    width: auto;
+    float: left;
+    min-height: 25px;
+    height: auto;
 }
 
 .card-body {
