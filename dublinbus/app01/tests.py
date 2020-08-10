@@ -1,6 +1,6 @@
 import multiprocessing
 
-from django.test import TestCase
+from django.test import TestCase,Client
 
 # Create your tests here.
 
@@ -20,6 +20,11 @@ import os
 import datetime
 from app01 import get_prediction
 from multiprocessing import Pool
+
+
+from django.test import SimpleTestCase
+from django.urls import reverse,resolve
+from app01.views import *
 
 #  Google Map Apikey
 gmap_api = 'AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8'
@@ -98,4 +103,63 @@ def extractloc(routestopnos, allalongroutestops):
     print(count)
 # def listappend(dict):
 #     allalongroutestops.add
-routesearchtest('11')
+# routesearchtest('11')
+
+
+
+#test urls
+class TestUrls(SimpleTestCase):
+    def testLeapcard(self):
+        url = reverse('leapcard')
+        # print(resolve(url))
+        self.assertEquals(resolve(url).func,leapcard)
+
+    
+    def testStop(self):
+        url = reverse('stop')
+        # print(resolve(url))
+        self.assertEquals(resolve(url).func,stop)
+
+#test leapcard function
+class TestViews(TestCase):
+
+    def setUp(self):
+        self.client = Client()
+        self.leapcard_url = reverse('leapcard')
+        self.stop_url = reverse('stop')
+
+    def test_Leapcard_GET(self):
+        response = self.client.get(self.leapcard_url)  
+
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response, 'index.html')
+    
+    def test_Leapcard_POST(self):
+        response = self.client.post(self.leapcard_url,{
+            'username': "admin",
+            'password': "111111",
+        })  
+
+        self.assertEquals(response.status_code,200)
+        # print(response.content)  #print the worng messsage
+    
+
+    def test_Stop_GET(self):
+        response = self.client.get(self.stop_url)  
+
+        self.assertEquals(response.status_code,200)
+        self.assertTemplateUsed(response, 'index.html')
+    
+    def test_Stop_POST(self):
+        response = self.client.post(self.stop_url,{
+            'stop_id': "271",
+        })  
+
+        self.assertEquals(response.status_code,200)
+        # print(response.content)  #print the worng messsage
+
+    
+        
+        
+
+    

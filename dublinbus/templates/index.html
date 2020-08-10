@@ -161,6 +161,7 @@
                     <div id = "stopid">
                         <div class="form">
                             <form class="input-fields" method="post" id = "stopadd">
+                               
                                 {% csrf_token %}
                                 <i class = "far fa-heart star" ></i>
                                 <input type='text' id = "stop_id" name = "stop_id" placeholder="Stop ID">
@@ -733,6 +734,7 @@
                     $.ajax({
                         type:"POST",
                         url: "/leapcard/",
+                       
                         cache: false,
                         dataType: "json",
                         data:info,

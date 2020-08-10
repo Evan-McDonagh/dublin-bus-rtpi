@@ -61,10 +61,10 @@ def load_bus_data():
 
 def leapcard(request):
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
         username = request.POST['username']
         password = request.POST['password']
-        print(username,password)
+        # print(username,password)
         context = {}
         
         try:
@@ -73,7 +73,7 @@ def leapcard(request):
             overview = session.get_card_overview()
             # print(overview)
             leap_content = vars(overview)
-            print(leap_content)
+            # print(leap_content)
             context['card_num'] = leap_content.get('card_num')
             context['card_label'] = leap_content.get('card_label')
             context['balance'] = leap_content.get('balance')
@@ -86,6 +86,8 @@ def leapcard(request):
             return JsonResponse(context,safe=False)
         
         return JsonResponse(context,safe=False)
+    else:
+        return render(request,'index.html')
 
 def stop(request):
     if request.method == 'POST':
@@ -93,8 +95,10 @@ def stop(request):
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
         obj_json = obj.json()
-        print(obj_json)
+        # print(obj_json)
         return JsonResponse(obj_json, safe=False)
+    else:
+        return render(request,'index.html')
 
 # get user address info by user's location
 def init(request):
@@ -514,6 +518,5 @@ def errorhandler(request):
         errorinfo = json.loads(request.body)
         print("*********ErrorLogger***********", errorinfo)
         return HttpResponse(json.dumps({}))
-
 
 
