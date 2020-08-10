@@ -396,7 +396,7 @@ button {
 
 .cookie-banner {
     position: fixed;
-    bottom: 2rem;
+    bottom: -100%;
     right: 2rem;
     left: 2rem;
     transition: 0.3s;
@@ -413,13 +413,17 @@ button {
     align-items: center;
 }
 
+.cookie-banner.active {
+    bottom: 2rem;
+}
+
 .cookie-text {
     overflow:hidden; 
     word-wrap:break-word;
     padding-left: 30px;
 }
 
-.cookie-btn {
+.cookie-btn-div {
     min-width: 120px;
     height: 100%;
     display: flex;
@@ -428,7 +432,7 @@ button {
     padding-right: 1rem;
 }
 
-.cookie-btn button {
+.cookie-btn {
     right: 40px;
 }
 
