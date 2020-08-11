@@ -686,8 +686,8 @@ function stopsearch() {
         // console.log(stop_idd);
 
         if (stop_idd == stop_id){
-            var stationsInfo =  "Stop Number: "+stop_idd;
-            stationsInfo += "<br>Routes: "+stopdata[stopKey]['routes'];
+            var stationsInfo =  "<b>Stop Number: </b>"+stop_idd;
+            stationsInfo += "<br><b>Routes: </b>"+stopdata[stopKey]['routes'];
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(
                         stopdata[stopKey]['latitude'],

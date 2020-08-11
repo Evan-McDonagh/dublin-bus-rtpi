@@ -332,6 +332,29 @@ button {
     top: 70px;
 }
 
+
+/*Real time timetable*/
+
+#stoparea {
+    display: flex;
+    justify-content: center;
+}
+
+.realtime-table {
+    max-width: 800px;
+    width: 100%;
+    align-self: center;
+}
+
+.realtime-table th {
+    text-align: left;
+}
+
+.realtime-table tr:nth-child(even) { 
+    background-color: rgb(241, 241, 241); 
+} 
+
+
 /*Directions/steps pannel */
 
 #showalongroutemarker {
@@ -484,17 +507,3 @@ button {
     }
 }
 
-#stoparea {
-    display: flex;
-    justify-content: center;
-}
-
-.realtime-table {
-    max-width: 500px;
-    width: 100%;
-    align-self: center;
-}
-
-.realtime-table th {
-    text-align: left;
-}
