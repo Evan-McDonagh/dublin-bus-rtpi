@@ -412,9 +412,12 @@ def showprediction(request):
                     if prediction < 0:
                         prediction = get_prediction.get_prediction(route, 1, datestring, stopA, stopB)
                 except IndexError as e:
-                    prediction = get_prediction.get_prediction(route, 2, datestring, stopB, stopA)
-                    if prediction < 0:
-                        prediction = get_prediction.get_prediction(route, 2, datestring, stopA, stopB)
+                    try: 
+                        prediction = get_prediction.get_prediction(route, 2, datestring, stopB, stopA)
+                        if prediction < 0:
+                            prediction = get_prediction.get_prediction(route, 2, datestring, stopA, stopB)
+                    except:
+                        prediction = None
 
                 if prediction != None:
                     prediction = int(prediction)
