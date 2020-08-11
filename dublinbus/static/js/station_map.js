@@ -292,19 +292,19 @@ function calcRoute() {
                     fareRoutes = [];
                     //adding array to array to calc individual routes 
                     fareRoutes.push(fareStops);
-                    calcFare(fareRoutes);
+                    calcFare(fareRoutes, segmentsinfo);
                 } else {
                     // Accounting for when route has no bus/transit involved
                     var noTrasnit = [0];
                     fareRoutes.push(noTrasnit);
-                    calcFare(fareRoutes);
+                    calcFare(fareRoutes, segmentsinfo);
                 }
 
                 for (var p in bus_name){bus_name_str += (p == 0? bus_name[p]:"->"+bus_name[p])}
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
 
                 if (bus_name_str != '') {
-                    document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + bus_name_str + "</button>";
+                    document.getElementById('routes').innerHTML = "<button id='showalongroutemarker' style='left:50px;'>View stops: " + bus_name_str + "</button>";
                     loadstops(segmentsinfo, bounds, map);
                     document.getElementById("showalongroutemarker").addEventListener('click', function () {
                         clearmarkers(Inboundmarkers);
@@ -313,7 +313,7 @@ function calcRoute() {
                         clearpolylines(Outboundpolyline);
                         showmarkers(alongroutemarkers, map);
                     });
-                }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>";}
+                }else{document.getElementById('routes').innerHTML = "<button id='showalongroutemarker' style='left:50px;'>" + "Walk"+ "</button>";}
             }
         }
         function showinfowindow(marker, infowindow, map) {
@@ -509,6 +509,10 @@ function getStopInfo(marker, stopKey) {
             // alert("hi");
             modal.classList.add('modal-active');
             burger.classList.add('toggle');
+
+            var stop_click_input = document.getElementById("stop_id");
+            var stop_click_id = stopdata[stopKey]["stopno"];
+            stop_click_input.setAttribute("value", stop_click_id);
             $('#stopid').siblings().hide();
                 $('#twitterid').show();
                 $('#stopid').show();
@@ -519,7 +523,7 @@ function getStopInfo(marker, stopKey) {
                 $(".db").removeClass("show");
 
                 // console.log(stopdata[stopKey]["stopno"])
-                var stop_click_id = stopdata[stopKey]["stopno"];
+                // var stop_click_id = stopdata[stopKey]["stopno"];
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     type:"POST",
@@ -1007,7 +1011,7 @@ function getclicklocation(latLng){
 // initMap();
 
 //To calculate the estimated fare of the journey based on time
-function calcFare(fareRoutes){
+function calcFare(fareRoutes, segmentsinfo){
     var leapFareA = 0;
     var cashFareA = 0;
 
@@ -1021,6 +1025,7 @@ function calcFare(fareRoutes){
     var predictionTime = new Date(timeFromPicker);
     var hour;
     var day;    
+    var agents = [];
 
     //If user has selected a date
     if (timeFromPicker != '') {
@@ -1033,6 +1038,17 @@ function calcFare(fareRoutes){
         day = today.getDay();
     }
 
+    //Find the transit agencies involved in each step
+    for (i in segmentsinfo) {
+        agents.push(segmentsinfo[i].agency);
+    }
+    //Remove null values for walking steps 
+    for (var i=0; i < agents.length; i++){
+        if (agents[i] == null){
+            agents.splice(i, 1)
+        }
+    }
+    
     var journey = fareRoutes[fareRoutes.length - 1];
 
     // Account for adult/student fares - affected by number of stages
@@ -1042,17 +1058,17 @@ function calcFare(fareRoutes){
             cashFareA += 0;
             leapFareS += 0;
             cashFareS += 0;
-        } else if (journey[i] > 1 && journey[i] < 4){
+        } else if (journey[i] > 1 && journey[i] < 4 && agents[i] == "Dublin Bus" || agents[i] == "Go-Ahead"){
             leapFareA += 1.55;
             leapFareS += 1.55;
             cashFareA += 2.15;
             cashFareS += 2.15;
-        } else if (journey[i] > 3 && journey[i] < 14){
+        } else if (journey[i] > 3 && journey[i] < 14 && agents[i] == "Dublin Bus" || agents[i] == "Go-Ahead"){
             leapFareA += 2.25;
             leapFareS += 2.25;
             cashFareA += 3.00;
             cashFareS += 3.00;
-        } else if (journey[i] > 13){
+        } else if (journey[i] > 13 && agents[i] == "Dublin Bus" || agents[i] == "Go-Ahead"){
             leapFareA += 2.50;
             leapFareS += 2.50;
             cashFareA += 3.30;
@@ -1062,18 +1078,20 @@ function calcFare(fareRoutes){
 
     // Account for childrens fares - affected by time of day
     for (var i=0; i < journey.length; i++){  
-        if(journey[i] === 0){
-            leapFareC += 0;
-            cashFareC += 0;
-        } else if (day === 6 && hour < 13) {
-            leapFareC += .8;
-            cashFareC += 1;
-        } else if (day > 0 && day < 6 && hour < 19){
-            leapFareC += .8;
-            cashFareC += 1;
-        } else {
-            leapFareC += 1;
-            cashFareC += 1.3;
+        if (agents[i] == "Dublin Bus" || agents[i] == "Go-Ahead"){
+            if(journey[i] === 0){
+                leapFareC += 0;
+                cashFareC += 0;
+            } else if (day === 6 && hour < 13) {
+                leapFareC += .8;
+                cashFareC += 1;
+            } else if (day > 0 && day < 6 && hour < 19){
+                leapFareC += .8;
+                cashFareC += 1;
+            } else {
+                leapFareC += 1;
+                cashFareC += 1.3;
+            }
         }
     }
 
@@ -1097,11 +1115,16 @@ function calcFare(fareRoutes){
     cashFareC = cashFareC.toFixed(2);
 
     // build table to display fares 
-    var fares = "<table class='fares-table'><tr class='table-header'><td>Estimated Fares</td><td>Adult</td><td>Student</td><td>Child</td></tr>";
+    var fares = "<table class='fares-table'><tr class='table-header'><td>Est. Dublin Bus Fares</td><td>Adult</td><td>Student</td><td>Child</td></tr>";
     fares += "<tr><td class='table-header'>Leap: </td><td>€" + leapFareA + "</td><td>€" + leapFareS + "</td><td>€" + leapFareC + "</td></tr>";
     fares += "<tr><td class='table-header'>Cash: </td><td>€" + cashFareA + "</td><td>€" + cashFareS + "</td><td>€" + cashFareC + "</td></tr></table>";
     
-    document.getElementById("fares").innerHTML = fares;
+    if (leapFareA != 0.00){
+        document.getElementById("fares").innerHTML = fares;
+    } else {
+        document.getElementById("fares").innerHTML = "<div></div>";
+    }
+    
 }
 
 //send starts, ends in different segments to backend
