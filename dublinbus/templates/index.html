@@ -50,7 +50,6 @@
     <script type="text/javascript">window.onload=function () {initMap();}</script>
 
 
-
     <div id="googleMap"></div>
     <header>
         <nav>
@@ -128,7 +127,7 @@
                                 {% csrf_token %}
                                 <i class = "far fa-heart route" ></i>
                                 <input type='text' id = "route_id" name = "route_id" placeholder="Route ID">
-                                <button id = "routebtn" type="button" onclick="routesearch()">Find Route</button>
+                                <button id = "routebtn" type="button" onclick="routesearch()">Submit</button>
 
                                 <div id="singleroutesearchresult"></div>
                             </form>
@@ -144,7 +143,7 @@
                                 {% csrf_token %}
                                 <input type='text' id = "username" name = "username" placeholder="Username">
                                 <input type='password' id = "password" name = "password" placeholder="Password">
-                                <button id = "lpbtn" type="button">Submit</button>
+                                <button id = "lpbtn" type="button">Find Route</button>
                             </form>
                         </div>
                         <div id ="lparea"></div>
@@ -194,15 +193,13 @@
             </div> {# end of id "twitterid" #}
         </div>
     </div>
-        <div class="cookie-banner">
-            <div class="cookie-text">This website uses cookies to track your favorites. These may be deleted at any time by you or your browser. By proceeding, you are consenting to the use of cookies for this purpose.</div>
-            <div class="cookie-btn-div">
-                <button class="cookie-btn">Okay</button>
-            </div>
+    <div class="cookie-banner">
+        <div class="cookie-text">This website uses cookies to track your favorites. These may be deleted at any time by you or your browser. By proceeding, you are consenting to the use of cookies for this purpose.</div>
+        <div class="cookie-btn-div">
+            <button class="cookie-btn">Okay</button>
         </div>
-
+    </div>
 <script>
-    //script to toggle the sidebar via the burger icon
     const modalSlide = () => {
         const burger = document.querySelector('.burger');
         const modal = document.querySelector('.modal');
@@ -218,23 +215,6 @@
     }
 
     modalSlide();
-</script>
-
-<script>
-    //script to toggle cookie banner & remember consent selection
-    const cookieBanner = document.querySelector('.cookie-banner');
-    const cookieBtn = document.querySelector('.cookie-btn')
-
-    cookieBtn.addEventListener('click', () => {
-        cookieBanner.classList.remove("active");
-        localStorage.setItem("cookieBannerDisplayed", "true");
-    });
-
-    setTimeout( () => {
-        if(!localStorage.getItem("cookieBannerDisplayed")){
-            cookieBanner.classList.add("active");
-        }
-    }, 500);
 </script>
 
 <script>
