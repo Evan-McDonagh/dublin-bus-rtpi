@@ -333,18 +333,8 @@ button {
 
 /*Directions/steps pannel */
 
-#routes {
-    min-height: 30px;
-    margin-bottom: 10px;
-}
-
 #showalongroutemarker {
     margin-right: 10px;
-    min-width: 100px;
-    width: auto;
-    float: left;
-    min-height: 25px;
-    height: auto;
 }
 
 .card-body {
@@ -391,50 +381,6 @@ button {
     background: #23b36f !important;
 }
 
-
-/*Cookie banner*/
-
-.cookie-banner {
-    position: fixed;
-    bottom: -100%;
-    right: 2rem;
-    left: 2rem;
-    transition: 0.3s;
-    background: #fff;
-    border-radius: 10px;
-    padding: 1rem;
-    cursor: pointer;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-    min-height: 3rem;
-    height: auto;
-    font-size: 12px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-}
-
-.cookie-banner.active {
-    bottom: 2rem;
-}
-
-.cookie-text {
-    overflow:hidden; 
-    word-wrap:break-word;
-    padding-left: 30px;
-}
-
-.cookie-btn-div {
-    min-width: 120px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
-.cookie-btn {
-    right: 40px;
-}
 
 /* ---------------------------------------------------
     MEDIAQUERIES
