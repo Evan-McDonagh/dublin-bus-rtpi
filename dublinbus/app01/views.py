@@ -383,7 +383,7 @@ def extractloc(routestopnos, allalongroutestops):
                 # print('---------------------------------------------------------',stopno)
                 # if {"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]} not in allalongroutestops:
                 allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-    print(count)
+    # print(count)
    
 
 # to handle error logger
