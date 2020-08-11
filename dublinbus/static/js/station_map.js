@@ -116,7 +116,7 @@ function sendlocation(pos, map){
                     map: map,
                     position: {'lat':pos.lat, 'lng':pos.lng},
                 });
-            loc_infoWindow.setContent((pos.status == 'OK'? "Your position:":"(Unlocated)Map center:")+data.address)
+            loc_infoWindow.setContent((pos.status == 'OK'? "Your position: ":"(Unlocated)Map center:")+data.address)
             loc_infoWindow.open(map, loc_marker);
         },
         error: function () {
@@ -520,6 +520,8 @@ function getStopInfo(marker, stopKey) {
 
                 // console.log(stopdata[stopKey]["stopno"])
                 var stop_click_id = stopdata[stopKey]["stopno"];
+                var now = new Date();
+
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     type:"POST",
@@ -529,10 +531,16 @@ function getStopInfo(marker, stopKey) {
                     data:{'stop_id':stop_click_id},
                     success: function(result, statues, xml){
                         // console.log(result);
-                        var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
+                        var real_info = "<table class='realtime-table'><tr><th> Route </th>" + "<th> Destination </th>"+"<th> Duetime </th></tr>";
                         for (var i =0; i< result["results"].length; i++){
-                            
-                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                            var arrivaltime = Date.parse(result["results"][i]["arrivaldatetime"]);
+                            var timeuntil = Math.abs(now - arrivaltime);
+                            var duetime = Math.round(((timeuntil % 86400000) % 3600000) / 60000);
+                            if (duetime == 0){
+                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>Due </tr>";
+                            } else {
+                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>" + duetime +" mins</tr>";
+                            }
                         }
                         real_info += "</table>";
                         $("#stoparea").html(real_info);
@@ -634,6 +642,7 @@ function stopsearch() {
     clearmarkers(alongroutemarkers);
     clearmarkers(nearmemarkers);
     clearmarkers(singlestopmarker);
+    var now = new Date();
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
             type:"POST",
@@ -643,10 +652,18 @@ function stopsearch() {
             data:{'stop_id':$('#stop_id').val()},
             success: function(result, statues, xml){
                 // console.log(result);
-                var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
+                
+                var real_info = "<table class='realtime-table'>" + "<tr><th> Route </th>" + "<th> Destination </th>"+"<th> Duetime </th></tr>";
                 for (var i =0; i< result["results"].length; i++){
                     
-                    real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                    var arrivaltime = Date.parse(result["results"][i]["arrivaldatetime"]);
+                    var timeuntil = Math.abs(now - arrivaltime);
+                    var duetime = Math.round(((timeuntil % 86400000) % 3600000) / 60000);
+                    if (duetime == 0){
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>Due </tr>";
+                    } else {
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>" + duetime +" mins</tr>";
+                    }
                 }
                 real_info += "</table>";
                 $("#stoparea").html(real_info);
@@ -669,7 +686,8 @@ function stopsearch() {
         // console.log(stop_idd);
 
         if (stop_idd == stop_id){
-            var stationsInfo =  "Stop_number:<h5>"+stop_idd+"<h5>";
+            var stationsInfo =  "Stop Number: "+stop_idd;
+            stationsInfo += "<br>Routes: "+stopdata[stopKey]['routes'];
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(
                         stopdata[stopKey]['latitude'],

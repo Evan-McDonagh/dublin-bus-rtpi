@@ -64,6 +64,7 @@ nav {
 #weather {
     float: right;
     font-size: 12px;
+    color: #292f33;
 }
 
 #weather img {
@@ -427,6 +428,18 @@ button {
 }
 
 
+/* Login/register btns*/
+
+#userindexun, #loginpos {
+    background: transparent;
+    color: #292f33;
+    border: none;
+    padding-right: 5px;
+    font-family: 'Poppins', sans-serif;
+    padding-left: 20px;
+    cursor: pointer;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -471,4 +484,17 @@ button {
     }
 }
 
+#stoparea {
+    display: flex;
+    justify-content: center;
+}
 
+.realtime-table {
+    max-width: 500px;
+    width: 100%;
+    align-self: center;
+}
+
+.realtime-table th {
+    text-align: left;
+}
