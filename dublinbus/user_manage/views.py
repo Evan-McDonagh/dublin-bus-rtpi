@@ -463,6 +463,11 @@ def delfav(request):
             msg = json.dumps({'msg': "route deleted successfully!"})
             print(msg)
             return HttpResponse(msg)
+        if choice == 'leapcard':
+            Leapcard.objects.get(username_id=username, leapcard=content).delete()
+            msg = json.dumps({'msg': "leapcard deleted successfully!"})
+            print(msg)
+            return HttpResponse(msg)
         else:
             msg = json.dumps({'msg':"wrong data type"})
             return HttpResponse(msg)

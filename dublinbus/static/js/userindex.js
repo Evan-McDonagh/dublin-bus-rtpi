@@ -176,29 +176,29 @@ function showuserinfowindow() {
                 burger.classList.toggle('toggle');
 
                 var places = data['places'];
-                var placecontent = makecontent(places, 'search');
+                var placecontent = makecontent('place',places, 'search');
                 document.getElementById("placecontent").innerHTML='';
                 document.getElementById("placecontent").appendChild(placecontent);
-                bindclick('search', 'origin');
+                bindclick('place', 'search', 'origin');
 
                 var stops = data["stops"];
-                var stopcontent = makecontent(stops, 'stop');
+                var stopcontent = makecontent('stop', stops, 'stop');
                 document.getElementById("stopcontent").innerHTML='';
                 document.getElementById("stopcontent").appendChild(stopcontent);
-                bindclick('stop', 'stop_id');
+                bindclick('stop', 'stop', 'stop_id');
 
                 var routes = data["routes"];
-                var routecontent = makecontent(routes, 'route');
+                var routecontent = makecontent('route',routes, 'route');
                 document.getElementById('routecontent').innerHTML='';
                 document.getElementById('routecontent').appendChild(routecontent);
-                bindclick('route', 'route_id');
+                bindclick('route', 'route', 'route_id');
 
                 var leapcards = data["leapcards"];
-                alert(leapcards)
-                var leapcontent = makecontent(leapcards, 'leapcard');
+                // alert(leapcards)
+                var leapcontent = makecontent('leapcard', leapcards, 'leapcard');
                 document.getElementById('leapcardcontent').innerHTML='';
                 document.getElementById('leapcardcontent').appendChild(leapcontent);
-                bindclick('leapcard', 'username')
+                bindclick('leapcard', 'leapcard','username')
             }
         },
         // {#error: function () {alert('failed')}#}
@@ -207,20 +207,21 @@ function showuserinfowindow() {
     else{$("#userinfowindow").hide();}
 }
 
-function makecontent(elementlist, clickele) {
+function makecontent(choice, elementlist, clickele) {
     var ul = document.createElement('ul')
     for (var i in elementlist) {
         var ele = elementlist[i];
         var li = document.createElement('li');
         var input = document.createElement('input');
             input.type = 'button';
-            input.id = ele;
+            // input.id = ele;
             input.value = ele;
             input.className = 'content' + clickele;
         li.appendChild(input);
 
         var button = document.createElement('button');
-            button.id = ele + "rm";
+            button.id = ele;
+            button.className = "rmicon-infowindow-"+choice;
         var img = document.createElement('img');
             img.src = 'https://img.icons8.com/material/24/000000/delete-forever--v2.png'
         button.appendChild(img);
@@ -228,11 +229,11 @@ function makecontent(elementlist, clickele) {
         li.appendChild(button);
         ul.appendChild(li)
     }
-    alert(ul.innerHTML)
+    // alert(ul.innerHTML)
     return ul;
 }
 
-function bindclick(clickele, fillinele){
+function bindclick(choice, clickele, fillinele){
     var contents = document.getElementsByClassName('content'+clickele);
     var length = document.getElementsByClassName('content'+clickele).length;
     // alert(contents)
@@ -244,6 +245,14 @@ function bindclick(clickele, fillinele){
             $('#'+fillinele).val($(this).val());
         }
     }
+
+    var rmicons = $(".rmicon-infowindow-"+choice);
+        for (var i=0; i<rmicons.length; i++){
+            rmicons[i].onclick=function () {
+                delfav(choice, $("#userindexun").val(), $(this).attr('id'));
+                $(this).parent('li').remove();
+            }
+        }
 }
 
 function addfav(choice, username, content) {
@@ -274,7 +283,7 @@ function getfav(choice, username){
             },
         error: function () {alert('get favorite'+choice+'failed')}
     })
-    alert(gainedcontent)
+    // alert(gainedcontent)
     return gainedcontent;
 }
 

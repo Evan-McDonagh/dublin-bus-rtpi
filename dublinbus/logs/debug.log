@@ -3954,3 +3954,158 @@ INFO 2020-08-11 09:39:59,262 basehttp 5715 123145421205504 "POST /app01/errorhan
 INFO 2020-08-11 09:40:00,157 basehttp 5715 123145415950336 "POST /app01/weather HTTP/1.1" 200 92
 INFO 2020-08-11 09:40:00,527 basehttp 5715 123145405440000 "POST /app01//init HTTP/1.1" 200 55
 INFO 2020-08-11 09:40:05,590 basehttp 5715 123145405440000 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 107
+INFO 2020-08-11 09:46:29,017 basehttp 5715 123145405440000 "POST /user_manage/login/ HTTP/1.1" 200 19263
+INFO 2020-08-11 09:46:29,047 basehttp 5715 123145405440000 "GET /static/js/userindex.js HTTP/1.1" 200 10294
+INFO 2020-08-11 09:46:29,402 basehttp 5715 123145415950336 "POST /app01/errorhandler HTTP/1.1" 200 2
+INFO 2020-08-11 09:46:29,404 basehttp 5715 123145421205504 "GET /static/images/favicon.png HTTP/1.1" 200 40821
+INFO 2020-08-11 09:46:29,520 basehttp 5715 123145410695168 "POST /app01/weather HTTP/1.1" 200 92
+INFO 2020-08-11 09:46:29,826 basehttp 5715 123145405440000 "POST /app01//init HTTP/1.1" 200 55
+INFO 2020-08-11 09:46:32,258 basehttp 5715 123145405440000 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 107
+INFO 2020-08-11 09:46:34,232 basehttp 5715 123145405440000 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 107
+INFO 2020-08-11 09:46:35,424 basehttp 5715 123145405440000 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 107
+INFO 2020-08-11 09:46:36,971 basehttp 5715 123145405440000 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 107
+INFO 2020-08-11 09:46:39,083 basehttp 5715 123145405440000 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 107
+INFO 2020-08-11 09:47:07,171 basehttp 5715 123145405440000 "POST /user_manage/login/ HTTP/1.1" 200 19263
+INFO 2020-08-11 09:47:07,204 basehttp 5715 123145405440000 "GET /static/js/userindex.js HTTP/1.1" 200 10297
+INFO 2020-08-11 09:47:07,485 basehttp 5715 123145405440000 "GET /static/images/favicon.png HTTP/1.1" 200 40821
+INFO 2020-08-11 09:47:07,493 basehttp 5715 123145415950336 "POST /app01/errorhandler HTTP/1.1" 200 2
+INFO 2020-08-11 09:47:07,607 basehttp 5715 123145421205504 "POST /app01/weather HTTP/1.1" 200 92
+INFO 2020-08-11 09:47:07,775 basehttp 5715 123145410695168 "POST /app01//init HTTP/1.1" 200 55
+INFO 2020-08-11 09:47:12,227 basehttp 5715 123145410695168 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 107
+INFO 2020-08-11 10:00:56,265 basehttp 5715 123145405440000 "POST /user_manage/login/ HTTP/1.1" 200 19263
+INFO 2020-08-11 10:00:56,295 basehttp 5715 123145405440000 "GET /static/js/userindex.js HTTP/1.1" 200 10718
+INFO 2020-08-11 10:00:57,558 basehttp 5715 123145421205504 "POST /app01/errorhandler HTTP/1.1" 200 2
+INFO 2020-08-11 10:00:57,559 basehttp 5715 123145405440000 "GET /static/images/favicon.png HTTP/1.1" 200 40821
+INFO 2020-08-11 10:00:58,748 basehttp 5715 123145415950336 "POST /app01/weather HTTP/1.1" 200 92
+INFO 2020-08-11 10:01:03,312 basehttp 5715 123145415950336 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 107
+INFO 2020-08-11 10:01:05,575 basehttp 5715 123145410695168 "POST /app01//init HTTP/1.1" 200 55
+INFO 2020-08-11 10:01:08,143 basehttp 5715 123145410695168 "POST /user_manage/delfav/ HTTP/1.1" 200 38
+INFO 2020-08-11 10:01:17,797 basehttp 5715 123145410695168 "POST /user_manage/getfav/ HTTP/1.1" 200 41
+INFO 2020-08-11 10:01:24,314 basehttp 5715 123145410695168 "POST /user_manage/delfav/ HTTP/1.1" 200 37
+INFO 2020-08-11 10:01:29,992 basehttp 5715 123145410695168 "POST /user_manage/getfav/ HTTP/1.1" 200 15
+INFO 2020-08-11 10:01:41,591 basehttp 5715 123145410695168 "POST /user_manage/delfav/ HTTP/1.1" 200 38
+INFO 2020-08-11 10:01:47,688 basehttp 5715 123145410695168 "POST /user_manage/getfav/ HTTP/1.1" 200 15
+INFO 2020-08-11 10:01:51,724 basehttp 5715 123145410695168 "POST /user_manage/delfav/ HTTP/1.1" 200 26
+INFO 2020-08-11 10:02:00,861 basehttp 5715 123145410695168 "POST /user_manage/getfav/ HTTP/1.1" 200 15
+INFO 2020-08-11 10:02:04,280 basehttp 5715 123145410695168 "POST /user_manage/delfav/ HTTP/1.1" 200 38
+INFO 2020-08-11 10:02:08,545 basehttp 5715 123145410695168 "POST /user_manage/getfav/ HTTP/1.1" 200 34
+INFO 2020-08-11 10:03:31,780 basehttp 5715 123145410695168 "POST /user_manage/login/ HTTP/1.1" 200 19263
+INFO 2020-08-11 10:03:31,810 basehttp 5715 123145410695168 "GET /static/js/userindex.js HTTP/1.1" 200 10721
+INFO 2020-08-11 10:03:34,266 basehttp 5715 123145405440000 "POST /app01/errorhandler HTTP/1.1" 200 2
+INFO 2020-08-11 10:03:34,267 basehttp 5715 123145421205504 "GET /static/images/favicon.png HTTP/1.1" 200 40821
+INFO 2020-08-11 10:03:36,418 basehttp 5715 123145415950336 "POST /app01/weather HTTP/1.1" 200 92
+INFO 2020-08-11 10:03:37,397 basehttp 5715 123145415950336 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 83
+INFO 2020-08-11 10:03:38,720 basehttp 5715 123145410695168 "POST /app01//init HTTP/1.1" 200 55
+INFO 2020-08-11 10:04:07,916 basehttp 5715 123145410695168 "POST /user_manage/delfav/ HTTP/1.1" 200 26
+INFO 2020-08-11 10:08:26,635 autoreload 5715 4459077056 /Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/user_manage/views.py changed, reloading.
+INFO 2020-08-11 10:08:27,608 autoreload 6010 4611882432 Watching for file changes with StatReloader
+INFO 2020-08-11 10:08:32,746 basehttp 6010 123145326399488 "POST /user_manage/login/ HTTP/1.1" 200 19263
+INFO 2020-08-11 10:08:32,776 basehttp 6010 123145326399488 "GET /static/js/userindex.js HTTP/1.1" 304 0
+INFO 2020-08-11 10:08:38,087 basehttp 6010 123145336909824 "POST /app01/errorhandler HTTP/1.1" 200 2
+INFO 2020-08-11 10:08:38,096 basehttp 6010 123145342164992 "GET /static/images/favicon.png HTTP/1.1" 200 40821
+INFO 2020-08-11 10:08:38,490 basehttp 6010 123145331654656 "POST /app01/weather HTTP/1.1" 200 92
+INFO 2020-08-11 10:08:39,647 basehttp 6010 123145326399488 "POST /app01//init HTTP/1.1" 200 55
+INFO 2020-08-11 10:08:46,823 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 83
+INFO 2020-08-11 10:08:52,942 basehttp 6010 123145326399488 "POST /user_manage/delfav/ HTTP/1.1" 200 41
+INFO 2020-08-11 10:09:01,439 basehttp 6010 123145326399488 "POST /user_manage/getfav/ HTTP/1.1" 200 15
+INFO 2020-08-11 10:09:02,010 basehttp 6010 123145326399488 "POST /user_manage/getfav/ HTTP/1.1" 200 34
+INFO 2020-08-11 10:10:17,228 basehttp 6010 123145326399488 "POST /user_manage/login/ HTTP/1.1" 200 19263
+INFO 2020-08-11 10:10:17,261 basehttp 6010 123145326399488 "GET /static/js/userindex.js HTTP/1.1" 200 10724
+INFO 2020-08-11 10:10:24,430 basehttp 6010 123145326399488 "GET /static/images/favicon.png HTTP/1.1" 200 40821
+INFO 2020-08-11 10:10:26,774 basehttp 6010 123145342164992 "POST /app01/errorhandler HTTP/1.1" 200 2
+INFO 2020-08-11 10:10:29,969 basehttp 6010 123145331654656 "POST /app01/weather HTTP/1.1" 200 92
+INFO 2020-08-11 10:10:31,439 basehttp 6010 123145331654656 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:10:36,664 basehttp 6010 123145331654656 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:10:37,571 basehttp 6010 123145331654656 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+ERROR 2020-08-11 10:10:39,194 log 6010 123145326399488 Internal Server Error: /app01//init
+Traceback (most recent call last):
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/urllib3/connectionpool.py", line 677, in urlopen
+    chunked=chunked,
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/urllib3/connectionpool.py", line 381, in _make_request
+    self._validate_conn(conn)
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/urllib3/connectionpool.py", line 976, in _validate_conn
+    conn.connect()
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/urllib3/connection.py", line 370, in connect
+    ssl_context=context,
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/urllib3/util/ssl_.py", line 377, in ssl_wrap_socket
+    return context.wrap_socket(sock, server_hostname=server_hostname)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.7/lib/python3.7/ssl.py", line 412, in wrap_socket
+    session=session
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.7/lib/python3.7/ssl.py", line 853, in _create
+    self.do_handshake()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.7/lib/python3.7/ssl.py", line 1117, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLEOFError: EOF occurred in violation of protocol (_ssl.c:1056)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/requests/adapters.py", line 449, in send
+    timeout=timeout
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/urllib3/connectionpool.py", line 725, in urlopen
+    method, url, error=e, _pool=self, _stacktrace=sys.exc_info()[2]
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/urllib3/util/retry.py", line 439, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='maps.googleapis.com', port=443): Max retries exceeded with url: /maps/api/geocode/json?latlng=53.35014,-6.266155&key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8 (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:1056)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/liguosheng/PycharmProjects/dublin-bus-rtpi/dublinbus/app01/views.py", line 117, in init
+    address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/requests/sessions.py", line 530, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/requests/sessions.py", line 643, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/liguosheng/PycharmProjects/dbus_env/lib/python3.7/site-packages/requests/adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='maps.googleapis.com', port=443): Max retries exceeded with url: /maps/api/geocode/json?latlng=53.35014,-6.266155&key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8 (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:1056)')))
+ERROR 2020-08-11 10:10:39,223 basehttp 6010 123145326399488 "POST /app01//init HTTP/1.1" 500 18834
+INFO 2020-08-11 10:10:39,228 basehttp 6010 123145326399488 "POST /app01/errorhandler HTTP/1.1" 200 2
+INFO 2020-08-11 10:10:45,493 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:10:46,487 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:10:47,802 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:10:53,747 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:10:55,477 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:10:57,237 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:10:58,820 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:10:59,451 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:00,170 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:04,951 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:06,684 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:07,415 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:08,358 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:09,075 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:09,632 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:10,060 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:10,464 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:10,847 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:11,235 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:11,630 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 30621
+INFO 2020-08-11 10:11:15,613 basehttp 6010 123145326399488 "POST /user_manage/login/ HTTP/1.1" 200 19263
+INFO 2020-08-11 10:11:15,642 basehttp 6010 123145326399488 "GET /static/js/userindex.js HTTP/1.1" 304 0
+INFO 2020-08-11 10:11:15,949 basehttp 6010 123145342164992 "POST /app01/errorhandler HTTP/1.1" 200 2
+INFO 2020-08-11 10:11:15,952 basehttp 6010 123145336909824 "GET /static/images/favicon.png HTTP/1.1" 200 40821
+INFO 2020-08-11 10:11:16,083 basehttp 6010 123145331654656 "POST /app01/weather HTTP/1.1" 200 93
+INFO 2020-08-11 10:11:16,233 basehttp 6010 123145326399488 "POST /app01//init HTTP/1.1" 200 55
+INFO 2020-08-11 10:11:19,722 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:21,784 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:24,137 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:25,645 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:27,483 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:28,890 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:30,282 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:31,281 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:36,023 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:37,483 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77
+INFO 2020-08-11 10:11:40,276 basehttp 6010 123145326399488 "POST /user_manage/showuserinfowindow/ HTTP/1.1" 200 77

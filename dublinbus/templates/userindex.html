@@ -92,32 +92,14 @@
     <div id="userinfowindow" style="width: 600px;">
     {{ msg }}
         My Places:
-        <div id="placecontent">
-{#        <ul id="myplaces">#}
-{#            {% for place in places %}#}
-{#                <li><input type="text" id="{{ place }}" value="{{ place }}"><button id="{{ place }}rm"><img src="https://img.icons8.com/material/24/000000/delete-forever--v2.png"/></button></li>#}
-{#            {% endfor %}#}
-{#        </ul>#}
-        </div>
+        <div id="placecontent"></div>
         My Stops
-        <div id="stopcontent">
-{#        <ul id="mystops">#}
-{#            {% for stop in stops %}#}
-{#                <li><input type="text" id="{{ stop }}" value="{{ stop }}"><button id="{{ stop }}rm"><img src="https://img.icons8.com/material/24/000000/delete-forever--v2.png"/></button></li>#}
-{#            {% endfor %}#}
-{#        </ul>#}
-        </div>
+        <div id="stopcontent"></div>
         My Routes
-        <div id="routecontent">
-{#        <ul id="myroutes">#}
-{#            {% for route in routes %}#}
-{#                <li><input type="text" id="{{ route }}" value="{{ route }}"><button id="{{ route }}rm"><img src="https://img.icons8.com/material/24/000000/delete-forever--v2.png"/></button></li>#}
-{#            {% endfor %}#}
-{#        </ul>#}
-        </div>
+        <div id="routecontent"></div>
         My Leapcard
         <div id="leapcardcontent"></div>
-        <input type="text" id="{{ leapcard }}" value="{{ leapcard }}"><button id="{{ leapcard }}rm"><img src="https://img.icons8.com/material/24/000000/delete-forever--v2.png"/></button>
+{#        <input type="text" id="{{ leapcard }}" value="{{ leapcard }}"><button id="{{ leapcard }}rm"><img src="https://img.icons8.com/material/24/000000/delete-forever--v2.png"/></button>#}
         <a href="{% url "user_manage:logout" %}"><button>Logout</button></a>
     </div>
     <div class="modal" id="modal">
