@@ -437,7 +437,7 @@
             e.preventDefault;
             var stop = [];
             if (document.getElementById("stop_id").value === ""){
-                alert('please input stop')
+                alert('Please input stop ID')
             }
             else{
                 // the first time user input the form 
@@ -460,7 +460,7 @@
                 var flag = 0;
                 for (let i = 0; i<previous_arr.length; i++){
                     if (input_stop == previous_arr[i]){
-                        alert("This stop is already in the list");
+                        alert("Stop already saved");
                         flag = 1;
                     }
                 }
@@ -541,7 +541,7 @@
         var place = [];
         // alert('hiiiii');
         if ($('#origin').val() === ""){
-            alert('please input place')
+            alert('Please input place name')
         }
         else{
             place.push($('#origin').val());
@@ -563,7 +563,7 @@
             var flag = 0;
             for (let i = 0; i<previous_arr.length; i++){
                 if (input_place == previous_arr[i]){
-                    alert("This place is already in the list");
+                    alert("Place already saved");
                     flag = 1;
                 }
             }
@@ -665,7 +665,7 @@
             var flag = 0;
             for (let i = 0; i<previous_arr.length; i++){
                 if (input_stop == previous_arr[i]){
-                    alert("This route is already in the list");
+                    alert("Route already saved");
                     flag = 1;
                 }
             }
