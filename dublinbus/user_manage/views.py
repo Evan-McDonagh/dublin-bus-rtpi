@@ -409,6 +409,8 @@ def showuserinfowindow(request):
             places = []
             stops = []
             routes = []
+            leapcards = []
+
             placesfilt = Places.objects.filter(username_id=user.name)
             for place in placesfilt:
                 places.append(place.place)
@@ -420,11 +422,16 @@ def showuserinfowindow(request):
             routesfilt = Routes.objects.filter(username_id=user.name)
             for route in routesfilt:
                 routes.append(route.route)
+
+            leapcardfilt = Leapcard.objects.filter(username_id=user.name)
+            for cardholder in leapcardfilt:
+                leapcards.append(cardholder.leapcard)
             print(places)
             print(stops)
             print(routes)
+            print(leapcards)
             # return render(request, 'userindex.html', {'palces':places, 'stops':stops, 'routes':routes})
-            return HttpResponse(json.dumps({'places':places, 'stops':stops, 'routes':routes}))
+            return HttpResponse(json.dumps({'places':places, 'stops':stops, 'routes':routes, 'leapcards':leapcards}))
 
 def delfav(request):
     if request.method == 'POST':

@@ -191,7 +191,14 @@ function showuserinfowindow() {
                 var routecontent = makecontent(routes, 'route');
                 document.getElementById('routecontent').innerHTML='';
                 document.getElementById('routecontent').appendChild(routecontent);
-                bindclick('route', 'route_id')
+                bindclick('route', 'route_id');
+
+                var leapcards = data["leapcards"];
+                alert(leapcards)
+                var leapcontent = makecontent(leapcards, 'leapcard');
+                document.getElementById('leapcardcontent').innerHTML='';
+                document.getElementById('leapcardcontent').appendChild(leapcontent);
+                bindclick('leapcard', 'username')
             }
         },
         // {#error: function () {alert('failed')}#}
