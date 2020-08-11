@@ -12,10 +12,10 @@ urlpatterns = [
     # url('real_info/',views.real_info),
     url('init',views.init, name="init"),
     url('weather',views.weather, name="weather"),
-    url('printresult', views.printresult),
-    url('rtmarkerinfo', views.rtmarkerinfo),
-    url('showprediction', views.showprediction),
-    url('routesearch', views.routesearch),
-    url('errorhandler', views.errorhandler),
+    url('printresult', views.printresult,name="printresult"),
+    url('rtmarkerinfo', views.rtmarkerinfo, name="rtmarkerinfo"),
+    url('showprediction', views.showprediction, name="showprediction"),
+    url('routesearch', views.routesearch, name="routesearch"),
+    url('errorhandler', views.errorhandler, name="errorhandler"),
     
 ]

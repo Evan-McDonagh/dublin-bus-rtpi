@@ -129,7 +129,16 @@ class TestUrls(SimpleTestCase):
         url = reverse('weather')
         # print(resolve(url))
         self.assertEquals(resolve(url).func,weather)
+    
+    def testRtmarkerinfo(self):
+        url = reverse('rtmarkerinfo')
+        # print(resolve(url))
+        self.assertEquals(resolve(url).func,rtmarkerinfo)
 
+    def testShowprediction(self):
+        url = reverse('showprediction')
+        # print(resolve(url))
+        self.assertEquals(resolve(url).func,showprediction)
     
 
 #test leapcard function
@@ -141,6 +150,7 @@ class TestViews(TestCase):
         self.stop_url = reverse('stop')
         self.init_url = reverse('init')
         self.weather_url = reverse('weather')
+        self.rtmarkerinfo_url = reverse('rtmarkerinfo')
 
     #test leapcard function
     def test_Leapcard_GET(self):
@@ -201,3 +211,11 @@ class TestViews(TestCase):
         })  
 
         self.assertEquals(response.status_code,200)  
+
+    
+    def test_Rtmarkerinfo_POST(self):
+        response = self.client.post(self.rtmarkerinfo_url,{
+            'id': "271",
+        })  
+        self.assertEquals(response.status_code,200) 
+    
