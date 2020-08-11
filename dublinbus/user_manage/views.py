@@ -117,12 +117,12 @@ def login(request):
     # the request is from login html form
     elif request.method == 'POST':
         '''login verify'''
-        if request.session.get('username') != None:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        if request.session.get('username') != None and request.session.get('username') == username:
             print(request.session.get('username'))
             return render(request, "userindex.html", {'username': request.session.get('username')})
         # receive data
-        username = request.POST.get('username')
-        password = request.POST.get('password')
 
         # check data
         if not all([username, password]):

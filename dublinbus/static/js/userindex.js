@@ -177,16 +177,19 @@ function showuserinfowindow() {
 
                 var places = data['places'];
                 var placecontent = makecontent(places, 'search');
+                document.getElementById("placecontent").innerHTML='';
                 document.getElementById("placecontent").appendChild(placecontent);
                 bindclick('search', 'origin');
 
                 var stops = data["stops"];
                 var stopcontent = makecontent(stops, 'stop');
+                document.getElementById("stopcontent").innerHTML='';
                 document.getElementById("stopcontent").appendChild(stopcontent);
                 bindclick('stop', 'stop_id');
 
                 var routes = data["routes"];
                 var routecontent = makecontent(routes, 'route');
+                document.getElementById('routecontent').innerHTML='';
                 document.getElementById('routecontent').appendChild(routecontent);
                 bindclick('route', 'route_id')
             }
@@ -218,6 +221,7 @@ function makecontent(elementlist, clickele) {
         li.appendChild(button);
         ul.appendChild(li)
     }
+    alert(ul.innerHTML)
     return ul;
 }
 
