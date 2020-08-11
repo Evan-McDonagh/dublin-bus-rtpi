@@ -120,6 +120,18 @@ class TestUrls(SimpleTestCase):
         # print(resolve(url))
         self.assertEquals(resolve(url).func,stop)
 
+    def testInit(self):
+        url = reverse('init')
+        # print(resolve(url))
+        self.assertEquals(resolve(url).func,init)
+
+    def testWeather(self):
+        url = reverse('weather')
+        # print(resolve(url))
+        self.assertEquals(resolve(url).func,weather)
+
+    
+
 #test leapcard function
 class TestViews(TestCase):
 
@@ -127,7 +139,10 @@ class TestViews(TestCase):
         self.client = Client()
         self.leapcard_url = reverse('leapcard')
         self.stop_url = reverse('stop')
+        self.init_url = reverse('init')
+        self.weather_url = reverse('weather')
 
+    #test leapcard function
     def test_Leapcard_GET(self):
         response = self.client.get(self.leapcard_url)  
 
@@ -143,7 +158,7 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code,200)
         # print(response.content)  #print the worng messsage
     
-
+    #test stop function
     def test_Stop_GET(self):
         response = self.client.get(self.stop_url)  
 
@@ -158,8 +173,31 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code,200)
         # print(response.content)  #print the worng messsage
 
-    
-        
-        
+    #test init function
+    def test_INIT_GET(self):
+        response = self.client.get(self.init_url)  
 
-    
+        self.assertEquals(response.status_code,200)
+
+        
+    def test_INIT_POST(self):
+        response = self.client.post(self.init_url,{
+            'lat' : 53.3200896,
+            'lng' : -6.2521344,
+        })  
+
+        self.assertEquals(response.status_code,200)   
+
+    #test weather function
+    def test_WEATHER_GET(self):
+        response = self.client.get(self.weather_url)  
+
+        self.assertEquals(response.status_code,200)
+
+    def test_WEATHER_POST(self):
+        response = self.client.post(self.weather_url,{
+            'lat' : 53.3200896,
+            'lng' : -6.2521344,
+        })  
+
+        self.assertEquals(response.status_code,200)  

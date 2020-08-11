@@ -106,6 +106,7 @@ def init(request):
     if request.method == 'POST':
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
+        # print(lat,lng)
 
         # get the address of the post coordinate
         address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
