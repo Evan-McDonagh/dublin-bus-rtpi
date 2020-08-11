@@ -5,8 +5,8 @@ from app01 import views
 
 app_name = "app01"
 urlpatterns = [
-    url('^$', views.index),
-    url(r'^index', views.index),
+    url('^$', views.index, name='index'),
+    url(r'^index', views.index, name='index'),
     url('stop/', views.stop),
     url('leapcard/',views.leapcard),
     # url('real_info/',views.real_info),
@@ -17,4 +17,5 @@ urlpatterns = [
     url('showprediction', views.showprediction),
     url('routesearch', views.routesearch),
     url('errorhandler', views.errorhandler),
+    url('test', views.test),
 ]

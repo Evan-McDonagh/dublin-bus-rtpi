@@ -4,7 +4,10 @@ import re
 
 from django.http import JsonResponse
 from django.shortcuts import render,HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from app01 import models
+from user_manage.models import User
 from .forms import leapForm,routeForm
 from pyleapcard import *
 from pprint import pprint
@@ -39,10 +42,16 @@ with open(scrappedroutefile) as srt:
     scrappedallroutes = json.load(srt)
     srt.close()
 
+
 # Create your views here.
 def index(request):
-    
     context = load_bus_data()
+    uid = request.session.get('userid')
+    if uid is not None:
+        user = User.objects.get(id=uid)
+        if user is not None:
+            context["username"] = user.name
+        return render(request, 'userindex.html', context)
     return render(request,'index.html', context)
 
 def load_bus_data():
@@ -547,5 +556,14 @@ def errorhandler(request):
         print("*********ErrorLogger***********", errorinfo)
         return HttpResponse(json.dumps({}))
 
+@csrf_exempt
+def test(request):
+    print('addfav')
+    print(request.body)
+    print(request.method)
+    if request.method == 'POST':
+        return HttpResponse(json.dumps({'msg':"post"}))
+    else:
+        return HttpResponse(json.dumps({'msg':"non post"}))
 
 

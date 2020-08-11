@@ -130,7 +130,7 @@ function sendlocation(pos, map){
 function realtimeweather(pos) {
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/app01//weather',
+        url: '/app01/weather',
         type: 'POST',
         data:pos,
         dataType: 'json',
@@ -707,17 +707,18 @@ function stopsearch() {
 
 //triggered by clicking "Search" button to show current searching result if it is made invisible.
 function showsearchcontent(){
-    directionsRenderer.setDirections(directionresults[0]);
-    directionsRenderer.setMap(map);
-    directionsRenderer.setPanel(document.getElementById('h51'));
+    if (directionresults.length > 0) {
+        directionsRenderer.setDirections(directionresults[0]);
+        directionsRenderer.setMap(map);
+        directionsRenderer.setPanel(document.getElementById('h51'));
+    }
 }
 
 //triggered by clicking "Stop" button to show current searching result if it is made invisible.
 function showstopsearchcontent(){
-    showmarkers(singlestopmarker, map);
+    if (singlestopmarker.length >0){showmarkers(singlestopmarker, map);}
 }
 // function showroutesearchcontent(){}
-
 
 function routesearch(){
     clearmarkers(Outboundmarkers);

@@ -50,7 +50,6 @@
     <script type="text/javascript">window.onload=function () {initMap();}</script>
 
 
-    <div id="user">{{ username }}</div>
     <div id="googleMap"></div>
     <header>
         <nav>
@@ -60,7 +59,7 @@
                 <div class="bar3"></div>
             </div>
             <div class="spacer"></div>
-{#            <div id="user">{{ username }}</div>#}
+            <a href="{% url 'user_manage:login' %}"><input type="button" value="login/register" name="login/register" id="loginpos" onclick=""></a>
             <div id="weather"></div>
         </nav>         
     </header>
@@ -193,7 +192,7 @@
                 <a class="twitter-timeline" data-width="400" data-height="400" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div> {# end of id "twitterid" #}
         </div>
-
+    </div>
 <script>
     const modalSlide = () => {
         const burger = document.querySelector('.burger');

@@ -1,3 +1,4 @@
+import json
 import re
 
 from django.contrib.auth import authenticate
@@ -6,18 +7,16 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
-from user_manage.models import User
+from user_manage.models import User, Places, Stops, Routes, Leapcard
 from django.utils import timezone
 from datetime import *
 from django.contrib.auth.hashers import make_password, check_password
 
 
-# Create your views here.
-
-
 def register(request):
-    '''Register'''
+    """Register"""
     if request.method == 'GET':
         # show register page
         return render(request, 'register.html')
@@ -100,6 +99,7 @@ def register(request):
 
         # render the web page to index
         # return redirect(reverse('app01:index'))
+        # request.session['userid'] = user.id
 
         return render(request, 'login.html', {'alertinfo': 'Welcome to DublinbusTeam2', 'username': username})
 
@@ -117,6 +117,9 @@ def login(request):
     # the request is from login html form
     elif request.method == 'POST':
         '''login verify'''
+        if request.session.get('username') != None:
+            print(request.session.get('username'))
+            return render(request, "userindex.html", {'username': request.session.get('username')})
         # receive data
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -139,8 +142,8 @@ def login(request):
         if user is not None:
             # password is correct
             # set session
-            request.session['userid'] = user.id
-            request.session.set_expiry(0)   # when the user close the browser the session will expired
+            request.session['username'] = user.name
+            request.session.set_expiry(60*10)   # when the user close the browser the session will expired
 
             # login success, render the web page to index
             next_url = request.GET.get('next', reverse('app01:index'))
@@ -156,28 +159,14 @@ def login(request):
             else:
                 response.delete_cookie('username')
 
-            # print(request.session.get('userid'))
+            print(request.session.get('username'))
+
+
             # return response
-            return render(request, "userinfo.html", {'username': username})
+            return render(request, "userindex.html", {'username': username})
         else:
             # password is wrong
             return render(request, 'login.html', {'errmsg': 'username does not match password', "username":username})
-
-
-def logout(request):
-    if request.method == 'POST':
-        try:
-            print(request.session['userid'])
-            # del request.session['userid'] # del do not delete session data from session table
-            request.session.flush()   # flush delete session data data from session table
-            # request.session.clear()  # clear do not delete session data from session table
-        except KeyError:
-            pass
-        try:
-            print(request.session['userid'])
-        except KeyError:
-            print('keyerror')
-        return redirect(reverse('app01:index'))
 
 
 class UserLoginBackend(ModelBackend):
@@ -193,3 +182,285 @@ class UserLoginBackend(ModelBackend):
                 return user
         except Exception as e:
             return None
+
+
+def logout(request):
+    # if request.method == 'POST':
+    try:
+        print(request.session['userid'])
+        # del request.session['userid'] # del do not delete session data from session table
+        request.session.flush()   # flush delete session data data from session table
+        # request.session.clear()  # clear do not delete session data from session table
+    except KeyError:
+        pass
+    try:
+        print(request.session['username'])
+    except KeyError:
+        print('keyerror')
+    return redirect(reverse('app01:index'))
+
+
+def addmyplace(username, place):
+    # if request == 'POST':
+    print('addpalce')
+    try:
+        user = User.objects.get(name=username)
+    except:
+        user = None
+    if user == None:
+        # return HttpResponse(json.dumps({'msg': username + "is not a registered user."}))
+        return json.dumps({'msg': username + "is not a registered user."})
+    else:
+        try:
+            Place = Places.objects.filter(username_id=username, place=place)
+        except:
+            Place = []
+        print(Place)
+        if len(Place) == 0:
+            myplace = Places.objects.create(username_id=username, place=place)
+            # return HttpResponse(json.dumps({'msg': "favorite place added successfully!"}))
+            return json.dumps({'msg': "favorite place added successfully!"})
+        else:
+            return json.dumps({'msg': "this place is already stored in your aount"})
+
+
+def addmystop(username, stop):
+    # if request == 'POST':
+    #     if request == 'POST':
+    print('addstop')
+    try:
+        user = User.objects.get(name=username)
+    except:
+        user = None
+    if user == None:
+        # return HttpResponse(json.dumps({'msg': username + "is not a registered user."}))
+        return json.dumps({'msg': username + "is not a registered user."})
+        # msg = {'msg': username + "is not a registered user."}
+        # return msg
+    else:
+        try:
+            Stop = Stops.objects.filter(username_id=user.name, stop=stop)
+        except:
+            Stop = []
+        print(Stop)
+        if len(Stop) == 0:
+            mystop = Stops.objects.create(username_id=user.name, stop=stop)
+            # return HttpResponse(json.dumps({'msg': "favorite place added successfully!"}))
+            return json.dumps({'msg': "favorite stop added successfully!"})
+        else:
+            return json.dumps({'msg': "this stop is already stored in your account"})
+
+
+
+def addmyroute(username, route):
+    # if request == 'POST':
+    #     if request == 'POST':
+    print('addroute')
+    try:
+        user = User.objects.get(name=username)
+    except:
+        user = None
+    if user == None:
+        # return HttpResponse(json.dumps({'msg': username + "is not a registered user."}))
+        print('none')
+        print(json.dumps({'msg': username + "is not a registered user."}))
+        return json.dumps({'msg': username + "is not a registered user."})
+    else:
+        print('user exists', user.name)
+        try:
+            Route = Routes.objects.filter(username_id=user.name, route=route)
+        except:
+            Route = []
+        print(Route)
+        if len(Route) == 0:
+            myroot = Routes.objects.create(username_id=user.name, route=route)
+            # return HttpResponse(json.dumps({'msg': "favorite route added successfully!"}))
+            print(json.dumps({'msg': "favorite route added successfully!"}))
+            return json.dumps({'msg': "favorite route added successfully!"})
+        else:
+            return json.dumps({'msg': "this route is already stored in your account"})
+
+
+def addmyleapcard(username, cardholder):
+    # if request == 'POST':
+    #     if request == 'POST':
+    print('addmyleapcard')
+    try:
+        user = User.objects.get(name=username)
+    except:
+        user = None
+    if user == None:
+        # return HttpResponse(json.dumps({'msg': username + "is not a registered user."}))
+        print('none')
+        print(json.dumps({'msg': username + "is not a registered user."}))
+        return json.dumps({'msg': username + "is not a registered user."})
+    else:
+        print('user exists', user.name)
+        try:
+            leapcard = Leapcard.objects.filter(username_id=user.name, leapcard=cardholder)
+        except:
+            leapcard = []
+        print(leapcard)
+        if len(leapcard) == 0:
+            myleapcard = Leapcard.objects.create(username_id=user.name, leapcard=cardholder)
+            # return HttpResponse(json.dumps({'msg': "favorite route added successfully!"}))
+            print(json.dumps({'msg': "leapcard holder info added successfully!"}))
+            return json.dumps({'msg': "leapcard holder info added successfully!"})
+        else:
+            return json.dumps({'msg': "leapcard holder info is already stored in your account"})
+
+def addfav(request):
+    if request.method == 'POST':
+        # print('addfav')
+        choice = request.POST.get('choice')
+        content = request.POST.get('content')
+        username = request.POST.get('username')
+        try:
+            username_session = request.session.get('username')
+        except:
+            username_session = None
+        print(username_session)
+        if username_session == None:
+            # msg = json.dumps({'msg':'please lonin to your account'})
+            return render(request, 'index.html')
+            # return HttpResponse(msg)
+        if choice == "place":
+            msg = addmyplace(username, content)
+            print(msg)
+            return HttpResponse(msg)
+        if choice == "stop":
+            msg = addmystop(username, content)
+            print(msg)
+            return HttpResponse(msg)
+        if choice == 'route':
+            msg = addmyroute(username, content)
+            print(msg)
+            return HttpResponse(msg)
+        if choice == 'leapcard':
+            msg = addmyleapcard(username, content)
+            print(msg)
+            return HttpResponse(msg)
+        else:
+            msg = json.dumps({'msg':"wrong added data type"})
+            return HttpResponse(msg)
+
+def getfav(request):
+    if request.method == 'POST':
+        # print('addfav')
+        choice = request.POST.get('choice')
+        # content = request.POST.get('content')
+        username = request.POST.get('username')
+        try:
+            username_session = request.session.get('username')
+        except:
+            username_session = None
+        print(username_session)
+        if username_session == None:
+            msg = json.dumps({'msg': 'please lonin to your account'})
+            return render(request, 'index.html')
+            # return HttpResponse(msg)
+        gainedcontents = []
+        if choice == "place":
+            places = Places.objects.filter(username_id=username)
+            for place in places:
+                gainedcontents.append(place.place)
+            msg = json.dumps({'content': gainedcontents})
+        elif choice == "stop":
+            stops = Stops.objects.filter(username_id=username)
+            for stop in stops:
+                gainedcontents.append(stop.stop)
+            msg = json.dumps({'content': gainedcontents})
+        elif choice == 'route':
+            routes = Routes.objects.filter(username_id=username)
+            for route in routes:
+                gainedcontents.append(route.route)
+            msg = json.dumps({'content': gainedcontents})
+        else:
+            msg = json.dumps({'msg': "wrong added data type"})
+        print(msg)
+        return HttpResponse(msg)
+
+def showuserinfowindow(request):
+    if request.method == 'POST':
+        # print('addfav')
+        choice = request.POST.get('choice')
+        content = request.POST.get('content')
+        username = request.POST.get('username')
+        try:
+            username_session = request.session.get('username')
+        except:
+            username_session = None
+        print(username_session)
+        if username_session == None:
+            # msg = json.dumps({'msg':'please lonin to your account'})
+            return render(request, 'index.html', {'msg':'please lonin to your account'})
+
+        try:
+            user = User.objects.get(name=username)
+        except:
+            user = None
+        if user == None:
+            print('none')
+            print(json.dumps({'msg': username + "is not a registered user."}))
+            return HttpResponse(json.dumps({'msg': username + "is not a registered user."}))
+            # return render(request, 'userindex.html', {'msg':username + "is not a registered user."})
+        else:
+            print('user exists', user.name)
+            places = []
+            stops = []
+            routes = []
+            placesfilt = Places.objects.filter(username_id=user.name)
+            for place in placesfilt:
+                places.append(place.place)
+
+            stopsfilt = Stops.objects.filter(username_id=user.name)
+            for stop in stopsfilt:
+                stops.append(stop.stop)
+
+            routesfilt = Routes.objects.filter(username_id=user.name)
+            for route in routesfilt:
+                routes.append(route.route)
+            print(places)
+            print(stops)
+            print(routes)
+            # return render(request, 'userindex.html', {'palces':places, 'stops':stops, 'routes':routes})
+            return HttpResponse(json.dumps({'places':places, 'stops':stops, 'routes':routes}))
+
+def delfav(request):
+    if request.method == 'POST':
+        # print('addfav')
+        choice = request.POST.get('choice')
+        content = request.POST.get('content')
+        username = request.POST.get('username')
+        try:
+            username_session = request.session.get('username')
+        except:
+            username_session = None
+        print(username_session)
+        if username_session == None:
+            msg = json.dumps({'msg':'please lonin to your account'})
+            return render(request, 'index.html')
+            # return HttpResponse(msg)
+        if choice == "place":
+            Places.objects.get(username_id=username, place=content).delete()
+            msg = json.dumps({'msg': "place deleted successfully!"})
+            print(msg)
+            return HttpResponse(msg)
+        if choice == "stop":
+            Stops.objects.get(username_id=username, stop=content).delete()
+            msg = json.dumps({'msg': "stop deleted successfully!"})
+            print(msg)
+            return HttpResponse(msg)
+        if choice == 'route':
+            Routes.objects.get(username_id=username, route=content).delete()
+            msg = json.dumps({'msg': "route deleted successfully!"})
+            print(msg)
+            return HttpResponse(msg)
+        else:
+            msg = json.dumps({'msg':"wrong data type"})
+            return HttpResponse(msg)
+
+def test(request):
+    if request.method == 'POST':
+        print('addfav')
+        return HttpResponse(json.dumps({'msg':"test"}))

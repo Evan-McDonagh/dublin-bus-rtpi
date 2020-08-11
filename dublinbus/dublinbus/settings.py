@@ -161,10 +161,10 @@ LOGGING = {
         },
         'file': {
             'level': 'DEBUG',
-            # 'class': 'logging.FileHandler',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'when': 'midnight',
-            'backupCount': 30,
+            'class': 'logging.FileHandler',
+            # 'class': 'logging.handlers.TimedRotatingFileHandler',
+            # 'when': 'midnight',
+            # 'backupCount': 30,
             'filename': os.path.join(BASE_DIR, 'logs/debug.log'),
             'formatter': 'verbose',
         },
@@ -194,4 +194,4 @@ AUTHENTICATION_BACKENDS = [
         'user_manage.views.UserLoginBackend',
 ]
 
-SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True;
