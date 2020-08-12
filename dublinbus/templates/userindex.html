@@ -82,12 +82,12 @@
                 <div class="bar3"></div>
             </div>
             Welcome!
-            <form action="/user_manage/login/" method="post" onsubmit="">
-                {% csrf_token %}
-                <input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="checkstatus()">
-            </form>
+{#            <form action="/user_manage/login/" method="post" onsubmit="return !checkstatus()">#}
+{#                {% csrf_token %}#}
+{#                <input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="">#}
+{#            </form>#}
+            <a href="#" id="loginatag"><input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="checkstatus()"></a>
             &nbsp;&nbsp;&nbsp;
-{#            <a href="{% url "user_manage:logout" %}"><input id="logout" value="Logout" onclick="logout()"></a>#}
             <form action="/user_manage/logout/" method="post" onsubmit="return alertlogout();">
                 {% csrf_token %}
                 <input type="submit" id="logout" value="Logout">

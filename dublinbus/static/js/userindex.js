@@ -310,18 +310,24 @@ function delfav(choice, username, content){
 // }
 
 function checkstatus() {
-    var status = false;
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
         url: "/user_manage/checkstatus/",
         type:"POST",
         dataType: 'json',
-        data:{'username':$("#userindexun")},
+        data:{'username':$("#userindexun").val()},
         async:false,
         success: function (data) {
-            alert(data['isLogin']);
-            status = data['isLogin'] == 'yes'? true:false;
+            // alert(data['isLogin']);
+            var status = data['isLogin'] == 'yes'? true:false;
+            if (status == false) {
+                $("#loginatag").attr("href", "{% url \"user_manage:login\" %}");
+                $("#loginatag").click();
+                return status;
+            } else{
+                alert('welcome '+$("#userindexun").val())
+            }
         },
-        error: function () {alert('check user status failed')}
+        error: function () {alert('check user status failed'); var status=null;return status;}
     })
 }
