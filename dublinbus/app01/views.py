@@ -70,10 +70,10 @@ def load_bus_data():
 
 def leapcard(request):
     if request.method == 'POST':
-        print(request.POST)
+        # print(request.POST)
         username = request.POST['username']
         password = request.POST['password']
-        print(username,password)
+        # print(username,password)
         context = {}
         
         try:
@@ -82,7 +82,7 @@ def leapcard(request):
             overview = session.get_card_overview()
             # print(overview)
             leap_content = vars(overview)
-            print(leap_content)
+            # print(leap_content)
             context['card_num'] = leap_content.get('card_num')
             context['card_label'] = leap_content.get('card_label')
             context['balance'] = leap_content.get('balance')
@@ -95,6 +95,8 @@ def leapcard(request):
             return JsonResponse(context,safe=False)
         
         return JsonResponse(context,safe=False)
+    else:
+        return render(request,'index.html')
 
 def stop(request):
     if request.method == 'POST':
@@ -102,16 +104,19 @@ def stop(request):
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
         obj_json = obj.json()
-        print(obj_json)
+        # print(obj_json)
         return JsonResponse(obj_json, safe=False)
+    else:
+        return render(request,'index.html')
 
 # get user address info by user's location
 def init(request):
-    print('init')
+    # print('init')
     inifo = {}
     if request.method == 'POST':
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
+        # print(lat,lng)
 
         # get the address of the post coordinate
         address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
@@ -288,21 +293,6 @@ def slicealongroutestopsid(startstopid, endstopid, busname, allstops, numstops, 
                         alongroutestops.append(allstops[endstopid])
                     return alongroutestops
 
-                # for i in range(0, len(atcocodes)):
-                #     if atcocodes[i] == longstopid:
-                #         print('i', i, "numstops", numstops, "length", len(atcocodes))
-                #         if start_or_end == 'start':
-                #             if i+numstops+1 <= len(atcocodes):
-                #                 alongroutestopids += atcocodes[i:i+numstops+1]
-                #                 return alongroutestopids
-                #             else:
-                #                 continue
-                #         else:
-                #             if i-numstops >= 0:
-                #                 alongroutestopids += atcocodes[i-numstops:i+1]
-                #                 return alongroutestopids
-                #             else:
-                #                 continue
 
 
 # show realtime info when a marker alongside the route is clicked
@@ -313,15 +303,6 @@ def rtmarkerinfo(request):
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
         obj_json = obj.json()
-        # # print(stop_id)
-        # allinfo = "Stop No." + obj_json.get('stopid') +"<br>"
-        # rsp ={obj_json.get('stopid'): []}
-        # for result in obj_json['results']:
-        #     key = result.get('route')
-        #     rsp[obj_json.get('stopid')].append({key: {'arrivaltime':result.get('arrivaldatetime'), 'destination':result.get('destination')}})
-        #     allinfo += "Route:"+ key + "  arrive at:" + result.get('arrivaldatetime') + " Towards " + result.get('destination') +"<br>"
-        # return HttpResponse(json.dumps({"allinfo":allinfo}))
-        # print(obj_json)
     return HttpResponse(json.dumps(obj_json))
 
 # show prediction
@@ -371,40 +352,7 @@ def showprediction(request):
     return HttpResponse(json.dumps({'prediction': predictions}))
 
 
-# to search a specific route
-# def routesearch(request):
-#     if request.method == 'POST':
-#         route = request.POST.get('route')
-#         routestopnos = {}
-#         routestops = {}
-#         if route in allroutes and route in scrappedallroutes:
-#             ROUTE = scrappedallroutes[route]
-#             for in_out in ROUTE:
-#                 key = re.sub('\(.*?\)', '', in_out).replace('  ', ' ').replace('From', '').replace('To', '->')
-#                 scrappeddirstops = ROUTE[in_out]['stops']
-#                 purestopnolist = []
-#                 for stop in scrappeddirstops:
-#                     purestopnolist.append(stop['stopno'])
-#                 routestopnos[key] = purestopnolist
-#             # print(routestopnos)
-#             for in_out in routestopnos:
-#                 in_out_stops = routestopnos[in_out]
-#                 # print(in_out_stops)
-#                 allalongroutestops = []
-#                 # pool = multiprocessing.Pool(6)
-#                 # for i in range(1):
-#                 #     pool.apply_async(func=extractloc, args=(in_out_stops, allalongroutestops), callback=None)
-#                 # pool.close()
-#                 # pool.join()
-#                 extractloc(in_out_stops, allalongroutestops)
-#                 # print(allalongroutestops)
-#                 allalongroutestopslist = allalongroutestops
-#                 # allalongroutestopslist = list(allalongroutestops.intersection(allalongroutestops))
-#                 routestops[in_out] = allalongroutestopslist
-#         else:
-#             routestops['Route does not exist'] = 'Route does not exist'
-#         # print(routestops)
-#         return HttpResponse(json.dumps(routestops))
+
 
 
 # to search a specific route
@@ -424,18 +372,7 @@ def routesearch(request):
                 for key in in_out_stops:
                     STOP = allstops[key]
                     routestops[in_out].append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-                # print(in_out_stops)
-                # allalongroutestops = []
-                # pool = multiprocessing.Pool(6)
-                # for i in range(1):
-                #     pool.apply_async(func=extractloc, args=(in_out_stops, allalongroutestops), callback=None)
-                # pool.close()
-                # pool.join()
-                # extractloc(in_out_stops, allalongroutestops)
-                # print(allalongroutestops)
-                # allalongroutestopslist = allalongroutestops
-                # allalongroutestopslist = list(allalongroutestops.intersection(allalongroutestops))
-                # routestops[in_out] = allalongroutestopslist
+                
         else:
             routestops['Route does not exist'] = 'Route does not exist'
         # print(routestops)
@@ -453,36 +390,8 @@ def extractloc(routestopnos, allalongroutestops):
                 # print('---------------------------------------------------------',stopno)
                 # if {"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]} not in allalongroutestops:
                 allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-    print(count)
-    # route_id = request.POST.get('route')
-    # routestopids = {}
-    # routestops = {}
-    # if route_id in allroutes and route_id in scrappedallroutes:
-    #     ROUTE = scrappedallroutes[route]
-    #     for in_out in ROUTE:
-    #         key = re.sub('\(.*?\)', '', in_out).replace('  ', ' ')
-    #         routestopids[key] = ROUTE[in_out]['stops']
-    # for in_out in routestopids:
-    #     key = re.sub('\(.*?\)', '', in_out).replace('  ', ' ')
-    #     allalongroutestops = []
-    #     in_out_stops = routestopids[in_out]
-    #     for i in range(0,len(in_out_stops)):
-    #         STOP = allstops[in_out_stops[i]]
-    #         allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-    #     routestops[in_out] = allalongroutestops
-    # for route in allroutes:
-    #     if route == route_id:
-    #         ROUTE = allroutes[route]
-    #         for in_out in ROUTE:
-    #             routestopids[in_out] = ROUTE[in_out]['atcocodes']
-    # for in_out in routestopids:
-    #     allalongroutestops = []
-    #     in_out_stops = routestopids[in_out]
-    #     for i in range(0,len(in_out_stops)):
-    #         STOP = allstops[in_out_stops[i]]
-    #         allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-    #     routestops[in_out] = allalongroutestops
-    # print(routestops)
+    # print(count)
+   
 
 # to handle error logger
 def errorhandler(request):
@@ -500,5 +409,4 @@ def test(request):
         return HttpResponse(json.dumps({'msg':"post"}))
     else:
         return HttpResponse(json.dumps({'msg':"non post"}))
-
 
