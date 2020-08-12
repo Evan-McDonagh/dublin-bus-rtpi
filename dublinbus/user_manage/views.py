@@ -191,7 +191,7 @@ def logout(request):
     if request.method == 'POST':
         print('Going to logout')
         try:
-            print(request.session['userid'])
+            print(request.session['username'])
             # del request.session['userid'] # del do not delete session data from session table
             request.session.flush()   # flush delete session data data from session table
             # request.session.clear()  # clear do not delete session data from session table
