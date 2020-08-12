@@ -154,6 +154,7 @@ nav {
 
 .fav-links a {
     text-decoration: none;
+    display: block;
 }
 
 .fav-links li:hover {

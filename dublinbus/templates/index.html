@@ -543,8 +543,7 @@
                         $('#myroute').hide();
                         $(".db").removeClass("show");
 
-                        var text = stop_elem.innerText;
-                        $('#stop_id').val(text);
+                        $('#stop_id').val(stop);
                         $('#stopbtn').click();
                     });
 
@@ -658,8 +657,8 @@
                         $('#twitterid').show();
                         $('#searchid').show();
                         $('#nearme').show();
-                        var text = place_elem.innerText;
-                        $('#origin').val(text);
+
+                        $('#origin').val(place);
                     });
             }
         
@@ -777,12 +776,10 @@
                         $('#myroute').hide();
                         $(".db").removeClass("show");
 
-                        var text = route_elem.innerText;
-                        $('#route_id').val(text);
+                        $('#route_id').val(route);
                         $('#routebtn').click();
                     });
             }
-        
         $("#favoritearea").html(tableContent);
         });
     });
