@@ -509,6 +509,10 @@ function getStopInfo(marker, stopKey) {
             // alert("hi");
             modal.classList.add('modal-active');
             burger.classList.add('toggle');
+
+            var stop_click_input = document.getElementById("stop_id");
+            var stop_click_id = stopdata[stopKey]["stopno"];
+            stop_click_input.setAttribute("value", stop_click_id);
             $('#stopid').siblings().hide();
                 $('#twitterid').show();
                 $('#stopid').show();
@@ -519,7 +523,7 @@ function getStopInfo(marker, stopKey) {
                 $(".db").removeClass("show");
 
                 // console.log(stopdata[stopKey]["stopno"])
-                var stop_click_id = stopdata[stopKey]["stopno"];
+                // var stop_click_id = stopdata[stopKey]["stopno"];
                 var now = new Date();
 
                 $.ajax({
