@@ -349,6 +349,23 @@ button {
     margin-bottom: 10px;
 }
 
+/*Show stops on route button*/
+
+.showstops {
+    min-height: 25px;
+    height: auto;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.showstops button {
+    min-width: 100px;
+    width: auto;
+    min-height: 25px;
+    height: auto;
+    left: 50px;
+}
+
 
 /*Modal and nav animations*/
 
@@ -438,6 +455,17 @@ button {
     font-family: 'Poppins', sans-serif;
     padding-left: 20px;
     cursor: pointer;
+    font-size: 12px;
+}
+
+
+/*Logo*/
+
+.logo{
+    font-size: 40px;
+    color: white;
+    font-weight: 650;
+    margin-left: 20px;
 }
 
 /* ---------------------------------------------------
@@ -466,6 +494,16 @@ button {
     }
 }
 
+@media (max-width: 450px) {
+    #weather span {
+        display: none;
+    }
+
+    .logo {
+        display: none;
+    }
+}
+
 @media (max-width: 400px){
     .nav-link {
         min-width: 40px;
@@ -482,6 +520,12 @@ button {
     .fares-table {
         font-size: 12px;
     }
+
+    #userindexun, #loginpos {
+        padding-left: 10px;
+    }
+
+
 }
 
 #stoparea {

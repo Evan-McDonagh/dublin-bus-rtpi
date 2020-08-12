@@ -136,7 +136,7 @@ function realtimeweather(pos) {
         dataType: 'json',
         success: function (data) {
             var icon = data['iconUrl']
-            var weather_show ="<img src='" + icon  + "'>" +data['descp'] +" "+ data['temp'];
+            var weather_show ="<img src='" + icon  + "'><span>" +data['descp'] +" "+ data['temp'] + "</span>";
             document.getElementById("weather").innerHTML = weather_show;
         },
         error: function () {
@@ -304,7 +304,7 @@ function calcRoute() {
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
 
                 if (bus_name_str != '') {
-                    document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + bus_name_str + "</button>";
+                    document.getElementById('routes').innerHTML = "<div class='showstops'><button id=" + "showalongroutemarker>" + bus_name_str + "</button></div>";
                     loadstops(segmentsinfo, bounds, map);
                     document.getElementById("showalongroutemarker").addEventListener('click', function () {
                         clearmarkers(Inboundmarkers);
@@ -313,7 +313,7 @@ function calcRoute() {
                         clearpolylines(Outboundpolyline);
                         showmarkers(alongroutemarkers, map);
                     });
-                }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>";}
+                }else{document.getElementById('routes').innerHTML = "<div class='showstops'><button id=" + "showalongroutemarker>" + "Walk"+ "</button></div>";}
             }
         }
         function showinfowindow(marker, infowindow, map) {
