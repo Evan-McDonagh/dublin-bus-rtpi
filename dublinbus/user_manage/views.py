@@ -105,7 +105,10 @@ def register(request):
 
 
 def login(request):
-    """Register"""
+    """login"""
+    if request.session.get('username') != None:
+        print('login session', request.session.get('username'))
+        return render(request, "userindex.html", {'username': request.session.get('username')})
     # the request from other pages
     if request.method == 'GET':
         if 'username' in request.COOKIES:
@@ -119,8 +122,8 @@ def login(request):
         '''login verify'''
         username = request.POST.get('username')
         password = request.POST.get('password')
-        if request.session.get('username') != None and request.session.get('username') == username:
-            print(request.session.get('username'))
+        if request.session.get('username') == username:
+            print('login session', request.session.get('username'))
             return render(request, "userindex.html", {'username': request.session.get('username')})
         # receive data
 
@@ -185,19 +188,23 @@ class UserLoginBackend(ModelBackend):
 
 
 def logout(request):
-    # if request.method == 'POST':
-    try:
-        print(request.session['userid'])
-        # del request.session['userid'] # del do not delete session data from session table
-        request.session.flush()   # flush delete session data data from session table
-        # request.session.clear()  # clear do not delete session data from session table
-    except KeyError:
-        pass
-    try:
-        print(request.session['username'])
-    except KeyError:
-        print('keyerror')
-    return redirect(reverse('app01:index'))
+    if request.method == 'POST':
+        print('Going to logout')
+        try:
+            print(request.session['userid'])
+            # del request.session['userid'] # del do not delete session data from session table
+            request.session.flush()   # flush delete session data data from session table
+            # request.session.clear()  # clear do not delete session data from session table
+        except KeyError:
+            pass
+        try:
+            print(request.session['username'])
+        except KeyError:
+            print('keyerror')
+            # return HttpResponse(json.dumps({'msg': "logout failed"}))
+        return render(request, "index.html")
+
+        # return render(request, 'index.html')
 
 
 def addmyplace(username, place):
@@ -321,9 +328,9 @@ def addfav(request):
             username_session = None
         print(username_session)
         if username_session == None:
-            # msg = json.dumps({'msg':'please lonin to your account'})
-            return render(request, 'index.html')
-            # return HttpResponse(msg)
+            msg = json.dumps({'msg': 'please refresh and login to your account'})
+            # return render(request, 'index.html')
+            return HttpResponse(msg)
         if choice == "place":
             msg = addmyplace(username, content)
             print(msg)
@@ -356,7 +363,7 @@ def getfav(request):
             username_session = None
         print(username_session)
         if username_session == None:
-            msg = json.dumps({'msg': 'please lonin to your account'})
+            msg = json.dumps({'msg': 'please login to your account'})
             return render(request, 'index.html')
             # return HttpResponse(msg)
         gainedcontents = []
@@ -393,7 +400,7 @@ def showuserinfowindow(request):
         print(username_session)
         if username_session == None:
             # msg = json.dumps({'msg':'please lonin to your account'})
-            return render(request, 'index.html', {'msg':'please lonin to your account'})
+            return render(request, 'index.html', {'msg':'please login to your account'})
 
         try:
             user = User.objects.get(name=username)
@@ -445,9 +452,9 @@ def delfav(request):
             username_session = None
         print(username_session)
         if username_session == None:
-            msg = json.dumps({'msg':'please lonin to your account'})
+            # msg = json.dumps({'msg':'please refresh and login to your account'})
             return render(request, 'index.html')
-            # return HttpResponse(msg)
+            return HttpResponse(msg)
         if choice == "place":
             Places.objects.get(username_id=username, place=content).delete()
             msg = json.dumps({'msg': "place deleted successfully!"})
@@ -471,6 +478,26 @@ def delfav(request):
         else:
             msg = json.dumps({'msg':"wrong data type"})
             return HttpResponse(msg)
+
+
+def checkstatus(request):
+    if request.method == 'POST':
+        uname = request.POST.get('username')
+        try:
+            username_session = request.session.get('username')
+        except:
+            username_session = None
+        print(username_session)
+        if username_session == None:
+            isLogin = json.dumps({'isLogin': 'no'})
+            return HttpResponse(isLogin)
+        if uname != username_session:
+            isLogin = json.dumps({'isLogin': 'no'})
+            return HttpResponse(isLogin)
+        else:
+            isLogin = json.dumps({'isLogin': 'yes'})
+            return HttpResponse(isLogin)
+            # return render(request, 'index.html', {'msg':'please login to your account'})
 
 def test(request):
     if request.method == 'POST':

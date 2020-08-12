@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^showuserinfowindow/', views.showuserinfowindow, name='showuserinfowindow'),
     url(r'^getfav/', views.getfav, name='getfav'),
     url(r'^delfav/', views.delfav, name='delfav'),
+    url(r'^checkstatus/', views.checkstatus, name='checkstatus'),
     url(r'^test/', views.test, name='test'),
     # url('', views.register)
     # path('register', views.register),

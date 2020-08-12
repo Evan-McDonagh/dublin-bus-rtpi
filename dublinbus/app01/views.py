@@ -46,9 +46,10 @@ with open(scrappedroutefile) as srt:
 # Create your views here.
 def index(request):
     context = load_bus_data()
-    uid = request.session.get('userid')
-    if uid is not None:
-        user = User.objects.get(id=uid)
+    uname = request.session.get('username')
+    print(uname)
+    if uname is not None:
+        user = User.objects.get(name=uname)
         if user is not None:
             context["username"] = user.name
         return render(request, 'userindex.html', context)

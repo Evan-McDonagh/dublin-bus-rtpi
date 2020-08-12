@@ -81,27 +81,33 @@
                 <div class="bar2"></div>
                 <div class="bar3"></div>
             </div>
-            <a href="#"><input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="showuserinfowindow()"></a>
+            Welcome!
+            <form action="/user_manage/login/" method="post" onsubmit="">
+                {% csrf_token %}
+                <input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="checkstatus()">
+            </form>
+            &nbsp;&nbsp;&nbsp;
+{#            <a href="{% url "user_manage:logout" %}"><input id="logout" value="Logout" onclick="logout()"></a>#}
+            <form action="/user_manage/logout/" method="post" onsubmit="return alertlogout();">
+                {% csrf_token %}
+                <input type="submit" id="logout" value="Logout">
+            </form>
             <div class="spacer"></div>
-{#            <form action="/user_manage/showuserinfo/" method="post">#}
-{#                {% csrf_token %}#}
-{#            </form>#}
             <div id="weather"></div>
         </nav>         
     </header>
-    <div id="userinfowindow" style="width: 600px;">
-        {{ msg }}
-        My Places:
-        <div id="placecontent"></div>
-        My Stops
-        <div id="stopcontent"></div>
-        My Routes
-        <div id="routecontent"></div>
-        My Leapcard
-        <div id="leapcardcontent"></div>
+{#    <div id="userinfowindow" style="width: 600px;">#}
+{#        {{ msg }}#}
+{#        My Places:#}
+{#        <div id="placecontent"></div>#}
+{#        My Stops#}
+{#        <div id="stopcontent"></div>#}
+{#        My Routes#}
+{#        <div id="routecontent"></div>#}
+{#        My Leapcard#}
+{#        <div id="leapcardcontent"></div>#}
 {#        <input type="text" id="{{ leapcard }}" value="{{ leapcard }}"><button id="{{ leapcard }}rm"><img src="https://img.icons8.com/material/24/000000/delete-forever--v2.png"/></button>#}
-        <a href="{% url "user_manage:logout" %}"><button>Logout</button></a>
-    </div>
+{#    </div>#}
     <div class="modal" id="modal">
         <div class="modal-top">
             <div class="modal-menu">

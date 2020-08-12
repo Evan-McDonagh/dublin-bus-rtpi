@@ -153,7 +153,10 @@ function clicktoaddfav() {
 }
 window.addEventListener('load', function (){clicktoaddfav()}, false)
 
-
+function alertlogout(){
+    var con = window.confirm("Logout?");
+    return con;
+}
 function showuserinfowindow() {
     var username = $("#userindexun").val();
     // alert(username);
@@ -298,5 +301,27 @@ function delfav(choice, username, content){
         async:false,
         success: function (data) {alert(data['msg'])},
         error: function () {alert('delete favorite'+choice+'failed')}
+    })
+}
+
+// window.onbeforeunload=function () {
+//     // $("#logout").click();
+//     return "asdaf";
+// }
+
+function checkstatus() {
+    var status = false;
+    $.ajax({
+        headers: {'X-CSRFToken': csrftoken},
+        url: "/user_manage/checkstatus/",
+        type:"POST",
+        dataType: 'json',
+        data:{'username':$("#userindexun")},
+        async:false,
+        success: function (data) {
+            alert(data['isLogin']);
+            status = data['isLogin'] == 'yes'? true:false;
+        },
+        error: function () {alert('check user status failed')}
     })
 }

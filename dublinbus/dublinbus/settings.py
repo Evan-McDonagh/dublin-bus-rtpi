@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from dublinbus.config import database_config
+# from dublinbus.config import database_config
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -80,11 +80,11 @@ WSGI_APPLICATION = 'dublinbus.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': database_config['NAME'],
-        'USER': database_config['USER'],
-        'PASSWORD': database_config['PASSWORD'],
-        'HOST': database_config['HOST'],
-        'PORT': database_config['PORT'],
+        'NAME': 'user',
+        'USER': 'root',
+        'PASSWORD': 'zxcvbnm,',
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 

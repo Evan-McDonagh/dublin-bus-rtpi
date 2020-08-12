@@ -430,7 +430,7 @@ button {
 
 /* Login/register btns*/
 
-#userindexun, #loginpos {
+#userindexun, #loginpos, #logout {
     background: transparent;
     color: #292f33;
     border: none;
