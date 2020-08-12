@@ -58,6 +58,11 @@ function clicktoaddfav() {
 
             document.getElementById("favorite").appendChild(tableContent);
 
+            stop_elem.onclick=function () {
+                $("#stop").click();
+                $("#stop_id").val(stop);
+            }
+
         };
         $("#favoritearea").html(tableContent);
         var rmicons = $(".rmicon-stop");
@@ -76,7 +81,7 @@ function clicktoaddfav() {
         var placeArr = getfav('place', $("#userindexun").val());;
         document.body.appendChild(tableContent);
 
-        for (let i = 0; i<placeArr.length; i++){
+        for (let i = 0; i<placeArr.length; i++) {
             let place = placeArr[i];
 
             //Creating wrapper div for each fav
@@ -97,6 +102,11 @@ function clicktoaddfav() {
 
             tableContent.appendChild(wrapper);
             document.getElementById("favorite").appendChild(tableContent);
+
+            place_elem.onclick = function () {
+                $("#search").click();
+                $("#origin").val(place);
+            }
         }
         $("#favoritearea").html(tableContent);
             var rmicons = $(".rmicon-place");
@@ -106,47 +116,51 @@ function clicktoaddfav() {
                     $(this).parent('div').remove();
                 }
             }
-        });
+    });
 
     //show favorite route and remove favorite route
     $("#myroute").click(function(e){
-            $("#favoritearea").html("");
-            var tableContent = document.createElement("div");
-            var routeArr = getfav('route', $("#userindexun").val());
-            document.body.appendChild(tableContent);
+        $("#favoritearea").html("");
+        var tableContent = document.createElement("div");
+        var routeArr = getfav('route', $("#userindexun").val());
+        document.body.appendChild(tableContent);
 
-            for (let i = 0; i<routeArr.length; i++){
-                let route = routeArr[i];
+        for (let i = 0; i<routeArr.length; i++) {
+            let route = routeArr[i];
 
-                var wrapper = document.createElement("div");
-                wrapper.className = "favs-wrapper";
+            var wrapper = document.createElement("div");
+            wrapper.className = "favs-wrapper";
 
-                var route_elem = document.createElement("span");
-                var t = document.createTextNode(route);
-                route_elem.appendChild(t);
+            var route_elem = document.createElement("span");
+            var t = document.createTextNode(route);
+            route_elem.appendChild(t);
 
-                var iconstar = document.createElement("a");
-                iconstar.innerHTML = "&times;";
-                iconstar.className = 'rmicon-route';
-                iconstar.id = routeArr[i]
+            var iconstar = document.createElement("a");
+            iconstar.innerHTML = "&times;";
+            iconstar.className = 'rmicon-route';
+            iconstar.id = routeArr[i]
 
-                wrapper.appendChild(route_elem);
-                wrapper.appendChild(iconstar);
+            wrapper.appendChild(route_elem);
+            wrapper.appendChild(iconstar);
 
-                tableContent.appendChild(wrapper);
+            tableContent.appendChild(wrapper);
 
-                document.getElementById("favorite").appendChild(tableContent);
+            document.getElementById("favorite").appendChild(tableContent);
+
+            route_elem.onclick = function () {
+                $("#route").click();
+                $("#route_id").val(route);
             }
-
-            $("#favoritearea").html(tableContent);
-            var rmicons = $(".rmicon-route");
-            for (var i=0; i<rmicons.length; i++){
-                rmicons[i].onclick=function () {
-                    delfav('route', $("#userindexun").val(), $(this).attr('id'));
-                    $(this).parent('div').remove();
-                }
+        }
+        $("#favoritearea").html(tableContent);
+        var rmicons = $(".rmicon-route");
+        for (var i=0; i<rmicons.length; i++){
+            rmicons[i].onclick=function () {
+                delfav('route', $("#userindexun").val(), $(this).attr('id'));
+                $(this).parent('div').remove();
             }
-            });
+        }
+        });
 
 
 
