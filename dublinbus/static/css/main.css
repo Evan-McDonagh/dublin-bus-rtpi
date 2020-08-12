@@ -69,6 +69,7 @@ nav {
 
 #weather img {
     vertical-align: middle;
+    height: 70px;
 }
 
 .modal {
@@ -451,11 +452,12 @@ button {
     background: transparent;
     color: #292f33;
     border: none;
-    padding-right: 5px;
+    padding-right: 15px;
     font-family: 'Poppins', sans-serif;
     padding-left: 20px;
     cursor: pointer;
     font-size: 12px;
+    padding-bottom: 1px;
 }
 
 
@@ -534,11 +536,14 @@ button {
 }
 
 .realtime-table {
-    max-width: 500px;
     width: 100%;
     align-self: center;
 }
 
 .realtime-table th {
     text-align: left;
+}
+
+.realtime-table tr:nth-child(even) {
+    background: rgb(231, 231, 231);
 }

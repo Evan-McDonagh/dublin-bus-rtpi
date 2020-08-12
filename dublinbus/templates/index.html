@@ -59,8 +59,10 @@
                 <div class="bar3"></div>
             </div>
             <div class="logo">Go2</div>
-            <a href="{% url 'user_manage:login' %}"><input type="button" value="login/register" name="login/register" id="loginpos" onclick=""></a>
             <div class="spacer"></div>
+            <a href="{% url 'user_manage:login' %}"><input type="button" value="Login/Register" name="login/register" id="loginpos" onclick=""></a>
+            
+            
             <div id="weather"></div>
         </nav>         
     </header>
@@ -505,6 +507,7 @@
                     var stop_elem = document.createElement("span");
                     var t = document.createTextNode(stop);
                     stop_elem.appendChild(t); 
+                    stop_elem.id = t;
                     // iconstar = document.createElement("i");
                     // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
@@ -528,8 +531,25 @@
                             }
                         }
                     });
+
+                    //When fav in list is clicked, shows stop & realtime
+                    stop_elem.addEventListener('click', function(){
+                        $('#stopid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#stopid').show();
+                        $('#routeid').hide();
+                        $('#myplace').hide();
+                        $('#mystop').hide();
+                        $('#myroute').hide();
+                        $(".db").removeClass("show");
+
+                        var text = stop_elem.innerText;
+                        $('#stop_id').val(text);
+                        $('#stopbtn').click();
+                    });
+
                 }
-            
+
             $("#favoritearea").html(tableContent);
             });
         });
@@ -631,6 +651,16 @@
                         }
                     }
                 });
+
+                //When fav in list is clicked, shows route planner with place filled in
+                    place_elem.addEventListener('click', function(){
+                        $('#searchid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#searchid').show();
+                        $('#nearme').show();
+                        var text = place_elem.innerText;
+                        $('#origin').val(text);
+                    });
             }
         
         $("#favoritearea").html(tableContent);
@@ -735,6 +765,22 @@
                         }
                     }
                 });
+
+                //When fav in list is clicked, shows 
+                route_elem.addEventListener('click', function(){
+                        $('#routeid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#routeid').show();
+                        $('#stopid').hide();
+                        $('#myplace').hide();
+                        $('#mystop').hide();
+                        $('#myroute').hide();
+                        $(".db").removeClass("show");
+
+                        var text = route_elem.innerText;
+                        $('#route_id').val(text);
+                        $('#routebtn').click();
+                    });
             }
         
         $("#favoritearea").html(tableContent);
