@@ -56,14 +56,13 @@
         <input id="alertinfo" value="{{ alertinfo }}" style="display: none">
         <div class="row">
             <div class="col-md-3 register-left">
-                <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
-                <h3>Welcome</h3>
-                <p>You are 30 seconds away from earning your own money!</p>
+                <img src="{% static 'images/dblogoicon.png' %}" alt=""/>
+                <h4>Welcome back</h4>
             </div>
             <div class="col-md-9 register-right">
                 <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" id="home-tab" data-toggle="tab" href="{% url 'user_manage:register' %} role="tab" aria-controls="home" aria-selected="true">Register</a>
+                        <a class="nav-link" id="home-tab" data-toggle="tab" href="{% url 'user_manage:register' %}" role="tab" aria-controls="home" aria-selected="true">Register</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#" role="tab" aria-controls="profile" aria-selected="false">Login</a>

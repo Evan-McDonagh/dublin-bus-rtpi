@@ -1,8 +1,9 @@
 .register{
-    background: -webkit-linear-gradient(left, #3931af, #00c6ff);
+    background: -webkit-linear-gradient(left, #23b36f, #69be55);
     margin-top: 3%;
     padding: 3%;
 }
+
 .register-left{
     text-align: center;
     color: #fff;
@@ -27,19 +28,11 @@
 }
 .register-left img{
     margin-top: 15%;
-    margin-bottom: 5%;
     width: 25%;
-    -webkit-animation: mover 2s infinite  alternate;
-    animation: mover 1s infinite  alternate;
+    height: 250px;
+    width: 250px;
 }
-@-webkit-keyframes mover {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
-}
-@keyframes mover {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
-}
+
 .register-left p{
     font-weight: lighter;
     padding: 12%;
@@ -55,7 +48,7 @@
     border: none;
     border-radius: 1.5rem;
     padding: 2%;
-    background: #0062cc;
+    background: #23b36f;
     color: #fff;
     font-weight: 600;
     width: 50%;
@@ -64,7 +57,7 @@
 .register .nav-tabs{
     margin-top: 3%;
     border: none;
-    background: #0062cc;
+    background: #23b36f;
     border-radius: 1.5rem;
     width: 28%;
     float: right;
@@ -82,8 +75,8 @@
 }
 .register .nav-tabs .nav-link.active{
     width: 100px;
-    color: #0062cc;
-    border: 2px solid #0062cc;
+    color: #23b36f;
+    border: 2px solid #23b36f;
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
 }
@@ -92,4 +85,12 @@
     margin-top: 8%;
     margin-bottom: -15%;
     color: #495057;
+}
+
+#busicon {
+    font-size: 100px;
+}
+
+.text-info {
+    color: #23b36f !important;
 }
