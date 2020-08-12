@@ -325,7 +325,9 @@ function checkstatus() {
                 $("#loginatag").click();
                 return status;
             } else{
-                alert('welcome '+$("#userindexun").val())
+                // alert('welcome '+$("#userindexun").val());
+                $(".burger").click(); //show the sidebar
+                $("#favorite").click(); //show the favorite
             }
         },
         error: function () {alert('check user status failed'); var status=null;return status;}
