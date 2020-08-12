@@ -19,10 +19,8 @@ from django.urls import path, include
 from app01 import views
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
     path('app01/', include('app01.urls', namespace='app01')),
     path('user_manage/', include('user_manage.urls', namespace='user_manage')),
     path('', views.index)
-    # path('', include('app01.urls'), ),
-    # path('', include('user_manage.urls'))
+    
 ]

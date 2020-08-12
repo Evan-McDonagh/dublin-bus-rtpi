@@ -524,7 +524,7 @@ function getStopInfo(marker, stopKey) {
 
                 // console.log(stopdata[stopKey]["stopno"])
                 // var stop_click_id = stopdata[stopKey]["stopno"];
-                var now = new Date();
+                
 
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
@@ -535,17 +535,15 @@ function getStopInfo(marker, stopKey) {
                     data:{'stop_id':stop_click_id},
                     success: function(result, statues, xml){
                         // console.log(result);
-                        var real_info = "<table class='realtime-table'><tr><th> Route </th>" + "<th> Destination </th>"+"<th> Duetime </th></tr>";
-                        for (var i =0; i< result["results"].length; i++){
-                            var arrivaltime = Date.parse(result["results"][i]["arrivaldatetime"]);
-                            var timeuntil = Math.abs(now - arrivaltime);
-                            var duetime = Math.round(((timeuntil % 86400000) % 3600000) / 60000);
-                            if (duetime == 0){
-                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>Due </tr>";
-                            } else {
-                                real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>" + duetime +" mins</tr>";
-                            }
-                        }
+                        var real_info = "<table class='realtime-table'>" + "<tr><th> Route </th>" + "<th> Destination </th>"+"<th> Duetime </th></tr>";
+                for (var i =0; i< result["results"].length; i++){
+                    if (result["results"][i]["duetime"] == "Due"){
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"]+"</td><td>" + "Due" +"</tr>";
+                    }
+                    else{
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>" +result["results"][i]["duetime"]  +" mins</tr>";
+                    }
+                }
                         real_info += "</table>";
                         $("#stoparea").html(real_info);
                     },
@@ -659,14 +657,11 @@ function stopsearch() {
                 
                 var real_info = "<table class='realtime-table'>" + "<tr><th> Route </th>" + "<th> Destination </th>"+"<th> Duetime </th></tr>";
                 for (var i =0; i< result["results"].length; i++){
-                    
-                    var arrivaltime = Date.parse(result["results"][i]["arrivaldatetime"]);
-                    var timeuntil = Math.abs(now - arrivaltime);
-                    var duetime = Math.round(((timeuntil % 86400000) % 3600000) / 60000);
-                    if (duetime == 0){
-                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>Due </tr>";
-                    } else {
-                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>" + duetime +" mins</tr>";
+                    if (result["results"][i]["duetime"] == "Due"){
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"]+"</td><td>" + "Due" +"</tr>";
+                    }
+                    else{
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>" +result["results"][i]["duetime"]  +" mins</tr>";
                     }
                 }
                 real_info += "</table>";
