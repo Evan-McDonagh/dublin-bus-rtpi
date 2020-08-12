@@ -58,8 +58,11 @@
                 <div class="bar2"></div>
                 <div class="bar3"></div>
             </div>
-            <a href="{% url 'user_manage:login' %}"><input type="button" value="login/register" name="login/register" id="loginpos" onclick=""></a>
+            <div class="logo">Go2</div>
             <div class="spacer"></div>
+            <a href="{% url 'user_manage:login' %}"><input type="button" value="Login/Register" name="login/register" id="loginpos" onclick=""></a>
+            
+            
             <div id="weather"></div>
         </nav>         
     </header>
@@ -501,7 +504,7 @@
                     
                     var wrapper = document.createElement("div");
                     wrapper.className = "favs-wrapper"; 
-
+                    
                     var stop_elem = document.createElement("span");
                     var t = document.createTextNode(stop);
                     stop_elem.appendChild(t); 
@@ -528,8 +531,24 @@
                             }
                         }
                     });
+
+                    //When fav in list is clicked, shows stop & realtime
+                    stop_elem.addEventListener('click', function(){
+                        $('#stopid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#stopid').show();
+                        $('#routeid').hide();
+                        $('#myplace').hide();
+                        $('#mystop').hide();
+                        $('#myroute').hide();
+                        $(".db").removeClass("show");
+
+                        $('#stop_id').val(stop);
+                        $('#stopbtn').click();
+                    });
+
                 }
-            
+
             $("#favoritearea").html(tableContent);
             });
         });
@@ -631,6 +650,16 @@
                         }
                     }
                 });
+
+                //When fav in list is clicked, shows route planner with place filled in
+                    place_elem.addEventListener('click', function(){
+                        $('#searchid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#searchid').show();
+                        $('#nearme').show();
+
+                        $('#origin').val(place);
+                    });
             }
         
         $("#favoritearea").html(tableContent);
@@ -735,8 +764,22 @@
                         }
                     }
                 });
+
+                //When fav in list is clicked, shows 
+                route_elem.addEventListener('click', function(){
+                        $('#routeid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#routeid').show();
+                        $('#stopid').hide();
+                        $('#myplace').hide();
+                        $('#mystop').hide();
+                        $('#myroute').hide();
+                        $(".db").removeClass("show");
+
+                        $('#route_id').val(route);
+                        $('#routebtn').click();
+                    });
             }
-        
         $("#favoritearea").html(tableContent);
         });
     });
