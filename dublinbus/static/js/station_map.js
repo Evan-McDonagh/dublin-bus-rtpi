@@ -71,17 +71,16 @@ function initMap(){
         // addallmarkers_repeat(map);
       }, function() {
         pos['status'] = "ERROR";
-        sendlocation(pos, map);
+        //sendlocation(pos, map);
         realtimeweather(pos);
-        map.setCenter(pos);
-        map.setZoom(15);
         var initmaperror = 'ERROR--->initMap(),type:js,file:station_map.js, ErrorMSG: Browser has Geolocation but service failed. location not accessible';
-        errorhandler(initmaperror, 'Location inaccessible, default location used.');
+        // errorhandler(initmaperror, 'Location inaccessible, default location used.');
         // handleLocationError(true, map.getCenter(), map);
         addallmarkers(map);
         clearmarkers(allstopmarkers);
-        addnearmemarkers(map, pos);
-        // addallmarkers_repeat(map);
+        // addnearmemarkers(map, pos);
+        addallmarkers_repeat(map);
+        var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
       });
     } else {
       // Browser doesn't support Geolocation
@@ -89,7 +88,7 @@ function initMap(){
       sendlocation(pos, map);
       realtimeweather(pos);
       var initmaperror = 'ERROR--->initMap(),type:js,file:station_map.js, ErrorMSG: Browser does not support Geolocation';
-      errorhandler(initmaperror, 'Browser does not support Geolocation, default location used');
+      errorhandler(initmaperror, 'Browser does not support Geolocation, default location used.');
       // handleLocationError(false, map.getCenter(), map);
       addallmarkers(map);
       clearmarkers(allstopmarkers);
@@ -118,7 +117,7 @@ function sendlocation(pos, map){
                     map: map,
                     position: {'lat':pos.lat, 'lng':pos.lng},
                 });
-            loc_infoWindow.setContent((pos.status == 'OK'? "Your position: ":"Map center: ")+data.address)
+            loc_infoWindow.setContent("Your position: "+data.address);
             loc_infoWindow.open(map, loc_marker);
         },
         error: function () {
@@ -567,6 +566,7 @@ function getStopInfo(marker, stopKey) {
 
 //Add all stops markers on the map.
 function addallmarkers(map) {
+    var customIcon = "../static/images/Go2_marker_grey.png";
     var stopKeys = Object.keys(stopdata);
     for (var i=0;i<stopKeys.length;i++) {
         var stopKey = stopKeys[i];
@@ -577,7 +577,8 @@ function addallmarkers(map) {
                     stopdata[stopKey]['longitude']),
                 title: stopdata[stopKey]['stopno'],
                 label: stopKey,
-                map: map
+                map: map,
+                icon: customIcon,
             });
             marker.setMap(map)
             // markers.push(marker);
@@ -588,10 +589,11 @@ function addallmarkers(map) {
         }
     }
     showmarkers(allstopmarkers, map);
-    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    //var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
 function addallmarkers_repeat(map) {
+    var customIcon = "../static/images/Go2_marker_grey.png";
     var stopKeys = Object.keys(stopdata);
     for (var i=0;i<stopKeys.length;i++) {
         var stopKey = stopKeys[i];
@@ -602,7 +604,8 @@ function addallmarkers_repeat(map) {
                     stopdata[stopKey]['longitude']),
                 // title: stopdata[stopKey]['stopno'],
                 // label: stopKey,
-                map: map
+                map: map,
+                icon: customIcon,
             });
             marker.setMap(map)
             // markers.push(marker);
@@ -613,7 +616,7 @@ function addallmarkers_repeat(map) {
         }
     }
     showmarkers(allstopmarkers_repeat, map);
-    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    //var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
 //Add the markers of nearme stops and display them on map
@@ -621,6 +624,7 @@ function addnearmemarkers(map, pos){
     var stopKeys = Object.keys(stopdata);
     var lngT = 0.005;
     var latT = 0.005;
+    var customIcon = "../static/images/Go2_marker_grey.png";
     for (var i=0;i<stopKeys.length;i++){
         var stopKey = stopKeys[i];
         if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
@@ -629,6 +633,7 @@ function addnearmemarkers(map, pos){
                 position: new google.maps.LatLng(
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
+                icon: customIcon,
             });
             marker.addListener('click', (function (marker, stopKey) {
                 return function () {getStopInfo(marker, stopKey, map);}
@@ -678,6 +683,7 @@ function stopsearch() {
     var stop_id = $('#stop_id').val();
     stopKeys = Object.keys(stopdata);
 
+    var customIcon = "../static/images/Go2_marker_grey.png";
     var stopKey;
     var stop_idd; //在for循环里相匹配的
     // var stopmap = new google.maps.map(document.getElementById('stopMap'));
@@ -694,6 +700,7 @@ function stopsearch() {
                         stopdata[stopKey]['latitude'],
                         stopdata[stopKey]['longitude']),
                     map: map,
+                    icon: customIcon,
                 });
 
                 // marker.setVisible(false);
@@ -749,6 +756,7 @@ function routesearch(){
     clearmarkers(Inboundmarkers, map);
     clearpolylines(Inboundpolyline, map);
     var route = $("#route_id").val();
+    var customIcon = "../static/images/Go2_marker_grey.png";
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
         url: '/app01/routesearch',
@@ -799,7 +807,7 @@ function routesearch(){
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
                         title: id,
-                        icon: icon,
+                        icon: customIcon,
                     });
                     showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
@@ -822,7 +830,7 @@ function routesearch(){
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
                         title: id,
-                        icon: icon
+                        icon: customIcon,
                     })
                     showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
@@ -957,9 +965,9 @@ function getclicklocation(latLng){
             });
             loc_infoWindow.setContent(
                 "<p id='address'>" + address + "</p>" + 
-                "<div class='ori-dest' style='min-width:140px; min-height:30px;'>" + 
+                "<div class='ori-dest' style='min-width:150px; min-height:30px;'>" + 
                 "<button id='ori-sel' style='left:10px; margin-right:10px; font-size:12px; margin-bottom:10px;'>As Origin</button>" + 
-                "<button id='dest-sel' style='right:10px; margin-left:10px; font-size:12px; margin-bottom:10px;'>As Destination</button></div>"
+                "<button id='dest-sel' style='right:10px; margin-left:10px; font-size:12px; margin-bottom:10px; width: auto;'>As Destination</button></div>"
             )
             loc_infoWindow.open(map, loc_marker);
             showmarkers([loc_marker], map);
