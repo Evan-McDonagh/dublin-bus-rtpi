@@ -155,10 +155,8 @@ def login(request):
             request.session['username'] = user.name
             request.session.set_expiry(60*10)   # when the user close the browser the session will expired
 
-            # login success, render the web page to index
             next_url = request.GET.get('next', reverse('app01:index'))
 
-            # turn to next_url
             response = redirect(next_url, {'username': username})  # HttpResponseRedirect
 
             # remember the user name or not
@@ -198,6 +196,8 @@ class UserLoginBackend(ModelBackend):
 def logout(request):
     if request.method == 'POST':
         print('Going to logout')
+        context = load_bus_data()
+
         try:
             print(request.session['username'])
             # del request.session['userid'] # del do not delete session data from session table
@@ -210,7 +210,7 @@ def logout(request):
         except KeyError:
             print('keyerror')
             # return HttpResponse(json.dumps({'msg': "logout failed"}))
-        return render(request, "index.html")
+        return render(request, "index.html", context)
 
         # return render(request, 'index.html')
 
@@ -336,7 +336,7 @@ def addfav(request):
             username_session = None
         print(username_session)
         if username_session == None:
-            msg = json.dumps({'msg': 'please refresh and login to your account'})
+            msg = json.dumps({'msg': 'please click \'logout\' and login to your account again'})
             # return render(request, 'index.html')
             return HttpResponse(msg)
         if choice == "place":

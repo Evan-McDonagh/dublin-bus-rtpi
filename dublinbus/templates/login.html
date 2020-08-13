@@ -109,3 +109,8 @@
 </body>
 <script type="text/javascript" src="{% static 'js/login.js' %}"></script>
 </html>
+<script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>

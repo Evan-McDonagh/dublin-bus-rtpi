@@ -35,8 +35,8 @@ var segmentsinfo = [];
 var fareRoutes = [];
 var Inboundmarkers = [];
 var Outboundmarkers = [];
-var Inboundpolyline = [];
-var Outboundpolyline = [];
+// var Inboundpolyline = [];
+// var Outboundpolyline = [];
 var allstopmarkers_repeat = [];
 
 function initMap(){
@@ -162,12 +162,12 @@ function realtimeweather(pos) {
 
 function calcRoute() {
     clearmarkers(Outboundmarkers);
-    clearpolylines(Outboundpolyline)
+    // clearpolylines(Outboundpolyline)
     clearmarkers(nearmemarkers);
     clearmarkers(originmarkers);
     clearmarkers(destinationmarkers);
     clearmarkers(Inboundmarkers, map);
-    clearpolylines(Inboundpolyline, map);
+    // clearpolylines(Inboundpolyline, map);
     directionsRenderer.setMap(null);
     clearmarkers(alongroutemarkers);
     alongroutemarkers = [];
@@ -309,8 +309,8 @@ function calcRoute() {
                     document.getElementById("showalongroutemarker").addEventListener('click', function () {
                         clearmarkers(Inboundmarkers);
                         clearmarkers(Outboundmarkers);
-                        clearpolylines(Inboundpolyline);
-                        clearpolylines(Outboundpolyline);
+                        // clearpolylines(Inboundpolyline);
+                        // clearpolylines(Outboundpolyline);
                         showmarkers(alongroutemarkers, map);
                     });
                 }else{document.getElementById('routes').innerHTML = "<div class='showstops'><button id=" + "showalongroutemarker>" + "Walk"+ "</button></div>";}
@@ -739,13 +739,13 @@ function showstopsearchcontent(){
 
 function routesearch(){
     clearmarkers(Outboundmarkers);
-    clearpolylines(Outboundpolyline);
+    // clearpolylines(Outboundpolyline);
     clearmarkers(nearmemarkers);
     clearmarkers(alongroutemarkers);
     clearmarkers(originmarkers);
     clearmarkers(destinationmarkers);
     clearmarkers(Inboundmarkers, map);
-    clearpolylines(Inboundpolyline, map);
+    // clearpolylines(Inboundpolyline, map);
     var route = $("#route_id").val();
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
@@ -792,7 +792,7 @@ function routesearch(){
                     var id = Inboundstops[i].id;
                     var lat = Inboundstops[i].lat;
                     var lng = Inboundstops[i].lng;
-                    inboundpath.push({'lat': lat, 'lng': lng})
+                    // inboundpath.push({'lat': lat, 'lng': lng})
 
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
@@ -802,20 +802,20 @@ function routesearch(){
                     showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
                 }
-                var inboundroutepath = new google.maps.Polyline({
-                    path: inboundpath,
-                    geodesic: true,
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 5,
-                    // width: 6
-                });
-                Inboundpolyline = [inboundroutepath];
+                // var inboundroutepath = new google.maps.Polyline({
+                //     path: inboundpath,
+                //     geodesic: true,
+                //     strokeColor: "#FF0000",
+                //     strokeOpacity: 1.0,
+                //     strokeWeight: 5,
+                //     // width: 6
+                // });
+                // Inboundpolyline = [inboundroutepath];
                 for (var i = 0; i < Outboundstops.length; i++) {
                     var id = Outboundstops[i].id;
                     var lat = Outboundstops[i].lat;
                     var lng = Outboundstops[i].lng;
-                    outboundpath.push({'lat': lat, 'lng': lng})
+                    // outboundpath.push({'lat': lat, 'lng': lng})
 
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
@@ -825,24 +825,24 @@ function routesearch(){
                     showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
                 }
-                var outboundroutepath = new google.maps.Polyline({
-                    path: outboundpath,
-                    geodesic: true,
-                    strokeColor: "blue",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 5,
-                    // width:4
-                });
-                Outboundpolyline = [outboundroutepath];
+                // var outboundroutepath = new google.maps.Polyline({
+                //     path: outboundpath,
+                //     geodesic: true,
+                //     strokeColor: "blue",
+                //     strokeOpacity: 1.0,
+                //     strokeWeight: 5,
+                //     // width:4
+                // });
+                // Outboundpolyline = [outboundroutepath];
                 document.getElementById("Inbound").addEventListener('click', function () {
                     clearmarkers(Outboundmarkers);
-                    clearpolylines(Outboundpolyline)
+                    // clearpolylines(Outboundpolyline)
                     clearmarkers(nearmemarkers);
                     clearmarkers(alongroutemarkers);
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
                     showmarkers(Inboundmarkers, map);
-                    showpolylines(Inboundpolyline, map)
+                    // showpolylines(Inboundpolyline, map)
                     //     // for (var marker in Inboundmarkers){
                     //     //     var MARKER = Inboundmarkers[marker]
                     //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
@@ -856,13 +856,13 @@ function routesearch(){
                 // });
                 document.getElementById("Outbound").addEventListener('click', function () {
                     clearmarkers(Inboundmarkers);
-                    clearpolylines(Inboundpolyline)
+                    // clearpolylines(Inboundpolyline)
                     clearmarkers(nearmemarkers);
                     clearmarkers(alongroutemarkers);
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
                     showmarkers(Outboundmarkers, map);
-                    showpolylines(Outboundpolyline, map)
+                    // showpolylines(Outboundpolyline, map)
                 });
             }
         },
