@@ -30,7 +30,7 @@
     <!-- <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script> -->
     <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/cookiemonster.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cookies.js' %}"></script>
     <!-- <script src="https://cdn.bootcdn.net/ajax/libs/cookies-monster/0.1.4/cookies-monster.js"></script> -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
@@ -447,18 +447,18 @@
                 // the first time user input the form 
                 stop.push(document.getElementById("stop_id").value);
                 try{
-                    cookiemonster.get('stop');
+                    cookieCollect.get('stop');
                 }
                 catch{
-                    cookiemonster.set('stop', stop, 3650);
-                    console.log(cookiemonster.get('stop'))
+                    cookieCollect.set('stop', stop, 3650);
+                    console.log(cookieCollect.get('stop'))
                     alert('Saved Sucessfully');
                     return ;
                 }
 
                 // except the first time of the user input, to get the cookies
                 var input_stop =  document.getElementById("stop_id").value;
-                var previous_arr = cookiemonster.get('stop');
+                var previous_arr = cookieCollect.get('stop');
                 // console.log(input_stop);
                 // console.log(previous_arr);
                 var flag = 0;
@@ -471,13 +471,13 @@
                 if (flag == 0){
                     // $(this).toggleClass("fa fa-star fa fa-star");
                     try{
-                        cookiemonster.get('stop');
-                        console.log(cookiemonster.get('stop'));
-                        cookiemonster.append('stop', stop, 3650);
-                        console.log(cookiemonster.get('stop'));
+                        cookieCollect.get('stop');
+                        console.log(cookieCollect.get('stop'));
+                        cookieCollect.append('stop', stop, 3650);
+                        console.log(cookieCollect.get('stop'));
 
                     } catch(err){
-                        cookiemonster.set('stop', stop, 3650);
+                        cookieCollect.set('stop', stop, 3650);
                     }
                     alert('Saved Sucessfully');
                 }
@@ -494,7 +494,7 @@
             $("#favoritearea").html("");
             // alert("hi");
             var tableContent = document.createElement("div");
-            var stopArr = cookiemonster.get('stop');
+            var stopArr = cookieCollect.get('stop');
             document.body.appendChild(tableContent);
 
             var iconstar;
@@ -524,10 +524,10 @@
                     // delete the favorite stop when they click the button
                     iconstar.addEventListener('click', function(){
                         // alert("hi");
-                        var stopList = cookiemonster.get('stop');
+                        var stopList = cookieCollect.get('stop');
                         for (let j = 0; j < stopArr.length; j++){
                             if (stopList[j] === stopArr[i]){
-                                cookiemonster.splice('stop',i,1,3650);
+                                cookieCollect.splice('stop',i,1,3650);
                             }
                         }
                     });
@@ -566,18 +566,18 @@
         else{
             place.push($('#origin').val());
             try{
-                cookiemonster.get('place');
+                cookieCollect.get('place');
             }
             catch{
-                cookiemonster.set('place', place, 3650);
-                console.log(cookiemonster.get('place'))
+                cookieCollect.set('place', place, 3650);
+                console.log(cookieCollect.get('place'))
                 alert('Saved Sucessfully');
                 return ;
             }
 
 
             var input_place =  $('#origin').val();
-            var previous_arr = cookiemonster.get('place');
+            var previous_arr = cookieCollect.get('place');
             // console.log(input_stop);
             // console.log(previous_arr);
             var flag = 0;
@@ -590,13 +590,13 @@
             if (flag == 0){
                 // $(this).toggleClass("fa fa-star fa fa-star");
                 try{
-                    cookiemonster.get('place');
-                    console.log(cookiemonster.get('place'));
-                    cookiemonster.append('place', place, 3650);
-                    console.log(cookiemonster.get('place'));
+                    cookieCollect.get('place');
+                    console.log(cookieCollect.get('place'));
+                    cookieCollect.append('place', place, 3650);
+                    console.log(cookieCollect.get('place'));
 
                 } catch(err){
-                    cookiemonster.set('place', place, 3650);
+                    cookieCollect.set('place', place, 3650);
                 }
                 alert('Saved Sucessfully');
             }
@@ -612,7 +612,7 @@
         $("#favoritearea").html("");
         // alert("hi");
         var tableContent = document.createElement("div");
-        var placeArr = cookiemonster.get('place');
+        var placeArr = cookieCollect.get('place');
         document.body.appendChild(tableContent);
 
         var iconstar;
@@ -643,10 +643,10 @@
                 // delete the place when they click the button
                 iconstar.addEventListener('click', function(){
                     // alert("hi");
-                    var placeList = cookiemonster.get('place');
+                    var placeList = cookieCollect.get('place');
                     for (let j = 0; j < placeArr.length; j++){
                         if (placeList[j] === placeArr[i]){
-                            cookiemonster.splice('place',i,1,3650);
+                            cookieCollect.splice('place',i,1,3650);
                         }
                     }
                 });
@@ -678,18 +678,18 @@
             // the first time user input the form 
             route.push(document.getElementById("route_id").value);
             try{
-                cookiemonster.get('route');
+                cookieCollect.get('route');
             }
             catch{
-                cookiemonster.set('route', route, 3650);
-                console.log(cookiemonster.get('route'))
+                cookieCollect.set('route', route, 3650);
+                console.log(cookieCollect.get('route'))
                 alert('Saved Sucessfully');
                 return ;
             }
 
             // except the first time of the user input, to get the cookies
             var input_stop =  document.getElementById("route_id").value;
-            var previous_arr = cookiemonster.get('route');
+            var previous_arr = cookieCollect.get('route');
             // console.log(input_stop);
             // console.log(previous_arr);
             var flag = 0;
@@ -702,13 +702,13 @@
             if (flag == 0){
                 // $(this).toggleClass("fa fa-star fa fa-star");
                 try{
-                    cookiemonster.get('route');
-                    console.log(cookiemonster.get('route'));
-                    cookiemonster.append('route', route, 3650);
-                    console.log(cookiemonster.get('route'));
+                    cookieCollect.get('route');
+                    console.log(cookieCollect.get('route'));
+                    cookieCollect.append('route', route, 3650);
+                    console.log(cookieCollect.get('route'));
 
                 } catch(err){
-                    cookiemonster.set('route', route, 3650);
+                    cookieCollect.set('route', route, 3650);
                 }
                 alert('Saved Sucessfully');
             }
@@ -725,7 +725,7 @@
         $("#favoritearea").html("");
         // alert("hi");
         var tableContent = document.createElement("div");
-        var routeArr = cookiemonster.get('route');
+        var routeArr = cookieCollect.get('route');
         document.body.appendChild(tableContent);
 
         var iconstar;
@@ -757,10 +757,10 @@
                 // delete the favorite stop when they click the button
                 iconstar.addEventListener('click', function(){
                     // alert("hi");
-                    var routeList = cookiemonster.get('route');
+                    var routeList = cookieCollect.get('route');
                     for (let j = 0; j < routeArr.length; j++){
                         if (routeList[j] === routeArr[i]){
-                            cookiemonster.splice('route',i,1,3650);
+                            cookieCollect.splice('route',i,1,3650);
                         }
                     }
                 });
