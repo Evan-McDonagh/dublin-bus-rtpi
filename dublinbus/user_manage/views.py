@@ -1,4 +1,5 @@
 import json
+import os
 import re
 
 from django.contrib.auth import authenticate
@@ -164,9 +165,12 @@ def login(request):
 
             print(request.session.get('username'))
 
-
+            context = load_bus_data()
+            context['username'] = username
+            print(context)
             # return response
-            return render(request, "userindex.html", {'username': username})
+            return render(request, "userindex.html", context)
+            # return render(request, "userindex.html", {'username': username})
         else:
             # password is wrong
             return render(request, 'login.html', {'errmsg': 'username does not match password', "username":username})
@@ -503,3 +507,17 @@ def test(request):
     if request.method == 'POST':
         print('addfav')
         return HttpResponse(json.dumps({'msg':"test"}))
+
+
+def load_bus_data():
+    #load bus stop and route data
+    dirname = os.path.dirname(__file__)
+    stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
+    routefile = os.path.join(dirname, "../local-bus-data/route-data.json")
+    with open(stopfile) as infile:
+        stop_data = json.load(infile)
+    with open(routefile) as infile:
+        route_data = json.load(infile)
+    stopdump = json.dumps(stop_data)
+    context = {'stopdata':stopdump}
+    return context

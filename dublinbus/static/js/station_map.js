@@ -105,7 +105,7 @@ function initMap(){
 function sendlocation(pos, map){
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url:'/app01//init',
+        url:'/app01/init',
         type: 'POST',
         data: pos,
         dataType: 'json',
