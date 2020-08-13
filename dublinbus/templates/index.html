@@ -8,7 +8,7 @@
 
     <title>Dublinbus</title>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8&libraries=places"></script>
-    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    
     
     <!--import css -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -130,7 +130,7 @@
                                 {% csrf_token %}
                                 <i class = "far fa-heart route" ></i>
                                 <input type='text' id = "route_id" name = "route_id" placeholder="Route ID">
-                                <button id = "routebtn" type="button" onclick="routesearch()">Submit</button>
+                                <button id = "routebtn" type="button" onclick="routesearch()">Find Route</button>
 
                                 <div id="singleroutesearchresult"></div>
                             </form>
@@ -146,7 +146,7 @@
                                 {% csrf_token %}
                                 <input type='text' id = "username" name = "username" placeholder="Username">
                                 <input type='password' id = "password" name = "password" placeholder="Password">
-                                <button id = "lpbtn" type="button">Submit</button>
+                                <button id = "lpbtn" type="button">Check Leap Balance</button>
                             </form>
                         </div>
                         <div id ="lparea"></div>
@@ -851,7 +851,7 @@
             var stopdata = '{{stopdata|safe}}';
             stopdata = JSON.parse(stopdata);
         </script>
-      
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>  
     
 </body>
 </html>
