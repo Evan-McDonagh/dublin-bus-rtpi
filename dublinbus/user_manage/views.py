@@ -107,9 +107,12 @@ def register(request):
 
 def login(request):
     """login"""
-    if request.session.get('username') != None:
-        print('login session', request.session.get('username'))
-        return render(request, "userindex.html", {'username': request.session.get('username')})
+    context = load_bus_data()
+    # if request.session.get('username') != None:
+    #     context['username'] = request.session.get('username')
+    #     print('login session', request.session.get('username'))
+    #     return render(request, "userindex.html", context)
+        # return render(request, "userindex.html", {'username': request.session.get('username')})
     # the request from other pages
     if request.method == 'GET':
         if 'username' in request.COOKIES:
@@ -124,8 +127,11 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         if request.session.get('username') == username:
+            # print('login session', request.session.get('username'))
+            context['username'] = request.session.get('username')
             print('login session', request.session.get('username'))
-            return render(request, "userindex.html", {'username': request.session.get('username')})
+            return render(request, "userindex.html", context)
+            # return render(request, "userindex.html", {'username': request.session.get('username')})
         # receive data
 
         # check data
@@ -165,9 +171,7 @@ def login(request):
 
             print(request.session.get('username'))
 
-            context = load_bus_data()
             context['username'] = username
-            print(context)
             # return response
             return render(request, "userindex.html", context)
             # return render(request, "userindex.html", {'username': username})
