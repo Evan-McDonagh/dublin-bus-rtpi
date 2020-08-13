@@ -306,7 +306,7 @@ function calcRoute() {
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
 
                 if (bus_name_str != '') {
-                    document.getElementById('routes').innerHTML = "<div class='showstops'><button id=" + "showalongroutemarker>" + bus_name_str + "</button></div>";
+                    document.getElementById('routes').innerHTML = "<div class='showstops'><button id=" + "showalongroutemarker>View stops: " + bus_name_str + "</button></div>";
                     loadstops(segmentsinfo, bounds, map);
                     document.getElementById("showalongroutemarker").addEventListener('click', function () {
                         clearmarkers(Inboundmarkers);
