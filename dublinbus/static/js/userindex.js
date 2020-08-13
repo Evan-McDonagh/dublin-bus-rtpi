@@ -61,6 +61,7 @@ function clicktoaddfav() {
             stop_elem.onclick=function () {
                 $("#stop").click();
                 $("#stop_id").val(stop);
+                $("#stopbtn").click();
             }
 
         };
@@ -150,6 +151,7 @@ function clicktoaddfav() {
             route_elem.onclick = function () {
                 $("#route").click();
                 $("#route_id").val(route);
+                $("#routebtn").click();
             }
         }
         $("#favoritearea").html(tableContent);
