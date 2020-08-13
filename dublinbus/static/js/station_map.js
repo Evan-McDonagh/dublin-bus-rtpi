@@ -73,8 +73,10 @@ function initMap(){
         pos['status'] = "ERROR";
         sendlocation(pos, map);
         realtimeweather(pos);
+        map.setCenter(pos);
+        map.setZoom(15);
         var initmaperror = 'ERROR--->initMap(),type:js,file:station_map.js, ErrorMSG: Browser has Geolocation but service failed. location not accessible';
-        errorhandler(initmaperror, 'location not accessible, default location used');
+        errorhandler(initmaperror, 'Location inaccessible, default location used.');
         // handleLocationError(true, map.getCenter(), map);
         addallmarkers(map);
         clearmarkers(allstopmarkers);
@@ -116,7 +118,7 @@ function sendlocation(pos, map){
                     map: map,
                     position: {'lat':pos.lat, 'lng':pos.lng},
                 });
-            loc_infoWindow.setContent((pos.status == 'OK'? "Your position: ":"(Unlocated)Map center:")+data.address)
+            loc_infoWindow.setContent((pos.status == 'OK'? "Your position: ":"Map center: ")+data.address)
             loc_infoWindow.open(map, loc_marker);
         },
         error: function () {
