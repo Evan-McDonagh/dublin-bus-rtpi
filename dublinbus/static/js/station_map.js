@@ -80,6 +80,8 @@ function initMap(){
         clearmarkers(allstopmarkers);
         // addnearmemarkers(map, pos);
         addallmarkers_repeat(map);
+        
+        //adding clustering of stops 
         var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
       });
     } else {
@@ -92,11 +94,12 @@ function initMap(){
       // handleLocationError(false, map.getCenter(), map);
       addallmarkers(map);
       clearmarkers(allstopmarkers);
-      addnearmemarkers(map, pos);
-    //   addallmarkers_repeat(map);
+      // addnearmemarkers(map, pos);
+      addallmarkers_repeat(map);
+
+      //cluster nearby stops
+      var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
     }
-    // create marker clusters using array of markers
-    // var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 
 }
 
