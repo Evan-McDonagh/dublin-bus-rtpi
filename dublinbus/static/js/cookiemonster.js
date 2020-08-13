@@ -1,8 +1,8 @@
-var cookieCollect = new Object();
+var cookiemonster = new Object();
 
-cookieCollect.append = function (cookieName, item, expDays) {
+cookiemonster.append = function (cookieName, item, expDays) {
    item = cm_clean(item);
-   var cookievalue = cookieCollect.get(cookieName);
+   var cookievalue = cookiemonster.get(cookieName);
    if (cookievalue instanceof Array) {
        cookievalue[cookievalue.length] = item;
        cm_createCookie(cookieName, cm_arrayAsString(cookievalue), expDays);
@@ -11,8 +11,8 @@ cookieCollect.append = function (cookieName, item, expDays) {
    }
 };
 
-cookieCollect.splice = function (cookieName, index, numberToRemove, expDays) {
-   var cookievalue = cookieCollect.get(cookieName);
+cookiemonster.splice = function (cookieName, index, numberToRemove, expDays) {
+   var cookievalue = cookiemonster.get(cookieName);
    if (cookievalue instanceof Array) {
        cookievalue.splice(index, numberToRemove);
        cm_createCookie(cookieName, cm_arrayAsString(cookievalue), expDays);
@@ -21,7 +21,7 @@ cookieCollect.splice = function (cookieName, index, numberToRemove, expDays) {
 
 
 
-cookieCollect.get = function (cookieName) {
+cookiemonster.get = function (cookieName) {
    var cstring = cm_readCookie(cookieName);
    if (cstring.indexOf('<#&type=ArrayVals>') != -1) {
 
@@ -43,7 +43,7 @@ cookieCollect.get = function (cookieName) {
    }
 };
 
-cookieCollect.set = function (cookieName, value, expDays) {
+cookiemonster.set = function (cookieName, value, expDays) {
    if (value instanceof Array) {
        cm_createCookie(cookieName, cm_arrayAsString(value), expDays);
    }
@@ -51,7 +51,7 @@ cookieCollect.set = function (cookieName, value, expDays) {
 
 };
 
-cookieCollect.eraseCookie = function (name) {
+cookiemonster.eraseCookie = function (name) {
    cm_createCookie(name, "", -1);
 };
 

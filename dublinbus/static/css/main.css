@@ -166,10 +166,6 @@ nav {
     color: #292f33;
 }
 
-.fav-links a:active {
-    color: #23b36f;
-}
-
 /* Modal Content */
 .modal-cont {
     padding-top: 1.5rem;
@@ -264,9 +260,6 @@ button {
     width: 100px;
     cursor: pointer;
     height: 25px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    color: #292f33;
 }
 
 #fares, #nearme {
@@ -339,7 +332,6 @@ button {
 
 #lpbtn {
     top: 70px;
-    width: auto;
 }
 
 /*Directions/steps pannel */
@@ -457,7 +449,7 @@ button {
 
 /* Login/register btns*/
 
-#userindexun, #loginpos {
+#userindexun, #loginpos, #logout {
     background: transparent;
     color: #292f33;
     border: none;
@@ -469,23 +461,6 @@ button {
     padding-bottom: 1px;
 }
 
-#userindexun {
-    border-right: 0.5px solid rgba(41, 47, 51, 0.5);
-}
-
-#logout {
-    margin-left: 0px;
-    background: transparent;
-    color: #292f33;
-    border: none;
-    padding-right: 15px;
-    padding-left: 0px;
-    font-family: 'Poppins', sans-serif;
-    cursor: pointer;
-    font-size: 12px;
-    padding-bottom: 1px;
-    padding-left: 3px;
-}
 
 /*Logo*/
 
@@ -573,4 +548,3 @@ button {
 .realtime-table tr:nth-child(even) {
     background: rgb(231, 231, 231);
 }
-
