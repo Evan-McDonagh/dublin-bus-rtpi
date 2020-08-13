@@ -28,10 +28,7 @@ def register(request):
         username = request.POST.get('username')
         password = request.POST.get('pwd')
         password_cfm = request.POST.get('pwdcfm')
-        email = request.POST.get('email')
-        question = request.POST.get('question')
-        answer = request.POST.get('answer')
-        gender = request.POST.get('gender')
+    
 
         # allow = request.POST.get('allow') # choose to agree with the user agreement or not
 
@@ -51,22 +48,6 @@ def register(request):
             # passwords do not equal
             return render(request, 'register.html', {'errmsg': 'passwords do not equal'})
 
-        # verify email
-        if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
-            return render(request, 'register.html', {'errmsg': 'email format is not correct'})
-
-        # verify question
-        if question == "Please select your Sequrity Question":
-            # passwords do not equal
-            return render(request, 'register.html', {'errmsg': 'security question is not chosen'})
-
-        # verify answer
-        if answer == "":
-            # passwords do not equal
-            return render(request, 'register.html', {'errmsg': 'security question is not answered'})
-        #
-        #     if allow != 'on': # the user agree with the user agreement
-        #         return render(request, 'register.html', {'errmsg': 'Please agree with the user agreement'})
 
         # check is a user with same name has been registered
         try:
@@ -83,24 +64,8 @@ def register(request):
         user = User()
         user.name = username
         user.password = make_password(password)
-        user.email = email
-        user.question = question
-        user.answer = answer
-        user.gender = gender
         user.isDelete = False
         user.save()
-
-        # print(username)
-        # print(password)
-        # print(password_cfm)
-        # print(email)
-        # print(question)
-        # print(answer)
-        # print(gender)
-
-        # render the web page to index
-        # return redirect(reverse('app01:index'))
-        # request.session['userid'] = user.id
 
         return render(request, 'login.html', {'alertinfo': 'Welcome to DublinbusTeam2', 'username': username})
 
@@ -108,11 +73,7 @@ def register(request):
 def login(request):
     """login"""
     context = load_bus_data()
-    # if request.session.get('username') != None:
-    #     context['username'] = request.session.get('username')
-    #     print('login session', request.session.get('username'))
-    #     return render(request, "userindex.html", context)
-        # return render(request, "userindex.html", {'username': request.session.get('username')})
+   
     # the request from other pages
     if request.method == 'GET':
         if 'username' in request.COOKIES:
