@@ -38,6 +38,7 @@ var Outboundmarkers = [];
 // var Inboundpolyline = [];
 // var Outboundpolyline = [];
 var allstopmarkers_repeat = [];
+var markerCluster;
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -80,9 +81,9 @@ function initMap(){
         clearmarkers(allstopmarkers);
         // addnearmemarkers(map, pos);
         addallmarkers_repeat(map);
-        
+        clearmarkers(allstopmarkers_repeat);
         //adding clustering of stops 
-        var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+        markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
       });
     } else {
       // Browser doesn't support Geolocation
@@ -96,9 +97,10 @@ function initMap(){
       clearmarkers(allstopmarkers);
       // addnearmemarkers(map, pos);
       addallmarkers_repeat(map);
+      clearmarkers(allstopmarkers_repeat);
 
       //cluster nearby stops
-      var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+      markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
     }
 
 }
@@ -170,7 +172,10 @@ function calcRoute() {
     clearmarkers(nearmemarkers);
     clearmarkers(originmarkers);
     clearmarkers(destinationmarkers);
-    clearmarkers(Inboundmarkers, map);
+    clearmarkers(Inboundmarkers);
+    clearmarkers(allstopmarkers_repeat);
+    clearmarkers(allstopmarkers);
+    markerCluster.clearMarkers();
     // clearpolylines(Inboundpolyline, map);
     directionsRenderer.setMap(null);
     clearmarkers(alongroutemarkers);
@@ -654,6 +659,7 @@ function stopsearch() {
     clearmarkers(alongroutemarkers);
     clearmarkers(nearmemarkers);
     clearmarkers(singlestopmarker);
+    markerCluster.clearMarkers();
     var now = new Date();
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
@@ -757,6 +763,7 @@ function routesearch(){
     clearmarkers(originmarkers);
     clearmarkers(destinationmarkers);
     clearmarkers(Inboundmarkers, map);
+    markerCluster.clearMarkers();
     // clearpolylines(Inboundpolyline, map);
     var route = $("#route_id").val();
     var customIcon = "../static/images/Go2_marker_grey.png";
@@ -794,12 +801,12 @@ function routesearch(){
                 var Outboundstops = routestops[dir2];
                 Inboundmarkers = [];
                 Outboundmarkers = [];
-                var inboundpath = [];
-                var outboundpath = [];
-                var icon = {
-                    url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
-                    scaledSize: new google.maps.Size(30, 30)
-                }
+                // var inboundpath = [];
+                // var outboundpath = [];
+                // var icon = {
+                //     url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
+                //     scaledSize: new google.maps.Size(30, 30)
+                // }
                 var infowindow = new google.maps.InfoWindow();
                 for (var i = 0; i < Inboundstops.length; i++) {
                     var id = Inboundstops[i].id;
