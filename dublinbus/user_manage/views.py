@@ -180,7 +180,7 @@ def login(request):
 
             print(request.session.get('username'))
 
-            context['name'] = username
+            context['username'] = username
             # return response
             return render(request, "userindex.html",context)
         else:
