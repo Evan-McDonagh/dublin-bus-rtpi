@@ -15,20 +15,6 @@ from django.utils import timezone
 from datetime import *
 from django.contrib.auth.hashers import make_password, check_password
 
-def load_bus_data():
-    #load bus stop and route data
-    dirname = os.path.dirname(__file__)
-    stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
-    routefile = os.path.join(dirname, "../local-bus-data/route-data.json")
-    with open(stopfile) as infile:
-        stop_data = json.load(infile)
-    with open(routefile) as infile:
-        route_data = json.load(infile)
-    stopdump = json.dumps(stop_data)
-    context = {'stopdata':stopdump}
-    return context
-
-context = load_bus_data()
 
 def register(request):
     """Register"""
@@ -42,10 +28,7 @@ def register(request):
         username = request.POST.get('username')
         password = request.POST.get('pwd')
         password_cfm = request.POST.get('pwdcfm')
-        email = request.POST.get('email')
-        question = request.POST.get('question')
-        answer = request.POST.get('answer')
-        gender = request.POST.get('gender')
+    
 
         # allow = request.POST.get('allow') # choose to agree with the user agreement or not
 
@@ -65,22 +48,6 @@ def register(request):
             # passwords do not equal
             return render(request, 'register.html', {'errmsg': 'passwords do not equal'})
 
-        # verify email
-        if not re.match(r'^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
-            return render(request, 'register.html', {'errmsg': 'email format is not correct'})
-
-        # verify question
-        if question == "Please select your Sequrity Question":
-            # passwords do not equal
-            return render(request, 'register.html', {'errmsg': 'security question is not chosen'})
-
-        # verify answer
-        if answer == "":
-            # passwords do not equal
-            return render(request, 'register.html', {'errmsg': 'security question is not answered'})
-        #
-        #     if allow != 'on': # the user agree with the user agreement
-        #         return render(request, 'register.html', {'errmsg': 'Please agree with the user agreement'})
 
         # check is a user with same name has been registered
         try:
@@ -97,33 +64,16 @@ def register(request):
         user = User()
         user.name = username
         user.password = make_password(password)
-        user.email = email
-        user.question = question
-        user.answer = answer
-        user.gender = gender
         user.isDelete = False
         user.save()
-
-        # print(username)
-        # print(password)
-        # print(password_cfm)
-        # print(email)
-        # print(question)
-        # print(answer)
-        # print(gender)
-
-        # render the web page to index
-        # return redirect(reverse('app01:index'))
-        # request.session['userid'] = user.id
 
         return render(request, 'login.html', {'alertinfo': 'Welcome to DublinbusTeam2', 'username': username})
 
 
 def login(request):
     """login"""
-    if request.session.get('username') != None:
-        print('login session', request.session.get('username'))
-        return render(request, "userindex.html", {'username': request.session.get('username')})
+    context = load_bus_data()
+   
     # the request from other pages
     if request.method == 'GET':
         if 'username' in request.COOKIES:
@@ -138,9 +88,11 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         if request.session.get('username') == username:
-            context['username'] = username
+            # print('login session', request.session.get('username'))
+            context['username'] = request.session.get('username')
             print('login session', request.session.get('username'))
             return render(request, "userindex.html", context)
+            # return render(request, "userindex.html", {'username': request.session.get('username')})
         # receive data
 
         # check data
@@ -164,10 +116,8 @@ def login(request):
             request.session['username'] = user.name
             request.session.set_expiry(60*10)   # when the user close the browser the session will expired
 
-            # login success, render the web page to index
             next_url = request.GET.get('next', reverse('app01:index'))
 
-            # turn to next_url
             response = redirect(next_url, {'username': username})  # HttpResponseRedirect
 
             # remember the user name or not
@@ -182,7 +132,8 @@ def login(request):
 
             context['username'] = username
             # return response
-            return render(request, "userindex.html",context)
+            return render(request, "userindex.html", context)
+            # return render(request, "userindex.html", {'username': username})
         else:
             # password is wrong
             return render(request, 'login.html', {'errmsg': 'username does not match password', "username":username})
@@ -206,6 +157,8 @@ class UserLoginBackend(ModelBackend):
 def logout(request):
     if request.method == 'POST':
         print('Going to logout')
+        context = load_bus_data()
+
         try:
             print(request.session['username'])
             # del request.session['userid'] # del do not delete session data from session table
@@ -344,7 +297,7 @@ def addfav(request):
             username_session = None
         print(username_session)
         if username_session == None:
-            msg = json.dumps({'msg': 'please refresh and login to your account'})
+            msg = json.dumps({'msg': 'please click \'logout\' and login to your account again'})
             # return render(request, 'index.html')
             return HttpResponse(msg)
         if choice == "place":
@@ -519,3 +472,17 @@ def test(request):
     if request.method == 'POST':
         print('addfav')
         return HttpResponse(json.dumps({'msg':"test"}))
+
+
+def load_bus_data():
+    #load bus stop and route data
+    dirname = os.path.dirname(__file__)
+    stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
+    routefile = os.path.join(dirname, "../local-bus-data/route-data.json")
+    with open(stopfile) as infile:
+        stop_data = json.load(infile)
+    with open(routefile) as infile:
+        route_data = json.load(infile)
+    stopdump = json.dumps(stop_data)
+    context = {'stopdata':stopdump}
+    return context
