@@ -212,7 +212,7 @@
                                 <i class = "far fa-heart star" ></i>
                                 <input type='text' id = "stop_id" name = "stop_id" placeholder="Stop ID">
                                 <button id = "stopbtn" type="button" onclick="stopsearch()">Find Stop</button>
-                                <div ><button id = "markerbtn"  type="button" onclick="showandhide()" >Show Stops</button></div>
+                                <div ><button id = "markerbtn"  type="button" onclick="showandhide()" >All Stops</button></div>
                                 
                             </form>
                         </div>
@@ -344,39 +344,6 @@
         });
     })
 </script>
-
-
-<script type="text/javascript">
-    var flag = 0;
-    function showandhide(){
-        if (flag == 0){
-            // alert("hiiii")
-            addallmarkers_repeat(map);
-            flag = 1;
-            document.getElementById("markerbtn").innerHTML = "Hide";
-        }
-        else{
-            addallmarkers_repeat(null);
-            flag = 0;
-            document.getElementById("markerbtn").innerHTML = "Show";
-        }
-    }
-</script>
-
-
-<script type = "text/javascript">
-    // $('#infowindow_button').click(function(){
-    //     alert("hihi")
-    //     $('.model').addClass('modal-active')
-    // });
-    // var infowindow_button = document.getElementById("infowindow_button");
-    // console.log(infowindow_button)
-    // infowindow_button.addEventListener('click',function(){
-    //     alert("hi")
-    // })
-</script>
-
-
 
 
 <!-- the onclick function that will hide some feature div -->
