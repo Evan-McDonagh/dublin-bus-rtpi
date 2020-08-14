@@ -38,6 +38,7 @@ var Outboundmarkers = [];
 // var Inboundpolyline = [];
 // var Outboundpolyline = [];
 var allstopmarkers_repeat = [];
+var markerCluster;
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -82,7 +83,7 @@ function initMap(){
         addallmarkers_repeat(map);
         
         //adding clustering of stops 
-        var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+        markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
       });
     } else {
       // Browser doesn't support Geolocation
@@ -98,7 +99,7 @@ function initMap(){
       addallmarkers_repeat(map);
 
       //cluster nearby stops
-      var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+      markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
     }
 
 }
@@ -176,6 +177,7 @@ function calcRoute() {
     clearmarkers(alongroutemarkers);
     alongroutemarkers = [];
     clearmarkers(nearmemarkers);
+    markerCluster.clearMarkers()
     segmentsinfo = [];
     
     var currentTime = new Date(Date.now());
