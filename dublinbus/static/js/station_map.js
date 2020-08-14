@@ -1264,12 +1264,12 @@ function renderLegCard(seg) {
     
     html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
     if (seg.travelmode == 'WALKING') {
-        html_out += '<td><img src="{% static \'images/icon-WALKING.png\'%}" alt="" style="width: 50px;"></td>';
+        html_out += '<td><img src="../static/images/icon-WALKING.png" alt="" style="width: 50px;"></td>';
     } else if (seg.agency == "Dublin Bus" || seg.agency == "Go-Ahead"){
-        html_out += '<td><img src="./static/images/icon-BUS.png" alt="" style="width: 50px;"></td>';
+        html_out += '<td><img src="../static/images/icon-BUS.png" alt="" style="width: 50px;"></td>';
         busname = '(' + seg.busname + ')';
     } else {
-        html_out += '<td><img src="./static/images/icon-TRAIN.png" alt="" style="width: 50px;"></td>';
+        html_out += '<td><img src="../static/images/icon-TRAIN.png" alt="" style="width: 50px;"></td>';
     }
 
     if (seg.travelmode == 'TRANSIT') {
@@ -1304,7 +1304,7 @@ function noTransitDisplay() {
     var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
 
     html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
-    html_out += '<td><img src="./static/images/icon-NOROUTE.png" alt="" style="width: 50px;"></td>';
+    html_out += '<td><img src="../static/images/icon-NOROUTE.png" alt="" style="width: 50px;"></td>';
     html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + ' No Transit Route Available' + '</h4>';
     html_out += '<p class="card-text">' + 'For late-night Dublin Bus services see <a href="https://www.dublinbus.ie/Your-Journey1/Timetables/Nitelink-Services/">Dublin Bus Nitelink</a>.' + '</p></td>';
 
@@ -1319,7 +1319,7 @@ function invalidDatetime() {
     var html_out = '<div class="card flex-row flex-wrap" style="margin-bottom:5px; margin-top:5px; ">'
 
     html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
-    html_out += '<td><img src="./static/images/icon-CLOCK.png" alt="" style="width: 50px;"></td>';
+    html_out += '<td><img src="../static/images/icon-CLOCK.png" alt="" style="width: 50px;"></td>';
     html_out += '<td><h4 class="card-title" style="color: black; margin-block-end: 0;">' + 'Invalid Date or Time Selected' + '</h4>';
     html_out += '<p class="card-text">' + 'Please select a date and time in the future.' + '</p></td>';
 
