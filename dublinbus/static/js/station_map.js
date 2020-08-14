@@ -170,6 +170,7 @@ function realtimeweather(pos) {
 //     // infoWindow.open(map);
 // }
 
+// to provide a route plan and display it on map
 function calcRoute() {
     clearmarkers(Outboundmarkers);
     // clearpolylines(Outboundpolyline)
@@ -457,11 +458,14 @@ function clearmarkers(markerlist){
     }
 }
 
+//To show the polyline on the map
 function showpolylines(polylinelist, map){
     for (var i=0; i < polylinelist.length; i++){
         polylinelist[i].setMap(map);
     }
 }
+
+//To clear a polyline on a map
 function clearpolylines(polylinelist){
     for (var i=0; i < polylinelist.length; i++){
         polylinelist[i].setMap(null);
@@ -603,6 +607,7 @@ function addallmarkers(map) {
     //var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
+//Add all stops markers on the map., a duplicate function to avoid conflict some where.
 function addallmarkers_repeat(map) {
     var customIcon = "../static/images/Go2_marker_grey.png";
     var stopKeys = Object.keys(stopdata);
@@ -656,7 +661,7 @@ function addnearmemarkers(map, pos){
     showmarkers(nearmemarkers, map);
 }
 
-// The function to search a single stopid in the map and display the time info.
+//The function to search a single stopid in the map and display the time info.
 function stopsearch() {
     directionsRenderer.setMap(null);
     clearmarkers(alongroutemarkers);
@@ -757,8 +762,10 @@ function showsearchcontent(){
 function showstopsearchcontent(){
     if (singlestopmarker.length >0){showmarkers(singlestopmarker, map);}
 }
+
 // function showroutesearchcontent(){}
 
+//To search a route and display it on map.
 function routesearch(){
     clearmarkers(Outboundmarkers);
     // clearpolylines(Outboundpolyline);
@@ -1054,7 +1061,6 @@ function getclicklocation(latLng){
         }
     })
 }
-// initMap();
 
 //To calculate the estimated fare of the journey based on time
 function calcFare(fareRoutes, segmentsinfo){
@@ -1213,6 +1219,7 @@ function showPrediction(segmentsinfo){
         },
     });
 }
+
 function find_closest_stopmarker(location,route) {
     // Finds nearest stopmarker to a given LatLng which  a given route in its route array
     var distances = [];
@@ -1349,13 +1356,14 @@ function getDate() {
     }
 }
 
-// {#var flag = 0;#}
+// show or hide marker cluster on the map
 function showandhide(){
     if (document.getElementById("markerbtn").innerHTML == 'Show'){turnclusteron_off('on')}
     else if (document.getElementById("markerbtn").innerHTML == 'All Stops'){addallmarkers_repeat(map);turnclusteron_off('on')}
     else if (document.getElementById("markerbtn").innerHTML == 'Hide'){turnclusteron_off('off')}
 }
 
+// show or hide marker cluster on the map
 function turnclusteron_off(on_or_off) {
     if (on_or_off == 'on') {
         if (!isClusterShowing){
@@ -1372,5 +1380,3 @@ function turnclusteron_off(on_or_off) {
         }
     }
 }
-
-//
