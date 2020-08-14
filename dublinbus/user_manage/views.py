@@ -138,8 +138,9 @@ def login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         if request.session.get('username') == username:
+            context['username'] = username
             print('login session', request.session.get('username'))
-            return render(request, "userindex.html", {'username': request.session.get('username')})
+            return render(request, "userindex.html", context)
         # receive data
 
         # check data
@@ -181,7 +182,7 @@ def login(request):
 
             context['name'] = username
             # return response
-            return render(request, "userindex.html", {'context': context})
+            return render(request, "userindex.html",context)
         else:
             # password is wrong
             return render(request, 'login.html', {'errmsg': 'username does not match password', "username":username})
