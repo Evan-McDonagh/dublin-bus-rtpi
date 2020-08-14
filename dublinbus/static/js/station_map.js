@@ -772,22 +772,17 @@ function routesearch(){
         async:true,
         success: function (routestops) {
             var directions = Object.keys(routestops);
+            console.log(directions);
+            
             if (directions.length == 1) {
                 var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + directions[0] + "</a></div>"
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
-                alert(routestops[directions[0]]);
-                //     // for (var marker in Inboundmarkers){
-                //     //     var MARKER = Inboundmarkers[marker]
-                //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
-                //     //         alert(1)
-                //     //         // alert(MARKER.getTitle())
-                //     //         // var content = showmarkerinfo(MARKER);
-                //     //         // var infowindow = new google.maps.InfoWindow({content:content});
-                //     //         // infowindow.open(MARKER, map)
-                //     //     })(MARKER));
+                // alert(routestops[directions[0]]);
+                
             } else {
                 var dir1 = directions[0];
                 var dir2 = directions[1];
+                console.log(dir1,dir2);
                 var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + dir1 + "</a></div>" +
                                 "<div><a id='Outbound'><span class='material-icons nav-icon'>directions_bus</span>" + dir2 + "</a></div>";
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
@@ -813,19 +808,13 @@ function routesearch(){
                         position: new google.maps.LatLng(lat, lng),
                         title: id,
                         icon: customIcon,
+                        
                     });
+                    
                     showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
                 }
-                // var inboundroutepath = new google.maps.Polyline({
-                //     path: inboundpath,
-                //     geodesic: true,
-                //     strokeColor: "#FF0000",
-                //     strokeOpacity: 1.0,
-                //     strokeWeight: 5,
-                //     // width: 6
-                // });
-                // Inboundpolyline = [inboundroutepath];
+                
                 for (var i = 0; i < Outboundstops.length; i++) {
                     var id = Outboundstops[i].id;
                     var lat = Outboundstops[i].lat;
@@ -836,19 +825,24 @@ function routesearch(){
                         position: new google.maps.LatLng(lat, lng),
                         title: id,
                         icon: customIcon,
+                        
                     })
+                    
                     showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
                 }
-                // var outboundroutepath = new google.maps.Polyline({
-                //     path: outboundpath,
-                //     geodesic: true,
-                //     strokeColor: "blue",
-                //     strokeOpacity: 1.0,
-                //     strokeWeight: 5,
-                //     // width:4
-                // });
-                // Outboundpolyline = [outboundroutepath];
+
+                document.getElementById("routebtn").addEventListener('click', function(){
+                    $("#Inbound").hide();
+                    $("#Outbound").hide();
+                    clearmarkers(Outboundmarkers,null);
+                    // clearpolylines(Outboundpolyline)
+                    clearmarkers(nearmemarkers);
+                    clearmarkers(alongroutemarkers);
+                    clearmarkers(originmarkers);
+                    clearmarkers(destinationmarkers);
+                    showmarkers(Inboundmarkers,null);
+                })
                 document.getElementById("Inbound").addEventListener('click', function () {
                     clearmarkers(Outboundmarkers);
                     // clearpolylines(Outboundpolyline)
@@ -857,16 +851,7 @@ function routesearch(){
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
                     showmarkers(Inboundmarkers, map);
-                    // showpolylines(Inboundpolyline, map)
-                    //     // for (var marker in Inboundmarkers){
-                    //     //     var MARKER = Inboundmarkers[marker]
-                    //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
-                    //     //         alert(1)
-                    //     //         // alert(MARKER.getTitle())
-                    //     //         // var content = showmarkerinfo(MARKER);
-                    //     //         // var infowindow = new google.maps.InfoWindow({content:content});
-                    //     //         // infowindow.open(MARKER, map)
-                    //     //     })(MARKER));
+                    
                 })
                 // });
                 document.getElementById("Outbound").addEventListener('click', function () {
