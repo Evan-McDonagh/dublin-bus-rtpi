@@ -1344,25 +1344,9 @@ function getDate() {
 
 // {#var flag = 0;#}
 function showandhide(){
-    // {#if (flag == 0){#}
-        // alert("hiiii")
-        // {#addallmarkers_repeat(map);#}
-        // {#flag = 1;#}
-        if (isClusterShowing){
-            markerCluster.clearMarkers();
-            isClusterShowing=false;
-            document.getElementById("markerbtn").innerHTML = "Show";
-        }
-    // {##}
-    // {#else{#}
-    //     {#addallmarkers_repeat(null);#}
-    //     {#flag = 0;#}
-        else{
-            markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
-            isClusterShowing = true;
-            document.getElementById("markerbtn").innerHTML = "Hide";
-        }
-    // {##}
+    if (document.getElementById("markerbtn").innerHTML == 'Show'){turnclusteron_off('on')}
+    else if (document.getElementById("markerbtn").innerHTML == 'All Stops'){addallmarkers_repeat(map);turnclusteron_off('on')}
+    else if (document.getElementById("markerbtn").innerHTML == 'Hide'){turnclusteron_off('off')}
 }
 
 function turnclusteron_off(on_or_off) {
