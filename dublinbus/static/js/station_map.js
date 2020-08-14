@@ -39,6 +39,7 @@ var Outboundmarkers = [];
 // var Outboundpolyline = [];
 var allstopmarkers_repeat = [];
 var markerCluster;
+var isClusterShowing = false;
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -82,8 +83,10 @@ function initMap(){
         // addnearmemarkers(map, pos);
         addallmarkers_repeat(map);
         
-        //adding clustering of stops 
-        markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+        //adding clustering of stops
+        turnclusteron_off('on')
+        // markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+        // isClusterShowing = true;
       });
     } else {
       // Browser doesn't support Geolocation
@@ -99,7 +102,9 @@ function initMap(){
       addallmarkers_repeat(map);
 
       //cluster nearby stops
-      markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+        turnclusteron_off('on')
+      // markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+      // isClusterShowing = true;
     }
 
 }
@@ -177,6 +182,8 @@ function calcRoute() {
     clearmarkers(alongroutemarkers);
     alongroutemarkers = [];
     clearmarkers(nearmemarkers);
+    // if (isClusterShowing){markerCluster.clearMarkers(); isClusterShowing=false}
+    turnclusteron_off('off');
     markerCluster.clearMarkers()
     segmentsinfo = [];
     
@@ -656,6 +663,8 @@ function stopsearch() {
     clearmarkers(alongroutemarkers);
     clearmarkers(nearmemarkers);
     clearmarkers(singlestopmarker);
+    // if (isClusterShowing){markerCluster.clearMarkers(); isClusterShowing=false}
+    turnclusteron_off('off');
     var now = new Date();
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
@@ -759,6 +768,8 @@ function routesearch(){
     clearmarkers(originmarkers);
     clearmarkers(destinationmarkers);
     clearmarkers(Inboundmarkers, map);
+    // if (isClusterShowing){markerCluster.clearMarkers(); isClusterShowing=false}
+    turnclusteron_off('off');
     // clearpolylines(Inboundpolyline, map);
     var route = $("#route_id").val();
     var customIcon = "../static/images/Go2_marker_grey.png";
@@ -1328,6 +1339,46 @@ function getDate() {
         return Date(Date.now());
     } else {
         return dateText;
+    }
+}
+
+// {#var flag = 0;#}
+function showandhide(){
+    // {#if (flag == 0){#}
+        // alert("hiiii")
+        // {#addallmarkers_repeat(map);#}
+        // {#flag = 1;#}
+        if (isClusterShowing){
+            markerCluster.clearMarkers();
+            isClusterShowing=false;
+            document.getElementById("markerbtn").innerHTML = "Show";
+        }
+    // {##}
+    // {#else{#}
+    //     {#addallmarkers_repeat(null);#}
+    //     {#flag = 0;#}
+        else{
+            markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+            isClusterShowing = true;
+            document.getElementById("markerbtn").innerHTML = "Hide";
+        }
+    // {##}
+}
+
+function turnclusteron_off(on_or_off) {
+    if (on_or_off == 'on') {
+        if (!isClusterShowing){
+            markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+            isClusterShowing = true;
+            document.getElementById("markerbtn").innerHTML = "Hide";
+        }
+    }
+    else if (on_or_off == 'off'){
+        if (isClusterShowing){
+            markerCluster.clearMarkers();
+            isClusterShowing=false;
+            document.getElementById("markerbtn").innerHTML = "Show";
+        }
     }
 }
 
