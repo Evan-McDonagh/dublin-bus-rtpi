@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 from dublinbus.config import database_config
+from dublinbus.config import secret_key
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,13 +22,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'c+zx(0g)18ljnv*d$m%8*fb5syt$37@+9i1ki%amgmineffn29'
+SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    'ec2-18-202-226-99.eu-west-1.compute.amazonaws.com'        
+    '34.248.8.161',
+    'www.gotwo.nk',
+    'gotwo.nk',
 ]
 
 
@@ -89,7 +92,6 @@ DATABASES = {
         'PORT': database_config['PORT'],
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
