@@ -3,16 +3,24 @@ from django.urls import path
 
 from app01 import views
 
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from django.contrib import staticfiles
+
+app_name = "app01"
 urlpatterns = [
-    url('^$', views.index),
-    url('stop/', views.stop),
-    url('leapcard/',views.leapcard),
+    url('^$', views.index, name='index'),
+    url(r'^index', views.index, name='index'),
+    url('stop/', views.stop, name="stop"),
+    url('leapcard/',views.leapcard, name="leapcard"),
     # url('real_info/',views.real_info),
-    url('init',views.init),
-    url('weather',views.weather),
-    url('printresult', views.printresult),
-    url('rtmarkerinfo', views.rtmarkerinfo),
-    url('showprediction', views.showprediction),
-    url('routesearch', views.routesearch),
-    url('errorhandler', views.errorhandler),
+    url('init',views.init, name="init"),
+    url('weather',views.weather, name="weather"),
+    url('printresult', views.printresult,name="printresult"),
+    url('rtmarkerinfo', views.rtmarkerinfo, name="rtmarkerinfo"),
+    url('showprediction', views.showprediction, name="showprediction"),
+    url('routesearch', views.routesearch, name="routesearch"),
+    url('errorhandler', views.errorhandler, name="errorhandler"),
+    url('test', views.test),
 ]
+urlpatterns += staticfiles_urlpatterns()

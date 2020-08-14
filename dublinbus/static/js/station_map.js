@@ -35,9 +35,11 @@ var segmentsinfo = [];
 var fareRoutes = [];
 var Inboundmarkers = [];
 var Outboundmarkers = [];
-var Inboundpolyline = [];
-var Outboundpolyline = [];
+// var Inboundpolyline = [];
+// var Outboundpolyline = [];
 var allstopmarkers_repeat = [];
+var markerCluster;
+var isClusterShowing = false;
 
 function initMap(){
     //Initialize the map when the page is loaded
@@ -71,15 +73,20 @@ function initMap(){
         // addallmarkers_repeat(map);
       }, function() {
         pos['status'] = "ERROR";
-        sendlocation(pos, map);
+        //sendlocation(pos, map);
         realtimeweather(pos);
         var initmaperror = 'ERROR--->initMap(),type:js,file:station_map.js, ErrorMSG: Browser has Geolocation but service failed. location not accessible';
-        errorhandler(initmaperror, 'location not accessible, default location used');
+        // errorhandler(initmaperror, 'Location inaccessible, default location used.');
         // handleLocationError(true, map.getCenter(), map);
         addallmarkers(map);
         clearmarkers(allstopmarkers);
-        addnearmemarkers(map, pos);
-        // addallmarkers_repeat(map);
+        // addnearmemarkers(map, pos);
+        addallmarkers_repeat(map);
+        
+        //adding clustering of stops
+        turnclusteron_off('on')
+        // markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+        // isClusterShowing = true;
       });
     } else {
       // Browser doesn't support Geolocation
@@ -87,15 +94,18 @@ function initMap(){
       sendlocation(pos, map);
       realtimeweather(pos);
       var initmaperror = 'ERROR--->initMap(),type:js,file:station_map.js, ErrorMSG: Browser does not support Geolocation';
-      errorhandler(initmaperror, 'Browser does not support Geolocation, default location used');
+      errorhandler(initmaperror, 'Browser does not support Geolocation, default location used.');
       // handleLocationError(false, map.getCenter(), map);
       addallmarkers(map);
       clearmarkers(allstopmarkers);
-      addnearmemarkers(map, pos);
-    //   addallmarkers_repeat(map);
+      // addnearmemarkers(map, pos);
+      addallmarkers_repeat(map);
+
+      //cluster nearby stops
+        turnclusteron_off('on')
+      // markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+      // isClusterShowing = true;
     }
-    // create marker clusters using array of markers
-    // var markerCluster = new MarkerClusterer(map, markers, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 
 }
 
@@ -105,7 +115,7 @@ function initMap(){
 function sendlocation(pos, map){
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/init',
+        url:'/app01/init',
         type: 'POST',
         data: pos,
         dataType: 'json',
@@ -116,7 +126,7 @@ function sendlocation(pos, map){
                     map: map,
                     position: {'lat':pos.lat, 'lng':pos.lng},
                 });
-            loc_infoWindow.setContent((pos.status == 'OK'? "Your position:":"(Unlocated)Map center:")+data.address)
+            loc_infoWindow.setContent("Your position: "+data.address);
             loc_infoWindow.open(map, loc_marker);
         },
         error: function () {
@@ -130,13 +140,13 @@ function sendlocation(pos, map){
 function realtimeweather(pos) {
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/weather',
+        url: '/app01/weather',
         type: 'POST',
         data:pos,
         dataType: 'json',
         success: function (data) {
             var icon = data['iconUrl']
-            var weather_show ="<img src='" + icon  + "'>" +data['descp'] +" "+ data['temp'];
+            var weather_show ="<img src='" + icon  + "'><span>" +data['descp'] +" "+ data['temp'] + "</span>";
             document.getElementById("weather").innerHTML = weather_show;
         },
         error: function () {
@@ -162,33 +172,77 @@ function realtimeweather(pos) {
 
 function calcRoute() {
     clearmarkers(Outboundmarkers);
-    clearpolylines(Outboundpolyline)
+    // clearpolylines(Outboundpolyline)
     clearmarkers(nearmemarkers);
     clearmarkers(originmarkers);
     clearmarkers(destinationmarkers);
     clearmarkers(Inboundmarkers, map);
-    clearpolylines(Inboundpolyline, map);
+    // clearpolylines(Inboundpolyline, map);
     directionsRenderer.setMap(null);
     clearmarkers(alongroutemarkers);
     alongroutemarkers = [];
     clearmarkers(nearmemarkers);
+    // if (isClusterShowing){markerCluster.clearMarkers(); isClusterShowing=false}
+    turnclusteron_off('off');
     segmentsinfo = [];
+    
+    var currentTime = new Date(Date.now());
+    var departureTime = new Date(getDate());
+
+    console.log(departureTime);
     var request = {
         origin: {query: document.getElementById('origin').value},
         destination: {query: document.getElementById('destination').value},
         travelMode: 'TRANSIT',
         transitOptions:{
-            departureTime: new Date(document.getElementById("datetimepicker1").value),
+            departureTime: departureTime
+            // departureTime: departureTime,
             // routingPreference: 'LESS_WALKING'
         },
         provideRouteAlternatives: false,
     };
 
+    var diffDays = parseInt((departureTime - currentTime) / (1000 * 60 * 60 * 24), 10); 
+
+    if (diffDays > 55) {
+        var dayDiff;
+        if (currentTime.getDay() <= departureTime.getDay()) {
+            dayDiff = departureTime.getDay() - currentTime.getDay();
+        }   else {
+            dayDiff = 7 - (currentTime.getDay() - departureTime.getDay());
+        }
+
+        var newTime = new Date(currentTime.getTime());
+
+        newTime.setDate(newTime.getDate() + dayDiff);
+        newTime.setHours(departureTime.getHours());
+        newTime.setMinutes(departureTime.getMinutes());
+        newTime.setSeconds(departureTime.getSeconds());
+
+        request.transitOptions.departureTime = newTime;
+    }
+
+    // var directionsServiceTest = new google.maps.DirectionsService();
+
+    // directionsServiceTest.route(request, function(result, status) {
+    //     if (status != 'OK') {
+    //         console.log(status)
+    //         // var newDate = currentTime;
+    //         // newDate.setDate(currentTime.getDate() + ((newDate.getDay() - departureTime.getDay()) % 7));
+    //         // request.transitOptions.departureTime = newDate.getTime();
+    //         // console.log(request.transitOptions.departureTime);
+    //         request.transitOptions.departureTime = currentTime;
+    //     }
+    // });
+
+    console.log(request.transitOptions.departureTime);
+
     directionsRenderer.setMap(map);
     directionsService.route(request, function(result, status) {
+        console.log(status);
+        console.log(request);
     if (status == 'OK') {
         directionresults = [result];
-        console.log(directionresults);
         var routes_dict = {}
         // var route_choices = {}
         var routes_list = result['routes'];
@@ -250,28 +304,28 @@ function calcRoute() {
                     fareRoutes = [];
                     //adding array to array to calc individual routes 
                     fareRoutes.push(fareStops);
-                    calcFare(fareRoutes);
+                    calcFare(fareRoutes, segmentsinfo);
                 } else {
                     // Accounting for when route has no bus/transit involved
                     var noTrasnit = [0];
                     fareRoutes.push(noTrasnit);
-                    calcFare(fareRoutes);
+                    calcFare(fareRoutes, segmentsinfo);
                 }
 
                 for (var p in bus_name){bus_name_str += (p == 0? bus_name[p]:"->"+bus_name[p])}
                 routes_dict[bus_name_str] = {'route':ROUTE, "busnames":bus_name};
 
                 if (bus_name_str != '') {
-                    document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + bus_name_str + "</button>";
+                    document.getElementById('routes').innerHTML = "<div class='showstops'><button id=" + "showalongroutemarker>View stops: " + bus_name_str + "</button></div>";
                     loadstops(segmentsinfo, bounds, map);
                     document.getElementById("showalongroutemarker").addEventListener('click', function () {
                         clearmarkers(Inboundmarkers);
                         clearmarkers(Outboundmarkers);
-                        clearpolylines(Inboundpolyline);
-                        clearpolylines(Outboundpolyline);
+                        // clearpolylines(Inboundpolyline);
+                        // clearpolylines(Outboundpolyline);
                         showmarkers(alongroutemarkers, map);
                     });
-                }else{document.getElementById('routes').innerHTML = "<button id=" + "showalongroutemarker>" + "Walk"+ "</button>";}
+                }else{document.getElementById('routes').innerHTML = "<div class='showstops'><button id=" + "showalongroutemarker>" + "Walk"+ "</button></div>";}
             }
         }
         function showinfowindow(marker, infowindow, map) {
@@ -287,7 +341,7 @@ function calcRoute() {
                 var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
-                    url: '/rtmarkerinfo',
+                    url:'/app01/rtmarkerinfo',
                     data: {'id': id},
                     type: 'POST',
                     dataType: 'json',
@@ -319,7 +373,7 @@ function calcRoute() {
                 // var post_data = {'segmentsinfo': segmentsinfo, 'bounds': bounds}
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
-                    url: '/printresult',
+                    url:'/app01/printresult',
                     // data: post_data,
                     data: JSON.stringify([segmentsinfo, bounds]),
                     type: 'POST',
@@ -433,9 +487,9 @@ function getStopInfo(marker, stopKey) {
     document.body.appendChild(content);
 
     var stop_elem = document.createElement("span");
-    var stop_text = "Stop_number:"+stopdata[stopKey]["stopno"];
+    var stop_text = "Stop Number: "+stopdata[stopKey]["stopno"];
     var br = document.createElement("br");
-    var route_text = "Routes:"+stopdata[stopKey]['routes'];
+    var route_text = "Routes: "+stopdata[stopKey]['routes'];
     var t = document.createTextNode(stop_text);
     var m = document.createTextNode(route_text);
 
@@ -444,12 +498,16 @@ function getStopInfo(marker, stopKey) {
     stop_elem.appendChild(br);
     stop_elem.appendChild(m);
 
-    var space = document.createElement("span");
-    
+    var space = document.createElement("div");
+    space.setAttribute("style", "width: 100%; min-height: 30px;");
 
     iconstar = document.createElement("button");
+    iconstar.setAttribute("style", "min-width: 200px; width: auto;bottom: 10px;left:12px;");
+    iconstar.innerHTML = "Click for Real Time Info";
+    space.appendChild(iconstar);
+
     // iconstar.setAttribute("id","infowindow_button");
-    iconstar.setAttribute("style","width:1px");
+    //iconstar.setAttribute("style","font-size:12px;");
     content.appendChild(stop_elem);
     content.appendChild(space);
     content.appendChild(iconstar);
@@ -463,6 +521,10 @@ function getStopInfo(marker, stopKey) {
             // alert("hi");
             modal.classList.add('modal-active');
             burger.classList.add('toggle');
+
+            var stop_click_input = document.getElementById("stop_id");
+            var stop_click_id = stopdata[stopKey]["stopno"];
+            stop_click_input.setAttribute("value", stop_click_id);
             $('#stopid').siblings().hide();
                 $('#twitterid').show();
                 $('#stopid').show();
@@ -473,21 +535,27 @@ function getStopInfo(marker, stopKey) {
                 $(".db").removeClass("show");
 
                 // console.log(stopdata[stopKey]["stopno"])
-                var stop_click_id = stopdata[stopKey]["stopno"];
+                // var stop_click_id = stopdata[stopKey]["stopno"];
+                
+
                 $.ajax({
                     headers: {'X-CSRFToken': csrftoken},
                     type:"POST",
-                    url: "/stop/",
+                    url: "/app01/stop/",
                     cache: false,
                     dataType: "json",
                     data:{'stop_id':stop_click_id},
                     success: function(result, statues, xml){
                         // console.log(result);
-                        var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
-                        for (var i =0; i< result["results"].length; i++){
-                            
-                            real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
-                        }
+                        var real_info = "<table class='realtime-table'>" + "<tr><th> Route </th>" + "<th> Destination </th>"+"<th> Duetime </th></tr>";
+                for (var i =0; i< result["results"].length; i++){
+                    if (result["results"][i]["duetime"] == "Due"){
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"]+"</td><td>" + "Due" +"</tr>";
+                    }
+                    else{
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>" +result["results"][i]["duetime"]  +" mins</tr>";
+                    }
+                }
                         real_info += "</table>";
                         $("#stoparea").html(real_info);
                     },
@@ -509,6 +577,7 @@ function getStopInfo(marker, stopKey) {
 
 //Add all stops markers on the map.
 function addallmarkers(map) {
+    var customIcon = "../static/images/Go2_marker_grey.png";
     var stopKeys = Object.keys(stopdata);
     for (var i=0;i<stopKeys.length;i++) {
         var stopKey = stopKeys[i];
@@ -519,7 +588,8 @@ function addallmarkers(map) {
                     stopdata[stopKey]['longitude']),
                 title: stopdata[stopKey]['stopno'],
                 label: stopKey,
-                map: map
+                map: map,
+                icon: customIcon,
             });
             marker.setMap(map)
             // markers.push(marker);
@@ -530,10 +600,11 @@ function addallmarkers(map) {
         }
     }
     showmarkers(allstopmarkers, map);
-    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    //var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
 function addallmarkers_repeat(map) {
+    var customIcon = "../static/images/Go2_marker_grey.png";
     var stopKeys = Object.keys(stopdata);
     for (var i=0;i<stopKeys.length;i++) {
         var stopKey = stopKeys[i];
@@ -544,7 +615,8 @@ function addallmarkers_repeat(map) {
                     stopdata[stopKey]['longitude']),
                 // title: stopdata[stopKey]['stopno'],
                 // label: stopKey,
-                map: map
+                map: map,
+                icon: customIcon,
             });
             marker.setMap(map)
             // markers.push(marker);
@@ -555,7 +627,7 @@ function addallmarkers_repeat(map) {
         }
     }
     showmarkers(allstopmarkers_repeat, map);
-    // var markerCluster = new MarkerClusterer(map, allstopmarkers, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+    //var markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 8, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
 }
 
 //Add the markers of nearme stops and display them on map
@@ -563,6 +635,7 @@ function addnearmemarkers(map, pos){
     var stopKeys = Object.keys(stopdata);
     var lngT = 0.005;
     var latT = 0.005;
+    var customIcon = "../static/images/Go2_marker_grey.png";
     for (var i=0;i<stopKeys.length;i++){
         var stopKey = stopKeys[i];
         if (stopdata[stopKey]['routes'] != "" && stopdata[stopKey]['latitude'] < (pos.lat+latT) && stopdata[stopKey]['latitude'] > (pos.lat-latT) && stopdata[stopKey]['longitude'] < (pos.lng+lngT) && stopdata[stopKey]['longitude'] > (pos.lng-lngT)){
@@ -571,6 +644,7 @@ function addnearmemarkers(map, pos){
                 position: new google.maps.LatLng(
                     stopdata[stopKey]['latitude'],
                     stopdata[stopKey]['longitude']),
+                icon: customIcon,
             });
             marker.addListener('click', (function (marker, stopKey) {
                 return function () {getStopInfo(marker, stopKey, map);}
@@ -588,19 +662,27 @@ function stopsearch() {
     clearmarkers(alongroutemarkers);
     clearmarkers(nearmemarkers);
     clearmarkers(singlestopmarker);
+    // if (isClusterShowing){markerCluster.clearMarkers(); isClusterShowing=false}
+    turnclusteron_off('off');
+    var now = new Date();
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
             type:"POST",
-            url: "/stop/",
+            url: "/app01/stop/",
             cache: false,
             dataType: "json",
             data:{'stop_id':$('#stop_id').val()},
             success: function(result, statues, xml){
                 // console.log(result);
-                var real_info = "<table> Time Table" + "<tr><th> Route </th>" + "<th> Duetime </th>"+"<th>Destination</th></tr>";
+                
+                var real_info = "<table class='realtime-table'>" + "<tr><th> Route </th>" + "<th> Destination </th>"+"<th> Duetime </th></tr>";
                 for (var i =0; i< result["results"].length; i++){
-                    
-                    real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["arrivaldatetime"] +"</td><td>" +result["results"][i]["destination"]  +"</tr>";
+                    if (result["results"][i]["duetime"] == "Due"){
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"]+"</td><td>" + "Due" +"</tr>";
+                    }
+                    else{
+                        real_info += "<tr><td>"+result["results"][i]["route"]+"</td><td>" +result["results"][i]["destination"] +"</td><td>" +result["results"][i]["duetime"]  +" mins</tr>";
+                    }
                 }
                 real_info += "</table>";
                 $("#stoparea").html(real_info);
@@ -614,6 +696,7 @@ function stopsearch() {
     var stop_id = $('#stop_id').val();
     stopKeys = Object.keys(stopdata);
 
+    var customIcon = "../static/images/Go2_marker_grey.png";
     var stopKey;
     var stop_idd; //在for循环里相匹配的
     // var stopmap = new google.maps.map(document.getElementById('stopMap'));
@@ -623,12 +706,14 @@ function stopsearch() {
         // console.log(stop_idd);
 
         if (stop_idd == stop_id){
-            var stationsInfo =  "Stop_number:<h5>"+stop_idd+"<h5>";
+            var stationsInfo =  "Stop Number: "+stop_idd;
+            stationsInfo += "<br>Routes: "+stopdata[stopKey]['routes'];
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(
                         stopdata[stopKey]['latitude'],
                         stopdata[stopKey]['longitude']),
                     map: map,
+                    icon: customIcon,
                 });
 
                 // marker.setVisible(false);
@@ -661,31 +746,35 @@ function stopsearch() {
 
 //triggered by clicking "Search" button to show current searching result if it is made invisible.
 function showsearchcontent(){
-    directionsRenderer.setDirections(directionresults[0]);
-    directionsRenderer.setMap(map);
-    directionsRenderer.setPanel(document.getElementById('h51'));
+    if (directionresults.length > 0) {
+        directionsRenderer.setDirections(directionresults[0]);
+        directionsRenderer.setMap(map);
+        directionsRenderer.setPanel(document.getElementById('h51'));
+    }
 }
 
 //triggered by clicking "Stop" button to show current searching result if it is made invisible.
 function showstopsearchcontent(){
-    showmarkers(singlestopmarker, map);
+    if (singlestopmarker.length >0){showmarkers(singlestopmarker, map);}
 }
 // function showroutesearchcontent(){}
 
-
 function routesearch(){
     clearmarkers(Outboundmarkers);
-    clearpolylines(Outboundpolyline)
+    // clearpolylines(Outboundpolyline);
     clearmarkers(nearmemarkers);
     clearmarkers(alongroutemarkers);
     clearmarkers(originmarkers);
     clearmarkers(destinationmarkers);
     clearmarkers(Inboundmarkers, map);
-    clearpolylines(Inboundpolyline, map);
+    // if (isClusterShowing){markerCluster.clearMarkers(); isClusterShowing=false}
+    turnclusteron_off('off');
+    // clearpolylines(Inboundpolyline, map);
     var route = $("#route_id").val();
+    var customIcon = "../static/images/Go2_marker_grey.png";
     $.ajax({
         headers: {'X-CSRFToken': csrftoken},
-        url: '/routesearch',
+        url: '/app01/routesearch',
         type: "POST",
         cache: false,
         dataType: "json",
@@ -693,28 +782,24 @@ function routesearch(){
         async:true,
         success: function (routestops) {
             var directions = Object.keys(routestops);
+            console.log(directions);
+            
             if (directions.length == 1) {
-                var in_out_btn = "<button id=" + "Inbound>" + directions[0] + "</button>";
+                var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + directions[0] + "</a></div>"
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
-                alert(routestops[directions[0]]);
-                //     // for (var marker in Inboundmarkers){
-                //     //     var MARKER = Inboundmarkers[marker]
-                //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
-                //     //         alert(1)
-                //     //         // alert(MARKER.getTitle())
-                //     //         // var content = showmarkerinfo(MARKER);
-                //     //         // var infowindow = new google.maps.InfoWindow({content:content});
-                //     //         // infowindow.open(MARKER, map)
-                //     //     })(MARKER));
+                // alert(routestops[directions[0]]);
+                
             } else {
                 var dir1 = directions[0];
                 var dir2 = directions[1];
+                console.log(dir1,dir2);
                 var in_out_btn = "<div><a id='Inbound'><span class='material-icons nav-icon'>directions_bus</span>" + dir1 + "</a></div>" +
                                 "<div><a id='Outbound'><span class='material-icons nav-icon'>directions_bus</span>" + dir2 + "</a></div>";
                 document.getElementById('singleroutesearchresult').innerHTML = in_out_btn;
                 // document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
                 var Inboundstops = routestops[dir1];
                 var Outboundstops = routestops[dir2];
+                console.log(Inboundstops[0]);
                 Inboundmarkers = [];
                 Outboundmarkers = [];
                 var inboundpath = [];
@@ -728,77 +813,89 @@ function routesearch(){
                     var id = Inboundstops[i].id;
                     var lat = Inboundstops[i].lat;
                     var lng = Inboundstops[i].lng;
-                    inboundpath.push({'lat': lat, 'lng': lng})
+                    // inboundpath.push({'lat': lat, 'lng': lng})
+                    var inbound_begin_lat = Inboundstops[0].lat;
+                    var inbound_begin_lng = Inboundstops[0].lng;
 
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
                         title: id,
-                        icon: icon,
+                        icon: customIcon,
+                        
                     });
+                    
+                    // map.setCenter({lat:inbound_begin_lat, lng:inbound_begin_lng} );
+                    // map.setZoom(12);
                     showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
                 }
-                var inboundroutepath = new google.maps.Polyline({
-                    path: inboundpath,
-                    geodesic: true,
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 5,
-                    // width: 6
-                });
-                Inboundpolyline = [inboundroutepath];
+                // console.log(Outboundstops[0]);
                 for (var i = 0; i < Outboundstops.length; i++) {
                     var id = Outboundstops[i].id;
                     var lat = Outboundstops[i].lat;
                     var lng = Outboundstops[i].lng;
-                    outboundpath.push({'lat': lat, 'lng': lng})
+
+                    var outbound_begin_lat = Outboundstops[0].lat;
+                    var outbound_begin_lng = Outboundstops[0].lng;
 
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
                         title: id,
-                        icon: icon
+                        icon: customIcon,
                     })
                     showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
                 }
-                var outboundroutepath = new google.maps.Polyline({
-                    path: outboundpath,
-                    geodesic: true,
-                    strokeColor: "blue",
-                    strokeOpacity: 1.0,
-                    strokeWeight: 5,
-                    // width:4
-                });
-                Outboundpolyline = [outboundroutepath];
-                document.getElementById("Inbound").addEventListener('click', function () {
+                
+                function change_map_inbound(map){
+                    var map_route = document.getElementById("googleMap");
+                    if (map_route){
+                        map.setCenter({lat:inbound_begin_lat, lng:inbound_begin_lng} );
+                        map.setZoom(13);
+                    }
+                }
+                function change_map_outbound(map){
+                    var map_route = document.getElementById("googleMap");
+                    if (map_route){
+                        map.setCenter({lat:outbound_begin_lat, lng:outbound_begin_lng} );
+                        map.setZoom(13);
+                    }
+                }
+
+
+                document.getElementById("routebtn").addEventListener('click', function(){
+                    $("#Inbound").hide();
+                    $("#Outbound").hide();
                     clearmarkers(Outboundmarkers);
-                    clearpolylines(Outboundpolyline)
+                    // clearpolylines(Outboundpolyline)
                     clearmarkers(nearmemarkers);
                     clearmarkers(alongroutemarkers);
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
+                    showmarkers(Inboundmarkers);
+                })
+                document.getElementById("Inbound").addEventListener('click', function () {
+                    clearmarkers(Outboundmarkers);
+                    // clearpolylines(Outboundpolyline)
+                    clearmarkers(nearmemarkers);
+                    clearmarkers(alongroutemarkers);
+                    clearmarkers(originmarkers);
+                    clearmarkers(destinationmarkers);
+                    change_map_inbound(map);
                     showmarkers(Inboundmarkers, map);
-                    showpolylines(Inboundpolyline, map)
-                    //     // for (var marker in Inboundmarkers){
-                    //     //     var MARKER = Inboundmarkers[marker]
-                    //     //     google.maps.event.addListener(MARKER, 'click', (function (MARKER){
-                    //     //         alert(1)
-                    //     //         // alert(MARKER.getTitle())
-                    //     //         // var content = showmarkerinfo(MARKER);
-                    //     //         // var infowindow = new google.maps.InfoWindow({content:content});
-                    //     //         // infowindow.open(MARKER, map)
-                    //     //     })(MARKER));
+                    
                 })
                 // });
                 document.getElementById("Outbound").addEventListener('click', function () {
                     clearmarkers(Inboundmarkers);
-                    clearpolylines(Inboundpolyline)
+                    // clearpolylines(Inboundpolyline)
                     clearmarkers(nearmemarkers);
                     clearmarkers(alongroutemarkers);
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
+                    change_map_outbound(map);
                     showmarkers(Outboundmarkers, map);
-                    showpolylines(Outboundpolyline, map)
+                    // showpolylines(Outboundpolyline, map)
                 });
             }
         },
@@ -813,7 +910,7 @@ function routesearch(){
         var content = '<p style="text-align: center">Stop' + id + '</p><table border="1"><thead><tr style="text-align: center"><th>'+'Route'+'</th><th>'+'Arrival Time'+'</th><th>'+'Origin'+'</th><th>'+'Destination'+'</th></tr></thead><tbody>';
         $.ajax({
             headers: {'X-CSRFToken': csrftoken},
-            url: '/rtmarkerinfo',
+            url: '/app01/rtmarkerinfo',
             // url:"https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + '11' +"&format=json",
             type: "POST",
             cache: false,
@@ -862,6 +959,8 @@ function select_ori_dest(id){
         // destinationmarkers=[];
     }
     google.maps.event.addListener(map, 'click', function(event) {
+        clearmarkers(originmarkers);
+        clearmarkers(destinationmarkers);
         if (originmarkers.length > 1) {
             clearmarkers(originmarkers);
             originmarkers = [];
@@ -889,9 +988,9 @@ function getclicklocation(latLng){
             });
             loc_infoWindow.setContent(
                 "<p id='address'>" + address + "</p>" + 
-                "<div class='ori-dest' style='min-width:140px; min-height:30px;'>" + 
+                "<div class='ori-dest' style='min-width:150px; min-height:30px;'>" + 
                 "<button id='ori-sel' style='left:10px; margin-right:10px; font-size:12px; margin-bottom:10px;'>As Origin</button>" + 
-                "<button id='dest-sel' style='right:10px; margin-left:10px; font-size:12px; margin-bottom:10px;'>As Destination</button></div>"
+                "<button id='dest-sel' style='right:10px; margin-left:10px; font-size:12px; margin-bottom:10px; width: auto;'>As Destination</button></div>"
             )
             loc_infoWindow.open(map, loc_marker);
             showmarkers([loc_marker], map);
@@ -958,7 +1057,7 @@ function getclicklocation(latLng){
 // initMap();
 
 //To calculate the estimated fare of the journey based on time
-function calcFare(fareRoutes){
+function calcFare(fareRoutes, segmentsinfo){
     var leapFareA = 0;
     var cashFareA = 0;
 
@@ -972,6 +1071,7 @@ function calcFare(fareRoutes){
     var predictionTime = new Date(timeFromPicker);
     var hour;
     var day;    
+    var agents = [];
 
     //If user has selected a date
     if (timeFromPicker != '') {
@@ -983,6 +1083,17 @@ function calcFare(fareRoutes){
         hour = today.getHours();
         day = today.getDay();
     }
+    
+    //Find the transit agencies involved in each step
+    for (i in segmentsinfo) {
+        agents.push(segmentsinfo[i].agency);
+    }
+    //Remove null values for walking steps 
+    for (var i=0; i < agents.length; i++){
+        if (agents[i] == null){
+            agents.splice(i, 1)
+        }
+    }
 
     var journey = fareRoutes[fareRoutes.length - 1];
 
@@ -993,17 +1104,17 @@ function calcFare(fareRoutes){
             cashFareA += 0;
             leapFareS += 0;
             cashFareS += 0;
-        } else if (journey[i] > 1 && journey[i] < 4){
+        } else if (journey[i] > 1 && journey[i] < 4 && agents[i] == "Dublin Bus" || agents[i] == "Go-Ahead"){
             leapFareA += 1.55;
             leapFareS += 1.55;
             cashFareA += 2.15;
             cashFareS += 2.15;
-        } else if (journey[i] > 3 && journey[i] < 14){
+        } else if (journey[i] > 3 && journey[i] < 14 && agents[i] == "Dublin Bus" || agents[i] == "Go-Ahead"){
             leapFareA += 2.25;
             leapFareS += 2.25;
             cashFareA += 3.00;
             cashFareS += 3.00;
-        } else if (journey[i] > 13){
+        } else if (journey[i] > 13 && agents[i] == "Dublin Bus" || agents[i] == "Go-Ahead"){
             leapFareA += 2.50;
             leapFareS += 2.50;
             cashFareA += 3.30;
@@ -1013,18 +1124,20 @@ function calcFare(fareRoutes){
 
     // Account for childrens fares - affected by time of day
     for (var i=0; i < journey.length; i++){  
-        if(journey[i] === 0){
-            leapFareC += 0;
-            cashFareC += 0;
-        } else if (day === 6 && hour < 13) {
-            leapFareC += .8;
-            cashFareC += 1;
-        } else if (day > 0 && day < 6 && hour < 19){
-            leapFareC += .8;
-            cashFareC += 1;
-        } else {
-            leapFareC += 1;
-            cashFareC += 1.3;
+        if (agents[i] == "Dublin Bus" || agents[i] == "Go-Ahead"){
+            if(journey[i] === 0){
+                leapFareC += 0;
+                cashFareC += 0;
+            } else if (day === 6 && hour < 13) {
+                leapFareC += .8;
+                cashFareC += 1;
+            } else if (day > 0 && day < 6 && hour < 19){
+                leapFareC += .8;
+                cashFareC += 1;
+            } else {
+                leapFareC += 1;
+                cashFareC += 1.3;
+            }
         }
     }
 
@@ -1048,11 +1161,15 @@ function calcFare(fareRoutes){
     cashFareC = cashFareC.toFixed(2);
 
     // build table to display fares 
-    var fares = "<table class='fares-table'><tr class='table-header'><td>Estimated Fares</td><td>Adult</td><td>Student</td><td>Child</td></tr>";
+    var fares = "<table class='fares-table'><tr class='table-header'><td>Est. Dublin Bus Fares</td><td>Adult</td><td>Student</td><td>Child</td></tr>";
     fares += "<tr><td class='table-header'>Leap: </td><td>€" + leapFareA + "</td><td>€" + leapFareS + "</td><td>€" + leapFareC + "</td></tr>";
     fares += "<tr><td class='table-header'>Cash: </td><td>€" + cashFareA + "</td><td>€" + cashFareS + "</td><td>€" + cashFareC + "</td></tr></table>";
     
-    document.getElementById("fares").innerHTML = fares;
+    if (leapFareA != 0.00){
+        document.getElementById("fares").innerHTML = fares;
+    } else {
+        document.getElementById("fares").innerHTML = "<div></div>";
+    }
 }
 
 //send starts, ends in different segments to backend
@@ -1071,7 +1188,7 @@ function showPrediction(segmentsinfo){
     // "segmentsinfo" variable is a list declared at the line 34 of this script. and it is fed in the function "calcRoute()" just following the a dictionary variable "seg"
     $.ajax({
         headers: {'X-CSRFToken': csrftoken}, //just for security issue
-        url: '/showprediction', //correspond to a route in urls.py and the function "showprediction(request)" in views.py will be triggered
+        url: '/app01/showprediction', //correspond to a route in urls.py and the function "showprediction(request)" in views.py will be triggered
         data: JSON.stringify(segmentsinfo), // the data that will be post to backend. if the data is not a dictionary, should use JSON.stringfy(segs)
         type: 'POST', // could be 'POST' or 'GET'
         dataType: 'json',// declare the type of sent data
@@ -1185,7 +1302,7 @@ function renderLegCard(seg) {
 function errorhandler(msgtobackend, msgtoalert) {
     $.ajax({
         headers:{'X-CSRFToken': csrftoken},
-        url:'/errorhandler',
+        url:'/app01/errorhandler',
         type:'POST',
         dataType:'json',
         data:JSON.stringify(msgtobackend),
@@ -1221,6 +1338,39 @@ function invalidDatetime() {
 
     html_out += '</tr></table></div>'
     document.getElementById('directions-body').innerHTML += html_out;
+}
+
+function getDate() {
+    dateText = document.getElementById("datetimepicker1").value;
+    if (dateText == '') {
+        return Date(Date.now());
+    } else {
+        return dateText;
+    }
+}
+
+// {#var flag = 0;#}
+function showandhide(){
+    if (document.getElementById("markerbtn").innerHTML == 'Show'){turnclusteron_off('on')}
+    else if (document.getElementById("markerbtn").innerHTML == 'All Stops'){addallmarkers_repeat(map);turnclusteron_off('on')}
+    else if (document.getElementById("markerbtn").innerHTML == 'Hide'){turnclusteron_off('off')}
+}
+
+function turnclusteron_off(on_or_off) {
+    if (on_or_off == 'on') {
+        if (!isClusterShowing){
+            markerCluster = new MarkerClusterer(map, allstopmarkers_repeat, { maxZoom: 14, imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' });
+            isClusterShowing = true;
+            document.getElementById("markerbtn").innerHTML = "Hide";
+        }
+    }
+    else if (on_or_off == 'off'){
+        if (isClusterShowing){
+            markerCluster.clearMarkers();
+            isClusterShowing=false;
+            document.getElementById("markerbtn").innerHTML = "Show";
+        }
+    }
 }
 
 //

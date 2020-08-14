@@ -1,0 +1,485 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Dublinbus</title>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8&libraries=places"></script>
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    
+    <!--import css -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    
+    <!-- Bootstrap CSS CDN -->
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/all.css">
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.2/css/v4-shims.css">
+
+    <!--add favicon-->
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}"/>
+    
+    <!--adding google icons for mobile nav-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--import js -->
+    <!-- <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script> -->
+    <script type="text/javascript">
+        // a function to get cookie msg for the csrf verification, has nothing to do with logic stuff
+        function getCookie(name) { //csrf verification
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+        var csrftoken = getCookie('csrftoken'); //store the cookie msg in "csrftoken"
+    </script>
+    <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/userindex.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cookies.js' %}"></script>
+    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/cookies-monster/0.1.4/cookies-monster.js"></script> -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    
+    <!-- <script src="js/jquery-3.1.1.min.js"></script> -->
+    <!-- <script src="jquery-ui-1.12.1/jquery-ui.min.js"></script> -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <!-- <link href="jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet" /> -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'js/jquery-ui-timepicker-addon.min.js' %}"></script>
+    
+    <link type="text/css" href="{% static 'css/jquery-ui-timepicker-addon.min.css' %}" rel="stylesheet" />
+    <style type="text/css">
+        #userinfowindow{position: absolute; top: 50%; left: 50%; background: #356635; display: none}
+    </style>
+
+</head>
+
+<body>
+    <script type="text/javascript">window.onload=function () {initMap();}</script>
+
+
+    <div id="googleMap"></div>
+    <header>
+        <nav>
+            <div class="burger">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <div class="logo">Go2</div>
+            <div class="spacer"></div>
+            &nbsp;&nbsp;&nbsp;
+{#            <a href="#"><input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="showuserinfowindow()"></a>#}
+            <a href="#" id="loginatag"><input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="checkstatus()"></a>
+{#            <form action="/user_manage/login/" method="post" onsubmit="return !checkstatus()">#}
+{#                {% csrf_token %}#}
+{#                <input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="">#}
+{#            </form>#}
+{#            <a href="#" id="loginatag"><input type="submit" value="{{ username }}" name="username" id="userindexun" onclick="checkstatus()"></a>#}
+            &nbsp;&nbsp;&nbsp;
+            <form action="/user_manage/logout/" method="post" onsubmit="return alertlogout();">
+                {% csrf_token %}
+                <input type="submit" id="logout" value="Logout">
+            </form>
+            <div id="weather"></div>
+        </nav>         
+    </header>
+{#    <div id="userinfowindow" style="width: 600px;">#}
+{#        {{ msg }}#}
+{#        My Places:#}
+{#        <div id="placecontent"></div>#}
+{#        My Stops#}
+{#        <div id="stopcontent"></div>#}
+{#        My Routes#}
+{#        <div id="routecontent"></div>#}
+{#        My Leapcard#}
+{#        <div id="leapcardcontent"></div>#}
+{#        <input type="text" id="{{ leapcard }}" value="{{ leapcard }}"><button id="{{ leapcard }}rm"><img src="https://img.icons8.com/material/24/000000/delete-forever--v2.png"/></button>#}
+{#    </div>#}
+    <div class="modal" id="modal">
+        <div class="modal-top">
+            <div class="modal-menu">
+                <a class="nav-link" id="search" onclick="showsearchcontent();">
+                    <span class="material-icons nav-icon">directions</span>
+                    <span class="nav-text">Plan Route</span>
+                </a>
+                <a class="nav-link" id = "stop" onclick="showstopsearchcontent()">
+                    <span class="material-icons nav-icon">place</span>
+                    <span class="nav-text">Search By Stop</span>
+                </a>
+                <a class="nav-link" id="route">
+                    <span class="material-icons nav-icon">directions_bus</span>
+                    <span class="nav-text">Search By Route</span>
+                </a>
+                <a class="nav-link" id = "leapcard">
+                    <span class="material-icons nav-icon">payment</span>
+                    <span class="nav-text">Leapcard</span>
+                </a>
+                <a class="nav-link" href="#" id="favorite" class="dropbtn">
+                    <span class="material-icons nav-icon">favorite</span>
+                    <span class="nav-text">Favorites</span>
+                </a>
+            </div>
+            <div class="modal-cont">
+                <div class="forms">
+                    <div id = "searchid">
+                        <div class="form">
+                            <form id="routesearch" class= "input-fields" action="" method="post">
+                                
+                                <i class = "far fa-heart place" ></i>
+                                <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')">
+                                <input id="destination" type="text" name="end_location" placeholder="To..." onclick="select_ori_dest('destination')">
+                                
+                                <div class="datetimes">
+                                    <input type="text" id="datetimepicker1" placeholder="Date &amp; Time (optional)"/>
+                                </div>
+
+                                
+                                <button id="go" type = "button" onclick = "calcRoute()">Go!</button>
+                            </form>
+                        </div>
+                        <div id="fares"></div>
+                        <div id="routes"></div>
+{#                        <div id="singleroutesearchresult"></div>#}
+                        
+    {#                    <div><div></div><h4 id="h51"></h4></div>#}
+                        <!-- <div class="card">
+                            <div class="card-body">
+                                <img src="../static/images/icon-BUS.png">
+                            </div>
+                        </div> -->
+{#                        <div class="card" style="background-color:aliceblue;">#}
+                            <div id="directions-body" class="card-body" style='color:black;'></div>
+{#                        </div>#}
+                        {% comment %} <div><h4 id="h51"></h4></div> {% endcomment %}
+                    </div>
+
+                    <div id = "routeid">
+                        <div class="form">
+                            <form class="input-fields" method="post" id = "routeadd">
+                                {% csrf_token %}
+                                <i class = "far fa-heart route" ></i>
+                                <input type='text' id = "route_id" name = "route_id" placeholder="Route ID">
+                                <button id = "routebtn" type="button" onclick="routesearch()">Find Route</button>
+                                <div id="singleroutesearchresult"></div>
+                            </form>
+                        
+                        </div>
+{#                        <div id="routes"></div>#}
+                        
+                    </div>
+
+                    <div id = "leapcardid">
+                        <div class="form">
+                            <form id="leaplogin" class="input-fields" method="post" id = "lpadd">
+                                {% csrf_token %}
+                                <input type='text' id = "username" name = "username" placeholder="Username">
+                                <input type='password' id = "password" name = "password" placeholder="Password">
+                                <button id = "lpbtn" type="button">Check Leap Balance</button>
+                            </form>
+                        </div>
+                        <div id ="lparea"></div>
+                    </div>
+
+                    <div id = "favoriteid">
+                        <ul class="fav-links">
+                            <li><a href="#" id = "myplace">My Places</a></li>
+                            <li><a href="#" id = "mystop">My Stops</a></li>
+                            <li><a href="#" id = "myroute">My Routes</a></li>
+                        </ul>
+                        <div class="modal-populated" id ="favoritearea"></div>
+                    </div>
+
+                    <div id = "stopid">
+                        <div class="form">
+                            <form class="input-fields" method="post" id = "stopadd">
+                                {% csrf_token %}
+                                <i class = "far fa-heart star" ></i>
+                                <input type='text' id = "stop_id" name = "stop_id" placeholder="Stop ID">
+                                <button id = "stopbtn" type="button" onclick="stopsearch()">Find Stop</button>
+                                <div ><button id = "markerbtn"  type="button" onclick="showandhide()" >All Stops</button></div>
+                                
+                            </form>
+                        </div>
+                        <div class="modal-populated" id ="stoparea"></div>
+                    </div>
+
+{#                <div id = "routeid">#}
+{#                    <div>#}
+{#                        <form method="post" id = "routeadd">#}
+{#                            {% csrf_token %}#}
+{#                            Route: <i class = "far fa-star star" ></i>#}
+{#                            <input type='text' id = "route_id" name = "route_id" autocomplete="on">#}
+{#                            <button id = "routebtn" type="button" onclick="routesearch()">Submit</button>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                    <div id ="routearea"></div>#}
+{#                </div>#}
+                <div id="nearme"></div>
+                </div> {# end of class 'form' #}
+            </div> {# end of class 'modal-content' #}
+        </div> {# end of class 'modal-top' #}
+        <div class="modal-bottom">
+            <div id = "twitterid">
+                <a class="twitter-timeline" data-width="400" data-height="400" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div> {# end of id "twitterid" #}
+        </div>
+    </div>
+
+<script>
+    const modalSlide = () => {
+        const burger = document.querySelector('.burger');
+        const modal = document.querySelector('.modal');
+            
+        burger.addEventListener('click', () => {
+
+            //Toggle nav
+            modal.classList.toggle('modal-active');
+
+            //Animation for burger
+            burger.classList.toggle('toggle');
+        });
+    }
+
+    modalSlide();
+</script>
+
+<script>
+    var input = document.getElementById("route_id");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("routebtn").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("routesearch");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("go").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("leaplogin");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("lpbtn").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("stop_id");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("stopbtn").click();
+        }
+    });
+</script>
+
+<script>
+	$('#datetimepicker1').datetimepicker({
+        inline:true,
+        dateFormat: 'yy-mm-dd'
+    });
+	</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').toggleClass('active');
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(".star").click(function(){
+        $(this).toggleClass("fa fa-star fa fa-star");
+    });
+</script>
+    
+
+
+<!-- add autocomplete function for the input -->
+<script>
+    var origin = 'origin';
+    var destination = 'destination';
+
+    $(document).ready(function(){
+        var autocomplete;
+        autocomplete = new google.maps.places.Autocomplete((document.getElementById(origin)),{
+            types:['geocode'],
+        });
+
+        google.maps.event.addListener(autocomplete,'place_changed', function(){
+            var near_place = autocomplete.getPlace();
+        });
+
+        var autocomplete_des;
+        autocomplete_des = new google.maps.places.Autocomplete((document.getElementById(destination)),{
+            types:['geocode'],
+        });
+
+        google.maps.event.addListener(autocomplete_des,'place_changed', function(){
+            var near_place_des = autocomplete.getPlace();
+        });
+    })
+</script>
+
+
+<!-- the onclick function that will hide some feature div -->
+<script type = "text/javascript">
+$(document).ready(function(){
+    // alert('hi');
+    $('#searchid').siblings().hide();
+    $('#twitterid').show();
+    $('#searchid').show();
+    $('#nearme').show();
+});
+</script>
+<script type = "text/javascript">
+    $('#leapcard').click(function(){
+        $('#leapcardid').siblings().hide();
+        $('#twitterid').show();
+        $('#leapcardid').show();
+        $('#myplace').hide();
+        $('#mystop').hide();
+        $('#myroute').hide();
+        $(".db").removeClass("show");
+    })
+</script>
+<script type = "text/javascript">
+    $('#stop').click(function(){
+        $('#stopid').siblings().hide();
+        $('#twitterid').show();
+        $('#stopid').show();
+        $('#routeid').hide();
+        $('#myplace').hide();
+        $('#mystop').hide();
+        $('#myroute').hide();
+        $(".db").removeClass("show");
+    })
+</script>
+<script type = "text/javascript">
+    $('#route').click(function(){
+        $('#routeid').siblings().hide();
+        $('#twitterid').show();
+        $('#routeid').show();
+        $('#stopid').hide();
+        $('#myplace').hide();
+        $('#mystop').hide();
+        $('#myroute').hide();
+        $(".db").removeClass("show");
+    })
+</script>
+<script type = "text/javascript">
+    $('#search').click(function(){
+        $('#searchid').siblings().hide();
+        $('#twitterid').show();
+        $('#searchid').show();
+        $('#nearme').show();
+        $('#myplace').hide();
+        $('#mystop').hide();
+        $('#myroute').hide();
+        $(".db").removeClass("show");
+    })
+</script>
+<script type = "text/javascript">
+    $('#favorite').click(function(){
+        $('#favoriteid').siblings().hide();
+        $('#myplace').show();
+        $('#mystop').show();
+        $('#myroute').show();
+        // $('#searchid').empty();
+        // $('#nearme').empty();
+        // $('#stoparea').empty();
+        $("#favoritearea").empty();
+        $('#favoriteid').show();
+        $(".db").toggleClass("show");
+        $('#twitterid').show();
+
+    })
+</script>
+
+<!-- the function that let the page refrensh only in some part     -->
+        <!-- let the leapcard feature refresh -->
+<script type="text/javascript">
+    $('#lpbtn').click(function(){
+        info = {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            username :  $('#username').val(),
+            password : $('#password').val(),
+            };
+        console.log(info);
+        addfav('leapcard', $("#userindexun").val(),$("#username").val())
+        $.ajax({
+            type:"POST",
+            url: "{%url 'app01:leapcard'%}",
+            cache: false,
+            dataType: "json",
+            data:info,
+            success: function(result, statues, xml){
+                console.log(result)
+                if (result["wrong"] == "wrong"){
+                    $("#lparea").html("Wrong username or password, please try again!");
+                    // alert("hi")
+                }
+                else{
+                    addfav('leapcard', $("#userindexun").val(), $("#username"));
+                    var leap_table = "<br><table> ";
+
+                        leap_table += "<tr><td>Card Number </td><td>:   "+result["card_num"]+"</td></tr>";
+                        leap_table += "<tr><td>Card Label </td><td>:  "+result["card_label"] +"</td></tr>";
+                        leap_table += "<tr><td>Card Balance </td><td>:  "+result["balance"] +"</td></tr>";
+                        leap_table += "<tr><td>Card Type </td><td>:  "+result["card_type"] +"</td></tr>";
+                        leap_table += "<tr><td>Expiry Date </td><td>:  "+result["expiry_date"] +"</td></tr>";
+                        leap_table += "</table>";
+                        console.log(result["card_num"]);
+                        $("#lparea").html(leap_table);
+                }
+            },
+            error: function(){
+                alert("false");
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $('#datetimepicker1').datetimepicker({
+        needDay:true,
+        changeMonth: true, //显示月份
+        changeYear: true, //显示年份
+        showButtonPanel: true, //显示按钮
+        timeFormat: "HH:mm",
+        dateFormat: "yy-mm-dd"
+    });
+</script>
+
+<script>
+    var stopdata = '{{stopdata|safe}}';
+    stopdata = JSON.parse(stopdata);
+</script>
+      
+    
+</body>
+</html>

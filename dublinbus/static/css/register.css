@@ -1,0 +1,158 @@
+.register{
+    background: -webkit-linear-gradient(left, #23b36f, #69be55);
+    margin-top: 3%;
+    padding: 3%;
+}
+
+.register-left{
+    text-align: center;
+    color: #fff;
+    margin-top: 4%;
+}
+.register-left input{
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    width: 60%;
+    background: #f8f9fa;
+    font-weight: bold;
+    color: #383d41;
+    margin-top: 30%;
+    margin-bottom: 3%;
+    cursor: pointer;
+}
+.register-right{
+    background: #f8f9fa;
+    border-top-left-radius: 10% 50%;
+    border-bottom-left-radius: 10% 50%;
+}
+.register-left img{
+    margin-top: 15%;
+    width: 25%;
+    height: 250px;
+    width: 250px;
+}
+
+.register-left p{
+    font-weight: lighter;
+    padding: 12%;
+    margin-top: -9%;
+}
+.register .register-form{
+    padding: 10%;
+    margin-top: 10%;
+}
+.btnRegister{
+    float: right;
+    margin-top: 10%;
+    border: none;
+    border-radius: 1.5rem;
+    padding: 2%;
+    background: #23b36f;
+    color: #fff;
+    font-weight: 600;
+    width: 50%;
+    cursor: pointer;
+}
+.register .nav-tabs{
+    margin-top: 3%;
+    border: none;
+    background: #23b36f;
+    border-radius: 1.5rem;
+    width: 28%;
+    float: right;
+}
+.register .nav-tabs .nav-link{
+    padding: 2%;
+    height: 34px;
+    font-weight: 600;
+    color: #fff;
+    border-top-right-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+}
+.register .nav-tabs .nav-link:hover{
+    border: none;
+}
+.register .nav-tabs .nav-link.active{
+    width: 100px;
+    color: #23b36f;
+    border: 2px solid #23b36f;
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+}
+.register-heading{
+    text-align: left;
+    margin-top: 8%;
+    margin-bottom: -15%;
+    color: #495057;
+    padding-left: 80px;
+}
+
+#busicon {
+    font-size: 100px;
+}
+
+.text-info {
+    color: #23b36f !important;
+}
+
+.col-md-6 {
+    margin-left: 120px !important;
+}
+
+/* ---------------------------------------------------
+    MEDIAQUERIES
+----------------------------------------------------- */
+@media (max-width: 1000px) {
+    .register-left img {
+        display: none;
+    }
+    .register-left h4 {
+        display: none;
+    }
+    .register-left {
+        width: auto;
+    }
+
+    h3 {
+        top: 300px !important;
+    }
+    
+    .btnRegister {
+        min-width: 120px;
+        width: auto;
+    }
+
+    .form-control {
+        min-width: 120px;
+    }
+    .col-md-6 {
+        margin-left: 20px !important;
+    }
+    #myTab {
+        min-width: 120px;
+        width: auto !important;
+    }
+    #home-tab {
+        padding-left: 8px;
+    }
+    #profile-tab {
+        padding-right: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .register-left {
+        display: none;
+    }
+}
+
+@media (max-width: 360px){
+    .register-form {
+        flex-direction: column;
+        align-items: center !important;
+    }
+    .col-md-6 {
+        margin-left: 20px !important;
+    }
+}

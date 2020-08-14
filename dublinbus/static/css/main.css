@@ -64,10 +64,12 @@ nav {
 #weather {
     float: right;
     font-size: 12px;
+    color: #292f33;
 }
 
 #weather img {
     vertical-align: middle;
+    height: 70px;
 }
 
 .modal {
@@ -152,6 +154,7 @@ nav {
 
 .fav-links a {
     text-decoration: none;
+    display: block;
 }
 
 .fav-links li:hover {
@@ -161,6 +164,10 @@ nav {
 
 .fav-links a:visited {
     color: #292f33;
+}
+
+.fav-links a:active {
+    color: #23b36f;
 }
 
 /* Modal Content */
@@ -180,6 +187,10 @@ nav {
     padding: 10px;
     margin: 10px 0;
     width: 100%
+}
+
+#leaplogin {
+    margin-top: 20px;
 }
 
 .input-fields input {
@@ -208,17 +219,39 @@ input {
     padding-right: 20px;
 }
 
-
-#favoritearea div {
-    border-bottom: 2px solid #23b36f;
-}
-
 #favoritearea button {
     width: 14px;
     height: 14px;
     margin-right: 20px;
 }
 
+
+/*Favourites */
+
+.favs-wrapper {
+    bottom: 10px;
+    vertical-align: middle;
+    overflow:hidden; 
+    word-wrap:break-word;
+    min-height: 30px;
+    border-bottom: 2px solid #23b36f;
+}
+
+.favs-wrapper a {
+    line-height: 30px;
+    vertical-align: middle;
+    font-size: 20px;
+    float: right;
+}
+
+.favs-wrapper a:hover {
+    color: #23b36f;
+}
+
+.favs-wrapper span {
+    line-height: 30px;
+    vertical-align: middle;
+}
 
 /* Bottom section of modal styles */
 
@@ -235,6 +268,9 @@ button {
     width: 100px;
     cursor: pointer;
     height: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: #292f33;
 }
 
 #fares, #nearme {
@@ -255,7 +291,6 @@ button {
 .table-header {
     font-variant: small-caps;
 }
-
 
 
 /*Search By Routes direction links */
@@ -290,6 +325,30 @@ button {
     vertical-align: middle;
 }
 
+#routebtn, #stopbtn, #go {
+    top: 80px;
+}
+
+#markerbtn {
+    min-width: 100px;
+    width: auto;
+}
+
+/* Leapcard error message styling */
+
+#leapcardid {
+    padding-bottom: 10px;
+}
+
+#lparea {
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+#lpbtn {
+    top: 70px;
+    width: auto;
+}
 
 /*Directions/steps pannel */
 
@@ -306,6 +365,23 @@ button {
     border: 2px solid #23b36f;
     border-radius: 5px;
     margin-bottom: 10px;
+}
+
+/*Show stops on route button*/
+
+.showstops {
+    min-height: 25px;
+    height: auto;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.showstops button {
+    min-width: 100px;
+    width: auto;
+    min-height: 25px;
+    height: auto;
+    left: 50px;
 }
 
 
@@ -342,6 +418,92 @@ button {
 }
 
 
+/*Cookie banner*/
+
+.cookie-banner {
+    position: fixed;
+    bottom: -100%;
+    right: 2rem;
+    left: 2rem;
+    transition: 0.3s;
+    background: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    cursor: pointer;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    min-height: 3rem;
+    height: auto;
+    font-size: 12px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+}
+
+.cookie-banner.active {
+    bottom: 2rem;
+}
+
+.cookie-text {
+    overflow:hidden; 
+    word-wrap:break-word;
+    padding-left: 30px;
+}
+
+.cookie-btn-div {
+    min-width: 120px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.cookie-btn {
+    right: 40px;
+}
+
+
+/* Login/register btns*/
+
+#userindexun, #loginpos {
+    background: transparent;
+    color: #292f33;
+    border: none;
+    padding-right: 15px;
+    font-family: 'Poppins', sans-serif;
+    padding-left: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    padding-bottom: 1px;
+}
+
+#userindexun {
+    border-right: 0.5px solid rgba(41, 47, 51, 0.5);
+}
+
+#logout {
+    margin-left: 0px;
+    background: transparent;
+    color: #292f33;
+    border: none;
+    padding-right: 15px;
+    padding-left: 0px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    font-size: 12px;
+    padding-bottom: 1px;
+    padding-left: 3px;
+}
+
+/*Logo*/
+
+.logo{
+    font-size: 40px;
+    color: white;
+    font-weight: 650;
+    margin-left: 20px;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -368,6 +530,16 @@ button {
     }
 }
 
+@media (max-width: 450px) {
+    #weather span {
+        display: none;
+    }
+
+    .logo {
+        display: none;
+    }
+}
+
 @media (max-width: 400px){
     .nav-link {
         min-width: 40px;
@@ -384,6 +556,29 @@ button {
     .fares-table {
         font-size: 12px;
     }
+
+    #userindexun, #loginpos {
+        padding-left: 10px;
+    }
+
+
 }
 
+#stoparea {
+    display: flex;
+    justify-content: center;
+}
+
+.realtime-table {
+    width: 100%;
+    align-self: center;
+}
+
+.realtime-table th {
+    text-align: left;
+}
+
+.realtime-table tr:nth-child(even) {
+    background: rgb(231, 231, 231);
+}
 

@@ -8,7 +8,7 @@
 
     <title>Dublinbus</title>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_Bqco2DvRVp55QdFyANIiDRSKS8IE8p8&libraries=places"></script>
-    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>
+    
     
     <!--import css -->
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
@@ -30,7 +30,7 @@
     <!-- <script type="text/javascript" src="{% static 'js/initialize.js' %}"></script> -->
     <script type="text/javascript" src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/station_map.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/cookiemonster.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cookies.js' %}"></script>
     <!-- <script src="https://cdn.bootcdn.net/ajax/libs/cookies-monster/0.1.4/cookies-monster.js"></script> -->
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
@@ -50,7 +50,6 @@
     <script type="text/javascript">window.onload=function () {initMap();}</script>
 
 
-
     <div id="googleMap"></div>
     <header>
         <nav>
@@ -59,7 +58,11 @@
                 <div class="bar2"></div>
                 <div class="bar3"></div>
             </div>
+            <div class="logo">Go2</div>
             <div class="spacer"></div>
+            <a href="{% url 'user_manage:login' %}"><input type="button" value="Login/Register" name="login/register" id="loginpos" onclick=""></a>
+            
+            
             <div id="weather"></div>
         </nav>         
     </header>
@@ -82,8 +85,8 @@
                     <span class="material-icons nav-icon">payment</span>
                     <span class="nav-text">Leapcard</span>
                 </a>
-                <a class="nav-link" href="#" id="favorite" class="dropbtn" onclick="dropDown()">
-                    <span class="material-icons nav-icon">star</span>
+                <a class="nav-link" href="#" id="favorite" class="dropbtn">
+                    <span class="material-icons nav-icon">favorite</span>
                     <span class="nav-text">Favorites</span>
                 </a>
             </div>
@@ -91,7 +94,7 @@
                 <div class="forms">
                     <div id = "searchid">
                         <div class="form">
-                            <form class= "input-fields" action="" method="post">
+                            <form id="routesearch" class= "input-fields" action="" method="post">
                                 
                                 <i class = "far fa-heart place" ></i>
                                 <input id="origin" type="text" name="start_location" placeholder="From..." onclick="select_ori_dest('origin')">
@@ -125,9 +128,9 @@
                         <div class="form">
                             <form class="input-fields" method="post" id = "routeadd">
                                 {% csrf_token %}
-                                Route: <i class = "far fa-heart route" ></i>
-                                <input type='text' id = "route_id" name = "route_id">
-                                <button id = "stopbtn" type="button" onclick="routesearch()">Submit</button>
+                                <i class = "far fa-heart route" ></i>
+                                <input type='text' id = "route_id" name = "route_id" placeholder="Route ID">
+                                <button id = "routebtn" type="button" onclick="routesearch()">Find Route</button>
 
                                 <div id="singleroutesearchresult"></div>
                             </form>
@@ -139,11 +142,11 @@
 
                     <div id = "leapcardid">
                         <div class="form">
-                            <form class="input-fields" method="post" id = "lpadd">
+                            <form id="leaplogin" class="input-fields" method="post" id = "lpadd">
                                 {% csrf_token %}
                                 <input type='text' id = "username" name = "username" placeholder="Username">
                                 <input type='password' id = "password" name = "password" placeholder="Password">
-                                <button id = "lpbtn" type="button">Submit</button>
+                                <button id = "lpbtn" type="button">Check Leap Balance</button>
                             </form>
                         </div>
                         <div id ="lparea"></div>
@@ -161,11 +164,12 @@
                     <div id = "stopid">
                         <div class="form">
                             <form class="input-fields" method="post" id = "stopadd">
+                               
                                 {% csrf_token %}
                                 <i class = "far fa-heart star" ></i>
                                 <input type='text' id = "stop_id" name = "stop_id" placeholder="Stop ID">
-                                <button id = "stopbtn" type="button" onclick="stopsearch()">Submit</button>
-                                <div ><button id = "markerbtn"  type="button" onclick="showandhide()" >Show</button></div>
+                                <button id = "stopbtn" type="button" onclick="stopsearch()">Find Stop</button>
+                                <div ><button id = "markerbtn"  type="button" onclick="showandhide()" >All Stops</button></div>
                                 
                             </form>
                         </div>
@@ -192,6 +196,30 @@
                 <a class="twitter-timeline" data-width="400" data-height="400" data-theme="dark" href="https://twitter.com/dublinbusnews?ref_src=twsrc%5Etfw">Tweets by dublinbusnews</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div> {# end of id "twitterid" #}
         </div>
+    </div>
+    <div class="cookie-banner">
+        <div class="cookie-text">This website uses cookies to track your favorites. These may be deleted at any time by you or your browser. By proceeding, you are consenting to the use of cookies for this purpose.</div>
+        <div class="cookie-btn-div">
+            <button class="cookie-btn">Okay</button>
+        </div>
+    </div>
+
+<script>
+    //script to toggle cookie banner & remember consent selection
+    const cookieBanner = document.querySelector('.cookie-banner');
+    const cookieBtn = document.querySelector('.cookie-btn')
+
+    cookieBtn.addEventListener('click', () => {
+        cookieBanner.classList.remove("active");
+        localStorage.setItem("cookieBannerDisplayed", "true");
+    });
+
+    setTimeout( () => {
+        if(!localStorage.getItem("cookieBannerDisplayed")){
+            cookieBanner.classList.add("active");
+        }
+    }, 500);
+</script>
 
 <script>
     const modalSlide = () => {
@@ -211,6 +239,42 @@
     modalSlide();
 </script>
 
+<script>
+    var input = document.getElementById("route_id");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("routebtn").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("routesearch");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("go").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("leaplogin");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("lpbtn").click();
+        }
+    });
+</script>
+<script>
+    var input = document.getElementById("stop_id");
+    input.addEventListener("keydown", function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("stopbtn").click();
+        }
+    });
+</script>
 
 <script>
 	$('#datetimepicker1').datetimepicker({
@@ -263,37 +327,8 @@
 
 
 <script type="text/javascript">
-    var flag = 0;
-    function showandhide(){
-        if (flag == 0){
-            // alert("hiiii")
-            addallmarkers_repeat(map);
-            flag = 1;
-            document.getElementById("markerbtn").innerHTML = "Hide";
-        }
-        else{
-            addallmarkers_repeat(null);
-            flag = 0;
-            document.getElementById("markerbtn").innerHTML = "Show";
-        }
-    }
+
 </script>
-
-
-<script type = "text/javascript">
-    // $('#infowindow_button').click(function(){
-    //     alert("hihi")
-    //     $('.model').addClass('modal-active')
-    // });
-    // var infowindow_button = document.getElementById("infowindow_button");
-    // console.log(infowindow_button)
-    // infowindow_button.addEventListener('click',function(){
-    //     alert("hi")
-    // })
-</script>
-
-
-
 
 <!-- the onclick function that will hide some feature div -->
         <script type = "text/javascript">
@@ -383,18 +418,18 @@
                 // the first time user input the form 
                 stop.push(document.getElementById("stop_id").value);
                 try{
-                    cookiemonster.get('stop');
+                    cookieCollect.get('stop');
                 }
                 catch{
-                    cookiemonster.set('stop', stop, 3650);
-                    console.log(cookiemonster.get('stop'))
+                    cookieCollect.set('stop', stop, 3650);
+                    console.log(cookieCollect.get('stop'))
                     alert('Saved Sucessfully');
                     return ;
                 }
 
                 // except the first time of the user input, to get the cookies
                 var input_stop =  document.getElementById("stop_id").value;
-                var previous_arr = cookiemonster.get('stop');
+                var previous_arr = cookieCollect.get('stop');
                 // console.log(input_stop);
                 // console.log(previous_arr);
                 var flag = 0;
@@ -407,13 +442,13 @@
                 if (flag == 0){
                     // $(this).toggleClass("fa fa-star fa fa-star");
                     try{
-                        cookiemonster.get('stop');
-                        console.log(cookiemonster.get('stop'));
-                        cookiemonster.append('stop', stop, 3650);
-                        console.log(cookiemonster.get('stop'));
+                        cookieCollect.get('stop');
+                        console.log(cookieCollect.get('stop'));
+                        cookieCollect.append('stop', stop, 3650);
+                        console.log(cookieCollect.get('stop'));
 
                     } catch(err){
-                        cookiemonster.set('stop', stop, 3650);
+                        cookieCollect.set('stop', stop, 3650);
                     }
                     alert('Saved Sucessfully');
                 }
@@ -430,38 +465,61 @@
             $("#favoritearea").html("");
             // alert("hi");
             var tableContent = document.createElement("div");
-            var stopArr = cookiemonster.get('stop');
+            var stopArr = cookieCollect.get('stop');
             document.body.appendChild(tableContent);
 
             var iconstar;
             
                 for (let i = 0; i<stopArr.length; i++){
                     let stop = stopArr[i];
+                    
+                    var wrapper = document.createElement("div");
+                    wrapper.className = "favs-wrapper"; 
+                    
                     var stop_elem = document.createElement("span");
                     var t = document.createTextNode(stop);
                     stop_elem.appendChild(t); 
-                    
                     // iconstar = document.createElement("i");
                     // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                    iconstar = document.createElement("button");
-                     
-                    tableContent.appendChild(stop_elem);
-                    tableContent.appendChild(iconstar);
+                    iconstar = document.createElement("a");
+                    iconstar.innerHTML = "&times;";
+                    
+                    wrapper.appendChild(stop_elem);
+                    wrapper.appendChild(iconstar);
+
+                    tableContent.appendChild(wrapper);
+                    
                     document.getElementById("favorite").appendChild(tableContent);
 
                     // delete the favorite stop when they click the button
                     iconstar.addEventListener('click', function(){
                         // alert("hi");
-                        var stopList = cookiemonster.get('stop');
+                        var stopList = cookieCollect.get('stop');
                         for (let j = 0; j < stopArr.length; j++){
                             if (stopList[j] === stopArr[i]){
-                                cookiemonster.splice('stop',i,1,3650);
+                                cookieCollect.splice('stop',i,1,3650);
                             }
                         }
                     });
+
+                    //When fav in list is clicked, shows stop & realtime
+                    stop_elem.addEventListener('click', function(){
+                        $('#stopid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#stopid').show();
+                        $('#routeid').hide();
+                        $('#myplace').hide();
+                        $('#mystop').hide();
+                        $('#myroute').hide();
+                        $(".db").removeClass("show");
+
+                        $('#stop_id').val(stop);
+                        $('#stopbtn').click();
+                    });
+
                 }
-            
+
             $("#favoritearea").html(tableContent);
             });
         });
@@ -479,18 +537,18 @@
         else{
             place.push($('#origin').val());
             try{
-                cookiemonster.get('place');
+                cookieCollect.get('place');
             }
             catch{
-                cookiemonster.set('place', place, 3650);
-                console.log(cookiemonster.get('place'))
+                cookieCollect.set('place', place, 3650);
+                console.log(cookieCollect.get('place'))
                 alert('Saved Sucessfully');
                 return ;
             }
 
 
             var input_place =  $('#origin').val();
-            var previous_arr = cookiemonster.get('place');
+            var previous_arr = cookieCollect.get('place');
             // console.log(input_stop);
             // console.log(previous_arr);
             var flag = 0;
@@ -503,13 +561,13 @@
             if (flag == 0){
                 // $(this).toggleClass("fa fa-star fa fa-star");
                 try{
-                    cookiemonster.get('place');
-                    console.log(cookiemonster.get('place'));
-                    cookiemonster.append('place', place, 3650);
-                    console.log(cookiemonster.get('place'));
+                    cookieCollect.get('place');
+                    console.log(cookieCollect.get('place'));
+                    cookieCollect.append('place', place, 3650);
+                    console.log(cookieCollect.get('place'));
 
                 } catch(err){
-                    cookiemonster.set('place', place, 3650);
+                    cookieCollect.set('place', place, 3650);
                 }
                 alert('Saved Sucessfully');
             }
@@ -525,13 +583,18 @@
         $("#favoritearea").html("");
         // alert("hi");
         var tableContent = document.createElement("div");
-        var placeArr = cookiemonster.get('place');
+        var placeArr = cookieCollect.get('place');
         document.body.appendChild(tableContent);
 
         var iconstar;
         
             for (let i = 0; i<placeArr.length; i++){
                 let place = placeArr[i];
+
+                //Creating wrapper div for each fav
+                var wrapper = document.createElement("div");
+                wrapper.className = "favs-wrapper"; 
+
                 var place_elem = document.createElement("span");
                 var t = document.createTextNode(place);
                 place_elem.appendChild(t); 
@@ -539,22 +602,35 @@
                 // iconstar = document.createElement("i");
                 // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                iconstar = document.createElement("button");
+                iconstar = document.createElement("a");
+                iconstar.innerHTML = "&times;";
                  
-                tableContent.appendChild(place_elem);
-                tableContent.appendChild(iconstar);
+                wrapper.appendChild(place_elem);
+                wrapper.appendChild(iconstar);
+
+                tableContent.appendChild(wrapper);
                 document.getElementById("favorite").appendChild(tableContent);
 
                 // delete the place when they click the button
                 iconstar.addEventListener('click', function(){
                     // alert("hi");
-                    var placeList = cookiemonster.get('place');
+                    var placeList = cookieCollect.get('place');
                     for (let j = 0; j < placeArr.length; j++){
                         if (placeList[j] === placeArr[i]){
-                            cookiemonster.splice('place',i,1,3650);
+                            cookieCollect.splice('place',i,1,3650);
                         }
                     }
                 });
+
+                //When fav in list is clicked, shows route planner with place filled in
+                    place_elem.addEventListener('click', function(){
+                        $('#searchid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#searchid').show();
+                        $('#nearme').show();
+
+                        $('#origin').val(place);
+                    });
             }
         
         $("#favoritearea").html(tableContent);
@@ -573,18 +649,18 @@
             // the first time user input the form 
             route.push(document.getElementById("route_id").value);
             try{
-                cookiemonster.get('route');
+                cookieCollect.get('route');
             }
             catch{
-                cookiemonster.set('route', route, 3650);
-                console.log(cookiemonster.get('route'))
+                cookieCollect.set('route', route, 3650);
+                console.log(cookieCollect.get('route'))
                 alert('Saved Sucessfully');
                 return ;
             }
 
             // except the first time of the user input, to get the cookies
             var input_stop =  document.getElementById("route_id").value;
-            var previous_arr = cookiemonster.get('route');
+            var previous_arr = cookieCollect.get('route');
             // console.log(input_stop);
             // console.log(previous_arr);
             var flag = 0;
@@ -597,13 +673,13 @@
             if (flag == 0){
                 // $(this).toggleClass("fa fa-star fa fa-star");
                 try{
-                    cookiemonster.get('route');
-                    console.log(cookiemonster.get('route'));
-                    cookiemonster.append('route', route, 3650);
-                    console.log(cookiemonster.get('route'));
+                    cookieCollect.get('route');
+                    console.log(cookieCollect.get('route'));
+                    cookieCollect.append('route', route, 3650);
+                    console.log(cookieCollect.get('route'));
 
                 } catch(err){
-                    cookiemonster.set('route', route, 3650);
+                    cookieCollect.set('route', route, 3650);
                 }
                 alert('Saved Sucessfully');
             }
@@ -620,13 +696,17 @@
         $("#favoritearea").html("");
         // alert("hi");
         var tableContent = document.createElement("div");
-        var routeArr = cookiemonster.get('route');
+        var routeArr = cookieCollect.get('route');
         document.body.appendChild(tableContent);
 
         var iconstar;
         
             for (let i = 0; i<routeArr.length; i++){
                 let route = routeArr[i];
+
+                var wrapper = document.createElement("div");
+                wrapper.className = "favs-wrapper";
+
                 var route_elem = document.createElement("span");
                 var t = document.createTextNode(route);
                 route_elem.appendChild(t); 
@@ -634,24 +714,43 @@
                 // iconstar = document.createElement("i");
                 // iconstar.setAttribute('class', 'fa fa-star starcancel');
 
-                iconstar = document.createElement("button");
-                 
-                tableContent.appendChild(route_elem);
-                tableContent.appendChild(iconstar);
+                iconstar = document.createElement("a");
+                iconstar.innerHTML = "&times;";
+
+                wrapper.appendChild(route_elem);
+                wrapper.appendChild(iconstar);
+
+                tableContent.appendChild(wrapper);
+
                 document.getElementById("favorite").appendChild(tableContent);
+            
 
                 // delete the favorite stop when they click the button
                 iconstar.addEventListener('click', function(){
                     // alert("hi");
-                    var routeList = cookiemonster.get('route');
+                    var routeList = cookieCollect.get('route');
                     for (let j = 0; j < routeArr.length; j++){
                         if (routeList[j] === routeArr[i]){
-                            cookiemonster.splice('route',i,1,3650);
+                            cookieCollect.splice('route',i,1,3650);
                         }
                     }
                 });
+
+                //When fav in list is clicked, shows 
+                route_elem.addEventListener('click', function(){
+                        $('#routeid').siblings().hide();
+                        $('#twitterid').show();
+                        $('#routeid').show();
+                        $('#stopid').hide();
+                        $('#myplace').hide();
+                        $('#mystop').hide();
+                        $('#myroute').hide();
+                        $(".db").removeClass("show");
+
+                        $('#route_id').val(route);
+                        $('#routebtn').click();
+                    });
             }
-        
         $("#favoritearea").html(tableContent);
         });
     });
@@ -672,7 +771,8 @@
     
                     $.ajax({
                         type:"POST",
-                        url: "/leapcard/",
+                        // url: "/leapcard/",
+                        url: "{%url 'app01:leapcard'%}",
                         cache: false,
                         dataType: "json",
                         data:info,
@@ -722,7 +822,7 @@
             var stopdata = '{{stopdata|safe}}';
             stopdata = JSON.parse(stopdata);
         </script>
-      
+    <script src="https://unpkg.com/@google/markerclustererplus@4.0.1/dist/markerclustererplus.min.js"></script>  
     
 </body>
 </html>

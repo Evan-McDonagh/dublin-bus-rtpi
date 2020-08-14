@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Account</title>
+</head>
+<body>
+    <div id="username"><h3>Welcome {{ username }}!</h3></div>
+    <div id="favstops">My favorite stops:</div>
+    <div id="facplaces">My favorite places:</div>
+    <div id="favroutes">My favorite routes:</div>
+    <div id="leapcardinfo">My leapcard:</div>
+    <form id="logout-form" class="form" action="/user_manage/logout/" method="post" onsubmit="">
+        {% csrf_token %}
+        <input id="logout" type="submit" value="Logout">
+    </form>
+</body>
+</html>
