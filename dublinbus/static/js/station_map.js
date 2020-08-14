@@ -789,6 +789,7 @@ function routesearch(){
                 // document.getElementById('singleroutesearchresult').innerHTML = "<button id=" + "Inbound>" + route + "-Inbound" + "</button>" + "<br>" + "<button id=" + "Outbound>" + route + "-Outbound" + "</button>";
                 var Inboundstops = routestops[dir1];
                 var Outboundstops = routestops[dir2];
+                console.log(Inboundstops[0]);
                 Inboundmarkers = [];
                 Outboundmarkers = [];
                 var inboundpath = [];
@@ -803,6 +804,8 @@ function routesearch(){
                     var lat = Inboundstops[i].lat;
                     var lng = Inboundstops[i].lng;
                     // inboundpath.push({'lat': lat, 'lng': lng})
+                    var inbound_begin_lat = Inboundstops[0].lat;
+                    var inbound_begin_lng = Inboundstops[0].lng;
 
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
@@ -811,37 +814,55 @@ function routesearch(){
                         
                     });
                     
+                    // map.setCenter({lat:inbound_begin_lat, lng:inbound_begin_lng} );
+                    // map.setZoom(12);
                     showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
                 }
-                
+                // console.log(Outboundstops[0]);
                 for (var i = 0; i < Outboundstops.length; i++) {
                     var id = Outboundstops[i].id;
                     var lat = Outboundstops[i].lat;
                     var lng = Outboundstops[i].lng;
-                    // outboundpath.push({'lat': lat, 'lng': lng})
+
+                    var outbound_begin_lat = Outboundstops[0].lat;
+                    var outbound_begin_lng = Outboundstops[0].lng;
 
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(lat, lng),
                         title: id,
                         icon: customIcon,
-                        
                     })
-                    
                     showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
                 }
+                
+                function change_map_inbound(map){
+                    var map_route = document.getElementById("googleMap");
+                    if (map_route){
+                        map.setCenter({lat:inbound_begin_lat, lng:inbound_begin_lng} );
+                        map.setZoom(13);
+                    }
+                }
+                function change_map_outbound(map){
+                    var map_route = document.getElementById("googleMap");
+                    if (map_route){
+                        map.setCenter({lat:outbound_begin_lat, lng:outbound_begin_lng} );
+                        map.setZoom(13);
+                    }
+                }
+
 
                 document.getElementById("routebtn").addEventListener('click', function(){
                     $("#Inbound").hide();
                     $("#Outbound").hide();
-                    clearmarkers(Outboundmarkers,null);
+                    clearmarkers(Outboundmarkers);
                     // clearpolylines(Outboundpolyline)
                     clearmarkers(nearmemarkers);
                     clearmarkers(alongroutemarkers);
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
-                    showmarkers(Inboundmarkers,null);
+                    showmarkers(Inboundmarkers);
                 })
                 document.getElementById("Inbound").addEventListener('click', function () {
                     clearmarkers(Outboundmarkers);
@@ -850,6 +871,7 @@ function routesearch(){
                     clearmarkers(alongroutemarkers);
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
+                    change_map_inbound(map);
                     showmarkers(Inboundmarkers, map);
                     
                 })
@@ -861,6 +883,7 @@ function routesearch(){
                     clearmarkers(alongroutemarkers);
                     clearmarkers(originmarkers);
                     clearmarkers(destinationmarkers);
+                    change_map_outbound(map);
                     showmarkers(Outboundmarkers, map);
                     // showpolylines(Outboundpolyline, map)
                 });
