@@ -27,7 +27,9 @@ SECRET_KEY = 'c+zx(0g)18ljnv*d$m%8*fb5syt$37@+9i1ki%amgmineffn29'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'ec2-18-202-226-99.eu-west-1.compute.amazonaws.com'        
+    '34.248.8.161',
+    'www.gotwo.nk',
+    'gotwo.nk',
 ]
 
 
