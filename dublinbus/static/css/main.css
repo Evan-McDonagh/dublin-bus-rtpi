@@ -189,6 +189,10 @@ nav {
     width: 100%
 }
 
+#leaplogin {
+    margin-top: 20px;
+}
+
 .input-fields input {
     margin: 10px 0;
     background: transparent;
