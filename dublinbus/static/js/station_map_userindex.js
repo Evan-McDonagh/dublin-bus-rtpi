@@ -574,7 +574,8 @@ function getStopInfo(marker, stopKey) {
 
 //Add all stops markers on the map.
 function addallmarkers(map) {
-    var customIcon = "./static/images/Go2_marker_grey.png";
+    // var customIcon = "./static/images/Go2_marker_grey.png";
+    var customIcon = "{% static 'user_manage/images.ipg' %}";
     var stopKeys = Object.keys(stopdata);
     for (var i=0;i<stopKeys.length;i++) {
         var stopKey = stopKeys[i];
@@ -1264,7 +1265,7 @@ function renderLegCard(seg) {
     
     html_out += '<table style="border-spacing: 10px;border-collapse: separate;"><tr>';
     if (seg.travelmode == 'WALKING') {
-        html_out += '<td><img src="{% static \'images/icon-WALKING.png\'%}" alt="" style="width: 50px;"></td>';
+        html_out += '<td><img src="{% static \'user_manage/images/icon-WALKING.png\'%}" alt="" style="width: 50px;"></td>';
     } else if (seg.agency == "Dublin Bus" || seg.agency == "Go-Ahead"){
         html_out += '<td><img src="./static/images/icon-BUS.png" alt="" style="width: 50px;"></td>';
         busname = '(' + seg.busname + ')';
