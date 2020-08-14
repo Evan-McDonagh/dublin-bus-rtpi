@@ -14,3 +14,4 @@ ml-notebooks/google_transit_dublinbus/shapes.txt
 ml-notebooks/google_transit_dublinbus/stop_times.txt
 ml-notebooks/google_transit_dublinbus/stops.txt
 ml-notebooks/google_transit_dublinbus/trips.txt
+static_dep/
