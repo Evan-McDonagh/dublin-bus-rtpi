@@ -2,6 +2,9 @@ from django.conf.urls import url
 from django.urls import path
 
 from user_manage import views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from django.contrib import staticfiles
 
 app_name = 'user_manage'
 
@@ -20,3 +23,4 @@ urlpatterns = [
     # path('register_form', views.register_form, name = 'register_form'),
     # path('', views.register)
 ]
+urlpatterns += staticfiles_urlpatterns()
