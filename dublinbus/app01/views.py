@@ -32,31 +32,39 @@ stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
 routefile = os.path.join(dirname, "../local-bus-data/all-routes-sequences.json")
 scrappedroutefile = os.path.join(dirname, "../local-bus-data/route-data-sequence.json")
 
+# load all route data, the stops is separated by route
 with open(routefile) as rt:
     allroutes = json.load(rt)
     rt.close()
+
+# load all stops data
 with open(stopfile) as st:
     allstops = json.load(st)
     st.close()
+
+# load the stops data with direction and sequence inside of a route
 with open(scrappedroutefile) as srt:
     scrappedallroutes = json.load(srt)
     srt.close()
 
 
-# Create your views here.
+# for home page
 def index(request):
+    # load the stops data in context
     context = load_bus_data()
-    uname = request.session.get('username')
-    print(uname)
-    if uname is not None:
+    uname = request.session.get('username')  # check whether the user is logged in
+    # print(uname)
+
+    if uname is not None:  # the use is in logged in status
         user = User.objects.get(name=uname)
         if user is not None:
             context["username"] = user.name
         return render(request, 'userindex.html', context)
-    return render(request,'index.html', context)
+    return render(request, 'index.html', context)
 
+# a supporting function to load the needed data
 def load_bus_data():
-    #load bus stop and route data
+    # load bus stop and route data
     dirname = os.path.dirname(__file__)
     stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
     routefile = os.path.join(dirname, "../local-bus-data/route-data.json")
@@ -69,55 +77,50 @@ def load_bus_data():
     return context
 
 
+# deal with leapcard function
 def leapcard(request):
     if request.method == 'POST':
-        # print(request.POST)
         username = request.POST['username']
         password = request.POST['password']
-        # print(username,password)
         context = {}
         
         try:
             session = LeapSession()
             session.try_login(username,password)
             overview = session.get_card_overview()
-            # print(overview)
             leap_content = vars(overview)
-            # print(leap_content)
             context['card_num'] = leap_content.get('card_num')
             context['card_label'] = leap_content.get('card_label')
             context['balance'] = leap_content.get('balance')
             context['card_type'] = leap_content.get('card_type')
             context['expiry_date'] = leap_content.get('expiry_date')
-
         except:
             context['wrong'] = "wrong"
-            # print("the wrong password")
-            return JsonResponse(context,safe=False)
+            return JsonResponse(context, safe=False)
         
-        return JsonResponse(context,safe=False)
+        return JsonResponse(context, safe=False)
     else:
         return render(request,'index.html')
 
+
+# deal with stop search function
 def stop(request):
     if request.method == 'POST':
         stop_id = request.POST['stop_id']
         url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
         obj = requests.get(url)
         obj_json = obj.json()
-        # print(obj_json)
         return JsonResponse(obj_json, safe=False)
     else:
-        return render(request,'index.html')
+        return render(request, 'index.html')
 
-# get user address info by user's location
+
+# get user address info by user's location, return the user's address to front-end
 def init(request):
-    # print('init')
     inifo = {}
     if request.method == 'POST':
         lat = request.POST.get('lat')
         lng = request.POST.get('lng')
-        # print(lat,lng)
 
         # get the address of the post coordinate
         address_request = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}&key={}'.format(lat, lng, gmap_api))
@@ -157,17 +160,16 @@ def weather(request):
     return HttpResponse(json.dumps(weather_info))
 
 
-# select involved stops along the route.
+# select involved stops along the route
+# return a list contains a series of dicts carrying stop position ans stop number.
 def printresult(request):
     if request.method == 'POST':
-        # print(request.body)
         SEGSINFO = json.loads(request.body)
         seg_stops = {}
         segments = SEGSINFO[0]
         bounds = SEGSINFO[1]
         post_alongroutestops = []
         for seg in segments:
-            # print(seg)
             if seg['travelmode'].upper() == 'TRANSIT':
                 busname = seg['busname']
                 if seg['agency'] in ['Dublin Bus', 'Go-Ahead']:
@@ -198,23 +200,24 @@ def printresult(request):
                         seg_stops[busname] = post_alongroutestops
             else:
                 continue
-        # print(seg_stops)
         return JsonResponse(seg_stops, safe=False)
 
 
-# to match all stops to find the first and the last stop in a a bus segment
+# to compare with all stops to find the first and the last stop in a a bus segment
+# parameter: 'seg' is a segment of a travel
+# return the first stop and the last stop among all stops
 def matchstop(seg, allstops):
     busname = seg['busname']
-    startstopname = seg['startstopname']
+    # startstopname = seg['startstopname']
     startstoplocation = seg['startstoplocation']
-    endstopname = seg['endstopname']
+    # endstopname = seg['endstopname']
     endstoplocation = seg['endstoplocation']
-    headsign = seg['headsign']
-    numstops = seg['numstops']
-    pattern = re.compile(r'(?<=stop )\d+\.?\d*')
-    alongroutestopids = []
+    # headsign = seg['headsign']
+    # numstops = seg['numstops']
+    # pattern = re.compile(r'(?<=stop )\d+\.?\d*')
+    # alongroutestopids = []
     startDIST = endDIST = 0.01
-    longstopid = ""
+    # longstopid = ""
     routestopskeys_inbound = allroutes[busname]['Inbound']['atcocodes']
     routestopskeys_outbound = allroutes[busname]['Outbound']['atcocodes']
     routestops = {}
@@ -223,7 +226,7 @@ def matchstop(seg, allstops):
         for key in routestopskeys_inbound + routestopskeys_outbound:
             if stopkey == key:
                 routestops[stopkey] = allstops[stopkey]
-    #
+
     for stopkey in routestops:
         if routestops[stopkey].get('latitude') is not None:
             stop_loc = {'lat': routestops[stopkey].get('latitude'), 'lng': routestops[stopkey].get('longitude')}
@@ -273,7 +276,6 @@ def gettwostopdistance(loc1, loc2):
 
 # to extract the sublist in a route sequence list
 def slicealongroutestopsid(startstopid, endstopid, busname, allstops, numstops, bounds):
-    # print('slicealongroutestopsid---------------------------------------------',startstopid)
     alongroutestops = []
     for route in allroutes:
         if route == busname:
@@ -295,7 +297,6 @@ def slicealongroutestopsid(startstopid, endstopid, busname, allstops, numstops, 
                     return alongroutestops
 
 
-
 # show realtime info when a marker alongside the route is clicked
 def rtmarkerinfo(request):
     if request.method == 'POST':
@@ -309,7 +310,7 @@ def rtmarkerinfo(request):
 # show prediction
 def showprediction(request):
     import pickle
-    #  just pring some info, but later on, the pkl file can be added and give prediction using info contained in segs.
+    #  just print some info, but later on, the pkl file can be added and give prediction using info contained in segs.
     if request.method == 'POST':
         segs = json.loads(request.body)
         predictions = []
@@ -353,10 +354,8 @@ def showprediction(request):
     return HttpResponse(json.dumps({'prediction': predictions}))
 
 
-
-
-
 # to search a specific route
+# return the inbound and outbound stops along this route
 def routesearch(request):
     if request.method == 'POST':
         route = request.POST.get('route')
@@ -366,7 +365,6 @@ def routesearch(request):
             ROUTE = allroutes[route]
             for in_out in ROUTE:
                 routestopnos[in_out] = ROUTE[in_out]['atcocodes']
-            # print(routestopnos)
             for in_out in routestopnos:
                 in_out_stops = routestopnos[in_out]
                 routestops[in_out] = []
@@ -376,8 +374,8 @@ def routesearch(request):
                 
         else:
             routestops['Route does not exist'] = 'Route does not exist'
-        # print(routestops)
         return HttpResponse(json.dumps(routestops))
+
 
 # to extract stop details from stop-data.json
 def extractloc(routestopnos, allalongroutestops):
@@ -387,12 +385,8 @@ def extractloc(routestopnos, allalongroutestops):
             STOP = allstops[stop]
             count += 1
             if stopno == STOP['stopno']:
-                # print(STOP['stopno'],'-----------',stopno)
-                # print('---------------------------------------------------------',stopno)
-                # if {"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]} not in allalongroutestops:
                 allalongroutestops.append({"id": STOP['stopno'], 'lat': STOP["latitude"], 'lng': STOP["longitude"]})
-    # print(count)
-   
+
 
 # to handle error logger
 def errorhandler(request):
@@ -401,6 +395,7 @@ def errorhandler(request):
         print("*********ErrorLogger***********", errorinfo)
         return HttpResponse(json.dumps({}))
 
+# just a small test function during developing
 @csrf_exempt
 def test(request):
     print('addfav')

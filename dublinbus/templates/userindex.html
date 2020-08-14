@@ -430,7 +430,7 @@ $(document).ready(function(){
             password : $('#password').val(),
             };
         console.log(info);
-        addfav('leapcard', $("#userindexun").val(),$("#username").val())
+        {#addfav('leapcard', $("#userindexun").val(),$("#username").val())#}
         $.ajax({
             type:"POST",
             url: "{%url 'app01:leapcard'%}",
