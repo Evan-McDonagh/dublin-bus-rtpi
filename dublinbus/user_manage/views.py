@@ -1,4 +1,5 @@
 import json
+import os
 import re
 
 from django.contrib.auth import authenticate
@@ -14,6 +15,20 @@ from django.utils import timezone
 from datetime import *
 from django.contrib.auth.hashers import make_password, check_password
 
+def load_bus_data():
+    #load bus stop and route data
+    dirname = os.path.dirname(__file__)
+    stopfile = os.path.join(dirname, "../local-bus-data/stop-data.json")
+    routefile = os.path.join(dirname, "../local-bus-data/route-data.json")
+    with open(stopfile) as infile:
+        stop_data = json.load(infile)
+    with open(routefile) as infile:
+        route_data = json.load(infile)
+    stopdump = json.dumps(stop_data)
+    context = {'stopdata':stopdump}
+    return context
+
+context = load_bus_data()
 
 def register(request):
     """Register"""
@@ -164,9 +179,9 @@ def login(request):
 
             print(request.session.get('username'))
 
-
+            context['name'] = username
             # return response
-            return render(request, "userindex.html", {'username': username})
+            return render(request, "userindex.html", {'context': context})
         else:
             # password is wrong
             return render(request, 'login.html', {'errmsg': 'username does not match password', "username":username})
@@ -202,7 +217,7 @@ def logout(request):
         except KeyError:
             print('keyerror')
             # return HttpResponse(json.dumps({'msg': "logout failed"}))
-        return render(request, "index.html")
+        return render(request, "index.html", context)
 
         # return render(request, 'index.html')
 
