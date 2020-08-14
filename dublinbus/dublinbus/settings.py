@@ -26,7 +26,9 @@ SECRET_KEY = 'c+zx(0g)18ljnv*d$m%8*fb5syt$37@+9i1ki%amgmineffn29'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    'ec2-18-202-226-99.eu-west-1.compute.amazonaws.com'        
+]
 
 
 # Application definition
@@ -142,6 +144,8 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static'),
     ('images', os.path.join(STATIC_ROOT, 'images').replace('\\', '/')),
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_dep')
 
 LOGGING = {
     'version': 1,
