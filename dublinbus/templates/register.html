@@ -35,11 +35,11 @@
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <h3 class="register-heading">Register for your own account</h3>
+                        <h3 class="register-heading">Register your own account:</h3>
                         <div class="reg_form clearfix">
                             <form id="reg_form" action="/user_manage/register/" method="post" onsubmit="return validate()">
                             <div class="row register-form">
-                                <div class="col-md-6" style="margin-left: 120px;">
+                                <div class="col-md-6">
                                     {% csrf_token %}
                                     <div class="form-group">
                                         <input type="text" class="form-control"  placeholder="User Name *" value="" id="username" name="username"/>
