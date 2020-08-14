@@ -1,10 +1,11 @@
 from django.conf.urls import url
 from django.urls import path
 
+from app01 import views
+
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from django.contrib import staticfiles
-from app01 import views
 
 app_name = "app01"
 urlpatterns = [
@@ -22,5 +23,4 @@ urlpatterns = [
     url('errorhandler', views.errorhandler, name="errorhandler"),
     url('test', views.test),
 ]
-
 urlpatterns += staticfiles_urlpatterns()

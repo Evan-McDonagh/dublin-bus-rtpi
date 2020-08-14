@@ -181,6 +181,7 @@ function calcRoute() {
     clearmarkers(alongroutemarkers);
     alongroutemarkers = [];
     clearmarkers(nearmemarkers);
+    markerCluster.clearMarkers()
     segmentsinfo = [];
     
     var currentTime = new Date(Date.now());
