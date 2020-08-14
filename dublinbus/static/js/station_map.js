@@ -1278,7 +1278,7 @@ function renderLegCard(seg) {
         if (seg.gmapsprediction == true) {
             prediction_source = "Google Directions Service";
         } else {
-            prediction_source = "Our Predictive Model";
+            prediction_source = "Go2 Predictive Model";
         }
     }
     
