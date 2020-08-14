@@ -184,7 +184,6 @@ function calcRoute() {
     clearmarkers(nearmemarkers);
     // if (isClusterShowing){markerCluster.clearMarkers(); isClusterShowing=false}
     turnclusteron_off('off');
-    markerCluster.clearMarkers()
     segmentsinfo = [];
     
     var currentTime = new Date(Date.now());
