@@ -354,12 +354,12 @@ function calcRoute() {
                             content += '<tr style="text-align: center"><td style="text-align: center">' + rst['route'] + '</td><td>' + rst['arrivaldatetime'] + '</td><td>' + rst['origin'] + '</td><td>' + rst['destination'] + '</td></tr>'
                         }
                         content += '</tbody></table>'
-                        marker.addListener('click', function () {
-                            infowindow.setContent(content);
-                            infowindow.open(map, marker);
-                        })
-                        // marker.addListener('mouseover', function(){infowindow.open(map,marker)})
-                        // marker.addListener('mouseout', function(){infowindow.close(map,marker)})
+                        // marker.addListener('click', function () {
+                        //     infowindow.setContent(content);
+                        //     infowindow.open(map, marker);
+                        // })
+                        infowindow.setContent(content);
+                        infowindow.open(map, marker);
                     },error: function () {
                         content += '</tbody></table>'
                         marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
@@ -382,7 +382,6 @@ function calcRoute() {
                     success: function (data) {
                         for (key in data){
                             var stops = data[key];
-                            var infowindow = new google.maps.InfoWindow();
                             for (var i=0; i<stops.length; i++) {
                                 var stop = stops[i];
                                 var id = stop.id;
@@ -397,11 +396,14 @@ function calcRoute() {
                                     title: title,
                                     icon: icontype
                                 });
-                                // Marker.addListener('click', showinfowindow(Marker, map));
-                                // google.maps.event.addListener(Marker, 'click', showinfowindow(Marker, map));
-                                showinfowindow(Marker, infowindow, map);
                                 alongroutemarkers.push(Marker);
                             }
+                            var infowindow = new google.maps.InfoWindow();
+                            alongroutemarkers.forEach(function (element) {
+                                google.maps.event.addListener(element, 'click', function(){
+                                    showinfowindow(element, infowindow, map);
+                                });
+                            })
                         }
                     }, error: function () {
                         var errormsg = 'ERROR--->loadstops(segmentsinfo,  bounds, map) supporting calcRoute() using showinfowindow(marker, map), type:js/jquery response error,file:station_map.js, ErrorMSG: printresult(request) function gives no response';
@@ -815,7 +817,6 @@ function routesearch(){
                     url: "https://img.icons8.com/color/48/000000/bus-stop1.png",
                     scaledSize: new google.maps.Size(30, 30)
                 }
-                var infowindow = new google.maps.InfoWindow();
                 for (var i = 0; i < Inboundstops.length; i++) {
                     var id = Inboundstops[i].id;
                     var lat = Inboundstops[i].lat;
@@ -833,9 +834,15 @@ function routesearch(){
                     
                     // map.setCenter({lat:inbound_begin_lat, lng:inbound_begin_lng} );
                     // map.setZoom(12);
-                    showmarkerinfo(marker, infowindow);
+                    // showmarkerinfo(marker, infowindow);
                     Inboundmarkers.push(marker);
                 }
+                var infowindow = new google.maps.InfoWindow();
+                Inboundmarkers.forEach(function (element) {
+                    google.maps.event.addListener(element, 'click', function(){
+                        showmarkerinfo(element, infowindow);
+                    });
+                })
                 // console.log(Outboundstops[0]);
                 for (var i = 0; i < Outboundstops.length; i++) {
                     var id = Outboundstops[i].id;
@@ -850,9 +857,14 @@ function routesearch(){
                         title: id,
                         icon: customIcon,
                     })
-                    showmarkerinfo(marker, infowindow);
+                    // showmarkerinfo(marker, infowindow);
                     Outboundmarkers.push(marker);
                 }
+                Outboundmarkers.forEach(function (element) {
+                    google.maps.event.addListener(element, 'click', function(){
+                        showmarkerinfo(element, infowindow);
+                    });
+                })
                 
                 function change_map_inbound(map){
                     var map_route = document.getElementById("googleMap");
@@ -933,7 +945,9 @@ function routesearch(){
                 }
                 content += '</tbody></table>'
                 // var infowindow = new google.maps.InfoWindow({content:content});
-                marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
+                // marker.addListener('click', function(){infowindow.setContent(content);infowindow.open(map, marker)})
+                infowindow.setContent(content);
+                infowindow.open(map, marker)
             },
             error: function () {
                 // alert('error', id)

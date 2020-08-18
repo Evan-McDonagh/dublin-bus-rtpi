@@ -1,3 +1,5 @@
+//The codes in this js references to: kingPuppy (2014) CookiesMonster [Source code].  https://stackoverflow.com/questions/4470477/create-array-in-cookie-with-javascript
+
 var cookieCollect = new Object();
 
 cookieCollect.append = function (cookieName, item, expDays) {

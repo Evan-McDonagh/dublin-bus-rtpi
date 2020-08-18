@@ -107,8 +107,11 @@ def leapcard(request):
 def stop(request):
     if request.method == 'POST':
         stop_id = request.POST['stop_id']
-        url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
-        obj = requests.get(url)
+        # url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
+        # obj = requests.get(url)
+        url = 'https://api.nationaltransport.ie/rtpi/RealTimeBusInformation?stopid=' + stop_id
+        headers = {'Ocp-Apim-Subscription-Key': 'd5e5986d173546b7bbfdde1810da302a'}
+        obj = requests.get(url, headers=headers)
         obj_json = obj.json()
         return JsonResponse(obj_json, safe=False)
     else:
@@ -302,9 +305,13 @@ def rtmarkerinfo(request):
     if request.method == 'POST':
         stop_id = request.POST.get('id')
         # print(stop_id)
-        url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
-        obj = requests.get(url)
+        # url = "https://data.smartdublin.ie/cgi-bin/rtpi/realtimebusinformation" +"?stopid=" + stop_id+"&format=json"
+        url = 'https://api.nationaltransport.ie/rtpi/RealTimeBusInformation?stopid='+ stop_id
+        headers = {'Ocp-Apim-Subscription-Key':'d5e5986d173546b7bbfdde1810da302a'}
+        obj = requests.get(url, headers=headers)
+        # obj = requests.get(url)
         obj_json = obj.json()
+        # print(obj_json)
     return HttpResponse(json.dumps(obj_json))
 
 # show prediction
